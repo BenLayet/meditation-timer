@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+app.use(express.static(path.join(__dirname, '../node_modules/frontend/dist')));
 
 // Start server
 const PORT = process.env.PORT || 5000;
