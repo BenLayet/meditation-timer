@@ -1,10 +1,9 @@
 FROM node:22
 WORKDIR /app
-RUN apt-get update
-RUN apt-get install -y ca-certificates
+RUN apt-get update && apt-get install -y ca-certificates
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
 COPY ./pnpm-lock.yaml .
 RUN pnpm fetch
