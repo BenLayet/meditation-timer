@@ -1,33 +1,26 @@
 import "./Timer.css"
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import {onSecondElapsed} from "domain/src/timer/onSecondElapsed.js";
 import {onTimerStarted} from "domain/src/timer/onTimerStarted.js";
-import {onTimerStopped} from "domain/src/timer/onTimerStopped.js";
-import {onTimerReset} from "domain/src/timer/onTimerReset.js";
 
-function Timer() {
-    const initialSate = {isRunning: false, seconds:0};
-    const [state, setState] = useState(initialSate);
+function Timer({initialState}) {
+    const [state, setState] = useState(initialState);
     useEffect(() => {
         const interval = setInterval(() => {
             setState(onSecondElapsed(state));
         }, 1000);
         return () => clearInterval(interval);
     });
-    const startTimer = () =>  setState(onTimerStarted(state));
-    const stopTimer = () =>  setState(onTimerStopped(state));
-    const resetTimer = () => setState(onTimerReset(state));
-
+    const startTimer = () => setState(onTimerStarted(state));
     const formattedTime = () => formatTime(state.seconds);
 
-    return (
-        <div>
-            <h1 className="timer">{formattedTime()}</h1>
-            <button onClick={startTimer} disabled={state.isRunning}>Start</button>
-            <button onClick={stopTimer} disabled={!state.isRunning}>Stop</button>
-            <button onClick={resetTimer}>Reset</button>
-        </div>
-    );
+    return <>
+        {
+            state.isRunning ?
+                <h1 className="timer">{formattedTime()}</h1> :
+                <button className="mainAction" onClick={startTimer} disabled={state.isRunning}>Start {formattedTime()}</button>
+        }
+    </>;
 }
 
 const formatTime = (totalSeconds) => {
@@ -35,6 +28,6 @@ const formatTime = (totalSeconds) => {
     const hoursStr = String(hours).padStart(2, '0');
     const minutesStr = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
     const secondsStr = String(totalSeconds % 60).padStart(2, '0');
-    return hours>0? `${hoursStr}:${minutesStr}:${secondsStr}`:`${minutesStr}:${secondsStr}`;
+    return hours > 0 ? `${hoursStr}:${minutesStr}:${secondsStr}` : `${minutesStr}:${secondsStr}`;
 };
 export default Timer;

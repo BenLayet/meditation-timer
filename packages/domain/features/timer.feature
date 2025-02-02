@@ -2,22 +2,23 @@ Feature: Timer
 
   Scenario: Timer is started
     Given the timer is not running
-    And the time is 120 seconds
+    And the duration is 120 seconds
     When the timer is started
     Then the timer should be running
-    And the time should be 0 seconds
+    And the time should be 120 seconds
 
-  Scenario: Timer is stopped
+  Scenario: Timer is paused
     Given the timer is running
     And the time is 120 seconds
-    When the timer is stopped
+    When the timer is paused
     And a second has elapsed
     Then the timer should not be running
     And the time should be 120 seconds
 
   Scenario: Timer is reset
     Given the timer is running
-    And the time is 120 seconds
+    And the time is 10 seconds
+    And the duration is 120 seconds
     When the timer is reset
     And a second has elapsed
     Then the timer should not be running
@@ -35,4 +36,11 @@ Feature: Timer
     Given the timer is running
     And the time is 120 seconds
     When a second has elapsed
-    Then the time should be 121 seconds
+    Then the time should be 119 seconds
+
+  Scenario: Duration is set when timer is running
+    Given the timer is running
+    And the time is 120 seconds
+    When the duration is set to 1200 seconds
+    Then the time should be 1200 seconds
+    And the timer should not be running

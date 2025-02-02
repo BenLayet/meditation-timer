@@ -1,0 +1,13 @@
+.timer-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 1em;
+    min-height: 12em;
+}
+li{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}

@@ -4,3 +4,9 @@
   padding: 2rem;
   text-align: center;
 }
+.clickable{
+  cursor: pointer;
+}
+.mainAction{
+  font-size: 2em;
+}

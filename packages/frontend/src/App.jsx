@@ -1,11 +1,11 @@
 import './App.css'
-import Timer from './Timer';
+import ChooseDurationForm from "./ChooseDurationForm.jsx";
 
 function App() {
 
   return (
     <>
-        <Timer />
+        <ChooseDurationForm />
     </>
   )
 }
