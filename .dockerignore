@@ -10,13 +10,13 @@
 !packages/frontend/index.html
 !packages/frontend/package.json
 !packages/frontend/pnpm-lock.yaml
-!packages/frontend/vite.config.ts
+!packages/frontend/vite.config.js
 !packages/frontend/eslint.config.js
 
 !packages/backend/src
 !packages/backend/package.json
 !packages/backend/pnpm-lock.yaml
 
-package.json
-pnpm-lock.yaml
-pnpm-workspace.yaml
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
