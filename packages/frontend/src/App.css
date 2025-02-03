@@ -3,10 +3,5 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
-.clickable{
-  cursor: pointer;
-}
-.mainAction{
-  font-size: 2em;
+  display: flex;
 }

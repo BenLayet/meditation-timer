@@ -1,8 +1,9 @@
 .timer{
-    font-size: 5em;
     color: white;
     animation: fadeIn 1s ease-in-out;
     opacity: 0.6;
+    min-width: 2.6em;
+    text-align: start;
 }
 @keyframes fadeIn {
     from {

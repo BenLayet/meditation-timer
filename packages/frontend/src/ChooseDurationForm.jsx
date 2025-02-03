@@ -12,6 +12,7 @@ export default function ChooseDurationForm() {
         console.log(JSON.stringify(state));
     };
     const resetTimer = () => setState(onTimerReset(state));
+    const durations = [1200, 600, 300];
     return (
         <div>
             {state.duration ?
@@ -19,12 +20,18 @@ export default function ChooseDurationForm() {
                     <div className="timer-box"><Timer initialState={state}/></div>
                     <a className="clickable" onClick={resetTimer}>← back</a>
                 </> :
-                <ul className="mainAction">
-                    <li className="clickable" onClick={() => handleDurationClick(300)}>5 minutes</li>
-                    <li className="clickable" onClick={() => handleDurationClick(600)}>10 minutes</li>
-                    <li className="clickable" onClick={() => handleDurationClick(900)}>15 minutes</li>
-                    <li className="clickable" onClick={() => handleDurationClick(1200)}>20 minutes</li>
-                </ul>
+                <>
+                    <h1>Choose length</h1>
+                    <ul className="mainAction">
+                        {durations.map(duration => (
+                            <li key={duration}>
+                                <button className="clickable" onClick={() => handleDurationClick(duration)}>
+                                    {duration / 60} minutes
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </>
             }
         </div>
     )

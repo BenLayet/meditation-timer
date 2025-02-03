@@ -33,7 +33,9 @@ function Timer({ initialState }) {
         {
             state.isRunning ?
                 <h1 className="timer">{formattedTime()}</h1> :
-                <button className="mainAction" onClick={startTimer} disabled={state.isRunning}>Start {formattedTime()}</button>
+                <button className="mainAction" onClick={startTimer} disabled={state.isRunning}>
+                    Start
+                </button>
         }
     </>;
 }
