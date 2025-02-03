@@ -1,24 +1,23 @@
 import "./ChooseDurationForm.css"
 import {useState} from 'react';
 import Timer from "./Timer.jsx";
-import {onDurationSet} from "domain/src/timer/onDurationSet.js";
-import {onTimerReset} from "domain/src/timer/onTimerReset.js";
+import {onDurationSelected} from "domain/src/duration-selection/onDurationSelected.js";
+import {onDurationReset} from "domain/src/duration-selection/onDurationReset.js";
 
 export default function ChooseDurationForm() {
-    const [state, setState] = useState({});
-
-    const handleDurationClick = (duration) => {
-        setState(onDurationSet(state, duration));
-        console.log(JSON.stringify(state));
-    };
-    const resetTimer = () => setState(onTimerReset(state));
     const durations = [1200, 600, 300];
+    const [state, setState] = useState({});
+    const handleDurationClick = (duration) => {
+        setState(onDurationSelected(state, duration));
+    };
+    const backClicked = () => setState(onDurationReset(state));
+
     return (
         <div>
-            {state.duration ?
+            {state.timerIsDisplayed ?
                 <>
                     <div className="timer-box"><Timer initialState={state}/></div>
-                    <a className="clickable" onClick={resetTimer}>← back</a>
+                    <a className="clickable" onClick={backClicked}>← back</a>
                 </> :
                 <>
                     <h1>Choose length</h1>

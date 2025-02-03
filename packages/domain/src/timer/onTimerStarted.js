@@ -1,8 +1,7 @@
 export function onTimerStarted(state){
-    console.debug('onTimerStarted', JSON.stringify(state));
     return {
         ...state,
-        isRunning: true,
+        timerIsRunning: true,
         seconds: state.duration
     };
 }

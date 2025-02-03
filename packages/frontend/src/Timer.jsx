@@ -1,7 +1,7 @@
 import "./Timer.css";
 import { useState, useEffect } from 'react';
 import WakeLockService from './WakeLockService';
-import { onSecondElapsed } from "domain/src/timer/onSecondElapsed.js";
+import { onTimerTicked } from "domain/src/timer/onTimerTicked.js";
 import { onTimerStarted } from "domain/src/timer/onTimerStarted.js";
 
 function Timer({ initialState }) {
@@ -10,7 +10,7 @@ function Timer({ initialState }) {
     const bowlAudio = new Audio('/bowl.ogg');
     useEffect(() => {
         const interval = setInterval(() => {
-            setState(onSecondElapsed(state));
+            setState(onTimerTicked(state));
             if(state.seconds === 12 && state.isRunning) {
                 bowlAudio.play();
             }
@@ -31,9 +31,9 @@ function Timer({ initialState }) {
 
     return <>
         {
-            state.isRunning ?
+            state.timerIsRunning ?
                 <h1 className="timer">{formattedTime()}</h1> :
-                <button className="mainAction" onClick={startTimer} disabled={state.isRunning}>
+                <button className="mainAction" onClick={startTimer}>
                     Start
                 </button>
         }

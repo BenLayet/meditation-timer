@@ -1,18 +1,14 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import {onTimerStarted} from "../../src/timer/onTimerStarted.js";
 import { expect } from 'chai';
-import {onTimerExpired} from "../../src/timer/onTimerExpired.js";
-import {onSecondElapsed} from "../../src/timer/onSecondElapsed.js";
-import {onTimerPaused} from "../../src/timer/onTimerPaused.js";
-import {onTimerReset} from "../../src/timer/onTimerReset.js";
-import {onDurationSet} from "../../src/timer/onDurationSet.js";
+import {onTimerTicked} from "../../src/timer/onTimerTicked.js";
 
 Given('the timer is not running', function () {
-    this.state = Object.freeze({...this.state, isRunning: false});
+    this.state = Object.freeze({...this.state, timerIsRunning: false});
 });
 
 Given('the timer is running', function () {
-    this.state =  Object.freeze({...this.state, isRunning: true});
+    this.state =  Object.freeze({...this.state, timerIsRunning: true});
 });
 
 Given("the duration is {int} seconds", function (duration) {
@@ -25,34 +21,24 @@ Given('the time is {int} seconds', function (seconds) {
 When('the timer is started', function () {
     this.state = onTimerStarted(this.state);
 });
-When(/^the timer is paused$/, function () {
-    this.state = onTimerPaused(this.state);
-});
-
-When('the timer expires', function () {
-    this.state = onTimerExpired(this.state);
-});
 
 When('a second has elapsed', function () {
-    this.state = onSecondElapsed(this.state);
+    this.state = onTimerTicked(this.state);
 
 });
-When(/^the timer is reset$/, function () {
-    this.state = onTimerReset(this.state);
-});
-
-When('the duration is set to {int} seconds', function (duration) {
-    this.state = onDurationSet(this.state, duration);
-});
-Then('the time should be {int} seconds', function (seconds) {
+Then('the remaining time should be {int} seconds', function (seconds) {
     expect(this.state.seconds).to.equal(seconds);
 });
 Then('the timer should be running', function () {
-    expect(this.state.isRunning).to.be.true;
+    expect(this.state.timerIsRunning).to.be.true;
 });
 Then('the timer should not be running', function () {
-    expect(this.state.isRunning).to.be.false;
+    expect(this.state.timerIsRunning).to.be.false;
 });
-Then("the duration should be unset", function () {
-    expect(this.state.duration).to.be.undefined;
+Then("the timer should be displayed", function () {
+    expect(this.state.timerIsDisplayed).to.be.true;
+});
+
+Then("the timer should not be displayed", function () {
+    expect(this.state.timerIsDisplayed).to.be.false;
 });
