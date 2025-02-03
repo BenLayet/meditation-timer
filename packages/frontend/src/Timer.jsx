@@ -7,9 +7,13 @@ import { onTimerStarted } from "domain/src/timer/onTimerStarted.js";
 function Timer({ initialState }) {
     const [state, setState] = useState(initialState);
     const wakeLockService = new WakeLockService();
+    const bowlAudio = new Audio('/bowl.ogg');
     useEffect(() => {
         const interval = setInterval(() => {
             setState(onSecondElapsed(state));
+            if(state.seconds === 12 && state.isRunning) {
+                bowlAudio.play();
+            }
         }, 1000);
         return () => {
             clearInterval(interval);
@@ -20,6 +24,7 @@ function Timer({ initialState }) {
     const startTimer = () => {
         setState(onTimerStarted(state));
         wakeLockService.request();
+        bowlAudio.play();
     };
 
     const formattedTime = () => formatTime(state.seconds);
