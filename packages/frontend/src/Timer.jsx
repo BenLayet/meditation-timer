@@ -1,26 +1,25 @@
 import "./Timer.css";
-import { useState, useEffect, useRef } from 'react';
-import NoSleep from 'nosleep.js';
+import { useState, useEffect } from 'react';
+import WakeLockService from './WakeLockService';
 import { onSecondElapsed } from "domain/src/timer/onSecondElapsed.js";
 import { onTimerStarted } from "domain/src/timer/onTimerStarted.js";
 
 function Timer({ initialState }) {
     const [state, setState] = useState(initialState);
-    const noSleep = useRef(new NoSleep());
-
+    const wakeLockService = new WakeLockService();
     useEffect(() => {
         const interval = setInterval(() => {
             setState(onSecondElapsed(state));
         }, 1000);
         return () => {
             clearInterval(interval);
-            noSleep.current.disable();
+            wakeLockService.release();
         };
     }, [state]);
 
     const startTimer = () => {
         setState(onTimerStarted(state));
-        noSleep.current.enable();
+        wakeLockService.request();
     };
 
     const formattedTime = () => formatTime(state.seconds);
