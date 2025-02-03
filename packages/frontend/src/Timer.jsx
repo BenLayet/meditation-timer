@@ -12,7 +12,10 @@ function Timer({ initialState }) {
         const interval = setInterval(() => {
             setState(onSecondElapsed(state));
         }, 1000);
-        return () => clearInterval(interval);
+        return () => {
+            clearInterval(interval);
+            noSleep.current.disable();
+        };
     }, [state]);
 
     const startTimer = () => {
