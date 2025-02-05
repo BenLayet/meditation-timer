@@ -17,7 +17,6 @@
     "domain": "workspace:*",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "express-rate-limit": "^7.5.0",
     "frontend": "workspace:*",
     "postgres": "^3.4.5",
     "uuid": "^11.0.5"
