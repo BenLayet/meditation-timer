@@ -1,12 +1,10 @@
 //exposed selectors
+export const hasTimerStarted = (timerState) => typeof timerState.startedTimestampMs !== 'undefined';
 export const isTimeUp = (timerState) => getRemainingSeconds(timerState) === 0;
-export const isTimerRunning = (timerState) => hasStarted(timerState) && !isTimeUp(timerState);
+export const isTimerRunning = (timerState) => hasTimerStarted(timerState) && !isTimeUp(timerState);
 export const getFormattedTime = (timerState) => formatSeconds(getRemainingSeconds(timerState));
 
 //private selectors
-function hasStarted(timerState){
-    return typeof timerState.startedTimestampMs !== 'undefined';
-}
 function getRemainingSeconds(timerState){
     const elapsedSeconds = Math.floor((timerState.lastTickTimestampMs - timerState.startedTimestampMs) / 1000);
     return Math.max(0, timerState.totalSeconds - elapsedSeconds);

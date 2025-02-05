@@ -3,7 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import { fileURLToPath } from 'url';
-import meditationRoutes from './routes/meditations.js';
+import meditationRoutes from './routes/meditations.route.js';
 import rateLimit from 'express-rate-limit';
 
 const apiLimiter = rateLimit({

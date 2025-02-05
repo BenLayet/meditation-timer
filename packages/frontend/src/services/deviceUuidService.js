@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 class DeviceUuidService {
     static COOKIE_NAME = 'device_uuid';
 
-    static getOrCreateUuid() {
+    static initializeCookie() {
         let uuid = Cookies.get(DeviceUuidService.COOKIE_NAME);
         if (!uuid) {
             uuid = createUuid();

@@ -27,5 +27,16 @@ router.get('', async (req, res) => {
     }
 });
 
+// Get all meditations from device
+router.get('/daily-streak', async (req, res) => {
+    try {
+        const deviceUuid = req.cookies['device_uuid'];
+        const dailyStreak = await meditationRepository.getDailyStreak({deviceUuid});
+        res.status(200).json({dailyStreak});
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+});
+
 
 export default router;
