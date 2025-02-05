@@ -14,7 +14,6 @@ export default function ChooseDurationForm() {
                     <a className="clickable" onClick={() => setTotalSeconds(null)}>← back</a>
                 </> :
                 <>
-                    <h1>Choose length</h1>
                     <ul className="mainAction">
                         {durations.map(duration => (
                             <li key={duration}>
