@@ -8,13 +8,18 @@
     "dev": "nodemon src/app.js"
   },
   "devDependencies": {
+    "nodemon": "^3.1.9",
     "prettier": "^3.4.2"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "domain": "workspace:*",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "domain": "workspace:*",
-    "frontend": "workspace:*"
+    "express-rate-limit": "^7.5.0",
+    "frontend": "workspace:*",
+    "postgres": "^3.4.5",
+    "uuid": "^11.0.5"
   }
 }

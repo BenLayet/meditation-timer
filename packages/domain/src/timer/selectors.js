@@ -9,7 +9,7 @@ function hasStarted(timerState){
 }
 function getRemainingSeconds(timerState){
     const elapsedSeconds = Math.floor((timerState.lastTickTimestampMs - timerState.startedTimestampMs) / 1000);
-    return timerState.totalSeconds - elapsedSeconds;
+    return Math.max(0, timerState.totalSeconds - elapsedSeconds);
 }
 function formatSeconds (seconds) {
     const hours = Math.floor(seconds / 3600);

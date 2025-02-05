@@ -3,7 +3,7 @@ import {useState} from 'react';
 import Timer from "./Timer.jsx";
 
 export default function ChooseDurationForm() {
-    const durations = [1200, 600, 300];
+    const durations = [1200, 600, 300, 2];
     const [totalSeconds, setTotalSeconds] = useState(null);
 
     return (
