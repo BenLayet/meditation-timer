@@ -25,6 +25,9 @@ function Timer({totalSeconds}) {
         };
     }, [isTimerRunning(timerState)]);
 
+
+    useEffect(() => () => gongService.stop(), []);
+
     const startTimer = () =>  {
         wakeLockService.requestWakeLock();
         gongService.play();
