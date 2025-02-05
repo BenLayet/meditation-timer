@@ -1,18 +1,27 @@
 class WakeLockService {
     constructor() {
-        this.wakeLock = null;
+        this.wakeLockSentinelPromise = null;
     }
 
-    async request() {
-        await this.release();
-        this.wakeLock = navigator.wakeLock?.request('screen');
+    requestWakeLock() {
+        this._requestWakeLock().then();
+    }
+    releaseWakeLock() {
+        this._releaseWakeLock().then();
     }
 
-    async release() {
-        if (this.wakeLock) {
-            await this.wakeLock.release();
+   async _requestWakeLock() {
+        await this._releaseWakeLock();
+        this.wakeLockSentinelPromise = navigator.wakeLock?.request('screen');
+    }
+
+    async _releaseWakeLock() {
+        if (this.wakeLockSentinelPromise) {
+            const sentinel = await this.wakeLockSentinelPromise;
+            await sentinel?.release();
+            this.wakeLockSentinelPromise = null;
         }
     }
 }
 
-export default WakeLockService;
+export const wakeLockService = new WakeLockService();

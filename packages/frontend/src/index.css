@@ -67,3 +67,7 @@ a {
 a:hover {
   color: var(--hover-color);
 }
+
+.clickable {
+  cursor: pointer;
+}
