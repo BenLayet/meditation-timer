@@ -37,7 +37,9 @@ export default function DurationSelect() {
                             </li>
                         ))}
                     </ul>
-                    {dailyStreak > 1&&<p>t('days_in_a_row', {dailyStreak})</p>}
+                    {dailyStreak > 1 &&
+                        <p>{t('days_in_a_row', {dailyStreak})}</p>
+                    }
                 </>
             }
         </div>
