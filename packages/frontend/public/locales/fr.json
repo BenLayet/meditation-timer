@@ -1,0 +1,10 @@
+{
+  "duration": "Choisissez la durée :",
+  "minutes": "{{minuteCount}} minutes",
+  "days_in_a_row": "{{dailyStreak}} jours de suite",
+  "start_timer": "Commencer le minuteur",
+  "back": "Retour",
+  "language": "Langue",
+  "french": "Français",
+  "english": "Anglais"
+}

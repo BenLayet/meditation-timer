@@ -5,8 +5,12 @@ import {gongService} from '../../services/gongService.js';
 import {onTimerTicked, onTimerStarted} from "domain/src/timer/stateUpdaters.js";
 import {getFormattedTime, hasTimerStarted, isTimerRunning, isTimeUp} from "domain/src/timer/selectors.js";
 import {meditationRepository} from "../../repositories/meditationRepository.js";
+import {useTranslation} from "react-i18next";import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
+
 
 function Timer({totalSeconds}) {
+    const { t } = useTranslation();
     const [timerState, setTimerState] = useState({totalSeconds});
 
     const intervalCallBack  = () => {
@@ -42,8 +46,8 @@ function Timer({totalSeconds}) {
         {
             hasTimerStarted(timerState) ?
                 <h1 className="timer">{getFormattedTime(timerState)}</h1> :
-                <button className="mainAction" onClick={startTimer}>
-                    Start
+                <button className="mainAction" onClick={startTimer} aria-description={t('start_timer')}>
+                    <FontAwesomeIcon icon={faPlay} />
                 </button>
         }
     </>;

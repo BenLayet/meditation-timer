@@ -2,10 +2,15 @@ import "./DurationSelect.css"
 import {useEffect, useState} from 'react';
 import Timer from "../timer/Timer.jsx";
 import {meditationRepository} from "../../repositories/meditationRepository.js";
+import '../../config/i18n';
+import { useTranslation } from 'react-i18next';
+
+
+const suggestedDurations = [20, 10, 5];
 
 export default function DurationSelect() {
-    const durations = [1200, 600, 300];
-    const [totalSeconds, setTotalSeconds] = useState(null);
+    const { t } = useTranslation();
+    const [duration, setDuration] = useState(null);
     const [dailyStreak, setDailyStreak] = useState(null);
 
     // Fetch dailyStreak from the API on component mount
@@ -15,23 +20,24 @@ export default function DurationSelect() {
 
     return (
         <div>
-            {totalSeconds ?
+            {duration ?
                 <>
-                    <div className="timer-box"><Timer totalSeconds={totalSeconds}/></div>
-                    <a className="clickable" onClick={() => setTotalSeconds(null)}>← back</a>
+                    <div className="timer-box"><Timer totalSeconds={duration*60}/></div>
+                    <a className="clickable" onClick={() => setDuration(null)}>←
+                        {t('back')}</a>
                 </> :
                 <>
-
+                    <p>{t('duration')}</p>
                     <ul className="mainAction">
-                        {durations.map(duration => (
-                            <li key={duration}>
-                                <button className="clickable" onClick={() => setTotalSeconds(duration)}>
-                                    {duration / 60} minutes
+                        {suggestedDurations.map(minuteCount => (
+                            <li key={minuteCount}>
+                                <button className="clickable" onClick={() => setDuration(minuteCount)}>
+                                    {t('minutes', {minuteCount})}
                                 </button>
                             </li>
                         ))}
                     </ul>
-                    {dailyStreak > 1&&<p>{dailyStreak} days in a row</p>}
+                    {dailyStreak > 1&&<p>t('days_in_a_row', {dailyStreak})</p>}
                 </>
             }
         </div>
