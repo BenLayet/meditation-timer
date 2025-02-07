@@ -6,6 +6,9 @@
     margin: 1em;
     min-height: 12em;
 }
+ul{
+    padding-inline-start: 0;
+}
 li{
     list-style-type: none;
     padding: 0;
