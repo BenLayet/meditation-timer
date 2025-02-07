@@ -1,0 +1,75 @@
+.settings-container {
+    min-width: 10em;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em 2em;
+}
+
+.settings-button {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.settings-button:hover {
+    color: var(--primary-color);
+}
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+.settings-menu {
+    position: absolute;
+    min-width: 6em;
+    top: 100%;
+    right: 0;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 1em;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+.settings-menu-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em 0;
+}
+.settings-menu label {
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+.settings-menu div {
+    display: flex;
+    align-items: center;
+}
+.settings-menu input[type="radio"] {
+     display: none;
+ }
+
+.settings-menu input[type="radio"] + label {
+    font-size: 0.7em;
+    min-width: 4em;
+    display: inline-block;
+    padding: 0.5em 1em;
+    border: 2px solid var(--primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.settings-menu input[type="radio"]:checked + label {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}

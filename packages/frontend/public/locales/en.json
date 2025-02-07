@@ -1,0 +1,10 @@
+{
+  "duration": "Select duration:",
+  "minutes": "{{minuteCount}} minutes",
+  "days_in_a_row": "{{dailyStreak}} days in a row",
+  "start_timer": "Start timer",
+  "back": "Back",
+  "language": "Language",
+  "french": "French",
+    "english": "English"
+}
