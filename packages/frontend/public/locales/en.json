@@ -1,5 +1,6 @@
 {
-  "duration": "Select duration:",
+  "duration": "Duration:",
+  "volume": "Gong volume:",
   "minutes": "{{minuteCount}} minutes",
   "days_in_a_row": "{{dailyStreak}} days in a row",
   "start_timer": "Start timer",

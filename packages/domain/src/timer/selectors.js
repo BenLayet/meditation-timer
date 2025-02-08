@@ -6,7 +6,7 @@ export const getFormattedTime = (timerState) => formatSeconds(getRemainingSecond
 
 //private selectors
 function getRemainingSeconds(timerState){
-    const elapsedSeconds = Math.floor((timerState.lastTickTimestampMs - timerState.startedTimestampMs) / 1000);
+    const elapsedSeconds = timerState.lastTickTimestampMs ? Math.floor((timerState.lastTickTimestampMs - timerState.startedTimestampMs) / 1000):0;
     return Math.max(0, timerState.totalSeconds - elapsedSeconds);
 }
 function formatSeconds (seconds) {

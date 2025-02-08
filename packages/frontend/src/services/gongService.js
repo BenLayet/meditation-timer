@@ -12,6 +12,10 @@ class GongService {
     stop() {
         this.audio.pause();
     }
+
+    setVolume(volume) {
+        this.audio.volume = volume / 100;
+    }
 }
 
 export const gongService = new GongService('/bowl.ogg');

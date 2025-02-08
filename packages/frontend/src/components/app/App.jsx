@@ -1,13 +1,19 @@
 import './App.css'
-import DurationSelect from "../durationSelect/DurationSelect.jsx";
 import Settings from "../settings/Settings.jsx";
+import Timer from "../timer/Timer.jsx";
+import '../../config/i18n';
+
 
 function App() {
 
   return (
     <>
-        <Settings/>
-        <DurationSelect />
+        <div className="app-header">
+            <Settings/>
+        </div>
+        <div className="app-body">
+            <Timer />
+        </div>
     </>
   )
 }

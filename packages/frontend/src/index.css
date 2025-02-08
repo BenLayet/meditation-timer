@@ -36,17 +36,21 @@ h1 {
   margin-bottom: 1em;
 }
 
-button {
-  background-color: var(--button-background);
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
-  cursor: pointer;
-  transition: background-color 0.25s, border-color 0.25s;
-  border-radius: 12px; /* Increased border radius */
+button, input{
   font-size: 1.2em; /* Increased font size */
   padding: 0.2em; /* Added padding */
   min-width: 6em;
   margin: 0.5em;
+  cursor: pointer;
+  transition: background-color 0.25s, border-color 0.25s;
+  box-sizing: border-box;
+}
+
+button {
+  border-radius: 12px; /* Increased border radius */
+  background-color: var(--button-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
 }
 
 button:hover {
@@ -59,6 +63,20 @@ button:focus-visible {
   outline: 4px auto var(--focus-color);
 }
 
+input[type='range']{
+  accent-color: var(--primary-color);
+  height: 30px; /* Increased height */
+  border-radius: 50%; /* Increased border radius */
+  opacity: 0.8;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+   transform: scale(2);
+}
+
+input[type="range"]::-moz-range-thumb{
+  transform: scale(2);
+}
 a {
   color: var(--primary-color);
   text-decoration: none;

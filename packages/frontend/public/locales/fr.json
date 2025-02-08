@@ -1,5 +1,6 @@
 {
-  "duration": "Choisissez la durée :",
+  "duration": "Durée :",
+  "volume": "Volume du gong :",
   "minutes": "{{minuteCount}} minutes",
   "days_in_a_row": "{{dailyStreak}} jours de suite",
   "start_timer": "Commencer le minuteur",

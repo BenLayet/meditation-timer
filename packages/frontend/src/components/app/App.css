@@ -5,6 +5,15 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    height: 100vh;
+
+}
+.app-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .settings-bar {
