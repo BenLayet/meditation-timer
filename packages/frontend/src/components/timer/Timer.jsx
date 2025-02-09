@@ -15,7 +15,6 @@ function Timer() {
     const [timerState, setTimerState] = useState({totalSeconds:1200});
     const [dailyStreak, setDailyStreak] = useState(null);
 
-    // Fetch dailyStreak from the API on component mount
     useEffect(() => {
         meditationRepository.fetchDailyStreak().then(setDailyStreak);
     }, []);
@@ -29,21 +28,27 @@ function Timer() {
         const volume = localStorage.getItem('volume');
         if (volume) {
             setVolume(parseInt(volume));
+            gongService.setVolume(parseInt(volume));
         }
     }, []);
+
+    function onTimeUp(updatedState) {
+        gongService.play();
+        meditationRepository.postMeditation(updatedState)
+            .then(r => console.log(r));
+    }
 
     const intervalCallBack  = () => {
         const updatedState = onTimerTicked(timerState, Date.now());
         if(isTimeUp(updatedState)){
-            gongService.play();
-            meditationRepository.postMeditation(updatedState)
-                .then(r => console.log(r));
+            onTimeUp(updatedState);
         }
         setTimerState(updatedState);
     }
     useEffect(() => {
         let interval;
         if(isTimerRunning(timerState)){
+            wakeLockService.requestWakeLock();
             interval = setInterval(intervalCallBack, 1000);
         }
         return () => {
@@ -56,7 +61,6 @@ function Timer() {
     useEffect(() => () => gongService.stop(), []);
 
     const startTimer = () =>  {
-        wakeLockService.requestWakeLock();
         gongService.play();
         setTimerState(onTimerStarted(timerState, Date.now()));
     };
