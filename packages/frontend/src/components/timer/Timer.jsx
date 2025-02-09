@@ -13,6 +13,13 @@ function Timer() {
     const { t } = useTranslation();
     const [volume, setVolume] = useState(100);
     const [timerState, setTimerState] = useState({totalSeconds:1200});
+    const [dailyStreak, setDailyStreak] = useState(null);
+
+    // Fetch dailyStreak from the API on component mount
+    useEffect(() => {
+        meditationRepository.fetchDailyStreak().then(setDailyStreak);
+    }, []);
+
     useEffect(() => {
         const duration = localStorage.getItem('duration');
         if (duration) {
@@ -65,6 +72,7 @@ function Timer() {
     };
     const handleVolumeChange = (event) => {
         const volume = event.target.value;
+        setVolume(volume);
         gongService.setVolume(volume);
         localStorage.setItem('volume', volume);
     };
@@ -106,8 +114,10 @@ function Timer() {
                     onChange={handleVolumeChange}
                 />
             </div>
-
         </div>
+        {dailyStreak > 1 &&
+            <p>{t('days_in_a_row', {dailyStreak})}</p>
+        }
     </>;
 }
 
