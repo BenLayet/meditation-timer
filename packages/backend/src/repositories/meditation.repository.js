@@ -1,11 +1,15 @@
 import { v4 as createUuid } from 'uuid';
-import { datasource } from '../config/datasource.js';
 
 class MeditationRepository {
+
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
     async createMeditation(meditation) {
         const { started, ended, deviceUuid } = meditation;
         const id = createUuid();
-        const result = await datasource`
+        const result = await this.datasource`
             INSERT INTO meditations (id, started, ended, device_uuid)
             VALUES (${id}, ${started}, ${ended}, ${deviceUuid})
                 RETURNING *;
@@ -13,20 +17,14 @@ class MeditationRepository {
         return result[0];
     }
 
-    async getAllMeditations(filter) {
-        const {deviceUuid} = filter;
-        return datasource`
-            SELECT * FROM meditations WHERE device_uuid = ${deviceUuid};
-        `;
-    }
-
     async getDailyStreak(filter) {
+
         const {deviceUuid} = filter;
-        const results = await datasource`
+        const results = await this.datasource`
             SELECT * FROM (            
                 SELECT distinct floor(extract(epoch from started) / 86400) as day 
                 FROM meditations   
-                WHERE device_uuid = ${deviceUuid} and ended is not null)
+                WHERE device_uuid = ${deviceUuid} and ended is not null) as days
             ORDER BY day DESC;
         `;
         const allDays = results.map(result => result.day);

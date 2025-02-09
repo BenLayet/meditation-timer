@@ -1,0 +1,32 @@
+### Create a new meditation
+< {%
+    request.variables.set("started", new Date().toISOString());
+    request.variables.set("ended", new Date(new Date().getTime() + (20*60*1000)).toISOString());
+%}
+POST http://localhost:8000/api/v1/meditations
+Content-Type: application/json
+Cookie: device_uuid=00000000-0000-0000-0000-000000000001
+
+{
+  "started": "{{started}}",
+  "ended": "{{ended}}"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+%}
+
+
+### Get the daily streak
+GET http://localhost:8000/api/v1/meditations/daily-streak
+Cookie: device_uuid=00000000-0000-0000-0000-000000000001
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.dailyStreak === 1, "Daily streak is not 1");
+    });
+%}
+
