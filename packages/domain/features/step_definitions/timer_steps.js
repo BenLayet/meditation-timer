@@ -33,3 +33,57 @@ Then('the timer should be running', function () {
 Then('the timer should not be running', function () {
     expect(isTimerRunning(this.state), JSON.stringify(this.state)).to.be.false;
 });
+When(/^I go to the app$/, function () {
+
+});
+Then(/^I can start a meditation of (\d+) minutes$/, function () {
+
+});
+Then(/^I can change the duration of the meditation$/, function () {
+
+});
+Then(/^I can change volume of the sound of the notification$/, function () {
+
+});
+Then(/^I can change the volume of the sound of the notification$/, function () {
+
+});
+Then(/^the timer should display 05:00$/, function () {
+
+});
+Then(/^I can start a meditation session$/, function () {
+
+});
+Given(/^the timer display 05:00$/, function () {
+
+});
+When(/^I start a meditation session$/, function () {
+
+});
+Then(/^the preparation should be started$/, function () {
+
+});
+Then(/^the timer should not be running yet$/, function () {
+
+});
+Given(/^I have started a meditation session$/, function () {
+
+});
+Given(/^the preparation time is running$/, function () {
+
+});
+When(/^the preparation time is over$/, function () {
+
+});
+Then(/^a gong sound should be played$/, function () {
+
+});
+Then(/^the meditation timer should start running$/, function () {
+
+});
+When(/^the meditation time is over$/, function () {
+
+});
+Then(/^the timer should stop running$/, function () {
+
+});
