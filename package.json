@@ -8,7 +8,10 @@
     "build:frontend": "cd packages/frontend && pnpm install && pnpm run build && cd ../..",
     "build:backend": "cd packages/backend && pnpm install && cd ../..",
     "start": "pnpm run start:backend",
-    "start:backend": "cd packages/backend && pnpm run start && cd ../.."
+    "start:backend": "cd packages/backend && pnpm run start && cd ../..",
+    "dev": "pnpm run dev:backend & pnpm run dev:frontend",
+    "dev:backend": "cd packages/backend && pnpm run dev && cd ../..",
+    "dev:frontend": "cd packages/frontend && pnpm run dev && cd ../.."
   },
   "packageManager": "pnpm@9.15.0"
 }
