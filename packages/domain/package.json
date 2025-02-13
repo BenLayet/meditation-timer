@@ -4,13 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "test": "cucumber-js",
-    "test:watch": "nodemon --exec cucumber-js"
+    "test": "cucumber-js --fail-fast --format ./custom-formatter.js",
+    "test:watch": "nodemon --ext js,feature --exec cucumber-js --fail-fast "
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.2.0",
     "chai": "^5.1.2",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }

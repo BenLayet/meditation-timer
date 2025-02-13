@@ -1,1 +1,0 @@
-export const TIME_UP_REACHED = "TIME_UP_REACHED";
