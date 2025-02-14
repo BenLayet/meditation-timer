@@ -1,99 +1,44 @@
 import "./Timer.css";
-import {useState, useEffect} from 'react';
-import {wakeLockService} from '../../services/wakeLockService.js';
-import {gongService} from '../../services/gongService.js';
-import {onTimerTicked, onTimerStarted, onTimerCancelled} from "domain/src/timer/stateUpdaters.js";
-import {getFormattedTime, hasTimerStarted, isTimerRunning, isTimeUp} from "domain/src/timer/selectors.js";
-import {meditationRepository} from "../../repositories/meditationRepository.js";
-import {useTranslation} from "react-i18next";import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+import {useContext} from 'react';
+import {useTranslation} from "react-i18next";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPlay, faStop} from '@fortawesome/free-solid-svg-icons';
+import {appSelectors} from "domain/src/app/app.selectors.js";
+import {GlobalStateContext} from "../app/GlobalStateContext.jsx";
+import {
+    gongVolumeSet,
+    meditationDurationSet,
+    meditationSessionStarted,
+    meditationSessionStopped
+} from "domain/src/meditation-session/meditation-session.events.js";
 
 
 function Timer() {
-    const { t } = useTranslation();
-    const [volume, setVolume] = useState(100);
-    const [timerState, setTimerState] = useState({totalSeconds:1200});
-    const [dailyStreak, setDailyStreak] = useState(null);
-
-    useEffect(() => {
-        meditationRepository.fetchDailyStreak().then(setDailyStreak);
-    }, []);
-
-    useEffect(() => {
-        const duration = localStorage.getItem('duration');
-        if (duration) {
-            const totalSeconds = parseInt(duration)*60;
-            setTimerState({totalSeconds});
-        }
-        const volume = localStorage.getItem('volume');
-        if (volume) {
-            setVolume(parseInt(volume));
-            gongService.setVolume(parseInt(volume));
-        }
-    }, []);
-
-    function onTimeUp(updatedState) {
-        gongService.play();
-        meditationRepository.postMeditation(updatedState)
-            .then(r => console.log(r));
-    }
-
-    const intervalCallBack  = () => {
-        const updatedState = onTimerTicked(timerState, Date.now());
-        if(isTimeUp(updatedState)){
-            onTimeUp(updatedState);
-        }
-        setTimerState(updatedState);
-    }
-    useEffect(() => {
-        let interval;
-        if(isTimerRunning(timerState)){
-            wakeLockService.requestWakeLock();
-            interval = setInterval(intervalCallBack, 1000);
-        }
-        return () => {
-            clearInterval(interval);
-            wakeLockService.releaseWakeLock();
-        };
-    }, [isTimerRunning(timerState)]);
-
-
-    useEffect(() => () => gongService.stop(), []);
-
-    const startTimer = () =>  {
-        gongService.play();
-        setTimerState(onTimerStarted(timerState, Date.now()));
-    };
-    const cancelTimer = () =>  {
-        wakeLockService.releaseWakeLock();
-        gongService.stop();
-        setTimerState(onTimerCancelled(timerState));
-    };
-    const handleDurationChange = (event) => {
-        const newDuration = event.target.value;
-        setTimerState({totalSeconds: newDuration*60});
-        localStorage.setItem('duration', newDuration);
-    };
-    const handleVolumeChange = (event) => {
-        const volume = event.target.value;
-        setVolume(volume);
-        gongService.setVolume(volume);
-        localStorage.setItem('volume', volume);
-    };
+    const {t} = useTranslation();
+    const {state, dispatch} = useContext(GlobalStateContext);
+    const playClicked = () => dispatch(meditationSessionStarted(new Date().getTime()));
+    const stopClicked = () => dispatch(meditationSessionStopped(new Date().getTime()));
+    const meditationDurationChanged = (event) => dispatch(meditationDurationSet(event.target.value));
+    const gongVolumeChanged = (event) => dispatch(gongVolumeSet(event.target.value));
+    const canDurationBeChanged = () => appSelectors.canDurationBeChanged(state);
+    const canMeditationSessionBeStarted = () => appSelectors.canMeditationSessionBeStarted(state);
+    const formattedTimeToDisplay = () => appSelectors.getFormattedTimeToDisplay(state);
+    const gongVolume = () => appSelectors.getGongVolume(state);
+    const durationInMinutes = () => appSelectors.getMeditationDurationInMinutes(state);
 
     return <>
-        <h1 className="timer">{getFormattedTime(timerState)}</h1>
+        <h1 className="timer">{formattedTimeToDisplay()}</h1>
         {
-            hasTimerStarted(timerState)?
-                <button className="mainAction" onClick={cancelTimer}   >
-                    <FontAwesomeIcon icon={faStop} />
+            canMeditationSessionBeStarted() ?
+                <button className="mainAction" onClick={playClicked}>
+                    <FontAwesomeIcon icon={faPlay}/>
                 </button>
                 :
-                <button className="mainAction" onClick={startTimer}   >
-                    <FontAwesomeIcon icon={faPlay} />
+                <button className="mainAction" onClick={stopClicked}>
+                    <FontAwesomeIcon icon={faStop}/>
                 </button>
         }
-        <div className={`timer-settings ${isTimerRunning(timerState) && "hidden"}`}>
+        <div className={`timer-settings ${canDurationBeChanged() || "hidden"}`}>
             <div className="timer-setting">
                 <label htmlFor="duration">{t('duration')}</label>
                 <input
@@ -102,8 +47,8 @@ function Timer() {
                     min="5"
                     max="45"
                     step="5"
-                    value={timerState.totalSeconds / 60}
-                    onChange={handleDurationChange}
+                    value={durationInMinutes()}
+                    onChange={meditationDurationChanged}
                 />
             </div>
             <div className="timer-setting">
@@ -114,14 +59,11 @@ function Timer() {
                     min="0"
                     max="100"
                     step="10"
-                    value={volume}
-                    onChange={handleVolumeChange}
+                    value={gongVolume()}
+                    onChange={gongVolumeChanged}
                 />
             </div>
         </div>
-        {dailyStreak > 1 &&
-            <p>{t('days_in_a_row', {dailyStreak})}</p>
-        }
     </>;
 }
 

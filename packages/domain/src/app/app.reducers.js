@@ -11,9 +11,9 @@ const onMeditationDurationSet = (payload, state) => ({
     ...state,
     meditationTimer: timerReducers.onDurationSet(payload, state.meditationTimer)
 });
-const onGongVolumeSet = (payload, state) => ({
+const onGongVolumeSet = ({gongVolume}, state) => ({
     ...state,
-    settings: {...state.settings, gongVolume: payload}
+    settings: {...state.settings, gongVolume}
 });
 
 const onPreparationStarted = (payload, state) => ({
@@ -36,7 +36,6 @@ const onTimerTicked = (payload, state) => {
             throw new Error(`Invalid phase: expected PREPARATION or ACTUAL_MEDITATION, got ${state.phase}`);
     }
 };
-
 export const appReducers = (event, state) => {
     const previousState = state;
     const payload = event.payload;

@@ -18,5 +18,10 @@ const getFormattedTimeToDisplay = flow(
 );
 const isTimeUp = (timerState) => getRemainingSeconds(timerState) === 0;
 const isTimerRunning = (timerState) => hasTimerStarted(timerState) && !isTimeUp(timerState);
+const getDurationInMinutes = (timerState) => getDurationInSeconds(timerState) / 60;
 
-export const timerSelectors = {getFormattedTimeToDisplay, isTimerRunning};
+export const timerSelectors = {
+    getFormattedTimeToDisplay,
+    isTimerRunning,
+    getDurationInMinutes
+};

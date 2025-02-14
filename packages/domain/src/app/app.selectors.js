@@ -12,6 +12,7 @@ const canMeditationSessionBeStarted = (state) => true;
 const canDurationBeChanged = (state) => true;
 const canGongVolumeBeChanged = (state) => true;
 const isPreparationRunning = flow(getPreparationTimerState, timerSelectors.isTimerRunning);
+const getMeditationDurationInMinutes = flow(getMeditationTimerState, timerSelectors.getDurationInMinutes);
 
 
 export const appSelectors = {
@@ -22,5 +23,6 @@ export const appSelectors = {
     canMeditationSessionBeStarted,
     canDurationBeChanged,
     canGongVolumeBeChanged,
-    isPreparationRunning
+    isPreparationRunning,
+    getMeditationDurationInMinutes
 };

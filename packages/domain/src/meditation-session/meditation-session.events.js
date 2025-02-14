@@ -31,12 +31,12 @@ export const meditationSessionStopped = () => {
     };
 };
 
-export const gongVolumeSet = (volumeString) => {
-    ow(volumeString, ow.string.matches(/^\d+$/));
-    const volume = parseInt(volumeString);
-    ow(volume, ow.number.integer.inRange(0, 100));
+export const gongVolumeSet = (gongVolumeString) => {
+    ow(gongVolumeString, ow.string.matches(/^\d+$/));
+    const gongVolume = parseInt(gongVolumeString);
+    ow(gongVolume, ow.number.integer.inRange(0, 100));
     return {
         type: GONG_VOLUME_SET,
-        payload: {volume},
+        payload: {gongVolume},
     };
 };
