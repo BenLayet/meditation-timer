@@ -12,18 +12,14 @@ Feature: Meditation timer
     And I can change the volume of the sound of the gong
 
   Scenario: Starting a meditation session
-    Given the timer displays 05:00
     When I start a meditation session
-    Then the preparation period should start
+    Then the preparation should start
     And the timer should not be running yet
     And I can stop the meditation session
-    But I cannot change the duration of the meditation
-    And I cannot start another meditation session
 
-  Scenario: Meditation period starts
+  Scenario: Actual meditation starts
     Given I have started a meditation session
-    And the preparation period is running
-    When the preparation period ends
+    When the preparation ends
     Then a gong sound should be played
     And the meditation timer should start running
     And I can change the volume of the sound of the gong
@@ -39,7 +35,7 @@ Feature: Meditation timer
 
   Scenario: Meditation period ends
     Given I have started a meditation session
-    When the meditation period ends
+    When the actual meditation ends
     Then a gong sound should be played
     And the timer should stop running
     And my meditation statistics should appear

@@ -1,36 +1,63 @@
 import {Given, Then, When} from "@cucumber/cucumber";
-import {dispatch, state} from "../state_manager/state-manager.js";
+import {dispatch, forceState, state} from "../state_manager/state-manager.js";
 import {expect} from "chai";
 import {
-    canDurationBeChanged,
-    canGongVolumeBeChanged,
-    canMeditationSessionBeStarted,
-    getDisplayedTime
+    appSelectors
 } from "../../src/app/app.selectors.js";
+import {appOpened} from "../../src/app/app.events.js";
+import {
+    meditationDurationSet,
+    meditationSessionStarted
+} from "../../src/meditation-session/meditation-session.events.js";
+import {BEGINNING_OF_TIME} from "../../src/timer/timer.constant.js";
+import {actualMeditationStarted} from "../../src/meditation-session/actual-meditation/actual-meditation.events.js";
+import {timerTicked} from "../../src/timer/timer.events.js";
+import {INITIAL_STATE} from "../../src/app/app.state.js";
+
+Given(/^I have started a meditation session of (\w+) minutes$/, function (durationInMinutes) {
+    dispatch(appOpened());
+    dispatch(meditationDurationSet(durationInMinutes));
+    dispatch(meditationSessionStarted(BEGINNING_OF_TIME));
+});
+
+Given(/^The actual meditation period has started$/, function () {
+    dispatch(meditationSessionStarted(BEGINNING_OF_TIME));
+    dispatch(actualMeditationStarted(BEGINNING_OF_TIME));
+});
+
+When(/^I start a meditation session$/, function () {
+    dispatch(meditationSessionStarted(BEGINNING_OF_TIME));
+});
 
 When(/^I open the app$/, function () {
-    dispatch('APP_OPENED');
+    dispatch(appOpened());
 });
+
+When(/^a second has elapsed$/, function () {
+    dispatch(timerTicked(BEGINNING_OF_TIME+1));
+});
+
+When(/^I change the duration of the meditation to (\w+) minutes$/, function (durationInMinutes) {
+    dispatch(meditationDurationSet(durationInMinutes));
+});
+
 Then(/^the timer should display (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
-    expect(getDisplayedTime(state)).to.equal(expectedDisplayedTime);
+    expect(appSelectors.getFormattedTimeToDisplay(state)).to.equal(expectedDisplayedTime);
 });
+
 Then(/^I can start a meditation session$/, function () {
-    expect(canMeditationSessionBeStarted(state)).to.equal(true);
+    expect(appSelectors.canMeditationSessionBeStarted(state)).to.equal(true);
 });
+
 Then(/^I can change the duration of the meditation$/, function () {
-    expect(canDurationBeChanged(state)).to.equal(true);
+    expect(appSelectors.canDurationBeChanged(state)).to.equal(true);
 });
+
 Then(/^I can change the volume of the sound of the gong$/, function () {
-    expect(canGongVolumeBeChanged(state)).to.equal(true);
+    expect(appSelectors.canGongVolumeBeChanged(state)).to.equal(true);
 });
-Given(/^the timer displays (\d{2}:\d{2})$/, function (displayedTime) {
-
-});
-When(/^I start a meditation session$/, function () {
-
-});
-Then(/^the preparation period should start$/, function () {
-
+Then(/^the preparation should start$/, function () {
+    expect(appSelectors.isPreparationRunning(state)).to.equal(true);
 });
 Then(/^the timer should not be running yet$/, function () {
 
@@ -38,13 +65,16 @@ Then(/^the timer should not be running yet$/, function () {
 Then(/^I can stop the meditation session$/, function () {
 
 });
+Then(/^I cannot change the duration of the meditation$/, function () {
+
+});
+Then(/^I cannot start another meditation session$/, function () {
+
+});
 Given(/^I have started a meditation session$/, function () {
 
 });
-Given(/^the preparation period is running$/, function () {
-
-});
-When(/^the preparation period ends$/, function () {
+When(/^the preparation ends$/, function () {
 
 });
 Then(/^a gong sound should be played$/, function () {
@@ -56,18 +86,7 @@ Then(/^the meditation timer should start running$/, function () {
 Then(/^I cannot change the meditation duration$/, function () {
 
 });
-Given(/^I have started a meditation session of (\d+) minutes$/, function (durationInMinutes) {
-    dispatch('APP_OPENED');
-    dispatch('MEDITATION_DURATION_SET', {durationInMinutes});
-    dispatch('MEDITATION_SESSION_STARTED', {currentTimestampInSeconds: 0});
-});
-Given(/^The actual meditation period has started$/, function () {
-    dispatch('ACTUAL_MEDITATION_STARTED', {currentTimestampInSeconds: 0});
-});
-When(/^a second has elapsed$/, function () {
-    dispatch('TIMER_TICKED', {currentTimestampInSeconds: 1});
-});
-When(/^the meditation period ends$/, function () {
+When(/^the actual meditation ends$/, function () {
 
 });
 Then(/^the timer should stop running$/, function () {
@@ -91,18 +110,9 @@ When(/^I stop the meditation session$/, function () {
 Then(/^I can continue the meditation session$/, function () {
 
 });
-When(/^I change the duration of the meditation to (\d+) minutes$/, function (durationInMinutes) {
-    dispatch('MEDITATION_DURATION_SET', {durationInMinutes});
-});
 When(/^I change the volume of the sound of the gong to 50%$/, function () {
 
 });
 Then(/^the sound of the gong should be played at 50% of the volume$/, function () {
-
-});
-Then(/^I cannot change the duration of the meditation$/, function () {
-
-});
-Then(/^I cannot start another meditation session$/, function () {
 
 });
