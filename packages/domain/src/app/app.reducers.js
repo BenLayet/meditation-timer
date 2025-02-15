@@ -63,11 +63,6 @@ export const appReducers = (event, state) => {
             state = {...state};
             break;
     }
-    console.debug(`
-    Event: ${event.type}, 
-    payload: ${JSON.stringify(payload)},
-    previous state: ${JSON.stringify(previousState)}
-    new state: ${JSON.stringify(state)}`);
     try {
         validateAppState(state);
     } catch (e) {

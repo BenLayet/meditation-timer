@@ -1,5 +1,5 @@
 import {Given, Then, When} from "@cucumber/cucumber";
-import {dispatch, forceState, state} from "../state_manager/state-manager.js";
+import {dispatch, state} from "../state_manager/test-state-manager.js";
 import {expect} from "chai";
 import {
     appSelectors

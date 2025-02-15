@@ -33,5 +33,6 @@ export const meditationSessionEffects = (dispatch, wakeLockService, gongService,
         eventOccurred: () => wakeLockService.releaseWakeLock()
     },
     ...actualMeditationEffects(gongService),
+    ...timerEffects(dispatch, tickingService),
     ...timerEffects(dispatch, tickingService)
 ];

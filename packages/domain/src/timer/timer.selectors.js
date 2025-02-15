@@ -23,5 +23,6 @@ const getDurationInMinutes = (timerState) => getDurationInSeconds(timerState) / 
 export const timerSelectors = {
     getFormattedTimeToDisplay,
     isTimerRunning,
-    getDurationInMinutes
+    getDurationInMinutes,
+    isTimeUp
 };
