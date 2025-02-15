@@ -9,24 +9,23 @@ import {
     meditationDurationSet,
     meditationSessionStarted
 } from "../../src/meditation-session/meditation-session.events.js";
-import {BEGINNING_OF_TIME} from "../../src/timer/timer.constant.js";
+import {BEGINNING_OF_TIME_IN_MS} from "../../src/timer/timer.constant.js";
 import {actualMeditationStarted} from "../../src/meditation-session/actual-meditation/actual-meditation.events.js";
 import {timerTicked} from "../../src/timer/timer.events.js";
-import {INITIAL_STATE} from "../../src/app/app.state.js";
 
 Given(/^I have started a meditation session of (\w+) minutes$/, function (durationInMinutes) {
     dispatch(appOpened());
     dispatch(meditationDurationSet(durationInMinutes));
-    dispatch(meditationSessionStarted(BEGINNING_OF_TIME));
+    dispatch(meditationSessionStarted(BEGINNING_OF_TIME_IN_MS));
 });
 
 Given(/^The actual meditation period has started$/, function () {
-    dispatch(meditationSessionStarted(BEGINNING_OF_TIME));
-    dispatch(actualMeditationStarted(BEGINNING_OF_TIME));
+    dispatch(meditationSessionStarted(BEGINNING_OF_TIME_IN_MS));
+    dispatch(actualMeditationStarted(BEGINNING_OF_TIME_IN_MS));
 });
 
 When(/^I start a meditation session$/, function () {
-    dispatch(meditationSessionStarted(BEGINNING_OF_TIME));
+    dispatch(meditationSessionStarted(BEGINNING_OF_TIME_IN_MS));
 });
 
 When(/^I open the app$/, function () {
@@ -34,7 +33,7 @@ When(/^I open the app$/, function () {
 });
 
 When(/^a second has elapsed$/, function () {
-    dispatch(timerTicked(BEGINNING_OF_TIME+1));
+    dispatch(timerTicked(BEGINNING_OF_TIME_IN_MS+1000));
 });
 
 When(/^I change the duration of the meditation to (\w+) minutes$/, function (durationInMinutes) {

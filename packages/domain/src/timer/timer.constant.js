@@ -1,1 +1,1 @@
-export const BEGINNING_OF_TIME = 1739541;
+export const BEGINNING_OF_TIME_IN_MS = 1739541000;

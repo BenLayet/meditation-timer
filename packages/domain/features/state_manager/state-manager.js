@@ -15,6 +15,7 @@ const effects = appEffects(
     dispatch,
     mockServices.wakeLockService,
     mockServices.gongService,
+    mockServices.tickingService,
     );
 //DISPATCH
 export function dispatch(event) {

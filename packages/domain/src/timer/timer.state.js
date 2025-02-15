@@ -1,9 +1,9 @@
 import ow from 'ow';
-import {BEGINNING_OF_TIME} from "./timer.constant.js";
+import {BEGINNING_OF_TIME_IN_MS} from "./timer.constant.js";
 
 export const validateTimerState = (state) => {
     ow(state, ow.object.exactShape({
-        startedTimestampInSecond: ow.optional.number.integer.greaterThanOrEqual(BEGINNING_OF_TIME),
+        startedTimestampInMs: ow.optional.number.integer.greaterThanOrEqual(BEGINNING_OF_TIME_IN_MS),
         remainingSeconds: ow.optional.number.integer.greaterThanOrEqual(0),
         durationInSeconds: ow.number.integer.greaterThanOrEqual(0)
     }));

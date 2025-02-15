@@ -1,4 +1,6 @@
 import ow from 'ow';
+import {BEGINNING_OF_TIME_IN_MS} from "../timer/timer.constant.js";
+import {floor} from "lodash-es";
 
 export const MEDITATION_DURATION_SET = 'MEDITATION_DURATION_SET';
 export const MEDITATION_SESSION_STARTED = 'MEDITATION_SESSION_STARTED';
@@ -16,11 +18,11 @@ export const meditationDurationSet = (durationInMinutesString) => {
     };
 };
 
-export const meditationSessionStarted = (currentTimestampInSeconds) => {
-    ow(currentTimestampInSeconds, ow.number.integer.positive);
+export const meditationSessionStarted = (currentTimestampInMs) => {
+    ow(currentTimestampInMs, ow.number.integer.greaterThanOrEqual(BEGINNING_OF_TIME_IN_MS));
     return {
         type: MEDITATION_SESSION_STARTED,
-        payload: {currentTimestampInSeconds},
+        payload: {currentTimestampInMs},
     };
 };
 

@@ -2,7 +2,7 @@ import {floor, flow, isUndefined, padStart} from 'lodash-es';
 
 const getDurationInSeconds = (timerState) => timerState.durationInSeconds;
 const getRemainingSeconds = (timerState) => timerState.remainingSeconds;
-const hasTimerStarted = (timerState) => !isUndefined(timerState.startedTimestampInSecond);
+const hasTimerStarted = (timerState) => !isUndefined(timerState.startedTimestampInMs);
 const getTimeToDisplayInSeconds = (timerState) => hasTimerStarted(timerState) ? getRemainingSeconds(timerState) : getDurationInSeconds(timerState);
 const formatSeconds = (seconds) => {
     const hours = floor(seconds / 3600);

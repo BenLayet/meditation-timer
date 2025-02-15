@@ -33,7 +33,7 @@ const onTimerTicked = (payload, state) => {
         case 'ACTUAL_MEDITATION':
             return {...state, meditationTimer: timerReducers.onTimerTicked(payload, state.meditationTimer)}
         default:
-            throw new Error(`Invalid phase: expected PREPARATION or ACTUAL_MEDITATION, got ${state.phase}`);
+            return state;
     }
 };
 export const appReducers = (event, state) => {
@@ -59,7 +59,15 @@ export const appReducers = (event, state) => {
         case TIMER_TICKED:
             state = onTimerTicked(payload, state);
             break;
+        default:
+            state = {...state};
+            break;
     }
+    console.debug(`
+    Event: ${event.type}, 
+    payload: ${JSON.stringify(payload)},
+    previous state: ${JSON.stringify(previousState)}
+    new state: ${JSON.stringify(state)}`);
     try {
         validateAppState(state);
     } catch (e) {
