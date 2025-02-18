@@ -1,6 +1,7 @@
 {
   "duration": "Durée :",
-  "volume": "Volume du gong :",
+  "volume": "Gong :",
+  "preparation": "Préparation",
   "minutes": "{{minuteCount}} minutes",
   "days_in_a_row": "{{dailyStreak}} jours de suite",
   "start_timer": "Commencer le minuteur",

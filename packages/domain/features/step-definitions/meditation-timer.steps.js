@@ -1,117 +1,115 @@
-import {Given, Then, When} from "@cucumber/cucumber";
-import {dispatch, state} from "../state_manager/test-state-manager.js";
+import {Before, Given, Then, When} from "@cucumber/cucumber";
+import {dispatch, reset, state} from "../state-manager/test-state-manager.js";
 import {expect} from "chai";
+import {appOpened} from "../../src/components/app/app.events.js";
 import {
-    appSelectors
-} from "../../src/app/app.selectors.js";
-import {appOpened} from "../../src/app/app.events.js";
+    meditationSessionStartRequested,
+    meditationSessionStopRequested
+} from "../../src/components/meditation-session/meditation-session.events.js";
 import {
-    meditationDurationSet,
-    meditationSessionStarted
-} from "../../src/meditation-session/meditation-session.events.js";
-import {BEGINNING_OF_TIME_IN_MS} from "../../src/timer/timer.constant.js";
-import {actualMeditationStarted} from "../../src/meditation-session/actual-meditation/actual-meditation.events.js";
-import {timerTicked} from "../../src/timer/timer.events.js";
+    actualMeditationDurationSet,
+    actualMeditationStartRequested,
+    actualMeditationTimerTicked
+} from "../../src/components/actual-meditation/actual-meditation.events.js";
+import {appSelectors} from "../../src/meditation-timer.app.js";
+import {getLastCallArguments, wasCalled} from "../state-manager/mock-services.js";
 
-Given(/^I have started a meditation session of (\w+) minutes$/, function (durationInMinutes) {
-    dispatch(appOpened());
-    dispatch(meditationDurationSet(durationInMinutes));
-    dispatch(meditationSessionStarted(BEGINNING_OF_TIME_IN_MS));
+const BEGINNING_OF_TIME_IN_SECONDS = 1800000;
+
+Before(function () {
+    reset();
 });
-
-Given(/^The actual meditation period has started$/, function () {
-    dispatch(meditationSessionStarted(BEGINNING_OF_TIME_IN_MS));
-    dispatch(actualMeditationStarted(BEGINNING_OF_TIME_IN_MS));
-});
-
-When(/^I start a meditation session$/, function () {
-    dispatch(meditationSessionStarted(BEGINNING_OF_TIME_IN_MS));
-});
-
 When(/^I open the app$/, function () {
     dispatch(appOpened());
 });
 
-When(/^a second has elapsed$/, function () {
-    dispatch(timerTicked(BEGINNING_OF_TIME_IN_MS+1000));
+Given(/^I have set the meditation duration to (\d+) minutes$/, function (durationInMinutes) {
+    dispatch(actualMeditationDurationSet(durationInMinutes));
+});
+Given(/^I have started a meditation session$/, function () {
+    dispatch(meditationSessionStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
 });
 
-When(/^I change the duration of the meditation to (\w+) minutes$/, function (durationInMinutes) {
-    dispatch(meditationDurationSet(durationInMinutes));
+Given(/^The actual meditation has started$/, function () {
+    dispatch(meditationSessionStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
+    dispatch(actualMeditationStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
+});
+
+When(/^the preparation ends$/, function () {
+    const callArguments= getLastCallArguments('timeoutService', 'setTimeout');
+    const callback = callArguments[0];
+    callback(BEGINNING_OF_TIME_IN_SECONDS + appSelectors.preparation.durationInSeconds(state));
+});
+When(/^I start a meditation session$/, function () {
+    dispatch(meditationSessionStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
+});
+
+
+When(/^a second has elapsed$/, function () {
+    dispatch(actualMeditationTimerTicked(BEGINNING_OF_TIME_IN_SECONDS + 1));
+});
+
+When(/^I change the duration of the meditation to (\d+) minutes$/, function (durationInMinutes) {
+    dispatch(actualMeditationDurationSet(durationInMinutes));
+});
+
+When(/^the actual meditation time is up$/, function () {
+    dispatch(actualMeditationTimerTicked(BEGINNING_OF_TIME_IN_SECONDS + 5 * 60));
+});
+
+When(/^I stop the meditation session$/, function () {
+    dispatch(meditationSessionStopRequested());
 });
 
 Then(/^the timer should display (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
-    expect(appSelectors.getFormattedTimeToDisplay(state)).to.equal(expectedDisplayedTime);
+    const actual = appSelectors.actualMeditation.displayedTime(state);
+    expect(actual).to.equal(expectedDisplayedTime);
 });
 
-Then(/^I can start a meditation session$/, function () {
-    expect(appSelectors.canMeditationSessionBeStarted(state)).to.equal(true);
+Then(/^I (can|cannot) start (?:another|a) meditation session$/, function (can) {
+    const expected = can === 'can';
+    const actual = appSelectors.canMeditationSessionBeStarted(state);
+    expect(actual).to.equal(expected);
 });
 
-Then(/^I can change the duration of the meditation$/, function () {
-    expect(appSelectors.canDurationBeChanged(state)).to.equal(true);
-});
-
-Then(/^I can change the volume of the sound of the gong$/, function () {
-    expect(appSelectors.canGongVolumeBeChanged(state)).to.equal(true);
-});
 Then(/^the preparation should start$/, function () {
-    expect(appSelectors.isPreparationRunning(state)).to.equal(true);
+    expect(appSelectors.preparation.isRunning(state)).to.be.true;
 });
-Then(/^the timer should not be running yet$/, function () {
 
+Then(/^the timer (should|should not) be running$/, function (should) {
+    const expected = should === 'should';
+    const actual = appSelectors.actualMeditation.isRunning(state);
+    expect(actual).to.equal(expected);
 });
-Then(/^I can stop the meditation session$/, function () {
 
+Then(/^I (can|cannot) stop the meditation session$/, function (can) {
+    const expected = can === 'can';
+    const actual = appSelectors.canMeditationSessionBeStopped(state);
+    expect(actual).to.equal(expected);
 });
-Then(/^I cannot change the duration of the meditation$/, function () {
 
-});
-Then(/^I cannot start another meditation session$/, function () {
-
-});
-Given(/^I have started a meditation session$/, function () {
-
-});
-When(/^the preparation ends$/, function () {
+Then(/^I (can|cannot) set the duration of the meditation$/, function (can) {
+    const expected = can === 'can';
+    const actual = appSelectors.actualMeditation.canDurationBeSet(state);
+    expect(actual).to.equal(expected);
 
 });
 Then(/^a gong sound should be played$/, function () {
-
+    expect(wasCalled('gongService', 'play')).to.be.true;
 });
-Then(/^the meditation timer should start running$/, function () {
-
-});
-Then(/^I cannot change the meditation duration$/, function () {
-
-});
-When(/^the actual meditation ends$/, function () {
-
-});
-Then(/^the timer should stop running$/, function () {
-
-});
-Then(/^my meditation statistics should appear$/, function () {
-
+Then(/^the meditation timer (should|should not) (?:start|be) running$/, function (should) {
+    const expected = should === 'should';
+    const actual = appSelectors.actualMeditation.isRunning(state);
+    expect(actual).to.equal(expected);
 });
 Then(/^I can go back to the initial state$/, function () {
-
+    const actual = appSelectors.canMeditationSessionBeReset(state);
+    expect(actual).to.be.true;
 });
-Given(/^I have ran several meditation session$/, function () {
-
+Then(/^the timer should stop$/, function () {
+    expect(wasCalled('tickingService', 'stopTicking')).to.be.true;
 });
-Then(/^I should see my meditation statistics$/, function () {
-
-});
-When(/^I stop the meditation session$/, function () {
-
-});
-Then(/^I can continue the meditation session$/, function () {
-
-});
-When(/^I change the volume of the sound of the gong to 50%$/, function () {
-
-});
-Then(/^the sound of the gong should be played at 50% of the volume$/, function () {
-
+Then(/^the sleep mode should be disabled$/, function () {
+    expect(wasCalled('wakeLockService', 'requestWakeLock')).to.be.true;
+    expect(wasCalled('wakeLockService', 'releaseWakeLock')).to.be.false;
 });

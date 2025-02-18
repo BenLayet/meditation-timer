@@ -1,0 +1,16 @@
+.preparation-spinner {
+    height: 240px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+            radial-gradient(25% 25% at 50% 25%,#000 24%,#fff 26% 99%,#0000 101%),
+            radial-gradient(25% 25% at 50% 75%,#fff 24%,#000 26% 99%,#0000 101%),
+            conic-gradient(#000 50%, #fff 0);
+    border: 1px solid;
+    animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
