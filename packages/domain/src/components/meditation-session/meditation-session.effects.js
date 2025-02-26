@@ -3,10 +3,10 @@ import {meditationSessionCompleted, meditationSessionStartRequested} from "./med
 export const meditationSessionEffects = ({wakeLockService}) => [
     {
         onEvent: meditationSessionStartRequested,
-        then: () => wakeLockService.requestWakeLock()
+        then: wakeLockService.requestWakeLock
     },
     {
         onEvent: meditationSessionCompleted,
-        then: () => wakeLockService.releaseWakeLock()
+        then: wakeLockService.releaseWakeLock
     },
 ];

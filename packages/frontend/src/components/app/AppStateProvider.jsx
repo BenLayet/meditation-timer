@@ -5,9 +5,8 @@ import {tickingService} from "../../services/tickingService.js";
 import {StateManager} from "domain/src/lib/state-manager.js";
 import {meditationTimerApp} from "domain/src/meditation-timer.app.js";
 import {logEvent} from "domain/src/lib/logger.js";
-import {timeoutService} from "../../services/timeoutService.js";
 
-const dependencies = {wakeLockService, gongService, tickingService, timeoutService};
+const dependencies = {wakeLockService, gongService, tickingService};
 //STATE MANAGER
 const stateManager = new StateManager(meditationTimerApp, dependencies);
 stateManager.addStateChangedListener(logEvent);

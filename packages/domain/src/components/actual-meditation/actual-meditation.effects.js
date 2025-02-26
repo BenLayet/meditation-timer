@@ -1,35 +1,37 @@
 import {
-    actualMeditationCompleted, actualMeditationResetRequested,
+    actualMeditationCompleted,
+    actualMeditationResetRequested,
     actualMeditationStartRequested,
     actualMeditationStopped,
     actualMeditationTimerTicked
 } from "./actual-meditation.events.js";
 import {actualMeditationSelectors as actualMediationSelectors} from "./actual-meditation.selectors.js";
 
+const startTicking = tickingService => ({dispatch}) => tickingService
+    .startTicking(TIMER_NAME)(currentTimeInSeconds => dispatch(actualMeditationTimerTicked(currentTimeInSeconds)));
+const dispatchCompletedIfTimeIsUp = ({state, dispatch}) =>
+    actualMediationSelectors.isTimeUp(state) && dispatch(actualMeditationCompleted());
+
+const TIMER_NAME = 'actualMeditation';
 export const actualMeditationEffects = ({gongService, tickingService}) => [
     {
         onEvent: actualMeditationStartRequested,
-        then: () => gongService.play(),
-        cleanUp: () => gongService.stop()
+        then: gongService.play,
+        cleanUp: gongService.stop
     },
     {
         onEvent: actualMeditationCompleted,
-        then: () => gongService.play(),
-        cleanUp: () => gongService.stop()
+        then: gongService.play,
+        cleanUp: gongService.stop
     },
     {
         onEvent: actualMeditationStartRequested,
-        then: ({dispatch}) => tickingService
-            .startTicking(currentTimeInSeconds => dispatch(actualMeditationTimerTicked(currentTimeInSeconds))),
-        cleanUp: () => tickingService.stopTicking(),
+        then: startTicking(tickingService),
+        cleanUp: tickingService.stopTicking(TIMER_NAME),
     },
     {
         onEvent: actualMeditationTimerTicked,
-        then: ({state, dispatch}) => {
-            if (actualMediationSelectors.isTimeUp(state)) {
-                dispatch(actualMeditationCompleted());
-            }
-        }
+        then: dispatchCompletedIfTimeIsUp,
     },
     {
         onEvent: actualMeditationCompleted,
@@ -41,6 +43,6 @@ export const actualMeditationEffects = ({gongService, tickingService}) => [
     },
     {
         onEvent: actualMeditationStopped,
-        then: () => tickingService.stopTicking()
+        then: tickingService.stopTicking(TIMER_NAME),
     }
 ];

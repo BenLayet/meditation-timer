@@ -19,5 +19,4 @@ export const mockServices = {
     gongService: createMock('gongService', ['play']),
     wakeLockService: createMock('wakeLockService', ['requestWakeLock', 'releaseWakeLock']),
     tickingService: createMock('tickingService', ['startTicking', 'stopTicking']),
-    timeoutService: createMock('timeoutService', ['setTimeout', 'clearTimeout'])
 }

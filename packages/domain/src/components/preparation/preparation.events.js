@@ -6,7 +6,11 @@ export const preparationStartRequested =
         ow(currentTimeInSeconds, ow.number.integer.positive);
         return {currentTimeInSeconds};
     });
-
+export const preparationTimerTicked=
+    createEventFactory('preparationTimerTicked', (currentTimeInSeconds) => {
+        ow(currentTimeInSeconds, ow.number.integer.positive);
+        return {currentTimeInSeconds};
+    });
 export const preparationCompleted =
     createEventFactory('preparationCompleted', (currentTimeInSeconds) => {
         ow(currentTimeInSeconds, ow.number.integer.positive);

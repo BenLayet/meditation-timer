@@ -1,12 +1,12 @@
 import {currentTimeInSeconds} from "../lib/time.functions.js";
 
 class TickingService {
-    intervalId = null;
-    startTicking(callback) {
-        this.intervalId = setInterval(() => callback(currentTimeInSeconds()), 1000);
-    }
-    stopTicking() {
-        clearInterval(this.intervalId);
+    intervalIds = {};
+    startTicking = (timerName) => (callback) =>
+        this.intervalIds[timerName] = setInterval(() => callback(currentTimeInSeconds()), 1000);
+    stopTicking = (timerName) => () => {
+        clearInterval(this.intervalIds[timerName]);
+        delete this.intervalIds[timerName];
     }
 }
 

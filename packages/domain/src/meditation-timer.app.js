@@ -1,6 +1,7 @@
 import {
     meditationSessionCompleted,
-    meditationSessionStartRequested, meditationSessionStopRequested
+    meditationSessionStartRequested,
+    meditationSessionStopRequested
 } from "./components/meditation-session/meditation-session.events.js";
 import {
     preparationCompleted,
@@ -8,7 +9,8 @@ import {
     preparationStopRequested
 } from "./components/preparation/preparation.events.js";
 import {
-    actualMeditationCompleted, actualMeditationResetRequested,
+    actualMeditationCompleted,
+    actualMeditationResetRequested,
     actualMeditationStartRequested
 } from "./components/actual-meditation/actual-meditation.events.js";
 import {settingsComponent} from "./components/settings/settings.component.js";
@@ -19,7 +21,7 @@ import {createSelectors} from "./lib/component-selector.js";
 
 const initialState = {
     actualMeditation: {
-        durationInMinutes: 5,
+        durationInMinutes: 20,
     },
     preparation: {
         durationInSeconds: 20,

@@ -70,6 +70,7 @@ export class StateManager {
     forwardEvent(event) {
         this.eventForwarders
             .filter(({onEvent}) => onEvent.eventType === event.eventType)
+            .filter(({thenDispatch}) => !!thenDispatch)
             .forEach(({thenDispatch}) => this.dispatch(
                 {
                     eventType: thenDispatch.eventType,
@@ -81,7 +82,11 @@ export class StateManager {
     triggerEffects(event) {
         this.effectWithStateSelectors
             .filter(({effect}) => effect.onEvent.eventType === event.eventType)
-            .forEach(({effect, key}) => effect.then({event, dispatch: this.dispatch, state: this.state[key]}));
+            .forEach(({effect, key}) => effect.then({
+                payload: event.payload,
+                dispatch: this.dispatch,
+                state: this.state[key]
+            }));
     }
 
     cleanUp() {

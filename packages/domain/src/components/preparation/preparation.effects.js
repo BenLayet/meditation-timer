@@ -1,21 +1,34 @@
-import {preparationCompleted, preparationStartRequested} from "./preparation.events.js";
+import {
+    preparationCompleted,
+    preparationStartRequested,
+    preparationStopRequested,
+    preparationTimerTicked
+} from "./preparation.events.js";
 import {preparationSelectors} from "./preparation.selectors.js";
-import {floor} from "lodash-es";
 
-//TODO remove Date.now to be able to test
-const onTimeUp = (dispatch) => (currentTimeInSeconds) => dispatch(preparationCompleted(currentTimeInSeconds));
-const callCompletedLater = (timeoutService) => ({dispatch, state}) =>
-    timeoutService.setTimeout(onTimeUp(dispatch), preparationSelectors.durationInSeconds(state));
+const TIMER_NAME = 'preparation';
+const startTicking = tickingService => ({dispatch}) => tickingService
+    .startTicking(TIMER_NAME)(currentTimeInSeconds => dispatch(preparationTimerTicked(currentTimeInSeconds)));
+const dispatchCompletedIfTimeIsUp = ({state, dispatch, payload}) =>
+    preparationSelectors.isTimeUp(state) && dispatch(preparationCompleted(payload.currentTimeInSeconds));
 
 
-export const preparationEffects = ({timeoutService}) => [
+export const preparationEffects = ({tickingService}) => [
     {
         onEvent: preparationStartRequested,
-        then: callCompletedLater(timeoutService),
-        cleanUp: () => timeoutService.clearTimeout(),
+        then: startTicking(tickingService),
+        cleanUp: tickingService.stopTicking(TIMER_NAME),
+    },
+    {
+        onEvent: preparationTimerTicked,
+        then: dispatchCompletedIfTimeIsUp,
     },
     {
         onEvent: preparationCompleted,
-        then: () => timeoutService.clearTimeout(),
+        then: tickingService.stopTicking(TIMER_NAME),
+    },
+    {
+        onEvent: preparationStopRequested,
+        then: tickingService.stopTicking(TIMER_NAME),
     },
 ];

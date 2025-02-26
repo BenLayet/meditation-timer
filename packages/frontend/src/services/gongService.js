@@ -3,17 +3,17 @@ class GongService {
         this.audio = new Audio(audioFilePath);
     }
 
-    play() {
+    play = () => {
         this.stop();
         this.audio.currentTime = 0;
-        this.audio.play().then( );
-    }
+        this.audio.play().then();
+    };
 
-    stop() {
+    stop = () => {
         this.audio.pause();
-    }
+    };
 
-    setVolume(volume) {
+    setVolume = (volume) => {
         this.audio.volume = volume / 100;
     }
 }
