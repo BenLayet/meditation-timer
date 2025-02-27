@@ -21,7 +21,7 @@ import {createSelectors} from "./lib/component-selector.js";
 
 const initialState = {
     actualMeditation: {
-        durationInMinutes: 20,
+        durationInMinutes: 5,
     },
     preparation: {
         durationInSeconds: 20,

@@ -19,20 +19,20 @@ describe('actualMeditationSelectors', () => {
         expect(result).toBe('19:59');
     });
 
-    test('isTimerRunning should return true if timer has started and time is not up', () => {
-        const result = actualMeditationSelectors.isTimerRunning(timerState);
+    test('isRunning should return true if timer has started and time is not up', () => {
+        const result = actualMeditationSelectors.isRunning(timerState);
         expect(result).toBe(true);
     });
 
-    test('isTimerRunning should return false if timer has not started', () => {
+    test('isRunning should return false if timer has not started', () => {
         const state = {...timerState, startedTimeInSeconds: undefined};
-        const result = actualMeditationSelectors.isTimerRunning(state);
+        const result = actualMeditationSelectors.isRunning(state);
         expect(result).toBe(false);
     });
 
-    test('isTimerRunning should return false if time is up', () => {
+    test('isRunning should return false if time is up', () => {
         const state = {...timerState, remainingSeconds: 0};
-        const result = actualMeditationSelectors.isTimerRunning(state);
+        const result = actualMeditationSelectors.isRunning(state);
         expect(result).toBe(false);
     });
 

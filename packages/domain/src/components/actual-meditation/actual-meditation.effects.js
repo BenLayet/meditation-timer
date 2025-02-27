@@ -8,7 +8,7 @@ import {
 import {actualMeditationSelectors as actualMediationSelectors} from "./actual-meditation.selectors.js";
 
 const startTicking = tickingService => ({dispatch}) => tickingService
-    .startTicking(TIMER_NAME)(currentTimeInSeconds => dispatch(actualMeditationTimerTicked(currentTimeInSeconds)));
+    .startTicking(TIMER_NAME, currentTimeInSeconds => dispatch(actualMeditationTimerTicked(currentTimeInSeconds)));
 const dispatchCompletedIfTimeIsUp = ({state, dispatch}) =>
     actualMediationSelectors.isTimeUp(state) && dispatch(actualMeditationCompleted());
 

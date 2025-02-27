@@ -7,16 +7,36 @@ export const getLastCallArguments = (service, method) => mockServiceCalls
     .findLast(call => call.service === service && call.method === method)
     ?.args;
 
-function createMock(service, methods) {
-    return methods.reduce((mock, method) => {
-        mock[method] = (...args) => mockServiceCalls.push({service, method, args});
-        return mock;
-    }, {});
+function mock(service, method) {
+    return (...args) => {
+        const call = {service, method, args};
+        console.log(`MOCK CALLED ${service}.${method}`);
+        //console.debug(args);
+        mockServiceCalls.push(call);
+    };
+
 }
 
+const gongService = {play: mock('gongService', 'play'), stop: mock('gongService', 'stop')};
+const wakeLockService = {
+    requestWakeLock: mock('wakeLockService', 'requestWakeLock'),
+    releaseWakeLock: mock('wakeLockService', 'releaseWakeLock')
+};
+
+const doStartTicking = mock('tickingService', 'startTicking');
+const doStopTicking = mock('tickingService', 'stopTicking');
+
+const tickingService = {
+    tickCallBacks:{},
+    startTicking: (name, callback) => {
+        doStartTicking(name, callback);
+        tickingService.tickCallBacks[name] = callback;
+    } ,
+    stopTicking: () => doStopTicking
+};
 
 export const mockServices = {
-    gongService: createMock('gongService', ['play']),
-    wakeLockService: createMock('wakeLockService', ['requestWakeLock', 'releaseWakeLock']),
-    tickingService: createMock('tickingService', ['startTicking', 'stopTicking']),
+    gongService,
+    wakeLockService,
+    tickingService,
 }

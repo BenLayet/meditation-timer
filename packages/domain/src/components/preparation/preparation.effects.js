@@ -8,7 +8,7 @@ import {preparationSelectors} from "./preparation.selectors.js";
 
 const TIMER_NAME = 'preparation';
 const startTicking = tickingService => ({dispatch}) => tickingService
-    .startTicking(TIMER_NAME)(currentTimeInSeconds => dispatch(preparationTimerTicked(currentTimeInSeconds)));
+    .startTicking(TIMER_NAME, currentTimeInSeconds => dispatch(preparationTimerTicked(currentTimeInSeconds)));
 const dispatchCompletedIfTimeIsUp = ({state, dispatch, payload}) =>
     preparationSelectors.isTimeUp(state) && dispatch(preparationCompleted(payload.currentTimeInSeconds));
 

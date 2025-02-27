@@ -1,7 +1,6 @@
 import {Before, Given, Then, When} from "@cucumber/cucumber";
 import {dispatch, reset, state} from "../state-manager/test-state-manager.js";
 import {expect} from "chai";
-import {appOpened} from "../../src/components/app/app.events.js";
 import {
     meditationSessionStartRequested,
     meditationSessionStopRequested
@@ -12,7 +11,7 @@ import {
     actualMeditationTimerTicked
 } from "../../src/components/actual-meditation/actual-meditation.events.js";
 import {appSelectors} from "../../src/meditation-timer.app.js";
-import {getLastCallArguments, wasCalled} from "../state-manager/mock-services.js";
+import {mockServices, wasCalled} from "../state-manager/mock-services.js";
 
 const BEGINNING_OF_TIME_IN_SECONDS = 1800000;
 
@@ -20,7 +19,6 @@ Before(function () {
     reset();
 });
 When(/^I open the app$/, function () {
-    dispatch(appOpened());
 });
 
 Given(/^I have set the meditation duration to (\d+) minutes$/, function (durationInMinutes) {
@@ -36,9 +34,8 @@ Given(/^The actual meditation has started$/, function () {
 });
 
 When(/^the preparation ends$/, function () {
-    const callArguments= getLastCallArguments('timeoutService', 'setTimeout');
-    const callback = callArguments[0];
-    callback(BEGINNING_OF_TIME_IN_SECONDS + appSelectors.preparation.durationInSeconds(state));
+    const tickCallback = mockServices.tickingService.tickCallBacks['preparation'];
+    tickCallback(BEGINNING_OF_TIME_IN_SECONDS + appSelectors.preparation.durationInSeconds(state));
 });
 When(/^I start a meditation session$/, function () {
     dispatch(meditationSessionStartRequested(BEGINNING_OF_TIME_IN_SECONDS));

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "test": "unit-test && bdd-test",
+    "test": "pnpm unit-test && pnpm bdd-test",
     "unit-test": "vitest run",
     "unit-test:watch": "vitest",
     "bdd-test": "cucumber-js --fail-fast",
