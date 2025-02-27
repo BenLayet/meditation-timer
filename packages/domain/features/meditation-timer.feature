@@ -42,12 +42,35 @@ Feature: Meditation timer
     And my meditation statistics should appear
     And I can go back to the initial state
 
-  Scenario: Stopping a meditation session
+  Scenario: Resetting a meditation session
     Given I have started a meditation session
-    When I stop the meditation session
+    When I reset the meditation session
     Then the timer should not be running
     And I can start another meditation session
 
-  Scenario: Changing the duration of the meditation
-    When I change the duration of the meditation to 10 minutes
-    Then the timer should display 10:00
+  Scenario: Requesting more time for the meditation
+    Given I have started a meditation session
+    And there are 2 minutes left in the meditation
+    When I request more time for the meditation
+    Then the timer should display 07:00
+
+  Scenario: Requesting less time for the meditation
+    Given I have started a meditation session
+    And there are 2 minutes left in the meditation
+    When I request less time for the meditation
+    Then the timer should display 00:00
+    And a gong sound should be played
+
+
+  Scenario: Requesting more time for the preparation
+    Given I have started a meditation session
+    And there are 10 seconds left in the preparation
+    When I request more time for the preparation
+    Then the preparation timer should display 00:30
+
+  Scenario: Requesting less time for the preparation
+    Given I have started a meditation session
+    And there are 10 seconds left in the preparation
+    When I request less time for the preparation
+    Then the preparation timer should display 00:00
+    And the meditation timer should start running

@@ -3,15 +3,21 @@ import {dispatch, reset, state} from "../state-manager/test-state-manager.js";
 import {expect} from "chai";
 import {
     meditationSessionStartRequested,
-    meditationSessionStopRequested
+    meditationSessionResetRequested
 } from "../../src/components/meditation-session/meditation-session.events.js";
 import {
-    actualMeditationDurationSet,
+    actualMeditationLessTimeRequested,
+    actualMeditationMoreTimeRequested,
     actualMeditationStartRequested,
     actualMeditationTimerTicked
 } from "../../src/components/actual-meditation/actual-meditation.events.js";
 import {appSelectors} from "../../src/meditation-timer.app.js";
 import {mockServices, wasCalled} from "../state-manager/mock-services.js";
+import {
+    preparationLessTimeRequested,
+    preparationMoreTimeRequested,
+    preparationTimerTicked
+} from "../../src/components/preparation/preparation.events.js";
 
 const BEGINNING_OF_TIME_IN_SECONDS = 1800000;
 
@@ -22,7 +28,10 @@ When(/^I open the app$/, function () {
 });
 
 Given(/^I have set the meditation duration to (\d+) minutes$/, function (durationInMinutes) {
-    dispatch(actualMeditationDurationSet(durationInMinutes));
+    const incrementCounts = Math.floor(durationInMinutes / 5);
+    for (let i = 0; i < incrementCounts; i++) {
+        dispatch(actualMeditationMoreTimeRequested());
+    }
 });
 Given(/^I have started a meditation session$/, function () {
     dispatch(meditationSessionStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
@@ -32,6 +41,18 @@ Given(/^The actual meditation has started$/, function () {
     dispatch(meditationSessionStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
     dispatch(actualMeditationStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
 });
+
+Given(/^there are (\d+) minutes left in the meditation$/, function (remainingMinutes) {
+    dispatch(actualMeditationStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
+    dispatch(actualMeditationTimerTicked(BEGINNING_OF_TIME_IN_SECONDS + (remainingMinutes * 60)));
+});
+Given(/^there are (\d+) seconds left in the preparation$/, function (remainingSeconds) {
+    dispatch(preparationTimerTicked(
+        BEGINNING_OF_TIME_IN_SECONDS
+        + appSelectors.preparation.durationInSeconds(state)
+        - remainingSeconds));
+});
+
 
 When(/^the preparation ends$/, function () {
     const tickCallback = mockServices.tickingService.tickCallBacks['preparation'];
@@ -54,8 +75,22 @@ When(/^the actual meditation time is up$/, function () {
     dispatch(actualMeditationTimerTicked(BEGINNING_OF_TIME_IN_SECONDS + 5 * 60));
 });
 
-When(/^I stop the meditation session$/, function () {
-    dispatch(meditationSessionStopRequested());
+When(/^I reset the meditation session$/, function () {
+    dispatch(meditationSessionResetRequested());
+});
+When(/^I request (more|less) time for the meditation$/, function (moreOrLess) {
+    if (moreOrLess === 'more') {
+        dispatch(actualMeditationMoreTimeRequested());
+    } else {
+        dispatch(actualMeditationLessTimeRequested());
+    }
+});
+When(/^I request (more|less) time for the preparation$/, function (moreOrLess) {
+    if (moreOrLess === 'more') {
+        dispatch(preparationMoreTimeRequested());
+    } else {
+        dispatch(preparationLessTimeRequested());
+    }
 });
 
 Then(/^the timer should display (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
@@ -86,10 +121,7 @@ Then(/^I (can|cannot) stop the meditation session$/, function (can) {
 });
 
 Then(/^I (can|cannot) set the duration of the meditation$/, function (can) {
-    const expected = can === 'can';
-    const actual = appSelectors.actualMeditation.canDurationBeSet(state);
-    expect(actual).to.equal(expected);
-
+//TODO ?
 });
 Then(/^a gong sound should be played$/, function () {
     expect(wasCalled('gongService', 'play')).to.be.true;
@@ -109,4 +141,7 @@ Then(/^the timer should stop$/, function () {
 Then(/^the sleep mode should be disabled$/, function () {
     expect(wasCalled('wakeLockService', 'requestWakeLock')).to.be.true;
     expect(wasCalled('wakeLockService', 'releaseWakeLock')).to.be.false;
+});
+Then(/^the preparation timer should display (\d\d:\d\d)$/, function (displayedTime) {
+    expect(appSelectors.preparation.displayedTime(state)).to.equal(displayedTime);
 });

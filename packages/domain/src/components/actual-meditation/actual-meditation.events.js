@@ -17,9 +17,6 @@ export const actualMeditationTimerTicked =
         return {currentTimeInSeconds};
     });
 
-export const actualMeditationDurationSet =
-    createEventFactory('actualMeditationDurationSet', (durationInMinutes) => {
-        ow(durationInMinutes, ow.number.integer.positive);
-        return {durationInMinutes};
-    });
+export const actualMeditationMoreTimeRequested = createEventFactory('actualMeditationMoreTimeRequested');
+export const actualMeditationLessTimeRequested = createEventFactory('actualMeditationLessTimeRequested');
 

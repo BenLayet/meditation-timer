@@ -12,4 +12,4 @@ export const meditationSessionCompleted =
         ow(currentTimeInSeconds, ow.number.integer.positive);
         return {currentTimeInSeconds};
     });
-export const meditationSessionStopRequested = createEventFactory('meditationSessionStopRequested');
+export const meditationSessionResetRequested = createEventFactory('meditationSessionResetRequested');

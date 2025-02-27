@@ -1,9 +1,9 @@
 import {floor, flow, isUndefined, padStart} from 'lodash-es';
 
-const getDurationInSeconds = (timerState) => timerState.durationInMinutes * 60;
-const getRemainingSeconds = (timerState) => timerState.remainingSeconds;
-const hasStarted = (timerState) => !isUndefined(timerState.startedTimeInSeconds);
-const displayedTimeInSeconds = (timerState) => hasStarted(timerState) ? getRemainingSeconds(timerState) : getDurationInSeconds(timerState);
+const getDurationInSeconds = (state) => state.durationInMinutes * 60;
+const getRemainingSeconds = (state) => state.remainingSeconds;
+const hasStarted = (state) => !isUndefined(state.startedTimeInSeconds);
+const displayedTimeInSeconds = (state) => hasStarted(state) ? getRemainingSeconds(state) : getDurationInSeconds(state);
 const formatSeconds = (seconds) => {
     const hours = floor(seconds / 3600);
     const hoursStr = padStart(String(hours), 2, '0');
@@ -13,11 +13,10 @@ const formatSeconds = (seconds) => {
 };
 
 const displayedTime = flow(displayedTimeInSeconds, formatSeconds);
-const isTimeUp = (timerState) => getRemainingSeconds(timerState) === 0;
-const isRunning = (timerState) => hasStarted(timerState) && !isTimeUp(timerState);
-const getDurationInMinutes = (timerState) => getDurationInSeconds(timerState) / 60;
-const canDurationBeSet = (timerState) => !hasStarted(timerState);
-const hasCompleted = (timerState) => hasStarted(timerState) && isTimeUp(timerState);
+const isTimeUp = (state) => getRemainingSeconds(state) === 0;
+const isRunning = (state) => hasStarted(state) && !isTimeUp(state);
+const getDurationInMinutes = (state) => getDurationInSeconds(state) / 60;
+const hasCompleted = (state) => hasStarted(state) && isTimeUp(state);
 
 export const actualMeditationSelectors = {
     hasStarted,
@@ -26,5 +25,4 @@ export const actualMeditationSelectors = {
     isRunning,
     getDurationInMinutes,
     isTimeUp,
-    canDurationBeSet
 };

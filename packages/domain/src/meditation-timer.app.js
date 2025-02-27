@@ -1,7 +1,7 @@
 import {
     meditationSessionCompleted,
-    meditationSessionStartRequested,
-    meditationSessionStopRequested
+    meditationSessionResetRequested,
+    meditationSessionStartRequested
 } from "./components/meditation-session/meditation-session.events.js";
 import {
     preparationCompleted,
@@ -18,22 +18,17 @@ import {meditationSessionComponent} from "./components/meditation-session/medita
 import {preparationComponent} from "./components/preparation/preparation.component.js";
 import {actualMeditationComponent} from "./components/actual-meditation/actual-meditation.component.js";
 import {createSelectors} from "./lib/component-selector.js";
+import {ACTUAL_MEDITATION_INITIAL_STATE} from "./components/actual-meditation/actual-meditation.reducers.js";
+import {PREPARATION_INITIAL_STATE} from "./components/preparation/preparation.reducers.js";
+import {SETTINGS_INITIAL_STATE} from "./components/settings/settings.reducers.js";
 
-const initialState = {
-    actualMeditation: {
-        durationInMinutes: 5,
-    },
-    preparation: {
-        durationInSeconds: 20,
-    },
-    settings: {
-        gongVolume: 100,
-        language: "en",
-    },
-};
-//TODO tree of components and tree of states ?
+//TODO tree of componeil ilnts and tree of states ?
 export const meditationTimerApp = {
-    initialState,
+    initialState: {
+        actualMeditation: ACTUAL_MEDITATION_INITIAL_STATE,
+        preparation: PREPARATION_INITIAL_STATE,
+        settings: SETTINGS_INITIAL_STATE,
+    },
     components: {
         settings: settingsComponent,
         meditationSession: meditationSessionComponent,
@@ -46,11 +41,11 @@ export const meditationTimerApp = {
             thenDispatch: preparationStartRequested
         },
         {
-            onEvent: meditationSessionStopRequested,
+            onEvent: meditationSessionResetRequested,
             thenDispatch: preparationStopRequested
         },
         {
-            onEvent: meditationSessionStopRequested,
+            onEvent: meditationSessionResetRequested,
             thenDispatch: actualMeditationResetRequested
         },
         {
@@ -66,11 +61,13 @@ export const meditationTimerApp = {
 //TODO chain selectors like in reselect
 const componentSelectors = createSelectors(meditationTimerApp.components);
 const canMeditationSessionBeStarted = (state) => !componentSelectors.actualMeditation.hasStarted(state) && !componentSelectors.preparation.isRunning(state);
-const canMeditationSessionBeStopped = (state) => componentSelectors.actualMeditation.isRunning(state) || componentSelectors.preparation.isRunning(state);
-const canMeditationSessionBeReset = (state) => componentSelectors.actualMeditation.hasCompleted(state);
+const canMeditationSessionBeReset = (state) => !canMeditationSessionBeStarted(state);
+const canDurationBeChanged = canMeditationSessionBeStarted;
+const canSettingsBeOpened = canMeditationSessionBeStarted;
 export const appSelectors = {
     ...componentSelectors,
     canMeditationSessionBeStarted,
     canMeditationSessionBeReset,
-    canMeditationSessionBeStopped,
+    canDurationBeChanged,
+    canSettingsBeOpened,
 };

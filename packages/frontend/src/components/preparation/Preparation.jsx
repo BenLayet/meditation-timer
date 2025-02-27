@@ -3,23 +3,32 @@ import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {appSelectors} from "domain/src/meditation-timer.app.js";
 import Timer from "../timer/Timer.jsx";
+import {
+    preparationLessTimeRequested,
+    preparationMoreTimeRequested
+} from "domain/src/components/preparation/preparation.events.js";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 
 function Preparation() {
     const {t} = useTranslation();
     const {state, dispatch} = useContext(AppStateContext);
     //actions
-    const addTimeClicked = () => dispatch({eventType: 'ADD_TIME'});
-    const removeTimeClicked = () => dispatch({eventType: 'REMOVE_TIME'});
+    const addTimeClicked = () => dispatch(preparationMoreTimeRequested());
+    const removeTimeClicked = () => dispatch(preparationLessTimeRequested());
     //selectors
-    const preparationIsRunning = appSelectors.preparation.isRunning(state);
     const preparationRemainingTime = appSelectors.preparation.displayedTime(state);
     return (
-        <div className={'subtle fadeIn ' + (preparationIsRunning ? 'visible' : 'hidden')}>
+        <div className="subtle">
             <p>{t("preparation")}</p>
             <Timer
-                displayedTime={preparationRemainingTime}
-                addTimeClicked={addTimeClicked}
-                removeTimeClicked={removeTimeClicked}/>
+                displayedTime={preparationRemainingTime}/>
+            <div className="timer-controls">
+                <button onClick={removeTimeClicked} className="timer-control">
+                    <FontAwesomeIcon icon={faMinus}/></button>
+                <button onClick={addTimeClicked} className="timer-control">
+                    <FontAwesomeIcon icon={faPlus}/></button>
+            </div>
         </div>
     );
 }

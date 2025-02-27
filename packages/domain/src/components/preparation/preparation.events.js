@@ -18,3 +18,7 @@ export const preparationCompleted =
     });
 
 export const preparationStopRequested = createEventFactory('preparationStopRequested');
+
+export const preparationMoreTimeRequested = createEventFactory('preparationMoreTimeRequested');
+export const preparationLessTimeRequested = createEventFactory('preparationLessTimeRequested');
+
