@@ -5,15 +5,24 @@ import MeditationSessionPage from "../meditation-session-page/MeditationSessionP
 import {AppStateContext, AppStateProvider} from "./AppStateProvider.jsx";
 import {appSelectors} from "domain/src/meditation-timer.app.js";
 import {useContext} from "react";
-
+import GongControl from "../gong-control/GongControl.jsx";
 
 const AppHeader = () => {
     const {state} = useContext(AppStateContext);
     //selectors
     const canSettingsBeOpened = appSelectors.canSettingsBeOpened(state);
     return (
-        <div className={"app-header fadeIn " + (canSettingsBeOpened ? 'visible' : 'hidden')}>
-            <Settings/>
+        <div className="app-header">
+            <span className={" fadeIn " + (canSettingsBeOpened ? 'visible' : 'hidden')}>
+                <Settings/>
+            </span>
+        </div>
+    );
+}
+const AppFooter = () => {
+    return (
+        <div className="app-footer">
+            <GongControl/>
         </div>
     );
 }
@@ -24,6 +33,7 @@ const App = () => {
         <AppStateProvider>
             <AppHeader/>
             <AppBody/>
+            <AppFooter/>
         </AppStateProvider>
     );
 }

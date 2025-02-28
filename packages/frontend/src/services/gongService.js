@@ -14,7 +14,8 @@ class GongService {
     };
 
     setVolume = (volume) => {
-        this.audio.volume = volume / 100;
+        console.log('Setting volume to', volume);
+        this.audio.volume = volume;
     }
 }
 

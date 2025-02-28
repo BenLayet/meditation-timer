@@ -1,3 +1,3 @@
-const getGongVolume = (settingsState) => settingsState.gongVolume;
+const isGongOff = state => state.gongOff;
 
-export const settingsSelectors = {getGongVolume};
+export const settingsSelectors = {isGongOff};

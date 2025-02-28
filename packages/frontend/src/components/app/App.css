@@ -16,7 +16,7 @@
     align-items: center;
 }
 
-.settings-bar {
-    display: block;
-    text-align: end;
+.app-header {
+    display: flex;
+    justify-content: flex-end;
 }

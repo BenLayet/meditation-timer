@@ -1,16 +1,14 @@
-import {gongVolumeSet} from "./settings.events.js";
+import {gongToggled} from "./settings.events.js";
 
 export const SETTINGS_INITIAL_STATE = {
-    gongVolume: 100,
+    gongOff: false,
     language: "en",
 };
 
-const onGongVolumeSet = ({gongVolume}, settingsState) => ({...settingsState, gongVolume});
-export const settingsReducers = (event, state) => {
-    switch (event.eventType) {
-        case gongVolumeSet.eventType:
-            return onGongVolumeSet(event, state);
-        default:
-            return state;
-    }
-}
+const onGongToggled = (payload, state) => ({...state, gongOff: !state.gongOff});
+
+const handlers = {
+    [gongToggled.eventType]: onGongToggled,
+};
+const keepState = (event, state) => state;
+export const settingsReducers = (event, state) => (handlers[event.eventType] || keepState)(event.payload, state);
