@@ -11,3 +11,17 @@
     align-items: center;
     font-size: 2em;
 }
+.timer-controls {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     font-size: 0.5em;
+ }
+.timer-control {
+    min-width: 1.5em;
+    border-radius: 3em;
+    background-color: #ffffff18;
+    border: none;
+    cursor: pointer;
+    margin-top: 0
+}

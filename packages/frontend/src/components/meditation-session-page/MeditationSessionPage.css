@@ -1,13 +1,46 @@
-.timer-interaction-zone{
+.timer-interaction-zone {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 1em;
+    width: 100%;
+    flex: 1;
+    margin-bottom: 1em;
+}
+
+.stack-layout {
+    position: relative;
+}
+
+.stack-layout > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 4em;
+    justify-content: center;
+}
+.justify-end{
+    justify-content: flex-end;
 }
 
-.stack-layout{
-    position: relative;
-}
-.stack-layout>*{
+.suzuki::before {
+    content: "";
     position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: url('/suzuki-roshi.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.6;
+    border: var(--border-color) 1px solid;
+    border-radius: 0.2em;
+    z-index: -1;
 }

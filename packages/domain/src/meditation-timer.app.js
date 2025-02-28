@@ -21,6 +21,7 @@ import {createSelectors} from "./lib/component-selector.js";
 import {ACTUAL_MEDITATION_INITIAL_STATE} from "./components/actual-meditation/actual-meditation.reducers.js";
 import {PREPARATION_INITIAL_STATE} from "./components/preparation/preparation.reducers.js";
 import {SETTINGS_INITIAL_STATE} from "./components/settings/settings.reducers.js";
+import {negate} from "./lib/functions.js";
 
 //TODO tree of componeil ilnts and tree of states ?
 export const meditationTimerApp = {
@@ -64,10 +65,12 @@ const canMeditationSessionBeStarted = (state) => !componentSelectors.actualMedit
 const canMeditationSessionBeReset = (state) => !canMeditationSessionBeStarted(state);
 const canDurationBeChanged = canMeditationSessionBeStarted;
 const canSettingsBeOpened = canMeditationSessionBeStarted;
+const actualMeditationTimerIsVisible = negate(componentSelectors.preparation.isRunning);
 export const appSelectors = {
     ...componentSelectors,
     canMeditationSessionBeStarted,
     canMeditationSessionBeReset,
     canDurationBeChanged,
     canSettingsBeOpened,
+    actualMeditationTimerIsVisible,
 };

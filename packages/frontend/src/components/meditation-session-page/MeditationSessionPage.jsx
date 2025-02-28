@@ -25,16 +25,23 @@ function MeditationSessionPage() {
     const meditationCanBeReset = appSelectors.canMeditationSessionBeReset(state);
     const meditationRemainingTime = appSelectors.actualMeditation.displayedTime(state);
     const preparationIsRunning = appSelectors.preparation.isRunning(state);
+    const actualMeditationIsRunning = appSelectors.actualMeditation.isRunning(state);
+    const actualMeditationTimerIsVisible = appSelectors.actualMeditationTimerIsVisible(state);
     return <>
-        <Timer displayedTime={meditationRemainingTime}/>
         <div className="stack-layout timer-interaction-zone">
-            <div className={'fadeIn ' + (canDurationBeChanged ? 'visible' : 'hidden')}>
-                <NextMeditationControls/>
-            </div>
             <div className={'fadeIn ' + (preparationIsRunning ? 'visible' : 'hidden')}>
                 <Preparation/>
             </div>
+            <div className={'suzuki fadeIn ' + (actualMeditationIsRunning ? 'visible dignifiedFadeIn' : 'hidden')}>
+            </div>
         </div>
+        <div className={'fadeIn ' + (actualMeditationTimerIsVisible ? 'visible' : 'hidden')}>
+            <Timer displayedTime={meditationRemainingTime}/>
+        </div>
+        <div className={'fadeIn ' + (canDurationBeChanged ? 'visible' : 'hidden')}>
+            <NextMeditationControls/>
+        </div>
+
         {mediationCanBeStarted && <button className="mainAction" onClick={playClicked}>
             <FontAwesomeIcon icon={faPlay}/>
         </button>}
