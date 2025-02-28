@@ -20,13 +20,15 @@ export function meditationsRouter(meditationRepository) {
     });
 
     // Get all meditations from device
-    router.get('/daily-streak', async (req, res) => {
-        console.log('Get daily-streak meditation');
+    router.get('/statistics', async (req, res) => {
+        console.log('Get meditation statistics');
         try {
             const deviceUuid = req.cookies['device_uuid'];
             const dailyStreak = await meditationRepository.getDailyStreak({deviceUuid});
-            res.status(200).json({dailyStreak});
-            console.log(`Get daily-streak meditation: ${dailyStreak}`);
+            const totalMinutesThisWeek = await meditationRepository.totalMinutesThisWeek({deviceUuid});
+            const statistics = {dailyStreak, totalMinutesThisWeek};
+            res.status(200).json(statistics);
+            console.log(`Got meditation statistics: ${JSON.stringify(statistics)}`);
         } catch (error) {
             res.status(500).json({error: error.message});
             console.error(error);

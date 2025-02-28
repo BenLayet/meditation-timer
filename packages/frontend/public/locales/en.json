@@ -1,11 +1,15 @@
 {
-  "duration": "Duration:",
-  "volume": "Gong volume:",
-  "minutes": "{{minuteCount}} minutes",
-  "days_in_a_row": "{{dailyStreak}} days in a row",
-  "start_timer": "Start timer",
-  "back": "Back",
+  "preparation": "Preparation",
+  "dailyStreak": "{{dailyStreak}} days in a row",
+  "hourCount_zero": "",
+  "hourCount_one": "1 hour",
+  "hourCount_other": "{{count}} hours",
+  "minuteCount_zero": "",
+  "minuteCount_one": "1 minutes",
+  "minuteCount_other": "{{count}} minutes",
+  "thisWeek": " this week",
   "language": "Language",
   "french": "French",
-    "english": "English"
+  "english": "English",
+  "gong": "Gong"
 }

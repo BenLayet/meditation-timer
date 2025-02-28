@@ -1,15 +1,14 @@
 ### Create a new meditation
 < {%
-    request.variables.set("started", new Date().toISOString());
-    request.variables.set("ended", new Date(new Date().getTime() + (20*60*1000)).toISOString());
+    request.variables.set("startedTimeInSeconds", Math.floor(Date.now()/1000));
 %}
 POST http://localhost:8000/api/v1/meditations
 Content-Type: application/json
 Cookie: device_uuid=00000000-0000-0000-0000-000000000001
 
 {
-  "started": "{{started}}",
-  "ended": "{{ended}}"
+  "startedTimeInSeconds": "{{startedTimeInSeconds}}",
+  "durationInMinutes": "20"
 }
 
 > {%

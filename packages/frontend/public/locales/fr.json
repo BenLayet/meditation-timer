@@ -1,11 +1,15 @@
 {
-  "duration": "Durée :",
-  "volume": "Volume du gong :",
-  "minutes": "{{minuteCount}} minutes",
-  "days_in_a_row": "{{dailyStreak}} jours de suite",
-  "start_timer": "Commencer le minuteur",
-  "back": "Retour",
+  "preparation": "Préparation",
+  "dailyStreak": "{{dailyStreak}} jours de suite",
+  "hourCount_zero": "",
+  "hourCount_one": "1 heure",
+  "hourCount_other": "{{count}} heures",
+  "minuteCount_zero": "",
+  "minuteCount_one": "1 minutes",
+  "minuteCount_other": "{{count}} minutes",
+  "thisWeek": " cette semaine",
   "language": "Langue",
   "french": "Français",
-  "english": "Anglais"
+  "english": "Anglais",
+  "gong": "Gong"
 }

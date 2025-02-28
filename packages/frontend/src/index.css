@@ -3,7 +3,7 @@
   --text-color: #e0e0e0;
   --primary-color: #d4af37;
   --secondary-color: #1f1f1f;
-  --border-color: #000;
+  --border-color: #b8860b;
   --hover-color: #b8860b;
   --focus-color: #d4af37;
   --button-background: #3a3d41;
@@ -88,4 +88,21 @@ a:hover {
 
 .clickable {
   cursor: pointer;
+}
+
+.subtle{
+  opacity: 0.8;
+  font-size: 0.7em;
+}
+.fadeIn{
+  transition: opacity 1s ease-in-out
+}
+
+.dignifiedFadeIn{
+  transition: opacity 6s ease-in-out
+}
+
+.hidden{
+  opacity: 0;
+  pointer-events: none;
 }
