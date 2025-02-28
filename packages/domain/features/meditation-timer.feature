@@ -28,14 +28,14 @@ Feature: Meditation timer
   Scenario: Meditation timer ticks
     Given I have set the meditation duration to 20 minutes
     And I have started a meditation session
-    And The actual meditation has started
+    And the actual meditation has started
     When a second has elapsed
     Then the timer should display 19:59
     And I can stop the meditation session
 
   Scenario: Actual meditation ends
     Given I have started a meditation session
-    And The actual meditation has started
+    And the actual meditation has started
     When the actual meditation time is up
     Then a gong sound should be played
     And the timer should stop

@@ -37,7 +37,7 @@ describe('actualMeditationSelectors', () => {
     });
 
     test('getDurationInMinutes should return duration in minutes', () => {
-        const result = actualMeditationSelectors.getDurationInMinutes(initialState);
+        const result = actualMeditationSelectors.durationInMinutes(initialState);
         expect(result).toBe(5);
     });
 

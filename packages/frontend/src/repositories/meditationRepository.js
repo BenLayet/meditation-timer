@@ -3,12 +3,8 @@ import deviceUuidService from "../services/deviceUuidService.js";
 class MeditationRepository {
 
 
-    async postMeditation(state) {
+    async saveMeditation(meditation) {
         deviceUuidService.initializeCookie();
-        const meditation = {
-            started: state.startedTimestampMs,
-            ended: state.lastTickTimestampMs
-        };
 
         try {
             const response = await fetch('/api/v1/meditations', {

@@ -35,8 +35,14 @@ const tickingService = {
     stopTicking: () => doStopTicking
 };
 
+const meditationRepository = {
+    saveMeditation: mock('meditationRepository', 'saveMeditation'),
+    fetchDailyStreak: mock('meditationRepository', 'fetchDailyStreak')
+}
+
 export const mockServices = {
     gongService,
     wakeLockService,
     tickingService,
+    meditationRepository,
 }

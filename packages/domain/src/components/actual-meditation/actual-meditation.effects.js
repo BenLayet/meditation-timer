@@ -5,15 +5,22 @@ import {
     actualMeditationStopped,
     actualMeditationTimerTicked
 } from "./actual-meditation.events.js";
-import {actualMeditationSelectors as actualMediationSelectors} from "./actual-meditation.selectors.js";
+import {
+    actualMeditationSelectors,
+    actualMeditationSelectors as actualMediationSelectors
+} from "./actual-meditation.selectors.js";
 
 const startTicking = tickingService => ({dispatch}) => tickingService
     .startTicking(TIMER_NAME, currentTimeInSeconds => dispatch(actualMeditationTimerTicked(currentTimeInSeconds)));
 const dispatchCompletedIfTimeIsUp = ({state, dispatch}) =>
     actualMediationSelectors.isTimeUp(state) && dispatch(actualMeditationCompleted());
 
+const saveMeditation = (meditationRepository) =>
+    ({state}) =>
+        meditationRepository.saveMeditation(actualMeditationSelectors.meditationToSave(state));
+
 const TIMER_NAME = 'actualMeditation';
-export const actualMeditationEffects = ({gongService, tickingService}) => [
+export const actualMeditationEffects = ({gongService, tickingService, meditationRepository}) => [
     {
         onEvent: actualMeditationStartRequested,
         then: gongService.play,
@@ -44,5 +51,9 @@ export const actualMeditationEffects = ({gongService, tickingService}) => [
     {
         onEvent: actualMeditationStopped,
         then: tickingService.stopTicking(TIMER_NAME),
-    }
+    },
+    {
+        onEvent: actualMeditationCompleted,
+        then: saveMeditation(meditationRepository),
+    },
 ];

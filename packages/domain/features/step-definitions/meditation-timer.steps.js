@@ -37,7 +37,7 @@ Given(/^I have started a meditation session$/, function () {
     dispatch(meditationSessionStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
 });
 
-Given(/^The actual meditation has started$/, function () {
+Given(/^the actual meditation has started$/, function () {
     dispatch(meditationSessionStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
     dispatch(actualMeditationStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
 });
@@ -72,7 +72,9 @@ When(/^I change the duration of the meditation to (\d+) minutes$/, function (dur
 });
 
 When(/^the actual meditation time is up$/, function () {
-    dispatch(actualMeditationTimerTicked(BEGINNING_OF_TIME_IN_SECONDS + 5 * 60));
+    dispatch(actualMeditationTimerTicked(
+        BEGINNING_OF_TIME_IN_SECONDS
+        + appSelectors.actualMeditation.durationInSeconds(state)));
 });
 
 When(/^I reset the meditation session$/, function () {

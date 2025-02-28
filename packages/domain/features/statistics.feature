@@ -4,6 +4,13 @@ Feature: Meditation statistics
   so that I get motivated to meditate regularly
 
   Scenario: Display meditation statistics
-  Given I have ran several meditation session
-  When I open the app
-  Then I should see my meditation statistics
+    Given I have ran several meditation session
+    When I open the app
+    Then I should see my meditation statistics
+
+
+  Scenario: Save meditation session
+    Given I have started a meditation session
+    And the actual meditation has started
+    When the actual meditation time is up
+    Then the meditation session should be saved
