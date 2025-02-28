@@ -3,14 +3,10 @@ Feature: Meditation statistics
   I want to keep track of my meditation time
   so that I get motivated to meditate regularly
 
-  Scenario: Display meditation statistics
-    Given I have ran several meditation session
-    When I open the app
-    Then I should see my meditation statistics
-
-
   Scenario: Save meditation session
-    Given I have started a meditation session
+    Given I had a daily streak of 5 days until yesterday
+    And I have started a meditation session
     And the actual meditation has started
     When the actual meditation time is up
     Then the meditation session should be saved
+    And my new daily streak should be displayed

@@ -40,6 +40,17 @@ class MeditationRepository {
         }
         return streak;
     }
+
+    async totalMinutesThisWeek(filter) {
+        const {deviceUuid} = filter;
+        const result = await this.datasource`
+            SELECT sum(duration_in_minutes) as total
+            from meditations
+            WHERE device_uuid = ${deviceUuid}
+              and started > now() - interval '7 days';
+        `;
+        return parseInt(result[0].total);
+    }
 }
 
 export default MeditationRepository;

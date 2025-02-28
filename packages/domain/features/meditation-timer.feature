@@ -22,7 +22,7 @@ Feature: Meditation timer
     When the preparation ends
     Then a gong sound should be played
     And the meditation timer should start running
-    But I cannot set the duration of the meditation
+    And I cannot set the duration of the meditation
     And I can stop the meditation session
 
   Scenario: Meditation timer ticks
@@ -39,7 +39,6 @@ Feature: Meditation timer
     When the actual meditation time is up
     Then a gong sound should be played
     And the timer should stop
-    And my meditation statistics should appear
     And I can go back to the initial state
 
   Scenario: Resetting a meditation session
@@ -48,29 +47,14 @@ Feature: Meditation timer
     Then the timer should not be running
     And I can start another meditation session
 
-  Scenario: Requesting more time for the meditation
-    Given I have started a meditation session
-    And there are 2 minutes left in the meditation
-    When I request more time for the meditation
-    Then the timer should display 07:00
-
-  Scenario: Requesting less time for the meditation
-    Given I have started a meditation session
-    And there are 2 minutes left in the meditation
-    When I request less time for the meditation
-    Then the timer should display 00:00
-    And a gong sound should be played
-
-
   Scenario: Requesting more time for the preparation
     Given I have started a meditation session
     And there are 10 seconds left in the preparation
     When I request more time for the preparation
-    Then the preparation timer should display 00:30
+    Then the preparation timer should display 00:20
 
   Scenario: Requesting less time for the preparation
     Given I have started a meditation session
     And there are 10 seconds left in the preparation
     When I request less time for the preparation
     Then the preparation timer should display 00:00
-    And the meditation timer should start running

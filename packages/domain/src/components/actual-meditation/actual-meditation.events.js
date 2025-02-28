@@ -20,3 +20,6 @@ export const actualMeditationTimerTicked =
 export const actualMeditationMoreTimeRequested = createEventFactory('actualMeditationMoreTimeRequested');
 export const actualMeditationLessTimeRequested = createEventFactory('actualMeditationLessTimeRequested');
 
+export const actualMeditationSaveRequested = createEventFactory('actualMeditationSaveRequested');
+export const actualMeditationSaveFailed = createEventFactory('actualMeditationSaveFailed', error => ({error}));
+export const actualMeditationSaveSucceeded = createEventFactory('actualMeditationSaveSucceeded');

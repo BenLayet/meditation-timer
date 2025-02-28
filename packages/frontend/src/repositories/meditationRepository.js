@@ -17,16 +17,17 @@ class MeditationRepository {
             console.log('Meditation posted:', response.status);
         } catch (error) {
             console.error('Error posting meditation:', error);
+            throw error;
         }
     }
-    async fetchDailyStreak() {
+    async fetchStatistics() {
         deviceUuidService.initializeCookie();
         try {
-            const response = await fetch('/api/v1/meditations/daily-streak'); // Replace with your API endpoint
-            const data = await response.json();
-            return data.dailyStreak; // Assuming the endpoint returns { dailyStreak: <number> }
+            const response = await fetch('/api/v1/meditations/statistics');
+            return await response.json();
         } catch (error) {
             console.error('Error fetching daily streak:', error);
+            throw error;
         }
     }
 

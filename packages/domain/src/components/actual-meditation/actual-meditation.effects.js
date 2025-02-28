@@ -1,6 +1,9 @@
 import {
     actualMeditationCompleted,
     actualMeditationResetRequested,
+    actualMeditationSaveFailed,
+    actualMeditationSaveRequested,
+    actualMeditationSaveSucceeded,
     actualMeditationStartRequested,
     actualMeditationStopped,
     actualMeditationTimerTicked
@@ -16,8 +19,15 @@ const dispatchCompletedIfTimeIsUp = ({state, dispatch}) =>
     actualMediationSelectors.isTimeUp(state) && dispatch(actualMeditationCompleted());
 
 const saveMeditation = (meditationRepository) =>
-    ({state}) =>
-        meditationRepository.saveMeditation(actualMeditationSelectors.meditationToSave(state));
+    async ({state, dispatch}) => {
+        try {
+            await meditationRepository.saveMeditation(actualMeditationSelectors.meditationToSave(state));
+            dispatch(actualMeditationSaveSucceeded());
+        } catch (error) {
+            console.error(error);
+            dispatch(actualMeditationSaveFailed(error));
+        }
+    }
 
 const TIMER_NAME = 'actualMeditation';
 export const actualMeditationEffects = ({gongService, tickingService, meditationRepository}) => [
@@ -54,6 +64,10 @@ export const actualMeditationEffects = ({gongService, tickingService, meditation
     },
     {
         onEvent: actualMeditationCompleted,
+        then: ({dispatch}) => dispatch(actualMeditationSaveRequested())
+    },
+    {
+        onEvent: actualMeditationSaveRequested,
         then: saveMeditation(meditationRepository),
     },
 ];

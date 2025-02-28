@@ -11,6 +11,7 @@ import {
 import Preparation from "../preparation/Preparation.jsx";
 import Timer from "../timer/Timer.jsx";
 import NextMeditationControls from "../next-meditation-controls/NextMeditationControls.jsx";
+import {Statistics} from "../statistics/Statistics.jsx";
 
 const currentTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
@@ -27,12 +28,16 @@ function MeditationSessionPage() {
     const preparationIsRunning = appSelectors.preparation.isRunning(state);
     const actualMeditationIsRunning = appSelectors.actualMeditation.isRunning(state);
     const actualMeditationTimerIsVisible = appSelectors.actualMeditationTimerIsVisible(state);
+    const statisticsShouldBeDisplayed = appSelectors.statisticsShouldBeDisplayed(state);
     return <>
         <div className="stack-layout timer-interaction-zone">
             <div className={'fadeIn ' + (preparationIsRunning ? 'visible' : 'hidden')}>
                 <Preparation/>
             </div>
             <div className={'suzuki fadeIn ' + (actualMeditationIsRunning ? 'visible dignifiedFadeIn' : 'hidden')}>
+            </div>
+            <div className={'fadeIn ' + (statisticsShouldBeDisplayed ? 'visible' : 'hidden')}>
+                <Statistics/>
             </div>
         </div>
         <div className={'fadeIn ' + (actualMeditationTimerIsVisible ? 'visible' : 'hidden')}>

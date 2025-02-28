@@ -6,16 +6,13 @@ import {
     actualMeditationStartRequested,
     actualMeditationTimerTicked
 } from "./actual-meditation.events.js";
-import ow from "ow";
 
 export const ACTUAL_MEDITATION_INITIAL_STATE = {
     durationInMinutes: 5,
     timeIncrementInMinutes: 5,
 };
 
-
 const durationInSeconds = state => {
-    ow(state.durationInMinutes, ow.number.integer.greaterThanOrEqual(0));
     return state.durationInMinutes * 60;
 }
 const elapsedSeconds = currentTimeInSeconds => state => {
@@ -35,13 +32,27 @@ const onActualMeditationTimerTicked = ({currentTimeInSeconds}, state) => ({
     remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
 });
 
+function calculateIncrementedDuration(state) {
+    return floor((state.durationInMinutes + state.timeIncrementInMinutes) / state.timeIncrementInMinutes)
+        * state.timeIncrementInMinutes;
+}
+
 const onActualMeditationAddTimeRequested = (payload, state) => ({
     ...state,
-    durationInMinutes: state.durationInMinutes + state.timeIncrementInMinutes
+    durationInMinutes: calculateIncrementedDuration(state)
 });
+
+function calculateDecrementedDuration(state) {
+    const diff = state.durationInMinutes - state.timeIncrementInMinutes;
+    if (diff < state.timeIncrementInMinutes) {
+        return max([state.durationInMinutes - 1, 0]);
+    }
+    return diff;
+}
+
 const onActualMeditationLessTimeRequested = (payload, state) => ({
     ...state,
-    durationInMinutes: max([state.durationInMinutes - state.timeIncrementInMinutes, state.timeIncrementInMinutes])
+    durationInMinutes: calculateDecrementedDuration(state)
 });
 //TODO export handlers, not reducers + remove word "reducers" from domain package + assert event and assert state before each handler
 const handlers = {

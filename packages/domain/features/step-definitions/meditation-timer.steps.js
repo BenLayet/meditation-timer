@@ -18,6 +18,7 @@ import {
     preparationMoreTimeRequested,
     preparationTimerTicked
 } from "../../src/components/preparation/preparation.events.js";
+import {ACTUAL_MEDITATION_INITIAL_STATE} from "../../src/components/actual-meditation/actual-meditation.reducers.js";
 
 const BEGINNING_OF_TIME_IN_SECONDS = 1800000;
 
@@ -28,7 +29,8 @@ When(/^I open the app$/, function () {
 });
 
 Given(/^I have set the meditation duration to (\d+) minutes$/, function (durationInMinutes) {
-    const incrementCounts = Math.floor(durationInMinutes / 5);
+    const incrementCounts = Math.floor(
+        (durationInMinutes - ACTUAL_MEDITATION_INITIAL_STATE.durationInMinutes) / ACTUAL_MEDITATION_INITIAL_STATE.timeIncrementInMinutes);
     for (let i = 0; i < incrementCounts; i++) {
         dispatch(actualMeditationMoreTimeRequested());
     }
@@ -118,7 +120,7 @@ Then(/^the timer (should|should not) be running$/, function (should) {
 
 Then(/^I (can|cannot) stop the meditation session$/, function (can) {
     const expected = can === 'can';
-    const actual = appSelectors.canMeditationSessionBeStopped(state);
+    const actual = appSelectors.canMeditationSessionBeReset(state);
     expect(actual).to.equal(expected);
 });
 
