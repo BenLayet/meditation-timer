@@ -25,6 +25,7 @@ import {SETTINGS_INITIAL_STATE} from "./components/settings/settings.reducers.js
 import {STATISTICS_INITIAL_STATE} from "./components/statistics/statistics.reducers.js";
 import {statisticsComponent} from "./components/statistics/statistics.component.js";
 import {statisticsFetchRequested} from "./components/statistics/statistics.events.js";
+import {and, not, or} from "./lib/predicate.functions.js";
 
 //TODO tree of componeil ilnts and tree of states ?
 export const meditationTimerApp = {
@@ -70,14 +71,13 @@ export const meditationTimerApp = {
 };
 //TODO chain selectors like in reselect
 const componentSelectors = createSelectors(meditationTimerApp.components);
-const canMeditationSessionBeStarted = (state) => !componentSelectors.actualMeditation.hasStarted(state) && !componentSelectors.preparation.isRunning(state);
-const canMeditationSessionBeReset = (state) => !canMeditationSessionBeStarted(state);
+const canMeditationSessionBeStarted = and(not(componentSelectors.actualMeditation.hasStarted), not(componentSelectors.preparation.isRunning));
+const canMeditationSessionBeReset = not(canMeditationSessionBeStarted);
 const canDurationBeChanged = canMeditationSessionBeStarted;
 const canSettingsBeOpened = canMeditationSessionBeStarted;
-const actualMeditationTimerIsVisible = state => canDurationBeChanged(state) || componentSelectors.actualMeditation.isRunning(state);
-const statisticsShouldBeDisplayed = (state) =>
-    componentSelectors.actualMeditation.hasCompleted(state) &&
-    componentSelectors.statistics.shouldBeDisplayed(state);
+const actualMeditationTimerIsVisible = or(canDurationBeChanged, componentSelectors.actualMeditation.isRunning);
+const statisticsShouldBeDisplayed = and(componentSelectors.actualMeditation.hasCompleted, componentSelectors.statistics.shouldBeDisplayed);
+const inspiringImageShouldBeDisplayed = not(or(statisticsShouldBeDisplayed, componentSelectors.preparation.isRunning))
 export const appSelectors = {
     ...componentSelectors,
     canMeditationSessionBeStarted,
@@ -85,5 +85,6 @@ export const appSelectors = {
     canDurationBeChanged,
     canSettingsBeOpened,
     actualMeditationTimerIsVisible,
-    statisticsShouldBeDisplayed
+    statisticsShouldBeDisplayed,
+    inspiringImageShouldBeDisplayed
 };

@@ -11,6 +11,7 @@
 
 .stack-layout {
     position: relative;
+    width: 100%;
 }
 
 .stack-layout > * {

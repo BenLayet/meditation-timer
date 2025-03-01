@@ -19,17 +19,21 @@ function Preparation() {
     //selectors
     const preparationRemainingTime = appSelectors.preparation.displayedTime(state);
     return (
-        <div className="subtle">
+        <>
             <p>{t("preparation")}</p>
             <Timer
                 displayedTime={preparationRemainingTime}/>
             <div className="timer-controls">
-                <button onClick={removeTimeClicked} className="timer-control">
-                    <FontAwesomeIcon icon={faMinus}/></button>
-                <button onClick={addTimeClicked} className="timer-control">
-                    <FontAwesomeIcon icon={faPlus}/></button>
+                <FontAwesomeIcon
+                    icon={faMinus}
+                    onClick={removeTimeClicked}
+                    className="timer-control"/>
+                <FontAwesomeIcon
+                    icon={faPlus}
+                    onClick={addTimeClicked}
+                    className="timer-control"/>
             </div>
-        </div>
+        </>
     );
 }
 
