@@ -6,7 +6,7 @@ Feature: Meditation timer
 
   Scenario: Opening the meditation timer app for the first time
     When I open the app
-    Then the timer should display 05:00
+    Then the timer should display 20:00
     And I can start a meditation session
     And I can set the duration of the meditation
 

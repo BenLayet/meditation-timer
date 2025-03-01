@@ -8,7 +8,7 @@ import {
 } from "./actual-meditation.events.js";
 
 export const ACTUAL_MEDITATION_INITIAL_STATE = {
-    durationInMinutes: 5,
+    durationInMinutes: 20,
     timeIncrementInMinutes: 5,
 };
 

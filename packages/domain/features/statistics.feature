@@ -4,7 +4,7 @@ Feature: Meditation statistics
   so that I get motivated to meditate regularly
 
   Scenario: Save meditation session
-    Given I had a daily streak of 5 days until yesterday
+    Given I had a daily streak of 5 days and meditated 45 minutes this week
     And I have started a meditation session
     And the actual meditation has started
     When the actual meditation time is up
