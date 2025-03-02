@@ -28,20 +28,3 @@
 .justify-end{
     justify-content: flex-end;
 }
-
-.suzuki::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-image: url('/suzuki-roshi.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    opacity: 0.6;
-    border: var(--border-color) 1px solid;
-    border-radius: 0.2em;
-    z-index: -1;
-}

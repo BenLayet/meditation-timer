@@ -12,6 +12,7 @@ import Preparation from "../preparation/Preparation.jsx";
 import Timer from "../timer/Timer.jsx";
 import NextMeditationControls from "../next-meditation-controls/NextMeditationControls.jsx";
 import {Statistics} from "../statistics/Statistics.jsx";
+import {InspiringImage} from "../inspiring-image/InspiringImage.jsx";
 
 const currentTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
@@ -38,7 +39,8 @@ function MeditationSessionPage() {
                 <Statistics/>
             </div>
             <div
-                className={'suzuki fadeIn ' + (inspiringImageShouldBeDisplayed ? 'visible dignifiedFadeIn' : 'hidden')}>
+                className={'fadeIn ' + (inspiringImageShouldBeDisplayed ? 'visible dignifiedFadeIn' : 'hidden')}>
+                <InspiringImage/>
             </div>
         </div>
         <div className={'fadeIn ' + (actualMeditationTimerIsVisible ? 'visible' : 'hidden')}>
