@@ -74,10 +74,11 @@ const componentSelectors = createSelectors(meditationTimerApp.components);
 const canMeditationSessionBeStarted = and(not(componentSelectors.actualMeditation.hasStarted), not(componentSelectors.preparation.isRunning));
 const canMeditationSessionBeReset = not(canMeditationSessionBeStarted);
 const canDurationBeChanged = canMeditationSessionBeStarted;
-const canSettingsBeOpened = canMeditationSessionBeStarted;
 const actualMeditationTimerIsVisible = or(canDurationBeChanged, componentSelectors.actualMeditation.isRunning);
 const statisticsShouldBeDisplayed = and(componentSelectors.actualMeditation.hasCompleted, componentSelectors.statistics.shouldBeDisplayed);
 const inspiringImageShouldBeDisplayed = not(or(statisticsShouldBeDisplayed, componentSelectors.preparation.isRunning))
+const canSettingsBeOpened = or(canMeditationSessionBeStarted, statisticsShouldBeDisplayed);
+
 export const appSelectors = {
     ...componentSelectors,
     canMeditationSessionBeStarted,
