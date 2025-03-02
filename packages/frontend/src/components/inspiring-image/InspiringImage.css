@@ -10,6 +10,6 @@
     background-repeat: no-repeat;
     background-position: center;
     border: var(--border-color) 1px solid;
-    border-radius: 0.2em;
+    border-radius: var(--border-radius);
     z-index: -1;
 }

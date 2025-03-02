@@ -15,7 +15,7 @@ export function Statistics() {
     const shouldDailyStreakBeDisplayed = appSelectors.statistics.shouldDailyStreakBeDisplayed(state);
 
     return (
-        <ul>
+        <ul className="statistics">
             {shouldTotalMinutesThisWeekBeDisplayed &&
                 <li>{t("hourCount", hourCount)}
                     {t("minuteCount", minuteCount)}

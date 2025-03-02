@@ -23,10 +23,11 @@ function Settings() {
         <div className='settings-container'>
             <FontAwesomeIcon onClick={toggleMenu} className='settings-button' icon={faGear} style={{ fontSize: '24px' }} />
 
-            {isMenuVisible && ( <div className='settings-menu'>
+            {isMenuVisible && (
+                <div className='settings-menu'>
                     <div className='settings-menu-item'>
-                        <label>{t('language')}</label>
-                        <div>
+                        <label className="settings-menu-item-label">{t('language')}</label>
+                        <div className="settings-menu-item-option">
                             <input
                                 type="radio"
                                 id="language-en"
@@ -37,7 +38,7 @@ function Settings() {
                             />
                             <label htmlFor="language-en">{t('english')}</label>
                         </div>
-                        <div>
+                        <div className="settings-menu-item-option">
                             <input
                                 type="radio"
                                 id="language-fr"

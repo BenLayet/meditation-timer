@@ -1,10 +1,10 @@
 /* Style for the ul and li */
-ul {
+ul.statistics {
     list-style: none;
     padding: 0;
 }
 
-li {
+ul.statistics>li {
     display: flex;
     align-items: center;
     text-align: left;
@@ -14,7 +14,7 @@ li {
     animation: fadeIn 1s ease forwards; /* 1s fade-in animation */
 }
 
-li::before {
+ul.statistics>li::before {
     content: "★"; /* Star emoji */
     opacity: 0.5;
     font-size: 0.7em;
