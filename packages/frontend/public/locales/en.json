@@ -2,14 +2,12 @@
   "preparation": "Preparation",
   "dailyStreak": "{{dailyStreak}} days in a row",
   "hourCount_zero": "",
-  "hourCount_one": "1 hour",
-  "hourCount_other": "{{count}} hours",
+  "hourCount_other": "{{count}} h ",
   "minuteCount_zero": "",
-  "minuteCount_one": "1 minutes",
-  "minuteCount_other": "{{count}} minutes",
+  "minuteCount_other": "{{count}} min",
   "thisWeek": " this week",
   "language": "Language",
-  "french": "French",
+  "french": "Français",
   "english": "English",
   "gong": "Gong"
 }
