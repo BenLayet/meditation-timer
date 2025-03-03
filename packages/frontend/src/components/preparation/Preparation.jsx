@@ -15,16 +15,18 @@ function Preparation() {
     const addTimeClicked = () => dispatch(moreTimeDuringPreparationRequested());
     //selectors
     const preparationRemainingTime = appSelectors.preparation.displayedTime(state);
+    const timeIncrementInSeconds = appSelectors.preparation.timeIncrementInSeconds(state);
     return (
         <div className="subtle">
             <p>{t("preparation")}</p>
             <Timer
                 displayedTime={preparationRemainingTime}/>
             <div className="timer-controls">
-                <FontAwesomeIcon
-                    icon={faPlus}
-                    onClick={addTimeClicked}
-                    className="round-button"/>
+                <button
+                    className="round-rectangle-button"
+                    onClick={addTimeClicked}>
+                    +{timeIncrementInSeconds}s
+                </button>
             </div>
         </div>
     );

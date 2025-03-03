@@ -32,6 +32,12 @@ button:focus-visible {
     background-color: #ffffff18;
     cursor: pointer;
 }
+.round-rectangle-button {
+    font-size: 0.5em;
+    border-radius: 0.5em;
+    background-color: #ffffff18;
+    cursor: pointer;
+}
 button.main-action {
     border-color: var(--accent-color);
 }

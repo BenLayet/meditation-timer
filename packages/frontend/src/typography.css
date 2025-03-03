@@ -30,3 +30,6 @@ a:hover {
 .bigger{
     font-size: 1.5em;
 }
+.smaller{
+    font-size: 0.75em;
+}
