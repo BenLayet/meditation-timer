@@ -27,3 +27,6 @@ a:hover {
 .clickable:hover {
     color: var(--accent-color);
 }
+.bigger{
+    font-size: 1.5em;
+}

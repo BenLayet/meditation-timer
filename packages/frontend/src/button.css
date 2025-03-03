@@ -35,3 +35,8 @@ button:focus-visible {
 button.main-action {
     border-color: var(--accent-color);
 }
+.round-button-group{
+    display: flex;
+    width: 100%;
+    gap: 0.5em;
+}

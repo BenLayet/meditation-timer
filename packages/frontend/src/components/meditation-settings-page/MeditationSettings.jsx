@@ -25,38 +25,42 @@ function MeditationSettings() {
     const nextPreparationDuration = appSelectors.nextPreparationDuration(state);
     const nextMeditationDuration = appSelectors.nextMeditationDuration(state);
     return <div className="flex-grow flex-column">
-        <div className="meditation-settings">
-            <div className="meditation-setting">
+        <div className="meditation-settings flex-column">
+            <div className="meditation-setting flex-column">
                 <label>{t('duration')}</label>
-                <div className="meditation-setting-control">
-                    <FontAwesomeIcon
-                        icon={faMinus}
-                        onClick={meditationRemoveTimeClicked}
-                        className="round-button"/>
-                    <FontAwesomeIcon
-                        icon={faPlus}
-                        onClick={meditationAddTimeClicked}
-                        className="round-button"/>
+                <div className="meditation-setting-control flex-column">
                     {nextMeditationDuration}
+                    <div className="round-button-group">
+                        <FontAwesomeIcon
+                            icon={faMinus}
+                            onClick={meditationRemoveTimeClicked}
+                            className="round-button"/>
+                        <FontAwesomeIcon
+                            icon={faPlus}
+                            onClick={meditationAddTimeClicked}
+                            className="round-button"/>
+                    </div>
                 </div>
             </div>
-            <div className="meditation-setting">
+            <div className="meditation-setting flex-column">
                 <label>{t("preparation")}</label>
-                <div className="meditation-setting-control">
-                    <FontAwesomeIcon
-                        icon={faMinus}
-                        onClick={preparationRemoveTimeClicked}
-                        className="round-button"/>
-                    <FontAwesomeIcon
-                        icon={faPlus}
-                        onClick={preparationAddTimeClicked}
-                        className="round-button"/>
+                <div className="meditation-setting-control flex-column">
                     {nextPreparationDuration}
+                    <div className="round-button-group">
+                        <FontAwesomeIcon
+                            icon={faMinus}
+                            onClick={preparationRemoveTimeClicked}
+                            className="round-button"/>
+                        <FontAwesomeIcon
+                            icon={faPlus}
+                            onClick={preparationAddTimeClicked}
+                            className="round-button"/>
+                    </div>
                 </div>
             </div>
-            <div className="meditation-setting">
+            <div className="meditation-setting flex-column">
                 <label>{t("gong")}</label>
-                <div className="meditation-setting-control">
+                <div className="meditation-setting-control flex-column bigger">
                     <GongControl/>
                 </div>
             </div>
