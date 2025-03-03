@@ -2,7 +2,8 @@ import {
     moreTimeDuringPreparationRequested,
     preparationFinished,
     preparationStartRequested,
-    preparationTimerTicked
+    preparationTimerTicked,
+    skipPreparationRequested
 } from "./preparation.events.js";
 import {max} from "lodash-es";
 
@@ -34,6 +35,11 @@ const onMoreTimeDuringPreparationRequested = (payload, state) => ({
     durationInSeconds: state.durationInSeconds + state.timeIncrementInSeconds,
     remainingSeconds: state.remainingSeconds + state.timeIncrementInSeconds,
 });
+const onSkipPreparationRequested = (payload, state) => ({
+    ...state,
+    durationInSeconds: 0,
+    remainingSeconds: 0,
+});
 
 //TODO export handlers, not reducers + remove word "reducers" from domain package + assert event and assert state before each handler
 const handlers = {
@@ -41,6 +47,7 @@ const handlers = {
     [preparationFinished.eventType]: onPreparationFinished,
     [preparationTimerTicked.eventType]: onPreparationTimerTicked,
     [moreTimeDuringPreparationRequested.eventType]: onMoreTimeDuringPreparationRequested,
+    [skipPreparationRequested.eventType]: onSkipPreparationRequested,
 };
 const keepState = (event, state) => state;
 export const preparationReducers = (event, state) => (handlers[event.eventType] || keepState)(event.payload, state);

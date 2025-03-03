@@ -20,5 +20,7 @@ export const preparationCompleted =
         return {currentTimeInSeconds};
     });
 export const moreTimeDuringPreparationRequested = createEventFactory('moreTimeDuringPreparationRequested');
+export const skipPreparationRequested = createEventFactory('skipPreparationRequested');
+
 export const preparationFinished = createEventFactory('preparationFinished');
 
