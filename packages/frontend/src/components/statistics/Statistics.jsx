@@ -1,7 +1,7 @@
 import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {useTranslation} from "react-i18next";
-import {appSelectors} from "domain/src/meditation-timer.app.js";
+import {appSelectors} from "domain/src/app/meditation-timer.app.js";
 import "./Statistics.css";
 
 export function Statistics() {
@@ -17,11 +17,11 @@ export function Statistics() {
     return (
         <ul className="statistics">
             {shouldTotalMinutesThisWeekBeDisplayed &&
-                <li>{t("hourCount", hourCount)}
+                <li className="statistics-item">{t("hourCount", hourCount)}
                     {t("minuteCount", minuteCount)}
                     {t("thisWeek")}</li>}
             {shouldDailyStreakBeDisplayed &&
-                <li>{t("dailyStreak", {dailyStreak})}</li>}
+                <li className="statistics-item">{t("dailyStreak", {dailyStreak})}</li>}
 
         </ul>
     )

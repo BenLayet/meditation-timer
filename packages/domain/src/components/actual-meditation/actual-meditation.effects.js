@@ -1,6 +1,6 @@
 import {
     actualMeditationCompleted,
-    actualMeditationResetRequested,
+    actualMeditationCancelRequested,
     actualMeditationSaveFailed,
     actualMeditationSaveRequested,
     actualMeditationSaveSucceeded,
@@ -42,6 +42,10 @@ export const actualMeditationEffects = ({gongService, tickingService, meditation
         cleanUp: gongService.stop
     },
     {
+        onEvent: actualMeditationCancelRequested,
+        then: gongService.stop
+    },
+    {
         onEvent: actualMeditationStartRequested,
         then: startTicking(tickingService),
         cleanUp: tickingService.stopTicking(TIMER_NAME),
@@ -55,7 +59,7 @@ export const actualMeditationEffects = ({gongService, tickingService, meditation
         then: ({dispatch}) => dispatch(actualMeditationStopped())
     },
     {
-        onEvent: actualMeditationResetRequested,
+        onEvent: actualMeditationCancelRequested,
         then: ({dispatch}) => dispatch(actualMeditationStopped())
     },
     {

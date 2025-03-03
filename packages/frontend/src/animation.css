@@ -1,0 +1,13 @@
+.fade-in {
+    transition: opacity 1s ease-in-out
+}
+.dignified-fade-in {
+    transition: opacity 6s ease-in-out
+}
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.visible {
+    opacity: 1;
+}

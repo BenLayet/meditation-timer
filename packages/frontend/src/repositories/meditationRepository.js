@@ -14,12 +14,15 @@ class MeditationRepository {
                 },
                 body: JSON.stringify(meditation)
             });
-            console.log('Meditation posted:', response.status);
+            if (response.status !== 201) {
+                console.error('Error after posting meditation:', response.status);
+            }
         } catch (error) {
             console.error('Error posting meditation:', error);
             throw error;
         }
     }
+
     async fetchStatistics() {
         deviceUuidService.initializeCookie();
         try {

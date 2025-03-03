@@ -7,7 +7,7 @@ export const getLastCallArguments = (service, method) => mockServiceCalls
     .findLast(call => call.service === service && call.method === method)
     ?.args;
 
-function mock(service, method) {
+function createMockMethod(service, method) {
 
     const mockedMethod = (...args) => {
         const call = {service, method, args};
@@ -17,6 +17,7 @@ function mock(service, method) {
         if (mockedMethod.preparedReturn) {
             return mockedMethod.preparedReturn;
         }
+
     };
     return mockedMethod;
 
@@ -30,14 +31,14 @@ export function when(method) {
     }
 }
 
-const gongService = {play: mock('gongService', 'play'), stop: mock('gongService', 'stop')};
+const gongService = {play: createMockMethod('gongService', 'play'), stop: createMockMethod('gongService', 'stop')};
 const wakeLockService = {
-    requestWakeLock: mock('wakeLockService', 'requestWakeLock'),
-    releaseWakeLock: mock('wakeLockService', 'releaseWakeLock')
+    requestWakeLock: createMockMethod('wakeLockService', 'requestWakeLock'),
+    releaseWakeLock: createMockMethod('wakeLockService', 'releaseWakeLock')
 };
 
-const doStartTicking = mock('tickingService', 'startTicking');
-const doStopTicking = mock('tickingService', 'stopTicking');
+const doStartTicking = createMockMethod('tickingService', 'startTicking');
+const doStopTicking = createMockMethod('tickingService', 'stopTicking');
 
 const tickingService = {
     tickCallBacks: {},
@@ -45,13 +46,19 @@ const tickingService = {
         doStartTicking(name, callback);
         tickingService.tickCallBacks[name] = callback;
     },
-    stopTicking: () => doStopTicking
+    stopTicking: (name) => () => doStopTicking(name),
+    sendTick: (name, timeInSeconds) => tickingService.tickCallBacks[name](timeInSeconds)
 };
 
 const meditationRepository = {
-    saveMeditation: mock('meditationRepository', 'saveMeditation'),
-    fetchStatistics: mock('meditationRepository', 'fetchStatistics')
+    saveMeditation: createMockMethod('meditationRepository', 'saveMeditation'),
+    fetchStatistics: createMockMethod('meditationRepository', 'fetchStatistics')
 }
+
+when(meditationRepository.fetchStatistics).thenReturn(Promise.resolve({
+    dailyStreak: 0,
+    totalMinutesThisWeek: 0
+}));
 
 export const mockServices = {
     gongService,

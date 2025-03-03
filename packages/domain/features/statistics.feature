@@ -7,6 +7,6 @@ Feature: Meditation statistics
     Given I had a daily streak of 5 days and meditated 45 minutes this week
     And I have started a meditation session
     And the actual meditation has started
-    When the actual meditation time is up
+    When the actual meditation duration has elapsed
     Then the meditation session should be saved
     And my new daily streak should be displayed

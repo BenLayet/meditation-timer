@@ -1,0 +1,7 @@
+
+.timer-controls {
+    display: flex;
+    justify-content: space-around;
+    min-width: 4em;
+    font-size: 2em;
+}

@@ -3,14 +3,13 @@ import {wakeLockService} from "../../services/wakeLockService.js";
 import {gongService} from "../../services/gongService.js";
 import {tickingService} from "../../services/tickingService.js";
 import {StateManager} from "domain/src/lib/state-manager.js";
-import {meditationTimerApp} from "domain/src/meditation-timer.app.js";
-import {logEvent} from "domain/src/lib/logger.js";
+import {meditationTimerApp} from "domain/src/app/meditation-timer.app.js";
 import {meditationRepository} from "../../repositories/meditationRepository.js";
+import {addDebugger, removeDebugger} from "../../lib/debug.functions.js";
 
 const dependencies = {wakeLockService, gongService, tickingService, meditationRepository};
 //STATE MANAGER
 const stateManager = new StateManager(meditationTimerApp, dependencies);
-stateManager.addStateChangedListener(logEvent);
 const dispatch = stateManager.dispatch;
 export const AppStateContext = createContext({
     state: meditationTimerApp.initialState, dispatch
@@ -19,6 +18,11 @@ export const AppStateContext = createContext({
 export const AppStateProvider = ({children}) => {
     const [state, setState] = useState(meditationTimerApp.initialState);
     useEffect(() => {
+        addDebugger(stateManager, setState);
+        return removeDebugger(stateManager);
+    }, []);
+    useEffect(() => {
+
         stateManager.addStateChangedListener(setState);
         return () => stateManager.cleanUp()
     }, []);

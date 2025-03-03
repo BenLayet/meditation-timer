@@ -1,10 +1,13 @@
 import ow from "ow";
 import {createEventFactory} from "../../lib/event-factory.js";
 
+//TODO declare events with name / args / validation / payload factory
+
 export const preparationStartRequested =
-    createEventFactory('preparationStartRequested', (currentTimeInSeconds) => {
+    createEventFactory('preparationStartRequested', (requestedDurationInSeconds, currentTimeInSeconds) => {
+        ow(requestedDurationInSeconds, ow.number.integer.positive);
         ow(currentTimeInSeconds, ow.number.integer.positive);
-        return {currentTimeInSeconds};
+        return {requestedDurationInSeconds, currentTimeInSeconds};
     });
 export const preparationTimerTicked=
     createEventFactory('preparationTimerTicked', (currentTimeInSeconds) => {
@@ -16,9 +19,6 @@ export const preparationCompleted =
         ow(currentTimeInSeconds, ow.number.integer.positive);
         return {currentTimeInSeconds};
     });
-
-export const preparationStopRequested = createEventFactory('preparationStopRequested');
-
-export const preparationMoreTimeRequested = createEventFactory('preparationMoreTimeRequested');
-export const preparationLessTimeRequested = createEventFactory('preparationLessTimeRequested');
+export const moreTimeDuringPreparationRequested = createEventFactory('moreTimeDuringPreparationRequested');
+export const preparationFinished = createEventFactory('preparationFinished');
 

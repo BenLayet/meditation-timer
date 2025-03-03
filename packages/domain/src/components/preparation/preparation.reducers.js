@@ -1,16 +1,13 @@
 import {
-    preparationCompleted,
-    preparationLessTimeRequested,
-    preparationMoreTimeRequested,
+    moreTimeDuringPreparationRequested,
+    preparationFinished,
     preparationStartRequested,
-    preparationStopRequested,
     preparationTimerTicked
 } from "./preparation.events.js";
 import {max} from "lodash-es";
 
 export const PREPARATION_INITIAL_STATE = {
-    defaultDurationInSeconds: 20,
-    timeIncrementInSeconds: 10,
+    timeIncrementInSeconds: 20,
 };
 
 const elapsedSeconds = currentTimeInSeconds => state => {
@@ -20,40 +17,30 @@ const remainingSeconds = currentTimeInSeconds => state => {
     return max([0, state.durationInSeconds - elapsedSeconds(currentTimeInSeconds)(state)]);
 }
 
-
-const onPreparationStartRequested = ({currentTimeInSeconds}, state) => ({
+const onPreparationStartRequested = ({currentTimeInSeconds, requestedDurationInSeconds}, state) => ({
     ...state,
-    durationInSeconds: state.defaultDurationInSeconds,
-    remainingSeconds: state.defaultDurationInSeconds,
+    durationInSeconds: requestedDurationInSeconds,
+    remainingSeconds: requestedDurationInSeconds,
     startedTimeInSeconds: currentTimeInSeconds,
 });
-const onPreparationCompleted = () => PREPARATION_INITIAL_STATE;
-const onPreparationStopRequested = () => PREPARATION_INITIAL_STATE;
+const onPreparationFinished = () => PREPARATION_INITIAL_STATE;
 
 const onPreparationTimerTicked = ({currentTimeInSeconds}, state) => ({
     ...state,
     remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
 });
-const onPreparationMoreTimeRequested = (payload, state) => ({
+const onMoreTimeDuringPreparationRequested = (payload, state) => ({
     ...state,
     durationInSeconds: state.durationInSeconds + state.timeIncrementInSeconds,
     remainingSeconds: state.remainingSeconds + state.timeIncrementInSeconds,
 });
-const onPreparationLessTimeRequested = (payload, state) => ({
-    ...state,
-    durationInSeconds: max([state.durationInSeconds - state.timeIncrementInSeconds, 0]),
-    remainingSeconds: max([state.remainingSeconds - state.timeIncrementInSeconds, 0]),
-});
-
 
 //TODO export handlers, not reducers + remove word "reducers" from domain package + assert event and assert state before each handler
 const handlers = {
     [preparationStartRequested.eventType]: onPreparationStartRequested,
-    [preparationCompleted.eventType]: onPreparationCompleted,
+    [preparationFinished.eventType]: onPreparationFinished,
     [preparationTimerTicked.eventType]: onPreparationTimerTicked,
-    [preparationStopRequested.eventType]: onPreparationStopRequested,
-    [preparationMoreTimeRequested.eventType]: onPreparationMoreTimeRequested,
-    [preparationLessTimeRequested.eventType]: onPreparationLessTimeRequested,
+    [moreTimeDuringPreparationRequested.eventType]: onMoreTimeDuringPreparationRequested,
 };
 const keepState = (event, state) => state;
 export const preparationReducers = (event, state) => (handlers[event.eventType] || keepState)(event.payload, state);

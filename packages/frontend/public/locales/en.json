@@ -1,5 +1,7 @@
 {
-  "preparation": "Preparation",
+  "duration": "Duration:",
+  "preparation": "Preparation:",
+  "gong": "Gong:",
   "dailyStreak": "{{dailyStreak}} days in a row",
   "hourCount_zero": "",
   "hourCount_other": "{{count}} h ",
@@ -9,5 +11,6 @@
   "language": "Language",
   "french": "Français",
   "english": "English",
-  "gong": "Gong"
+  "continue": "Continue",
+  "sessionCompleted": "Session completed"
 }

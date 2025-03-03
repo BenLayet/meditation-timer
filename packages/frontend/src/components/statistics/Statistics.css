@@ -4,7 +4,7 @@ ul.statistics {
     padding: 0;
 }
 
-ul.statistics>li {
+li.statistics-item {
     display: flex;
     align-items: center;
     text-align: left;
@@ -14,7 +14,7 @@ ul.statistics>li {
     animation: fadeIn 1s ease forwards; /* 1s fade-in animation */
 }
 
-ul.statistics>li::before {
+li.statistics-item::before {
     content: "★"; /* Star emoji */
     opacity: 0.5;
     font-size: 0.7em;

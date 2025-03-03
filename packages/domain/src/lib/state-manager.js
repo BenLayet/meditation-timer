@@ -42,6 +42,9 @@ export class StateManager {
         ow(onStateChanged, ow.function);
         this.eventListeners.push(onStateChanged);
     }
+    removeStateChangedListener(onStateChanged) {
+        this.eventListeners = [...this.eventListeners.filter(l => !l === onStateChanged)];
+    }
 
     notifyStateChanged(newState, event, oldState) {
         this.eventListeners.forEach(onStateChanged => onStateChanged(newState, event, oldState));
@@ -71,11 +74,8 @@ export class StateManager {
         this.eventForwarders
             .filter(({onEvent}) => onEvent.eventType === event.eventType)
             .filter(({thenDispatch}) => !!thenDispatch)
-            .forEach(({thenDispatch}) => this.dispatch(
-                {
-                    eventType: thenDispatch.eventType,
-                    payload: event.payload
-                })
+            .forEach(({thenDispatch}) =>
+                this.dispatch(thenDispatch({previousPayload: event.payload, state: this.state}))
             );
     }
 

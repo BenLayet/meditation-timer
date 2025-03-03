@@ -1,4 +1,8 @@
-import {meditationSessionCompleted, meditationSessionStartRequested} from "./meditation-session.events.js";
+import {
+    meditationSessionCompleted,
+    meditationSessionFinished,
+    meditationSessionStartRequested, meditationSessionStopRequested
+} from "./meditation-session.events.js";
 
 export const meditationSessionEffects = ({wakeLockService}) => [
     {
@@ -7,6 +11,14 @@ export const meditationSessionEffects = ({wakeLockService}) => [
     },
     {
         onEvent: meditationSessionCompleted,
+        then: ({dispatch}) => dispatch(meditationSessionFinished())
+    },
+    {
+        onEvent: meditationSessionStopRequested,
+        then: ({dispatch}) => dispatch(meditationSessionFinished())
+    },
+    {
+        onEvent: meditationSessionFinished,
         then: wakeLockService.releaseWakeLock
     },
 ];
