@@ -13,8 +13,24 @@ export default defineConfig({
         short_name: 'Meditation Timer',
         start_url: '/',
         display: 'standalone',
-        background_color: '#ffffff',
-        theme_color: '#000000', // Adjust to match your app's color scheme
+        background_color: '#000000',
+        theme_color: '#000000',
+        screenshots: [
+          {
+            src: '/screenshot.png',
+            sizes: '321x643',
+            type: 'image/png',
+            description: 'Main meditation timer screen',
+          },
+          {
+            src: '/screenshot-wide.png',
+            sizes: '747x645',
+            type: 'image/png',
+            form_factor: 'wide',
+            description: 'Main meditation timer screen',
+          },
+
+        ],
         icons: [
           {
             src: '/android-chrome-192x192.png',
@@ -28,6 +44,11 @@ export default defineConfig({
           },
         ],
       },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,png,webmanifest}'],
+        cleanupOutdatedCaches: true,
+      },
+
     }),
   ],
   server: {
