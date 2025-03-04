@@ -28,7 +28,7 @@ function Preparation() {
                     onClick={addTimeClicked}>
                     +{timeIncrementInSeconds}s
                 </button>
-                <a onClick={skipClicked}>Skip</a>
+                <a onClick={skipClicked}>{t("skip")}</a>
             </div>
         </div>);
 }
