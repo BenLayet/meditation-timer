@@ -18,16 +18,16 @@ import {meditationSessionFeature} from "../features/meditation-session/meditatio
 import {preparationFeature} from "../features/preparation/preparation.feature.js";
 import {actualMeditationFeature} from "../features/actual-meditation/actual-meditation.feature.js";
 import {createSelectors} from "../lib/feature-selector.js";
-import {ACTUAL_MEDITATION_INITIAL_STATE} from "../features/actual-meditation/actual-meditation.reducers.js";
-import {PREPARATION_INITIAL_STATE} from "../features/preparation/preparation.reducers.js";
-import {STATISTICS_INITIAL_STATE} from "../features/statistics/statistics.reducers.js";
+import {ACTUAL_MEDITATION_INITIAL_STATE} from "../features/actual-meditation/actual-meditation.state.js";
+import {PREPARATION_INITIAL_STATE} from "../features/preparation/preparation.state.js";
+import {STATISTICS_INITIAL_STATE} from "../features/statistics/statistics.state.js";
 import {statisticsFeature} from "../features/statistics/statistics.feature.js";
 import {statisticsFetchRequested} from "../features/statistics/statistics.events.js";
 import {and, not, or} from "../lib/predicate.functions.js";
 import {meditationSettingsFeature} from "../features/meditation-settings/meditation-settings.feature.js";
-import {MEDITATION_SETTINGS_INITIAL_STATE} from "../features/meditation-settings/meditation-settings.reducers.js";
+import {MEDITATION_SETTINGS_INITIAL_STATE} from "../features/meditation-settings/meditation-settings.state.js";
 import {navigationRequested} from "../features/navigation/navigation.events.js";
-import {NAVIGATION_INITIAL_STATE} from "../features/navigation/navigation.reducers.js";
+import {NAVIGATION_INITIAL_STATE} from "../features/navigation/navigation.state.js";
 import {navigationFeature} from "../features/navigation/navigation.feature.js";
 
 //TODO tree of features and tree of states ?

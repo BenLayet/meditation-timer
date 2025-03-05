@@ -1,4 +1,4 @@
-import {preparationEventHandlers} from "./preparation.reducers.js";
+import {preparationEventHandlers} from "./preparation.state.js";
 import {preparationSelectors} from "./preparation.selectors.js";
 import {preparationEffects} from "./preparation.effects.js";
 

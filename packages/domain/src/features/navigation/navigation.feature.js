@@ -1,4 +1,4 @@
-import {navigationEventHandlers} from "./navigation.reducers.js";
+import {navigationEventHandlers} from "./navigation.state.js";
 import {navigationSelectors} from "./navigation.selectors.js";
 
 export const navigationFeature = {
