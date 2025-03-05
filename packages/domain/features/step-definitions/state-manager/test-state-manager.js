@@ -1,8 +1,8 @@
 import {mockServices, resetMocks} from "./mock-services.js";
-import {StateManager} from "../../src/lib/state-manager.js";
-import {meditationTimerApp} from "../../src/app/meditation-timer.app.js";
-import {logEvent} from "../../src/lib/logger.js";
-import {statePatcher} from "../../src/lib/debugger.js";
+import {StateManager} from "../../../src/lib/state-manager.js";
+import {meditationTimerApp} from "../../../src/app/meditation-timer.app.js";
+import {logEvent} from "../../../src/lib/logger.js";
+import {statePatcher} from "../../../src/lib/debugger.js";
 import {flow} from "lodash-es";
 
 //GLOBAL STATE

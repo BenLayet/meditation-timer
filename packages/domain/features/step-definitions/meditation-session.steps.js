@@ -1,13 +1,13 @@
 import {Given, Then, When} from "@cucumber/cucumber";
-import {dispatch, state} from "../state-manager/test-state-manager.js";
+import {dispatch, state} from "./state-manager/test-state-manager.js";
 import {
     meditationSessionCompleted,
     meditationSessionStartRequested,
     meditationSessionStopRequested
 } from "../../src/components/meditation-session/meditation-session.events.js";
 import {expect} from "chai";
-import {wasCalled} from "../state-manager/mock-services.js";
-import {BEGINNING_OF_TIME_IN_SECONDS} from "../state-manager/test-constants.js";
+import {wasCalled} from "./state-manager/mock-services.js";
+import {BEGINNING_OF_TIME_IN_SECONDS} from "./state-manager/test-constants.js";
 import {appSelectors} from "../../src/app/meditation-timer.app.js";
 
 Given(/^I have started a meditation session$/, function () {

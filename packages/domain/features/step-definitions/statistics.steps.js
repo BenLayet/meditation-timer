@@ -1,8 +1,8 @@
 import {Given, Then} from "@cucumber/cucumber";
 import {expect} from "chai";
-import {mockServices, wasCalled, when} from "../state-manager/mock-services.js";
+import {mockServices, wasCalled, when} from "./state-manager/mock-services.js";
 import {appSelectors} from "../../src/app/meditation-timer.app.js";
-import {state} from "../state-manager/test-state-manager.js";
+import {state} from "./state-manager/test-state-manager.js";
 
 
 Given(/^I had a daily streak of (\d+) days and meditated (\d+) minutes this week$/, function (days, minutes) {

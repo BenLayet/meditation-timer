@@ -1,10 +1,10 @@
 import {Given, Then, When} from "@cucumber/cucumber";
-import {dispatch, patchState, state} from "../state-manager/test-state-manager.js";
+import {dispatch, patchState, state} from "./state-manager/test-state-manager.js";
 import {expect} from "chai";
 import {appSelectors} from "../../src/app/meditation-timer.app.js";
-import {mockServices} from "../state-manager/mock-services.js";
+import {mockServices} from "./state-manager/mock-services.js";
 import {moreTimeDuringPreparationRequested} from "../../src/components/preparation/preparation.events.js";
-import {BEGINNING_OF_TIME_IN_SECONDS, PREPARATION_DURATION_IN_SECONDS} from "../state-manager/test-constants.js";
+import {BEGINNING_OF_TIME_IN_SECONDS, PREPARATION_DURATION_IN_SECONDS} from "./state-manager/test-constants.js";
 
 
 Given(/^the preparation has started$/, function () {
