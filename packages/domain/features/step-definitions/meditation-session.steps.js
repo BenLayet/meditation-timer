@@ -11,11 +11,11 @@ import {BEGINNING_OF_TIME_IN_SECONDS} from "./state-manager/test-constants.js";
 import {appSelectors} from "../../src/app/meditation-timer.app.js";
 
 Given(/^I have started a meditation session$/, function () {
-    dispatch(meditationSessionStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
+    dispatch(meditationSessionStartRequested({currentTimeInSeconds:BEGINNING_OF_TIME_IN_SECONDS}));
 });
 
 When(/^I start a meditation session$/, function () {
-    dispatch(meditationSessionStartRequested(BEGINNING_OF_TIME_IN_SECONDS));
+    dispatch(meditationSessionStartRequested({currentTimeInSeconds:BEGINNING_OF_TIME_IN_SECONDS}));
 });
 When(/^I stop the meditation session$/, function () {
     dispatch(meditationSessionStopRequested());

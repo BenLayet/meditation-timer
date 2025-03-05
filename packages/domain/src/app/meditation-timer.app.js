@@ -47,23 +47,29 @@ export const meditationTimerApp = {
         actualMeditation: actualMeditationFeature,
         statistics: statisticsFeature,
     },
-    eventForwarders: [
+    chainedEvents: [
         {
             onEvent: meditationSessionStartRequested,
-            thenDispatch: () => navigationRequested('MEDITATION_SESSION'),
+            thenDispatch: navigationRequested,
+            withPayload: () => ({page: 'MEDITATION_SESSION'}),
         },
         {
             onEvent: meditationSessionStopRequested,
-            thenDispatch: () => navigationRequested('HOME'),
+            thenDispatch: navigationRequested,
+            withPayload: () => ({page: 'HOME'}),
         },
         {
             onEvent: meditationSessionCompleted,
-            thenDispatch: () => navigationRequested('STATISTICS'),
+            thenDispatch: navigationRequested,
+            withPayload: () => ({page: 'STATISTICS'}),
         },
         {
             onEvent: meditationSessionStartRequested,
-            thenDispatch: ({previousPayload, state}) =>
-                preparationStartRequested(state.meditationSettings.preparationDurationInSeconds, previousPayload.currentTimeInSeconds)
+            thenDispatch: preparationStartRequested,
+            withPayload: (previousPayload, state) => ({
+                currentTimeInSeconds: previousPayload.currentTimeInSeconds,
+                requestedDurationInSeconds: state.meditationSettings.preparationDurationInSeconds
+            }),
         },
         {
             onEvent: meditationSessionStopRequested,
@@ -75,9 +81,11 @@ export const meditationTimerApp = {
         },
         {
             onEvent: preparationCompleted,
-            thenDispatch: ({previousPayload, state}) => actualMeditationStartRequested(
-                state.meditationSettings.meditationDurationInMinutes,
-                previousPayload.currentTimeInSeconds)
+            thenDispatch: actualMeditationStartRequested,
+            withPayload: (previousPayload, state) => ({
+                ...previousPayload,
+                durationInMinutes: state.meditationSettings.meditationDurationInMinutes
+            }),
         },
         {
             onEvent: actualMeditationCompleted,

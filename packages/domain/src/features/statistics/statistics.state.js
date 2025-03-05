@@ -15,11 +15,11 @@ const onStatisticsFetchFailed = (payload, state) => ({
     loading: false,
     error: true,
 });
-const onStatisticsFetchSucceeded = ({fetched}, state) => ({
+const onStatisticsFetchSucceeded = ({statistics}, state) => ({
     ...state,
     loading: false,
     error: false,
-    ...fetched
+    ...statistics
 });
 export const statisticsEventHandlers = {
     [statisticsFetchRequested.eventType]: onStatisticsFetchRequested,

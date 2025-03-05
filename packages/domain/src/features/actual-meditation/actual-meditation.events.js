@@ -2,7 +2,7 @@ import ow from "ow";
 import {createEventFactory} from "../../lib/event-factory.js";
 
 export const actualMeditationStartRequested =
-    createEventFactory('actualMeditationStartRequested', (durationInMinutes, currentTimeInSeconds) => {
+    createEventFactory('actualMeditationStartRequested', ({durationInMinutes, currentTimeInSeconds}) => {
         ow(currentTimeInSeconds, ow.number.integer.positive);
         ow(durationInMinutes, ow.number.integer.positive);
         return {currentTimeInSeconds, durationInMinutes};
@@ -12,7 +12,7 @@ export const actualMeditationCompleted = createEventFactory('actualMeditationCom
 export const actualMeditationStopped = createEventFactory('actualMeditationStopped');
 
 export const actualMeditationTimerTicked =
-    createEventFactory('actualMeditationTimerTicked', (currentTimeInSeconds) => {
+    createEventFactory('actualMeditationTimerTicked', ({currentTimeInSeconds}) => {
         ow(currentTimeInSeconds, ow.number.integer.positive);
         return {currentTimeInSeconds};
     });

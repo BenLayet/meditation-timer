@@ -9,14 +9,14 @@ import {preparationSelectors} from "./preparation.selectors.js";
 
 const TIMER_NAME = 'preparation';
 const startTicking = tickingService => ({dispatch}) => tickingService
-    .startTicking(TIMER_NAME, currentTimeInSeconds => dispatch(preparationTimerTicked(currentTimeInSeconds)));
+    .startTicking(TIMER_NAME, currentTimeInSeconds => dispatch(preparationTimerTicked({currentTimeInSeconds})));
 const stopTicking = tickingService => tickingService.stopTicking(TIMER_NAME);
 const restartTicking = tickingService => ({dispatch}) => {
     stopTicking(tickingService)();
     startTicking(tickingService)({dispatch});
 }
 const dispatchCompletedIfTimeIsUp = ({state, dispatch, payload}) =>
-    preparationSelectors.isTimeUp(state) && dispatch(preparationCompleted(payload.currentTimeInSeconds));
+    preparationSelectors.isTimeUp(state) && dispatch(preparationCompleted(payload));
 
 
 export const preparationEffects = ({tickingService}) => [

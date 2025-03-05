@@ -1,11 +1,12 @@
 import ow from "ow";
 import {featuresReducer} from "./create-reducers.js";
+import {createChainedEventFactories} from "./chained-events.js";
 
 export class StateManager {
     constructor(app, dependencies) {
         this.state = app.initialState;
         this.reducer = featuresReducer(app.features)
-        this.eventForwarders = app.eventForwarders;
+        this.chainedEventsFactories = createChainedEventFactories(app);
         this.initializeEffects(app.features, dependencies);
         this.eventListeners = [];
     }
@@ -43,19 +44,14 @@ export class StateManager {
         // notify state change
         this.notifyStateChanged(newState, event, previousState);
 
-        //feature to feature interactions
+        //forward event
         this.forwardEvent(event);
 
         // side effects
         this.triggerEffects(event);
     }
     forwardEvent(event) {
-        this.eventForwarders
-            .filter(({onEvent}) => onEvent.eventType === event.eventType)
-            .filter(({thenDispatch}) => !!thenDispatch)
-            .forEach(({thenDispatch}) =>
-                this.dispatch(thenDispatch({previousPayload: event.payload, state: this.state}))
-            );
+        this.chainedEventsFactories(event, this.state).forEach(this.dispatch);
     }
 
     triggerEffects(event) {

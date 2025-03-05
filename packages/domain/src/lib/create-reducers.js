@@ -1,7 +1,9 @@
 const noChange = (event, state) => state;
+
 const createReducer = (eventHandlers) =>
     (event, state) =>
-        (eventHandlers[event.eventType] || noChange)(event.payload, state)
+        (eventHandlers[event.eventType] || noChange)(event.payload, state);
+
 const wrapFeatureReducer = (key, featureReducer) =>
     (event, state) => ({
         ...state,

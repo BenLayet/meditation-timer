@@ -10,19 +10,26 @@ import {wasCalled} from "./state-manager/mock-services.js";
 import {BEGINNING_OF_TIME_IN_SECONDS} from "./state-manager/test-constants.js";
 
 Given(/^the actual meditation has started$/, function () {
-    dispatch(actualMeditationStartRequested(state.meditationSettings.meditationDurationInMinutes, BEGINNING_OF_TIME_IN_SECONDS));
+    dispatch(actualMeditationStartRequested({
+        durationInMinutes: state.meditationSettings.meditationDurationInMinutes,
+        currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS
+    }));
 });
 Given(/^there are (\d+) minutes left in the meditation$/, function (remainingMinutes) {
-    dispatch(actualMeditationTimerTicked(BEGINNING_OF_TIME_IN_SECONDS + (remainingMinutes * 60)));
+    dispatch(actualMeditationTimerTicked({
+        currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS + (remainingMinutes * 60)
+    }));
 });
 
 When(/^a second has elapsed during actual meditation$/, function () {
-    dispatch(actualMeditationTimerTicked(BEGINNING_OF_TIME_IN_SECONDS + 1));
+    dispatch(actualMeditationTimerTicked({
+        currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS + 1
+    }));
 });
 When(/^the actual meditation duration has elapsed$/, function () {
-    dispatch(actualMeditationTimerTicked(
-        BEGINNING_OF_TIME_IN_SECONDS
-        + appSelectors.actualMeditation.durationInSeconds(state)));
+    dispatch(actualMeditationTimerTicked({
+        currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS + appSelectors.actualMeditation.durationInSeconds(state)
+    }));
 });
 
 Then(/^the timer should display (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
