@@ -1,30 +1,13 @@
 import ow from "ow";
-
-
-function wrapComponentReducers(key, componentReducer) {
-    return (event, state) => ({
-            ...state,
-            [key]: componentReducer(event, state[key])
-        }
-    );
-}
+import {componentsReducer} from "./create-reducers.js";
 
 export class StateManager {
     constructor(app, dependencies) {
         this.state = app.initialState;
-        this.initializeReducers(app.components);
+        this.reducer = componentsReducer(app.components)
         this.eventForwarders = app.eventForwarders;
         this.initializeEffects(app.components, dependencies);
         this.eventListeners = [];
-    }
-
-    initializeReducers(components) {
-        ow(components, ow.object.valuesOfType(ow.object.partialShape({
-            reducers: ow.optional.function
-        })));
-        this.reducers = Object.keys(components)
-            .filter(key => components[key].reducers)
-            .map(key => wrapComponentReducers(key, components[key].reducers));
     }
 
     initializeEffects(components, dependencies) {
@@ -42,6 +25,7 @@ export class StateManager {
         ow(onStateChanged, ow.function);
         this.eventListeners.push(onStateChanged);
     }
+
     removeStateChangedListener(onStateChanged) {
         this.eventListeners = [...this.eventListeners.filter(l => !l === onStateChanged)];
     }
@@ -52,12 +36,12 @@ export class StateManager {
 
     dispatch = (event) => {
         // reducers
-        const oldState = this.state;
-        const newState = this.getNewState(event);
+        const previousState = this.state;
+        const newState = this.reducer(event, previousState);
         this.state = newState;
 
         // notify state change
-        this.notifyStateChanged(newState, event, oldState);
+        this.notifyStateChanged(newState, event, previousState);
 
         //component to component interactions
         this.forwardEvent(event);
@@ -65,11 +49,6 @@ export class StateManager {
         // side effects
         this.triggerEffects(event);
     }
-
-    getNewState(event) {
-        return this.reducers.reduce((state, reducer) => reducer(event, state), this.state)
-    }
-
     forwardEvent(event) {
         this.eventForwarders
             .filter(({onEvent}) => onEvent.eventType === event.eventType)

@@ -43,8 +43,7 @@ const onLessPreparationTimeRequested = (payload, state) => ({
     ...state,
     preparationDurationInSeconds: calculateDecrementedDuration(state.preparationDurationInSeconds, state.preparationIncrementInSeconds)
 });
-//TODO export handlers, not reducers + remove word "reducers" from domain package + assert event and assert state before each handler
-const handlers = {
+export const meditationSettingsEventHandlers = {
     [gongToggled.eventType]: onGongToggled,
     [moreMeditationTimeRequested.eventType]: onMoreMeditationTimeRequested,
     [lessMeditationTimeRequested.eventType]: onLessMeditationTimeRequested,
@@ -52,5 +51,3 @@ const handlers = {
     [lessPreparationTimeRequested.eventType]: onLessPreparationTimeRequested,
 
 };
-const keepState = (event, state) => state;
-export const meditationSettingsReducers = (event, state) => (handlers[event.eventType] || keepState)(event.payload, state);

@@ -1,7 +1,7 @@
-import {meditationSettingsReducers} from "./meditation-settings.reducers.js";
 import {meditationSettingsSelectors} from "./meditation-settings.selectors.js";
+import {meditationSettingsEventHandlers} from "./meditation-settings.reducers.js";
 
 export const meditationSettingsComponent = {
-    reducers: meditationSettingsReducers,
+    eventHandlers: meditationSettingsEventHandlers,
     selectors: meditationSettingsSelectors
 };

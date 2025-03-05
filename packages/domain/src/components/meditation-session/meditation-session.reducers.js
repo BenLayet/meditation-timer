@@ -9,10 +9,7 @@ const onMeditationSessionStartRequested = () => ({
 });
 const onMeditationSessionFinished = () => MEDITATION_SESSION_INITIAL_STATE;
 
-//TODO export handlers, not reducers + remove word "reducers" from domain package + assert event and assert state before each handler
-const handlers = {
+export const meditationSessionEventHandlers = {
     [meditationSessionFinished.eventType]: onMeditationSessionFinished,
     [meditationSessionStartRequested.eventType]: onMeditationSessionStartRequested,
 };
-const keepState = (event, state) => state;
-export const meditationSessionReducers = (event, state) => (handlers[event.eventType] || keepState)(event.payload, state);

@@ -1,9 +1,9 @@
 import {actualMeditationEffects} from "./actual-meditation.effects.js";
-import {actualMeditationReducers} from "./actual-meditation.reducers.js";
+import {actualMeditationEventHandlers} from "./actual-meditation.reducers.js";
 import {actualMeditationSelectors} from "./actual-meditation.selectors.js";
 
 export const actualMeditationComponent = {
     effects: actualMeditationEffects,
-    reducers: actualMeditationReducers,
+    eventHandlers: actualMeditationEventHandlers,
     selectors: actualMeditationSelectors
 };

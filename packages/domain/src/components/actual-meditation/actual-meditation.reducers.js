@@ -33,12 +33,8 @@ const onActualMeditationTimerTicked = ({currentTimeInSeconds}, state) => ({
     ...state,
     remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
 });
-
-//TODO export handlers, not reducers + remove word "reducers" from domain package + assert event and assert state before each handler
-const handlers = {
+export const actualMeditationEventHandlers = {
     [actualMeditationStartRequested.eventType]: onActualMeditationStartRequested,
     [actualMeditationCancelRequested.eventType]: onActualMeditationCancelRequested,
     [actualMeditationTimerTicked.eventType]: onActualMeditationTimerTicked,
 };
-const keepState = (event, state) => state;
-export const actualMeditationReducers = (event, state) => (handlers[event.eventType] || keepState)(event.payload, state);

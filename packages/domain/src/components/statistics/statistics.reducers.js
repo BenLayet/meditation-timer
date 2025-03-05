@@ -21,12 +21,9 @@ const onStatisticsFetchSucceeded = ({fetched}, state) => ({
     error: false,
     ...fetched
 });
-//TODO export handlers, not reducers + remove word "reducers" from domain package + assert event and assert state before each handler
-const handlers = {
+export const statisticsEventHandlers = {
     [statisticsFetchRequested.eventType]: onStatisticsFetchRequested,
     [statisticsFetchFailed.eventType]: onStatisticsFetchFailed,
     [statisticsFetchSucceeded.eventType]: onStatisticsFetchSucceeded,
 
 };
-const keepState = (event, state) => state;
-export const statisticsReducers = (event, state) => (handlers[event.eventType] || keepState)(event.payload, state);

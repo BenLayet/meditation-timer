@@ -41,13 +41,10 @@ const onSkipPreparationRequested = (payload, state) => ({
     remainingSeconds: 0,
 });
 
-//TODO export handlers, not reducers + remove word "reducers" from domain package + assert event and assert state before each handler
-const handlers = {
+export const preparationEventHandlers = {
     [preparationStartRequested.eventType]: onPreparationStartRequested,
     [preparationFinished.eventType]: onPreparationFinished,
     [preparationTimerTicked.eventType]: onPreparationTimerTicked,
     [moreTimeDuringPreparationRequested.eventType]: onMoreTimeDuringPreparationRequested,
     [skipPreparationRequested.eventType]: onSkipPreparationRequested,
 };
-const keepState = (event, state) => state;
-export const preparationReducers = (event, state) => (handlers[event.eventType] || keepState)(event.payload, state);

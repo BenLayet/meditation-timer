@@ -6,8 +6,6 @@ export const NAVIGATION_INITIAL_STATE = {
 
 const onNavigationRequested = ({page}) => ({currentPage: page});
 
-const handlers = {
+export const navigationEventHandlers = {
     [navigationRequested.eventType]: onNavigationRequested,
 };
-const keepState = (event, state) => state;
-export const navigationReducers = (event, state) => (handlers[event.eventType] || keepState)(event.payload, state);
