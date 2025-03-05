@@ -8,7 +8,7 @@ function StatisticsPage() {
     const {t} = useTranslation();
     const {dispatch} = useContext(AppStateContext);
 
-    const goBackHomeClicked = () => dispatch(navigationRequested('HOME'))
+    const goBackHomeClicked = () => dispatch(navigationRequested({page: 'HOME'}))
 
     return <>
         <p>{t('sessionCompleted')}</p>

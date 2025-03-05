@@ -11,12 +11,13 @@ const dependencies = {wakeLockService, gongService, tickingService, meditationRe
 //STATE MANAGER
 const stateManager = new StateManager(meditationTimerApp, dependencies);
 const dispatch = stateManager.dispatch;
+const initialState = stateManager.getState();
 export const AppStateContext = createContext({
-    state: meditationTimerApp.initialState, dispatch
+    state: initialState, dispatch
 });
 
 export const AppStateProvider = ({children}) => {
-    const [state, setState] = useState(meditationTimerApp.initialState);
+    const [state, setState] = useState(initialState);
     useEffect(() => {
         addDebugger(stateManager, setState);
         return removeDebugger(stateManager);

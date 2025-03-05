@@ -8,7 +8,7 @@ import MeditationSettings from "./MeditationSettings.jsx";
 
 function MeditationSettingsPage() {
     const {dispatch} = useContext(AppStateContext);
-    const playClicked = () => dispatch(meditationSessionStartRequested(currentTimeInSeconds()));
+    const playClicked = () => dispatch(meditationSessionStartRequested({currentTimeInSeconds: currentTimeInSeconds()}));
     return <>
         <MeditationSettings/>
         <button className="main-action" onClick={playClicked}>

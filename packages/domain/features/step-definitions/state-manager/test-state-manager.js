@@ -10,12 +10,12 @@ export let state = {};
 
 //STATE MANAGER
 export const stateManager = new StateManager(meditationTimerApp, mockServices);
+const initialState = stateManager.state;
 export const dispatch = (event) => {
     stateManager.dispatch(event);
 }
 export const reset = () => {
-    stateManager.state = meditationTimerApp.initialState;
-    state = stateManager.state;
+    state = stateManager.state = initialState;
     resetMocks();
 }
 export const patchState = flow(statePatcher(stateManager), (res) => console.log(`patchState with ${JSON.stringify(res)}`));
