@@ -7,7 +7,7 @@ import {
     lessPreparationTimeRequested,
     moreMeditationTimeRequested,
     morePreparationTimeRequested
-} from "../../src/components/meditation-settings/meditation-settings.events.js";
+} from "../../src/features/meditation-settings/meditation-settings.events.js";
 
 Given(/^the next meditation duration is (\d{2}):00$/, function (minutes) {
     patchState("meditationSettings.meditationDurationInMinutes", parseInt(minutes));

@@ -6,7 +6,7 @@ import {appSelectors} from "domain/src/app/meditation-timer.app.js";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {
     meditationSessionStopRequested
-} from "domain/src/components/meditation-session/meditation-session.events.js";
+} from "domain/src/features/meditation-session/meditation-session.events.js";
 import Preparation from "../preparation/Preparation.jsx";
 import Timer from "../timer/Timer.jsx";
 import {InspiringImage} from "../inspiring-image/InspiringImage.jsx";

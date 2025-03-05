@@ -4,7 +4,7 @@ import {expect} from "chai";
 import {
     actualMeditationStartRequested,
     actualMeditationTimerTicked
-} from "../../src/components/actual-meditation/actual-meditation.events.js";
+} from "../../src/features/actual-meditation/actual-meditation.events.js";
 import {appSelectors} from "../../src/app/meditation-timer.app.js";
 import {wasCalled} from "./state-manager/mock-services.js";
 import {BEGINNING_OF_TIME_IN_SECONDS} from "./state-manager/test-constants.js";

@@ -11,7 +11,7 @@ import {
     lessPreparationTimeRequested,
     moreMeditationTimeRequested,
     morePreparationTimeRequested
-} from "domain/src/components/meditation-settings/meditation-settings.events.js";
+} from "domain/src/features/meditation-settings/meditation-settings.events.js";
 
 function MeditationSettings() {
     const {t} = useTranslation();

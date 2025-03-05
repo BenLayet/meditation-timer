@@ -6,7 +6,7 @@ import Timer from "../timer/Timer.jsx";
 import {
     moreTimeDuringPreparationRequested,
     skipPreparationRequested
-} from "domain/src/components/preparation/preparation.events.js";
+} from "domain/src/features/preparation/preparation.events.js";
 import "./Preparation.css";
 
 function Preparation() {

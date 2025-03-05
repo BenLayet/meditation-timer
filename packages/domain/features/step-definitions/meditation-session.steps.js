@@ -4,7 +4,7 @@ import {
     meditationSessionCompleted,
     meditationSessionStartRequested,
     meditationSessionStopRequested
-} from "../../src/components/meditation-session/meditation-session.events.js";
+} from "../../src/features/meditation-session/meditation-session.events.js";
 import {expect} from "chai";
 import {wasCalled} from "./state-manager/mock-services.js";
 import {BEGINNING_OF_TIME_IN_SECONDS} from "./state-manager/test-constants.js";

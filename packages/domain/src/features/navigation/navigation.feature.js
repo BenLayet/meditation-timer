@@ -1,7 +1,7 @@
 import {navigationEventHandlers} from "./navigation.reducers.js";
 import {navigationSelectors} from "./navigation.selectors.js";
 
-export const navigationComponent = {
+export const navigationFeature = {
     eventHandlers: navigationEventHandlers,
     selectors: navigationSelectors
 }

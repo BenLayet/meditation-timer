@@ -2,35 +2,35 @@ import {
     meditationSessionCompleted,
     meditationSessionStartRequested,
     meditationSessionStopRequested
-} from "../components/meditation-session/meditation-session.events.js";
+} from "../features/meditation-session/meditation-session.events.js";
 import {
     preparationCompleted,
     preparationFinished,
     preparationStartRequested,
-} from "../components/preparation/preparation.events.js";
+} from "../features/preparation/preparation.events.js";
 import {
     actualMeditationCancelRequested,
     actualMeditationCompleted,
     actualMeditationSaveSucceeded,
     actualMeditationStartRequested
-} from "../components/actual-meditation/actual-meditation.events.js";
-import {meditationSessionComponent} from "../components/meditation-session/meditation-session.component.js";
-import {preparationComponent} from "../components/preparation/preparation.component.js";
-import {actualMeditationComponent} from "../components/actual-meditation/actual-meditation.component.js";
-import {createSelectors} from "../lib/component-selector.js";
-import {ACTUAL_MEDITATION_INITIAL_STATE} from "../components/actual-meditation/actual-meditation.reducers.js";
-import {PREPARATION_INITIAL_STATE} from "../components/preparation/preparation.reducers.js";
-import {STATISTICS_INITIAL_STATE} from "../components/statistics/statistics.reducers.js";
-import {statisticsComponent} from "../components/statistics/statistics.component.js";
-import {statisticsFetchRequested} from "../components/statistics/statistics.events.js";
+} from "../features/actual-meditation/actual-meditation.events.js";
+import {meditationSessionFeature} from "../features/meditation-session/meditation-session.feature.js";
+import {preparationFeature} from "../features/preparation/preparation.feature.js";
+import {actualMeditationFeature} from "../features/actual-meditation/actual-meditation.feature.js";
+import {createSelectors} from "../lib/feature-selector.js";
+import {ACTUAL_MEDITATION_INITIAL_STATE} from "../features/actual-meditation/actual-meditation.reducers.js";
+import {PREPARATION_INITIAL_STATE} from "../features/preparation/preparation.reducers.js";
+import {STATISTICS_INITIAL_STATE} from "../features/statistics/statistics.reducers.js";
+import {statisticsFeature} from "../features/statistics/statistics.feature.js";
+import {statisticsFetchRequested} from "../features/statistics/statistics.events.js";
 import {and, not, or} from "../lib/predicate.functions.js";
-import {meditationSettingsComponent} from "../components/meditation-settings/meditation-settings.component.js";
-import {MEDITATION_SETTINGS_INITIAL_STATE} from "../components/meditation-settings/meditation-settings.reducers.js";
-import {navigationRequested} from "../components/navigation/navigation.events.js";
-import {NAVIGATION_INITIAL_STATE} from "../components/navigation/navigation.reducers.js";
-import {navigationComponent} from "../components/navigation/navigation.component.js";
+import {meditationSettingsFeature} from "../features/meditation-settings/meditation-settings.feature.js";
+import {MEDITATION_SETTINGS_INITIAL_STATE} from "../features/meditation-settings/meditation-settings.reducers.js";
+import {navigationRequested} from "../features/navigation/navigation.events.js";
+import {NAVIGATION_INITIAL_STATE} from "../features/navigation/navigation.reducers.js";
+import {navigationFeature} from "../features/navigation/navigation.feature.js";
 
-//TODO tree of components and tree of states ?
+//TODO tree of features and tree of states ?
 export const meditationTimerApp = {
     initialState: {
         navigation: NAVIGATION_INITIAL_STATE,
@@ -39,13 +39,13 @@ export const meditationTimerApp = {
         actualMeditation: ACTUAL_MEDITATION_INITIAL_STATE,
         statistics: STATISTICS_INITIAL_STATE,
     },
-    components: {
-        navigation: navigationComponent,
-        meditationSettings: meditationSettingsComponent,
-        meditationSession: meditationSessionComponent,
-        preparation: preparationComponent,
-        actualMeditation: actualMeditationComponent,
-        statistics: statisticsComponent,
+    features: {
+        navigation: navigationFeature,
+        meditationSettings: meditationSettingsFeature,
+        meditationSession: meditationSessionFeature,
+        preparation: preparationFeature,
+        actualMeditation: actualMeditationFeature,
+        statistics: statisticsFeature,
     },
     eventForwarders: [
         {
@@ -90,19 +90,19 @@ export const meditationTimerApp = {
     ]
 };
 //TODO chain selectors like in reselect
-const componentSelectors = createSelectors(meditationTimerApp.components);
-const canMeditationSessionBeStarted = and(not(componentSelectors.actualMeditation.hasStarted), not(componentSelectors.preparation.isRunning));
+const featureSelectors = createSelectors(meditationTimerApp.features);
+const canMeditationSessionBeStarted = and(not(featureSelectors.actualMeditation.hasStarted), not(featureSelectors.preparation.isRunning));
 const canMeditationSessionBeReset = not(canMeditationSessionBeStarted);
 const canDurationBeChanged = canMeditationSessionBeStarted;
-const actualMeditationTimerIsVisible = or(canDurationBeChanged, componentSelectors.actualMeditation.isRunning);
-const statisticsShouldBeDisplayed = and(componentSelectors.actualMeditation.hasCompleted, componentSelectors.statistics.shouldBeDisplayed);
+const actualMeditationTimerIsVisible = or(canDurationBeChanged, featureSelectors.actualMeditation.isRunning);
+const statisticsShouldBeDisplayed = and(featureSelectors.actualMeditation.hasCompleted, featureSelectors.statistics.shouldBeDisplayed);
 const inspiringImageShouldBeDisplayed = not(canDurationBeChanged)
 const canSettingsBeOpened = or(canMeditationSessionBeStarted, statisticsShouldBeDisplayed);
-const currentPage = componentSelectors.navigation.currentPage;
-const nextPreparationDuration = componentSelectors.meditationSettings.preparationDuration;
-const nextMeditationDuration = componentSelectors.meditationSettings.meditationDuration;
+const currentPage = featureSelectors.navigation.currentPage;
+const nextPreparationDuration = featureSelectors.meditationSettings.preparationDuration;
+const nextMeditationDuration = featureSelectors.meditationSettings.meditationDuration;
 export const appSelectors = {
-    ...componentSelectors,
+    ...featureSelectors,
     canMeditationSessionBeStarted,
     canMeditationSessionBeReset,
     canDurationBeChanged,

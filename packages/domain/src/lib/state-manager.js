@@ -1,22 +1,22 @@
 import ow from "ow";
-import {componentsReducer} from "./create-reducers.js";
+import {featuresReducer} from "./create-reducers.js";
 
 export class StateManager {
     constructor(app, dependencies) {
         this.state = app.initialState;
-        this.reducer = componentsReducer(app.components)
+        this.reducer = featuresReducer(app.features)
         this.eventForwarders = app.eventForwarders;
-        this.initializeEffects(app.components, dependencies);
+        this.initializeEffects(app.features, dependencies);
         this.eventListeners = [];
     }
 
-    initializeEffects(components, dependencies) {
-        ow(components, ow.object.valuesOfType(ow.object.partialShape({
+    initializeEffects(features, dependencies) {
+        ow(features, ow.object.valuesOfType(ow.object.partialShape({
             effects: ow.optional.function
         })));
-        this.effectWithStateSelectors = Object.keys(components)
-            .filter(key => components[key].effects)
-            .map(key => components[key].effects(dependencies)
+        this.effectWithStateSelectors = Object.keys(features)
+            .filter(key => features[key].effects)
+            .map(key => features[key].effects(dependencies)
                 .map(effect => ({effect, key})))
             .flat();
     }
@@ -43,7 +43,7 @@ export class StateManager {
         // notify state change
         this.notifyStateChanged(newState, event, previousState);
 
-        //component to component interactions
+        //feature to feature interactions
         this.forwardEvent(event);
 
         // side effects

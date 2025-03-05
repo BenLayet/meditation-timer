@@ -2,16 +2,16 @@ const noChange = (event, state) => state;
 const createReducer = (eventHandlers) =>
     (event, state) =>
         (eventHandlers[event.eventType] || noChange)(event.payload, state)
-const wrapComponentReducer = (key, componentReducer) =>
+const wrapFeatureReducer = (key, featureReducer) =>
     (event, state) => ({
         ...state,
-        [key]: componentReducer(event, state[key])
+        [key]: featureReducer(event, state[key])
     });
-const createAllReducers = (components) => Object.keys(components)
-    .filter(key => components[key].eventHandlers)
-    .map(key => wrapComponentReducer(key, createReducer(components[key].eventHandlers)));
+const createAllReducers = (features) => Object.keys(features)
+    .filter(key => features[key].eventHandlers)
+    .map(key => wrapFeatureReducer(key, createReducer(features[key].eventHandlers)));
 
-export const componentsReducer = (components) => {
-    const reducers = createAllReducers(components);
+export const featuresReducer = (features) => {
+    const reducers = createAllReducers(features);
     return (event, state) => reducers.reduce((state, reducer) => reducer(event, state), state)
 }

@@ -1,7 +1,7 @@
 import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {Statistics} from "./Statistics.jsx";
-import {navigationRequested} from "domain/src/components/navigation/navigation.events.js";
+import {navigationRequested} from "domain/src/features/navigation/navigation.events.js";
 import {useTranslation} from "react-i18next";
 
 function StatisticsPage() {
