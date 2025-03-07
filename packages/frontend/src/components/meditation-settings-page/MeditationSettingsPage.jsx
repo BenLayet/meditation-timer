@@ -6,11 +6,11 @@ import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import MeditationSettings from "./MeditationSettings.jsx";
 
-function MeditationSettingsPage() {
+function MeditationSettingsPage({meditationSettingsState}) {
     const {dispatch} = useContext(AppStateContext);
     const playClicked = () => dispatch(meditationSessionStartRequested({currentTimeInSeconds: currentTimeInSeconds()}));
     return <>
-        <MeditationSettings/>
+        <MeditationSettings meditationSettingsState={meditationSettingsState}/>
         <button className="main-action" onClick={playClicked}>
             <FontAwesomeIcon icon={faPlay}/>
         </button>

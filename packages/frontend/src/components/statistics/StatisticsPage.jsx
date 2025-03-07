@@ -4,7 +4,7 @@ import {Statistics} from "./Statistics.jsx";
 import {navigationRequested} from "domain/src/features/navigation/navigation.events.js";
 import {useTranslation} from "react-i18next";
 
-function StatisticsPage() {
+function StatisticsPage({statisticsState}) {
     const {t} = useTranslation();
     const {dispatch} = useContext(AppStateContext);
 
@@ -13,7 +13,7 @@ function StatisticsPage() {
     return <>
         <p>{t('sessionCompleted')}</p>
         <div className="flex-grow">
-            <Statistics/>
+            <Statistics statisticsState={statisticsState}/>
         </div>
         <a className="main-action" onClick={goBackHomeClicked}>
             {t('continue')}

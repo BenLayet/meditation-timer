@@ -5,8 +5,8 @@ export const statisticsFetchRequested = createEventFactory('statisticsFetchReque
 export const statisticsFetchSucceeded = createEventFactory('statisticsFetchSucceeded',
     ({statistics}) => {
         ow(statistics, ow.object.exactShape({
-            dailyStreak: ow.number.integer.positive,
-            totalMinutesThisWeek: ow.number.integer.positive,
+            dailyStreak: ow.number.integer.greaterThanOrEqual(0),
+            totalMinutesThisWeek: ow.number.integer.greaterThanOrEqual(0),
         }));
         return {statistics};
     });

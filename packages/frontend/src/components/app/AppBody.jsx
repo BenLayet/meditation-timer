@@ -9,11 +9,14 @@ const AppBody = () => {
     const {state} = useContext(AppStateContext);
     //selectors
     const page = appSelectors.currentPage(state);
+    const meditationSettingsState = appSelectors.meditationSettingsState(state);
+    const meditationSessionState = appSelectors.meditationSessionState(state);
+    const statisticsState = appSelectors.statisticsState(state);
     return (
         <div className="app-body">
-            {page === 'HOME' && <MeditationSettingsPage/>}
-            {page === 'MEDITATION_SESSION' && <MeditationSessionPage/>}
-            {page === 'STATISTICS' && <StatisticsPage/>}
+            {page === 'HOME' && <MeditationSettingsPage meditationSettingsState={meditationSettingsState}/>}
+            {page === 'MEDITATION_SESSION' && <MeditationSessionPage meditationSessionState={meditationSessionState} />}
+            {page === 'STATISTICS' && <StatisticsPage statisticsState={statisticsState}/>}
         </div>
     );
 }

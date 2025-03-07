@@ -28,12 +28,13 @@ When(/^a second has elapsed during actual meditation$/, function () {
 });
 When(/^the actual meditation duration has elapsed$/, function () {
     dispatch(actualMeditationTimerTicked({
-        currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS + appSelectors.actualMeditation.durationInSeconds(state)
+        currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS
+            + appSelectors.meditationSession.actualMeditation.durationInSeconds(state)
     }));
 });
 
 Then(/^the timer should display (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
-    const actual = appSelectors.actualMeditation.displayedTime(state);
+    const actual = appSelectors.meditationSession.actualMeditation.displayedTime(state);
     expect(actual).to.equal(expectedDisplayedTime);
 });
 Then(/^a gong sound should be played$/, function () {
@@ -41,7 +42,7 @@ Then(/^a gong sound should be played$/, function () {
 });
 Then(/^the meditation timer (should|should not) (?:start|be) running$/, function (should) {
     const expected = should === 'should';
-    const actual = appSelectors.actualMeditation.isRunning(state);
+    const actual = appSelectors.meditationSession.actualMeditation.isRunning(state);
     expect(actual).to.equal(expected);
 });
 Then(/^the timer should stop$/, function () {

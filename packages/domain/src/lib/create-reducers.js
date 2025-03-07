@@ -1,19 +1,24 @@
 const noChange = (event, state) => state;
 
-const createReducer = (eventHandlers) =>
+const createReducerFromEventHandlers = (eventHandlers) =>
     (event, state) =>
-        (eventHandlers[event.eventType] || noChange)(event.payload, state);
+        (eventHandlers[event.eventType] ?? noChange)(event.payload, state);
 
-const wrapFeatureReducer = (key, featureReducer) =>
+const wrapFeatureReducer = (key) => (featureReducer) =>
     (event, state) => ({
         ...state,
         [key]: featureReducer(event, state[key])
     });
-const createAllReducers = (features) => Object.keys(features)
-    .filter(key => features[key].eventHandlers)
-    .map(key => wrapFeatureReducer(key, createReducer(features[key].eventHandlers)));
+const createSubFeatureReducers = (subFeatures) =>
+    Object.entries(subFeatures)
+        .map(([key, subFeature]) => featureReducers(subFeature).map(wrapFeatureReducer(key)))
+        .flat();
 
-export const featuresReducer = (features) => {
-    const reducers = createAllReducers(features);
-    return (event, state) => reducers.reduce((state, reducer) => reducer(event, state), state)
+const featureReducers = (feature) => {
+    const subFeatureReducers = createSubFeatureReducers(feature.subFeatures ?? {});
+    const ownReducer = createReducerFromEventHandlers(feature.eventHandlers ?? {});
+    return [...subFeatureReducers, ownReducer];
+}
+export const featureReducer = (feature) => {
+    return (event, state) => featureReducers(feature).reduce((state, reducer) => reducer(event, state), state)
 }

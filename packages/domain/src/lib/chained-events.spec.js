@@ -45,7 +45,7 @@ describe('createAllFeatureEvents', () => {
     test('sub-feature with chain with payload: when event one occurs, sub-features should dispatch event three with constructed payload based on sub state', () => {
         //given
         const subFeature = {chainedEvents: [eventChainWithPayload]};
-        const feature = {features: {subFeature1: subFeature}};
+        const feature = {subFeatures: {subFeature1: subFeature}};
 
         const previousEvent = eventOneOccurred({key1: 'value1'});
         const state = {subFeature1: {property1: 'stateProperty1'}};
@@ -62,8 +62,8 @@ describe('createAllFeatureEvents', () => {
     test('sub-feature of sub-feature: when event one occurs, deep sub-features should dispatch event three with constructed payload based on sub state', () => {
         //given
         const subFeature2 = {chainedEvents: [eventChainWithPayload]};
-        const subFeature1 = {features: {subFeature2}};
-        const feature = {features: {subFeature1}};
+        const subFeature1 = {subFeatures: {subFeature2}};
+        const feature = {subFeatures: {subFeature1}};
 
         const previousEvent = eventOneOccurred({key1: 'value1'});
         const state = {subFeature1: {subFeature2: {property1: 'stateProperty1'}}};

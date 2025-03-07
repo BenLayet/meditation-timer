@@ -23,7 +23,7 @@ const meditationToSave = (state) => ({
 export const actualMeditationSelectors = {
     hasStarted,
     hasCompleted,
-    displayedTime,
+    remainingTime: displayedTime,
     isRunning,
     durationInMinutes,
     durationInSeconds,

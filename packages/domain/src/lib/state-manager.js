@@ -1,30 +1,20 @@
 import ow from "ow";
-import {featuresReducer} from "./create-reducers.js";
+import {featureReducer} from "./create-reducers.js";
 import {createChainedEventFactories} from "./chained-events.js";
 import {getInitialState} from "./initial-state.js";
+import {featureEffects} from "./create-effects.js";
 
 export class StateManager {
     constructor(app, dependencies) {
         this.state = getInitialState(app);
-        this.reducer = featuresReducer(app.features)
+        this.reducer = featureReducer(app)
         this.chainedEventsFactories = createChainedEventFactories(app);
-        this.initializeEffects(app.features, dependencies);
+        this.effects = featureEffects(app, dependencies);
         this.eventListeners = [];
     }
 
     getState() {
         return {...this.state};
-    }
-
-    initializeEffects(features, dependencies) {
-        ow(features, ow.object.valuesOfType(ow.object.partialShape({
-            effects: ow.optional.function
-        })));
-        this.effectWithStateSelectors = Object.keys(features)
-            .filter(key => features[key].effects)
-            .map(key => features[key].effects(dependencies)
-                .map(effect => ({effect, key})))
-            .flat();
     }
 
     addStateChangedListener(onStateChanged) {
@@ -61,17 +51,17 @@ export class StateManager {
     }
 
     triggerEffects(event) {
-        this.effectWithStateSelectors
-            .filter(({effect}) => effect.onEvent.eventType === event.eventType)
-            .forEach(({effect, key}) => effect.then({
+        this.effects
+            .filter((effect) => effect.onEvent.eventType === event.eventType)
+            .forEach((effect) => effect.then({
                 payload: event.payload,
                 dispatch: this.dispatch,
-                state: this.state[key]
+                state: this.state
             }));
     }
 
     cleanUp() {
-        this.effectWithStateSelectors.forEach(effect => effect.cleanUp && effect.cleanUp());
+        this.effects.forEach(effect => effect.cleanUp && effect.cleanUp());
     }
 
 }

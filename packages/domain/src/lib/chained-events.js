@@ -14,8 +14,8 @@ export const createChainedEventFactories = (feature) =>
     (previousEvent, state) => {
         const ownEvents = createChainedEvents(feature.chainedEvents || [])(previousEvent, state);
         return Object
-            .keys(feature.features || {})
-            .map(key => ({key, subFeature: feature.features[key]}))
+            .keys(feature.subFeatures || {})
+            .map(key => ({key, subFeature: feature.subFeatures[key]}))
             .map(({key, subFeature}) => createSubFeatureEventFactories(key, subFeature)(previousEvent, state))
             .reduce((allEvents, subFeatureEvents) => [...allEvents, ...subFeatureEvents], ownEvents);
     }

@@ -4,5 +4,4 @@ import {navigationSelectors} from "./navigation.selectors.js";
 export const navigationFeature = {
     initialState: NAVIGATION_INITIAL_STATE,
     eventHandlers: navigationEventHandlers,
-    selectors: navigationSelectors
 }
