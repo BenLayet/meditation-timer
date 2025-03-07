@@ -33,7 +33,7 @@ export class StateManager {
     dispatch = (event) => {
         // reducers
         const previousState = this.state;
-        const newState = this.reducer(event, previousState);
+        const newState = this.reducer(previousState, event);
         this.state = newState;
 
         // notify state change

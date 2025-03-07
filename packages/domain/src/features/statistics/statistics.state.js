@@ -5,17 +5,17 @@ export const STATISTICS_INITIAL_STATE = {
     error: false,
 };
 
-const onStatisticsFetchRequested = (payload, state) => ({
+const onStatisticsFetchRequested = (state) => ({
     ...state,
     loading: true,
     error: false,
 });
-const onStatisticsFetchFailed = (payload, state) => ({
+const onStatisticsFetchFailed = (state) => ({
     ...state,
     loading: false,
     error: true,
 });
-const onStatisticsFetchSucceeded = ({statistics}, state) => ({
+const onStatisticsFetchSucceeded = (state, {statistics}) => ({
     ...state,
     loading: false,
     error: false,

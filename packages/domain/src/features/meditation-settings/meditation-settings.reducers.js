@@ -21,20 +21,20 @@ function calculateDecrementedDuration(duration, increment) {
 }
 
 //REDUCER FUNCTIONS
-const onGongToggled = (payload, state) => ({...state, gongOff: !state.gongOff});
-const onMoreMeditationTimeRequested = (payload, state) => ({
+const onGongToggled = (state) => ({...state, gongOff: !state.gongOff});
+const onMoreMeditationTimeRequested = (state) => ({
     ...state,
     meditationDurationInMinutes: calculateIncrementedDuration(state.meditationDurationInMinutes, state.meditationIncrementInMinutes)
 });
-const onLessMeditationTimeRequested = (payload, state) => ({
+const onLessMeditationTimeRequested = (state) => ({
     ...state,
     meditationDurationInMinutes: calculateDecrementedDuration(state.meditationDurationInMinutes, state.meditationIncrementInMinutes)
 });
-const onMorePreparationTimeRequested = (payload, state) => ({
+const onMorePreparationTimeRequested = (state) => ({
     ...state,
     preparationDurationInSeconds: calculateIncrementedDuration(state.preparationDurationInSeconds, state.preparationIncrementInSeconds)
 });
-const onLessPreparationTimeRequested = (payload, state) => ({
+const onLessPreparationTimeRequested = (state) => ({
     ...state,
     preparationDurationInSeconds: calculateDecrementedDuration(state.preparationDurationInSeconds, state.preparationIncrementInSeconds)
 });

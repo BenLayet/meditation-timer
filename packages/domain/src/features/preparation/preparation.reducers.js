@@ -15,7 +15,7 @@ const remainingSeconds = currentTimeInSeconds => state => {
     return max([0, state.durationInSeconds - elapsedSeconds(currentTimeInSeconds)(state)]);
 }
 
-const onPreparationStartRequested = ({currentTimeInSeconds, requestedDurationInSeconds}, state) => ({
+const onPreparationStartRequested = (state, {currentTimeInSeconds, requestedDurationInSeconds}) => ({
     ...state,
     durationInSeconds: requestedDurationInSeconds,
     remainingSeconds: requestedDurationInSeconds,
@@ -23,16 +23,16 @@ const onPreparationStartRequested = ({currentTimeInSeconds, requestedDurationInS
 });
 const onPreparationFinished = () => PREPARATION_INITIAL_STATE;
 
-const onPreparationTimerTicked = ({currentTimeInSeconds}, state) => ({
+const onPreparationTimerTicked = (state, {currentTimeInSeconds}) => ({
     ...state,
     remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
 });
-const onMoreTimeDuringPreparationRequested = (payload, state) => ({
+const onMoreTimeDuringPreparationRequested = (state) => ({
     ...state,
     durationInSeconds: state.durationInSeconds + state.timeIncrementInSeconds,
     remainingSeconds: state.remainingSeconds + state.timeIncrementInSeconds,
 });
-const onSkipPreparationRequested = (payload, state) => ({
+const onSkipPreparationRequested = (state) => ({
     ...state,
     durationInSeconds: 0,
     remainingSeconds: 0,

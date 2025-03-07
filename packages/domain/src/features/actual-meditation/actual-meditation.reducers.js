@@ -19,13 +19,13 @@ const remainingSeconds = currentTimeInSeconds => state => {
 
 //event handlers
 const onActualMeditationCancelRequested = () => ACTUAL_MEDITATION_INITIAL_STATE;
-const onActualMeditationStartRequested = ({currentTimeInSeconds, durationInMinutes}, state) => ({
+const onActualMeditationStartRequested = (state, {currentTimeInSeconds, durationInMinutes}) => ({
     ...state,
     durationInMinutes,
     startedTimeInSeconds: currentTimeInSeconds,
     remainingSeconds: durationInMinutes * 60,
 });
-const onActualMeditationTimerTicked = ({currentTimeInSeconds}, state) => ({
+const onActualMeditationTimerTicked = (state, {currentTimeInSeconds}) => ({
     ...state,
     remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
 });

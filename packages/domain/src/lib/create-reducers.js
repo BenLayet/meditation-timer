@@ -1,13 +1,13 @@
-const noChange = (event, state) => state;
+const noChange = (state) => state;
 
 const createReducerFromEventHandlers = (eventHandlers) =>
-    (event, state) =>
-        (eventHandlers[event.eventType] ?? noChange)(event.payload, state);
+    (state, event) =>
+        (eventHandlers[event.eventType] ?? noChange)(state, event.payload);
 
 const wrapFeatureReducer = (key) => (featureReducer) =>
-    (event, state) => ({
+    (state, event) => ({
         ...state,
-        [key]: featureReducer(event, state[key])
+        [key]: featureReducer(state[key], event)
     });
 const createSubFeatureReducers = (subFeatures) =>
     Object.entries(subFeatures)
@@ -20,5 +20,5 @@ const featureReducers = (feature) => {
     return [...subFeatureReducers, ownReducer];
 }
 export const featureReducer = (feature) => {
-    return (event, state) => featureReducers(feature).reduce((state, reducer) => reducer(event, state), state)
+    return (state, event) => featureReducers(feature).reduce((state, reducer) => reducer(state, event), state)
 }
