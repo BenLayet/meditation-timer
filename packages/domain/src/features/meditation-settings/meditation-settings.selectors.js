@@ -7,3 +7,9 @@ const preparationDurationInSeconds = (state) => state.preparationDurationInSecon
 export const meditationDuration = flow(meditationDurationInSeconds, formatSeconds);
 export const preparationDuration = flow(preparationDurationInSeconds, formatSeconds);
 export const isGongOff = state => state.gongOff;
+
+export const meditationSettingsSelectors = {
+    isGongOff,
+    meditationDuration,
+    preparationDuration,
+}

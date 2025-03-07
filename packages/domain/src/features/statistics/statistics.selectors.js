@@ -10,7 +10,6 @@ const hourCountThisWeek = state => hourCount(state.totalMinutesThisWeek);
 const minuteCountThisWeek = state => minuteCount(state.totalMinutesThisWeek);
 const shouldDailyStreakBeDisplayed = state => state.dailyStreak > 1;
 const shouldTotalMinutesThisWeekBeDisplayed = state => state.totalMinutesThisWeek > 0;
-const shouldBeDisplayed = state => shouldDailyStreakBeDisplayed(state) || shouldTotalMinutesThisWeekBeDisplayed(state);
 
 export const statisticsSelectors = {
     isLoading,
@@ -18,7 +17,6 @@ export const statisticsSelectors = {
     dailyStreak,
     hourCountThisWeek,
     minuteCountThisWeek,
-    shouldBeDisplayed,
     shouldTotalMinutesThisWeekBeDisplayed,
     shouldDailyStreakBeDisplayed
 };

@@ -1,16 +1,12 @@
 import {
     meditationSessionCompleted,
-    meditationSessionFinished, meditationSessionStartRequested,
+    meditationSessionFinished,
     meditationSessionStopRequested
 } from "./meditation-session.events.js";
+import {preparationFinished} from "../preparation/preparation.events.js";
 import {
-    preparationCompleted,
-    preparationFinished,
-    preparationStartRequested
-} from "../preparation/preparation.events.js";
-import {
-    actualMeditationCancelRequested, actualMeditationCompleted,
-    actualMeditationStartRequested
+    actualMeditationCancelRequested,
+    actualMeditationCompleted
 } from "../actual-meditation/actual-meditation.events.js";
 
 export const meditationSessionChainedEvents = [

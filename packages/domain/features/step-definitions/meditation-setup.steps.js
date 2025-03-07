@@ -8,6 +8,7 @@ import {
     moreMeditationTimeRequested,
     morePreparationTimeRequested
 } from "../../src/features/meditation-settings/meditation-settings.events.js";
+import {meditationSettingsSelectors} from "../../src/features/meditation-settings/meditation-settings.selectors.js";
 
 Given(/^the next meditation duration is (\d{2}):00$/, function (minutes) {
     patchState("meditationSettings.meditationDurationInMinutes", parseInt(minutes));
@@ -34,10 +35,10 @@ When(/^I request (more|less) time for the preparation$/, function (moreOrLess) {
 });
 
 Then(/^the next meditation duration should be (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
-    const actual = appSelectors.nextMeditationDuration(state);
+    const actual = meditationSettingsSelectors.meditationDuration(appSelectors.meditationSettingsState(state));
     expect(actual).to.equal(expectedDisplayedTime);
 });
 Then(/^the next preparation duration should be (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
-    const actual = appSelectors.nextPreparationDuration(state);
+    const actual = meditationSettingsSelectors.preparationDuration(appSelectors.meditationSettingsState(state));
     expect(actual).to.equal(expectedDisplayedTime);
 });

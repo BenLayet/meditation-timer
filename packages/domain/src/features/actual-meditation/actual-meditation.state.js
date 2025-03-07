@@ -5,12 +5,13 @@ import {
     actualMeditationTimerTicked
 } from "./actual-meditation.events.js";
 
+//initial state
 export const ACTUAL_MEDITATION_INITIAL_STATE = {
     durationInMinutes: 20,
     startedTimeInSeconds: null,
     remainingSeconds: null,
 };
-//UTILITY
+//utility
 const durationInSeconds = state => {
     return state.durationInMinutes * 60;
 }
@@ -21,7 +22,7 @@ const remainingSeconds = currentTimeInSeconds => state => {
     return max([0, durationInSeconds(state) - elapsedSeconds(currentTimeInSeconds)(state)]);
 }
 
-//REDUCERS
+//event handlers
 const onActualMeditationCancelRequested = () => ACTUAL_MEDITATION_INITIAL_STATE;
 const onActualMeditationStartRequested = ({currentTimeInSeconds, durationInMinutes}, state) => ({
     ...state,

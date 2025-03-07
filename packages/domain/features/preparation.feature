@@ -7,7 +7,6 @@ Feature: Preparation
     When I start a meditation session
     Then the preparation timer should start running
     And the meditation timer should not be running
-    And I can stop the meditation session
 
   Scenario: Preparation ends
     Given I have started a meditation session

@@ -16,7 +16,7 @@ function Preparation({preparationState}) {
     const addTimeClicked = () => dispatch(moreTimeDuringPreparationRequested());
     const skipClicked = () => dispatch(skipPreparationRequested());
     //selectors
-    const preparationRemainingTime = preparationSelectors.displayedTime(preparationState);
+    const preparationRemainingTime = preparationSelectors.remainingTime(preparationState);
     const timeIncrementInSeconds = preparationSelectors.timeIncrementInSeconds(preparationState);
     return (<div className="subtle">
         <p>{t("preparation")}</p>

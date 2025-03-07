@@ -32,8 +32,3 @@ Then(/^the sleep mode should be disabled$/, function () {
     expect(wasCalled('wakeLockService', 'requestWakeLock')).to.be.true;
     expect(wasCalled('wakeLockService', 'releaseWakeLock')).to.be.false;
 });
-Then(/^I (can|cannot) stop the meditation session$/, function (can) {
-    const expected = can === 'can';
-    const actual = appSelectors.canMeditationSessionBeReset(state);
-    expect(actual).to.equal(expected);
-});

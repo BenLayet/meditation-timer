@@ -8,23 +8,14 @@ import {
     actualMeditationStartRequested
 } from "../features/actual-meditation/actual-meditation.events.js";
 import {meditationSessionFeature} from "../features/meditation-session/meditation-session.feature.js";
-import {createSelectors} from "../lib/feature-selector.js";
 import {statisticsFeature} from "../features/statistics/statistics.feature.js";
 import {statisticsFetchRequested} from "../features/statistics/statistics.events.js";
-import {and, not, or} from "../lib/predicate.functions.js";
 import {meditationSettingsFeature} from "../features/meditation-settings/meditation-settings.feature.js";
 import {navigationRequested} from "../features/navigation/navigation.events.js";
 import {navigationFeature} from "../features/navigation/navigation.feature.js";
 import {preparationCompleted, preparationStartRequested} from "../features/preparation/preparation.events.js";
 import {flow} from "lodash-es";
 import {navigationSelectors} from "../features/navigation/navigation.selectors.js";
-
-const subFeatures = {
-    navigation: navigationFeature,
-    meditationSettings: meditationSettingsFeature,
-    meditationSession: meditationSessionFeature,
-    statistics: statisticsFeature,
-};
 
 const meditationSettingsState = state => state.meditationSettings;
 const meditationSessionState = state => state.meditationSession;
@@ -38,11 +29,16 @@ export const appSelectors = {
     meditationSessionState,
     statisticsState,
     canSettingsBeOpened,
-    currentPage
+    currentPage,
 };
 
 export const meditationTimerApp = {
-    subFeatures,
+    subFeatures: {
+        navigation: navigationFeature,
+        meditationSettings: meditationSettingsFeature,
+        meditationSession: meditationSessionFeature,
+        statistics: statisticsFeature,
+    },
     chainedEvents: [
         {
             onEvent: meditationSessionStartRequested,
@@ -80,5 +76,4 @@ export const meditationTimerApp = {
             thenDispatch: statisticsFetchRequested
         },
     ],
-    selectors: appSelectors,
 };

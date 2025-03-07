@@ -7,12 +7,13 @@ import {meditationSessionStopRequested} from "domain/src/features/meditation-ses
 import Preparation from "../preparation/Preparation.jsx";
 import Timer from "../timer/Timer.jsx";
 import {InspiringImage} from "../inspiring-image/InspiringImage.jsx";
-import {meditationSessionSelectors} from "domain/src/features/meditation-session/meditation-session.feature.js";
+import {meditationSessionSelectors} from "domain/src/features/meditation-session/meditation-session.selectors.js";
 
 function MeditationSessionPage({meditationSessionState}) {
     const {dispatch} = useContext(AppStateContext);
     //actions
     const stopClicked = () => dispatch(meditationSessionStopRequested());
+
     //selectors
     const preparationIsRunning = meditationSessionSelectors.preparationIsRunning(meditationSessionState);
     const preparationState = meditationSessionSelectors.preparationState(meditationSessionState);
