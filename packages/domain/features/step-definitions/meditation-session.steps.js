@@ -1,5 +1,5 @@
 import {Given, Then, When} from "@cucumber/cucumber";
-import {dispatch, state} from "./state-manager/test-state-manager.js";
+import {dispatch} from "./state-manager/test-state-manager.js";
 import {
     meditationSessionCompleted,
     meditationSessionStartRequested,
@@ -8,14 +8,13 @@ import {
 import {expect} from "chai";
 import {wasCalled} from "./state-manager/mock-services.js";
 import {BEGINNING_OF_TIME_IN_SECONDS} from "./state-manager/test-constants.js";
-import {appSelectors} from "../../src/app/meditation-timer.app.js";
 
 Given(/^I have started a meditation session$/, function () {
-    dispatch(meditationSessionStartRequested({currentTimeInSeconds:BEGINNING_OF_TIME_IN_SECONDS}));
+    dispatch(meditationSessionStartRequested({currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS}));
 });
 
 When(/^I start a meditation session$/, function () {
-    dispatch(meditationSessionStartRequested({currentTimeInSeconds:BEGINNING_OF_TIME_IN_SECONDS}));
+    dispatch(meditationSessionStartRequested({currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS}));
 });
 When(/^I stop the meditation session$/, function () {
     dispatch(meditationSessionStopRequested());

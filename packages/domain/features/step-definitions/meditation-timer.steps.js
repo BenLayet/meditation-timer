@@ -10,7 +10,6 @@ import {appSelectors} from "../../src/app/meditation-timer.app.js";
 import {wasCalled} from "./state-manager/mock-services.js";
 import {BEGINNING_OF_TIME_IN_SECONDS} from "./state-manager/test-constants.js";
 import {meditationSessionSelectors} from "../../src/features/meditation-session/meditation-session.selectors.js";
-import {actualMeditationSelectors} from "../../src/features/actual-meditation/actual-meditation.selectors.js";
 
 Given(/^the actual meditation has started$/, function () {
     dispatch(actualMeditationStartRequested({

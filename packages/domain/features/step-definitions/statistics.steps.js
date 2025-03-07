@@ -5,7 +5,6 @@ import {appSelectors} from "../../src/app/meditation-timer.app.js";
 import {state} from "./state-manager/test-state-manager.js";
 import {statisticsSelectors} from "../../src/features/statistics/statistics.selectors.js";
 
-
 Given(/^I had a daily streak of (\d+) days and meditated (\d+) minutes this week$/, function (days, minutes) {
     when(mockServices.meditationRepository.fetchStatistics).thenReturn(Promise.resolve({
         dailyStreak: days, totalMinutesThisWeek: minutes
