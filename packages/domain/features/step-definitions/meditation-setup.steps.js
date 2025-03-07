@@ -1,7 +1,7 @@
 import {Given, Then, When} from "@cucumber/cucumber";
 import {dispatch, patchState, state} from "./state-manager/test-state-manager.js";
 import {expect} from "chai";
-import {appSelectors} from "../../src/app/meditation-timer.app.js";
+import {appSelectors} from "../../src/features/meditation-timer-app/meditation-timer-app.selectors.js";
 import {
     lessMeditationTimeRequested,
     lessPreparationTimeRequested,
@@ -35,10 +35,12 @@ When(/^I request (more|less) time for the preparation$/, function (moreOrLess) {
 });
 
 Then(/^the next meditation duration should be (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
-    const actual = meditationSettingsSelectors.meditationDuration(appSelectors.meditationSettingsState(state));
+    const meditationSettingsState = appSelectors.meditationSettingsState(state);
+    const actual = meditationSettingsSelectors.meditationDuration(meditationSettingsState);
     expect(actual).to.equal(expectedDisplayedTime);
 });
 Then(/^the next preparation duration should be (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
-    const actual = meditationSettingsSelectors.preparationDuration(appSelectors.meditationSettingsState(state));
+    const meditationSettingsState = appSelectors.meditationSettingsState(state);
+    const actual = meditationSettingsSelectors.preparationDuration(meditationSettingsState);
     expect(actual).to.equal(expectedDisplayedTime);
 });

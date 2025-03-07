@@ -2,37 +2,21 @@ import {
     meditationSessionCompleted,
     meditationSessionStartRequested,
     meditationSessionStopRequested
-} from "../features/meditation-session/meditation-session.events.js";
+} from "../meditation-session/meditation-session.events.js";
 import {
     actualMeditationSaveSucceeded,
     actualMeditationStartRequested
-} from "../features/actual-meditation/actual-meditation.events.js";
-import {meditationSessionFeature} from "../features/meditation-session/meditation-session.feature.js";
-import {statisticsFeature} from "../features/statistics/statistics.feature.js";
-import {statisticsFetchRequested} from "../features/statistics/statistics.events.js";
-import {meditationSettingsFeature} from "../features/meditation-settings/meditation-settings.feature.js";
-import {navigationRequested} from "../features/navigation/navigation.events.js";
-import {navigationFeature} from "../features/navigation/navigation.feature.js";
-import {preparationCompleted, preparationStartRequested} from "../features/preparation/preparation.events.js";
-import {flow} from "lodash-es";
-import {navigationSelectors} from "../features/navigation/navigation.selectors.js";
+} from "../actual-meditation/actual-meditation.events.js";
+import {meditationSessionFeature} from "../meditation-session/meditation-session.feature.js";
+import {statisticsFeature} from "../statistics/statistics.feature.js";
+import {statisticsFetchRequested} from "../statistics/statistics.events.js";
+import {meditationSettingsFeature} from "../meditation-settings/meditation-settings.feature.js";
+import {navigationRequested} from "../navigation/navigation.events.js";
+import {navigationFeature} from "../navigation/navigation.feature.js";
+import {preparationCompleted, preparationStartRequested} from "../preparation/preparation.events.js";
 
-const meditationSettingsState = state => state.meditationSettings;
-const meditationSessionState = state => state.meditationSession;
-const statisticsState = state => state.statistics;
-const navigationState = state => state.navigation;
-const currentPage = flow(navigationState, navigationSelectors.currentPage)
-const canSettingsBeOpened = flow(navigationState, navigationSelectors.currentPage, ['STATISTICS', 'HOME'].includes)
-export const appSelectors = {
-    navigationState,
-    meditationSettingsState,
-    meditationSessionState,
-    statisticsState,
-    canSettingsBeOpened,
-    currentPage,
-};
 
-export const meditationTimerApp = {
+export const meditationTimerAppFeature = {
     subFeatures: {
         navigation: navigationFeature,
         meditationSettings: meditationSettingsFeature,

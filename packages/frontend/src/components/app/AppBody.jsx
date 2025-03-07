@@ -1,6 +1,6 @@
 import {useContext} from "react";
 import {AppStateContext} from "./AppStateProvider.jsx";
-import {appSelectors} from "domain/src/app/meditation-timer.app.js";
+import {appSelectors} from "domain/src/features/meditation-timer-app/meditation-timer-app.selectors.js";
 import MeditationSettingsPage from "../meditation-settings-page/MeditationSettingsPage.jsx";
 import MeditationSessionPage from "../meditation-session-page/MeditationSessionPage.jsx";
 import StatisticsPage from "../statistics/StatisticsPage.jsx";
@@ -15,7 +15,7 @@ const AppBody = () => {
     return (
         <div className="app-body">
             {page === 'HOME' && <MeditationSettingsPage meditationSettingsState={meditationSettingsState}/>}
-            {page === 'MEDITATION_SESSION' && <MeditationSessionPage meditationSessionState={meditationSessionState} />}
+            {page === 'MEDITATION_SESSION' && <MeditationSessionPage meditationSessionState={meditationSessionState}/>}
             {page === 'STATISTICS' && <StatisticsPage statisticsState={statisticsState}/>}
         </div>
     );

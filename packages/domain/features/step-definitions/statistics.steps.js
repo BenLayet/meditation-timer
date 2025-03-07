@@ -1,7 +1,7 @@
 import {Given, Then} from "@cucumber/cucumber";
 import {expect} from "chai";
 import {mockServices, wasCalled, when} from "./state-manager/mock-services.js";
-import {appSelectors} from "../../src/app/meditation-timer.app.js";
+import {appSelectors} from "../../src/features/meditation-timer-app/meditation-timer-app.selectors.js";
 import {state} from "./state-manager/test-state-manager.js";
 import {statisticsSelectors} from "../../src/features/statistics/statistics.selectors.js";
 
