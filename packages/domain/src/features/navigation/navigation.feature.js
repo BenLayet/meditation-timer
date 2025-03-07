@@ -1,4 +1,5 @@
-import {NAVIGATION_INITIAL_STATE, navigationEventHandlers} from "./navigation.state.js";
+import {NAVIGATION_INITIAL_STATE} from "./navigation.state.js";
+import {navigationEventHandlers} from "./navigation.reducers.js";
 
 export const navigationFeature = {
     initialState: NAVIGATION_INITIAL_STATE,

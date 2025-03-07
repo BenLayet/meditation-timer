@@ -1,6 +1,7 @@
-import {PREPARATION_INITIAL_STATE, preparationEventHandlers} from "./preparation.state.js";
+import {PREPARATION_INITIAL_STATE} from "./preparation.state.js";
 import {preparationSelectors} from "./preparation.selectors.js";
 import {preparationEffects} from "./preparation.effects.js";
+import {preparationEventHandlers} from "./preparation.reducers.js";
 
 export const preparationFeature = {
     initialState: PREPARATION_INITIAL_STATE,

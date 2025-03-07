@@ -1,0 +1,36 @@
+import {floor, max} from "lodash-es";
+import {
+    actualMeditationCancelRequested,
+    actualMeditationStartRequested,
+    actualMeditationTimerTicked
+} from "./actual-meditation.events.js";
+import {ACTUAL_MEDITATION_INITIAL_STATE} from "./actual-meditation.state.js";
+
+//utility
+const durationInSeconds = state => {
+    return state.durationInMinutes * 60;
+}
+const elapsedSeconds = currentTimeInSeconds => state => {
+    return state.startedTimeInSeconds ? floor((currentTimeInSeconds - state.startedTimeInSeconds)) : 0;
+}
+const remainingSeconds = currentTimeInSeconds => state => {
+    return max([0, durationInSeconds(state) - elapsedSeconds(currentTimeInSeconds)(state)]);
+}
+
+//event handlers
+const onActualMeditationCancelRequested = () => ACTUAL_MEDITATION_INITIAL_STATE;
+const onActualMeditationStartRequested = ({currentTimeInSeconds, durationInMinutes}, state) => ({
+    ...state,
+    durationInMinutes,
+    startedTimeInSeconds: currentTimeInSeconds,
+    remainingSeconds: durationInMinutes * 60,
+});
+const onActualMeditationTimerTicked = ({currentTimeInSeconds}, state) => ({
+    ...state,
+    remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
+});
+export const actualMeditationEventHandlers = {
+    [actualMeditationStartRequested.eventType]: onActualMeditationStartRequested,
+    [actualMeditationCancelRequested.eventType]: onActualMeditationCancelRequested,
+    [actualMeditationTimerTicked.eventType]: onActualMeditationTimerTicked,
+};
