@@ -1,11 +1,11 @@
 import {
+    moreTimeDuringPreparationRequested,
     preparationCompleted,
     preparationFinished,
     preparationStartRequested,
     preparationTimerTicked
 } from "./preparation.events.js";
 import {preparationSelectors} from "./preparation.selectors.js";
-import {morePreparationTimeRequested} from "../meditation-settings/meditation-settings.events.js";
 
 const TIMER_NAME = 'preparation';
 const startTicking = tickingService => ({dispatch}) => tickingService
@@ -38,7 +38,7 @@ export const preparationEffects = ({tickingService}) => [
         then: stopTicking(tickingService),
     },
     {
-        onEvent: morePreparationTimeRequested,
+        onEvent: moreTimeDuringPreparationRequested,
         then: restartTicking(tickingService), //avoid flickering when adding more time
     }
 ];
