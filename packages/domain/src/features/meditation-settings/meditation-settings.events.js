@@ -1,9 +1,8 @@
-import {createEventFactory} from "../../lib/event-factory.js";
+export const meditationSettingsEvents = {
+    moreMeditationTimeRequested: {},
+    lessMeditationTimeRequested: {},
+    morePreparationTimeRequested: {},
+    lessPreparationTimeRequested: {},
+    gongToggled: {},
 
-export const moreMeditationTimeRequested = createEventFactory('moreMeditationTimeRequested');
-export const lessMeditationTimeRequested = createEventFactory('lessMeditationTimeRequested');
-
-export const morePreparationTimeRequested = createEventFactory('morePreparationTimeRequested');
-export const lessPreparationTimeRequested = createEventFactory('lessPreparationTimeRequested');
-
-export const gongToggled = createEventFactory('gongToggled');
+}

@@ -1,26 +1,22 @@
 import {Given, Then, When} from "@cucumber/cucumber";
 import {dispatch} from "./state-manager/test-state-manager.js";
-import {
-    meditationSessionCompleted,
-    meditationSessionStartRequested,
-    meditationSessionStopRequested
-} from "../../src/features/meditation-session/meditation-session.events.js";
+import {meditationSessionEvents} from "../../src/features/meditation-session/meditation-session.events.js";
 import {expect} from "chai";
 import {wasCalled} from "./state-manager/mock-services.js";
 import {BEGINNING_OF_TIME_IN_SECONDS} from "./state-manager/test-constants.js";
 
 Given(/^I have started a meditation session$/, function () {
-    dispatch(meditationSessionStartRequested({currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS}));
+    dispatch(meditationSessionEvents.startRequested, {currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS});
 });
 
 When(/^I start a meditation session$/, function () {
-    dispatch(meditationSessionStartRequested({currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS}));
+    dispatch(meditationSessionEvents.startRequested, {currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS});
 });
 When(/^I stop the meditation session$/, function () {
-    dispatch(meditationSessionStopRequested());
+    dispatch(meditationSessionEvents.stopRequested);
 });
 When(/^the session completes$/, function () {
-    dispatch(meditationSessionCompleted());
+    dispatch(meditationSessionEvents.completed);
 });
 
 Then(/^the sleep mode should be reenabled$/, function () {

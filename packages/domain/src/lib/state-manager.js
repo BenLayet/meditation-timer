@@ -3,6 +3,7 @@ import {featureReducer} from "./create-reducers.js";
 import {createChainedEventFactories} from "./chained-events.js";
 import {getInitialState} from "./initial-state.js";
 import {featureEffects} from "./create-effects.js";
+import {actualMeditationEvents} from "../features/actual-meditation/actual-meditation.events.js";
 
 export class StateManager {
     constructor(app, dependencies) {
@@ -30,14 +31,22 @@ export class StateManager {
         this.eventListeners.forEach(onStateChanged => onStateChanged(newState, event, oldState));
     }
 
-    dispatch = (event) => {
+    dispatch = (eventType, payload = {}) => {
+        Object.entries(actualMeditationEvents)
+            .filter(([, value]) => value === eventType)
+            .map(([key]) => key)
+            .forEach(console.log)
+
+        //payload validation
+        ow(payload, ow.object.exactShape(eventType));
+        const event = {eventType, payload};
+
         // reducers
         const previousState = this.state;
-        const newState = this.reducer(previousState, event);
-        this.state = newState;
+        this.state = this.reducer(previousState, event);
 
         // notify state change
-        this.notifyStateChanged(newState, event, previousState);
+        this.notifyStateChanged(this.state, event, previousState);
 
         //forward event
         this.forwardEvent(event);
@@ -47,12 +56,12 @@ export class StateManager {
     }
 
     forwardEvent(event) {
-        this.chainedEventsFactories(event, this.state).forEach(this.dispatch);
+        this.chainedEventsFactories(event, this.state).forEach((event) => this.dispatch(event.eventType, event.payload));
     }
 
     triggerEffects(event) {
         this.effects
-            .filter((effect) => effect.onEvent.eventType === event.eventType)
+            .filter((effect) => effect.onEvent === event.eventType)
             .forEach((effect) => effect.then({
                 payload: event.payload,
                 dispatch: this.dispatch,

@@ -1,14 +1,14 @@
 import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {Statistics} from "./Statistics.jsx";
-import {navigationRequested} from "domain/src/features/navigation/navigation.events.js";
+import {navigationEvents} from "domain/src/features/navigation/navigation.events.js";
 import {useTranslation} from "react-i18next";
 
 function StatisticsPage({statisticsState}) {
     const {t} = useTranslation();
     const {dispatch} = useContext(AppStateContext);
 
-    const goBackHomeClicked = () => dispatch(navigationRequested({page: 'HOME'}))
+    const goBackHomeClicked = () => dispatch(navigationEvents.navigationRequested, {page: 'HOME'})
 
     return <>
         <p>{t('sessionCompleted')}</p>

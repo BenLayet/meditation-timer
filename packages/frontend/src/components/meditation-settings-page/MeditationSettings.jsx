@@ -5,22 +5,17 @@ import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {useTranslation} from "react-i18next";
 import GongControl from "../gong-control/GongControl.jsx";
-import {
-    lessMeditationTimeRequested,
-    lessPreparationTimeRequested,
-    moreMeditationTimeRequested,
-    morePreparationTimeRequested
-} from "domain/src/features/meditation-settings/meditation-settings.events.js";
+import {meditationSettingsEvents} from "domain/src/features/meditation-settings/meditation-settings.events.js";
 import {meditationSettingsSelectors} from "domain/src/features/meditation-settings/meditation-settings.selectors.js";
 
 function MeditationSettings({meditationSettingsState}) {
     const {t} = useTranslation();
     const {dispatch} = useContext(AppStateContext);
     //actions
-    const preparationAddTimeClicked = () => dispatch(morePreparationTimeRequested());
-    const preparationRemoveTimeClicked = () => dispatch(lessPreparationTimeRequested());
-    const meditationAddTimeClicked = () => dispatch(moreMeditationTimeRequested());
-    const meditationRemoveTimeClicked = () => dispatch(lessMeditationTimeRequested());
+    const preparationAddTimeClicked = () => dispatch(meditationSettingsEvents.morePreparationTimeRequested);
+    const preparationRemoveTimeClicked = () => dispatch(meditationSettingsEvents.lessPreparationTimeRequested);
+    const meditationAddTimeClicked = () => dispatch(meditationSettingsEvents.moreMeditationTimeRequested);
+    const meditationRemoveTimeClicked = () => dispatch(meditationSettingsEvents.lessMeditationTimeRequested);
     //selectors
     const meditationDuration = meditationSettingsSelectors.meditationDuration(meditationSettingsState);
     const preparationDuration = meditationSettingsSelectors.preparationDuration(meditationSettingsState);

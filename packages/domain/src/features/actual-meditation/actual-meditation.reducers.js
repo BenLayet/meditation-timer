@@ -1,9 +1,5 @@
 import {floor, max} from "lodash-es";
-import {
-    actualMeditationCancelRequested,
-    actualMeditationStartRequested,
-    actualMeditationTimerTicked
-} from "./actual-meditation.events.js";
+import {actualMeditationEvents} from "./actual-meditation.events.js";
 import {ACTUAL_MEDITATION_INITIAL_STATE} from "./actual-meditation.state.js";
 
 //utility
@@ -18,19 +14,18 @@ const remainingSeconds = currentTimeInSeconds => state => {
 }
 
 //event handlers
-const onActualMeditationCancelRequested = () => ACTUAL_MEDITATION_INITIAL_STATE;
-const onActualMeditationStartRequested = (state, {currentTimeInSeconds, durationInMinutes}) => ({
-    ...state,
-    durationInMinutes,
-    startedTimeInSeconds: currentTimeInSeconds,
-    remainingSeconds: durationInMinutes * 60,
-});
-const onActualMeditationTimerTicked = (state, {currentTimeInSeconds}) => ({
-    ...state,
-    remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
-});
-export const actualMeditationEventHandlers = {
-    [actualMeditationStartRequested.eventType]: onActualMeditationStartRequested,
-    [actualMeditationCancelRequested.eventType]: onActualMeditationCancelRequested,
-    [actualMeditationTimerTicked.eventType]: onActualMeditationTimerTicked,
-};
+export const actualMeditationEventHandlers = new Map();
+actualMeditationEventHandlers.set(actualMeditationEvents.cancelRequested, () => ACTUAL_MEDITATION_INITIAL_STATE);
+actualMeditationEventHandlers.set(actualMeditationEvents.startRequested, (state, {
+    currentTimeInSeconds,
+    durationInMinutes
+}) => ({
+    ...state, durationInMinutes, startedTimeInSeconds: currentTimeInSeconds, remainingSeconds: durationInMinutes * 60,
+}));
+actualMeditationEventHandlers.set(actualMeditationEvents.timerTicked, (state, {currentTimeInSeconds}) => ({
+    ...state, remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
+}));
+actualMeditationEventHandlers.set(actualMeditationEvents.timerTicked, (state, {currentTimeInSeconds}) => ({
+    ...state, remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
+}));
+

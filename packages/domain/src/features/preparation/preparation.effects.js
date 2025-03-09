@@ -1,44 +1,38 @@
-import {
-    moreTimeDuringPreparationRequested,
-    preparationCompleted,
-    preparationFinished,
-    preparationStartRequested,
-    preparationTimerTicked
-} from "./preparation.events.js";
+import {preparationEvents} from "./preparation.events.js";
 import {preparationSelectors} from "./preparation.selectors.js";
 
 const TIMER_NAME = 'preparation';
 const startTicking = tickingService => ({dispatch}) => tickingService
-    .startTicking(TIMER_NAME, currentTimeInSeconds => dispatch(preparationTimerTicked({currentTimeInSeconds})));
+    .startTicking(TIMER_NAME, currentTimeInSeconds => dispatch(preparationEvents.timerTicked, {currentTimeInSeconds}));
 const stopTicking = tickingService => tickingService.stopTicking(TIMER_NAME);
 const restartTicking = tickingService => ({dispatch}) => {
     stopTicking(tickingService)();
     startTicking(tickingService)({dispatch});
 }
 const dispatchCompletedIfTimeIsUp = ({state, dispatch, payload}) =>
-    preparationSelectors.isTimeUp(state) && dispatch(preparationCompleted(payload));
+    preparationSelectors.isTimeUp(state) && dispatch(preparationEvents.completed, payload);
 
 
 export const preparationEffects = ({tickingService}) => [
     {
-        onEvent: preparationStartRequested,
+        onEvent: preparationEvents.startRequested,
         then: startTicking(tickingService),
         cleanUp: stopTicking(tickingService),
     },
     {
-        onEvent: preparationTimerTicked,
+        onEvent: preparationEvents.timerTicked,
         then: dispatchCompletedIfTimeIsUp,
     },
     {
-        onEvent: preparationCompleted,
-        then: ({dispatch}) => dispatch(preparationFinished())
+        onEvent: preparationEvents.completed,
+        then: ({dispatch}) => dispatch(preparationEvents.finished)
     },
     {
-        onEvent: preparationFinished,
+        onEvent: preparationEvents.finished,
         then: stopTicking(tickingService),
     },
     {
-        onEvent: moreTimeDuringPreparationRequested,
+        onEvent: preparationEvents.moreTimeRequested,
         then: restartTicking(tickingService), //avoid flickering when adding more time
     }
 ];

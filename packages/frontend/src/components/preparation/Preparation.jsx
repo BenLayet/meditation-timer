@@ -2,10 +2,7 @@ import {useTranslation} from "react-i18next";
 import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import Timer from "../timer/Timer.jsx";
-import {
-    moreTimeDuringPreparationRequested,
-    skipPreparationRequested
-} from "domain/src/features/preparation/preparation.events.js";
+import {preparationEvents} from "domain/src/features/preparation/preparation.events.js";
 import "./Preparation.css";
 import {preparationSelectors} from "domain/src/features/preparation/preparation.selectors.js";
 
@@ -13,8 +10,8 @@ function Preparation({preparationState}) {
     const {t} = useTranslation();
     const {dispatch} = useContext(AppStateContext);
     //actions
-    const addTimeClicked = () => dispatch(moreTimeDuringPreparationRequested());
-    const skipClicked = () => dispatch(skipPreparationRequested());
+    const addTimeClicked = () => dispatch(preparationEvents.moreTimeRequested);
+    const skipClicked = () => dispatch(preparationEvents.skipRequested);
     //selectors
     const preparationRemainingTime = preparationSelectors.remainingTime(preparationState);
     const timeIncrementInSeconds = preparationSelectors.timeIncrementInSeconds(preparationState);

@@ -1,7 +1,8 @@
-import {navigationRequested} from "./navigation.events.js";
+import {navigationEvents} from "./navigation.events.js";
 
-const onNavigationRequested = (state, {page}) => ({...state, currentPage: page});
-
-export const navigationEventHandlers = {
-    [navigationRequested.eventType]: onNavigationRequested,
-};
+//event handlers
+export const navigationEventHandlers = new Map();
+navigationEventHandlers.set(
+    navigationEvents.navigationRequested,
+    (state, {page}) => ({...state, currentPage: page})
+);

@@ -1,21 +1,16 @@
-import {
-    actualMeditationCancelRequested,
-    actualMeditationCompleted,
-    actualMeditationSaveRequested,
-    actualMeditationStopped
-} from "./actual-meditation.events.js";
+import {actualMeditationEvents} from "./actual-meditation.events.js";
 
 export const actualMeditationChainedEvents = [
     {
-        onEvent: actualMeditationCompleted,
-        thenDispatch: actualMeditationStopped
+        onEvent: actualMeditationEvents.completed,
+        thenDispatch: actualMeditationEvents.stopped
     },
     {
-        onEvent: actualMeditationCancelRequested,
-        thenDispatch: actualMeditationStopped
+        onEvent: actualMeditationEvents.cancelRequested,
+        thenDispatch: actualMeditationEvents.stopped
     },
     {
-        onEvent: actualMeditationCompleted,
-        thenDispatch: actualMeditationSaveRequested
+        onEvent: actualMeditationEvents.completed,
+        thenDispatch: actualMeditationEvents.saveRequested
     },
 ];

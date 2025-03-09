@@ -11,8 +11,8 @@ export let state = {};
 //STATE MANAGER
 export const stateManager = new StateManager(meditationTimerAppFeature, mockServices);
 const initialState = stateManager.state;
-export const dispatch = (event) => {
-    stateManager.dispatch(event);
+export const dispatch = (eventType, payload) => {
+    stateManager.dispatch(eventType, payload);
 }
 export const reset = () => {
     state = stateManager.state = initialState;

@@ -2,7 +2,7 @@ const noChange = (state) => state;
 
 const createReducerFromEventHandlers = (eventHandlers) =>
     (state, event) =>
-        (eventHandlers[event.eventType] ?? noChange)(state, event.payload);
+        (eventHandlers.get(event.eventType) ?? noChange)(state, event.payload);
 
 const wrapFeatureReducer = (key) => (featureReducer) =>
     (state, event) => ({
@@ -16,7 +16,7 @@ const createSubFeatureReducers = (subFeatures) =>
 
 const featureReducers = (feature) => {
     const subFeatureReducers = createSubFeatureReducers(feature.subFeatures ?? {});
-    const ownReducer = createReducerFromEventHandlers(feature.eventHandlers ?? {});
+    const ownReducer = feature.eventHandlers ? createReducerFromEventHandlers(feature.eventHandlers) : noChange;
     return [...subFeatureReducers, ownReducer];
 }
 export const featureReducer = (feature) => {

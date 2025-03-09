@@ -1,11 +1,5 @@
 import {floor, max} from "lodash-es";
-import {
-    gongToggled,
-    lessMeditationTimeRequested,
-    lessPreparationTimeRequested,
-    moreMeditationTimeRequested,
-    morePreparationTimeRequested
-} from "./meditation-settings.events.js";
+import {meditationSettingsEvents} from "./meditation-settings.events.js";
 
 //UTILITY
 function calculateIncrementedDuration(duration, increment) {
@@ -20,29 +14,40 @@ function calculateDecrementedDuration(duration, increment) {
     return diff;
 }
 
-//REDUCER FUNCTIONS
-const onGongToggled = (state) => ({...state, gongOff: !state.gongOff});
-const onMoreMeditationTimeRequested = (state) => ({
-    ...state,
-    meditationDurationInMinutes: calculateIncrementedDuration(state.meditationDurationInMinutes, state.meditationIncrementInMinutes)
-});
-const onLessMeditationTimeRequested = (state) => ({
-    ...state,
-    meditationDurationInMinutes: calculateDecrementedDuration(state.meditationDurationInMinutes, state.meditationIncrementInMinutes)
-});
-const onMorePreparationTimeRequested = (state) => ({
-    ...state,
-    preparationDurationInSeconds: calculateIncrementedDuration(state.preparationDurationInSeconds, state.preparationIncrementInSeconds)
-});
-const onLessPreparationTimeRequested = (state) => ({
-    ...state,
-    preparationDurationInSeconds: calculateDecrementedDuration(state.preparationDurationInSeconds, state.preparationIncrementInSeconds)
-});
-export const meditationSettingsEventHandlers = {
-    [gongToggled.eventType]: onGongToggled,
-    [moreMeditationTimeRequested.eventType]: onMoreMeditationTimeRequested,
-    [lessMeditationTimeRequested.eventType]: onLessMeditationTimeRequested,
-    [morePreparationTimeRequested.eventType]: onMorePreparationTimeRequested,
-    [lessPreparationTimeRequested.eventType]: onLessPreparationTimeRequested,
-
-};
+//event handlers
+export const meditationSettingsEventHandlers = new Map();
+meditationSettingsEventHandlers.set(
+    meditationSettingsEvents.gongToggled,
+    (state) => ({
+        ...state,
+        gongOff: !state.gongOff
+    })
+);
+meditationSettingsEventHandlers.set(
+    meditationSettingsEvents.moreMeditationTimeRequested,
+    (state) => ({
+        ...state,
+        meditationDurationInMinutes: calculateIncrementedDuration(state.meditationDurationInMinutes, state.meditationIncrementInMinutes)
+    })
+);
+meditationSettingsEventHandlers.set(
+    meditationSettingsEvents.lessMeditationTimeRequested,
+    (state) => ({
+        ...state,
+        meditationDurationInMinutes: calculateDecrementedDuration(state.meditationDurationInMinutes, state.meditationIncrementInMinutes)
+    })
+);
+meditationSettingsEventHandlers.set(
+    meditationSettingsEvents.morePreparationTimeRequested,
+    (state) => ({
+        ...state,
+        preparationDurationInSeconds: calculateIncrementedDuration(state.preparationDurationInSeconds, state.preparationIncrementInSeconds)
+    })
+);
+meditationSettingsEventHandlers.set(
+    meditationSettingsEvents.lessPreparationTimeRequested,
+    (state) => ({
+        ...state,
+        preparationDurationInSeconds: calculateDecrementedDuration(state.preparationDurationInSeconds, state.preparationIncrementInSeconds)
+    })
+);

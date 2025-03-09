@@ -1,33 +1,26 @@
-import {
-    meditationSessionCompleted,
-    meditationSessionFinished,
-    meditationSessionStopRequested
-} from "./meditation-session.events.js";
-import {preparationFinished} from "../preparation/preparation.events.js";
-import {
-    actualMeditationCancelRequested,
-    actualMeditationCompleted
-} from "../actual-meditation/actual-meditation.events.js";
+import {meditationSessionEvents} from "./meditation-session.events.js";
+import {preparationEvents} from "../preparation/preparation.events.js";
+import {actualMeditationEvents} from "../actual-meditation/actual-meditation.events.js";
 
 export const meditationSessionChainedEvents = [
     {
-        onEvent: meditationSessionCompleted,
-        thenDispatch: meditationSessionFinished
+        onEvent: meditationSessionEvents.completed,
+        thenDispatch: meditationSessionEvents.finished
     },
     {
-        onEvent: meditationSessionStopRequested,
-        thenDispatch: meditationSessionFinished
+        onEvent: meditationSessionEvents.stopRequested,
+        thenDispatch: meditationSessionEvents.finished
     },
     {
-        onEvent: meditationSessionStopRequested,
-        thenDispatch: preparationFinished,
+        onEvent: meditationSessionEvents.stopRequested,
+        thenDispatch: preparationEvents.finished,
     },
     {
-        onEvent: meditationSessionStopRequested,
-        thenDispatch: actualMeditationCancelRequested
+        onEvent: meditationSessionEvents.stopRequested,
+        thenDispatch: actualMeditationEvents.cancelRequested
     },
     {
-        onEvent: actualMeditationCompleted,
-        thenDispatch: meditationSessionCompleted
+        onEvent: actualMeditationEvents.completed,
+        thenDispatch: meditationSessionEvents.completed
     },
 ];

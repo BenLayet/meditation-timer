@@ -3,7 +3,7 @@ import {dispatch, patchState, state} from "./state-manager/test-state-manager.js
 import {expect} from "chai";
 import {appSelectors} from "../../src/features/meditation-timer-app/meditation-timer-app.selectors.js";
 import {mockServices} from "./state-manager/mock-services.js";
-import {moreTimeDuringPreparationRequested} from "../../src/features/preparation/preparation.events.js";
+import {preparationEvents} from "../../src/features/preparation/preparation.events.js";
 import {BEGINNING_OF_TIME_IN_SECONDS, PREPARATION_DURATION_IN_SECONDS} from "./state-manager/test-constants.js";
 import {preparationSelectors} from "../../src/features/preparation/preparation.selectors.js";
 import {meditationSessionSelectors} from "../../src/features/meditation-session/meditation-session.selectors.js";
@@ -24,7 +24,7 @@ When(/^a second has elapsed during preparation$/, function () {
 });
 
 When(/^I request more time during the preparation$/, function () {
-    dispatch(moreTimeDuringPreparationRequested());
+    dispatch(preparationEvents.moreTimeRequested);
 });
 
 Then(/^the preparation timer should (start|stop) running$/, function (start) {

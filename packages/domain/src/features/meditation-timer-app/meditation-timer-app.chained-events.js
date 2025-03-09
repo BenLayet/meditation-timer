@@ -1,50 +1,43 @@
-import {
-    meditationSessionCompleted,
-    meditationSessionStartRequested,
-    meditationSessionStopRequested
-} from "../meditation-session/meditation-session.events.js";
-import {
-    actualMeditationSaveSucceeded,
-    actualMeditationStartRequested
-} from "../actual-meditation/actual-meditation.events.js";
-import {statisticsFetchRequested} from "../statistics/statistics.events.js";
-import {navigationRequested} from "../navigation/navigation.events.js";
-import {preparationCompleted, preparationStartRequested} from "../preparation/preparation.events.js";
+import {meditationSessionEvents} from "../meditation-session/meditation-session.events.js";
+import {actualMeditationEvents} from "../actual-meditation/actual-meditation.events.js";
+import {statisticsEvents} from "../statistics/statistics.events.js";
+import {navigationEvents} from "../navigation/navigation.events.js";
+import {preparationEvents} from "../preparation/preparation.events.js";
 
 export const meditationTimerAppChainedEvents = [
     {
-        onEvent: meditationSessionStartRequested,
-        thenDispatch: navigationRequested,
+        onEvent: meditationSessionEvents.startRequested,
+        thenDispatch: navigationEvents.navigationRequested,
         withPayload: () => ({page: 'MEDITATION_SESSION'}),
     },
     {
-        onEvent: meditationSessionStopRequested,
-        thenDispatch: navigationRequested,
+        onEvent: meditationSessionEvents.stopRequested,
+        thenDispatch: navigationEvents.navigationRequested,
         withPayload: () => ({page: 'HOME'}),
     },
     {
-        onEvent: meditationSessionCompleted,
-        thenDispatch: navigationRequested,
+        onEvent: meditationSessionEvents.completed,
+        thenDispatch: navigationEvents.navigationRequested,
         withPayload: () => ({page: 'STATISTICS'}),
     },
     {
-        onEvent: meditationSessionStartRequested,
-        thenDispatch: preparationStartRequested,
+        onEvent: meditationSessionEvents.startRequested,
+        thenDispatch: preparationEvents.startRequested,
         withPayload: (previousPayload, state) => ({
             currentTimeInSeconds: previousPayload.currentTimeInSeconds,
             requestedDurationInSeconds: state.meditationSettings.preparationDurationInSeconds
         }),
     },
     {
-        onEvent: preparationCompleted,
-        thenDispatch: actualMeditationStartRequested,
+        onEvent: preparationEvents.completed,
+        thenDispatch: actualMeditationEvents.startRequested,
         withPayload: (previousPayload, state) => ({
             ...previousPayload,
             durationInMinutes: state.meditationSettings.meditationDurationInMinutes
         }),
     },
     {
-        onEvent: actualMeditationSaveSucceeded,
-        thenDispatch: statisticsFetchRequested
+        onEvent: actualMeditationEvents.saveSucceeded,
+        thenDispatch: statisticsEvents.fetchRequested
     },
 ];

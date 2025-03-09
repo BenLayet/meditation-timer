@@ -1,12 +1,12 @@
-import {meditationSessionFinished, meditationSessionStartRequested} from "./meditation-session.events.js";
+import {meditationSessionEvents} from "./meditation-session.events.js";
 
 export const meditationSessionEffects = ({wakeLockService}) => [
     {
-        onEvent: meditationSessionStartRequested,
+        onEvent: meditationSessionEvents.startRequested,
         then: wakeLockService.requestWakeLock
     },
     {
-        onEvent: meditationSessionFinished,
+        onEvent: meditationSessionEvents.finished,
         then: wakeLockService.releaseWakeLock
     },
 ];

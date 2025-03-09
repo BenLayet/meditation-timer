@@ -1,65 +1,56 @@
-import {
-    actualMeditationCompleted,
-    actualMeditationCancelRequested,
-    actualMeditationSaveFailed,
-    actualMeditationSaveRequested,
-    actualMeditationSaveSucceeded,
-    actualMeditationStartRequested,
-    actualMeditationStopped,
-    actualMeditationTimerTicked
-} from "./actual-meditation.events.js";
+import {actualMeditationEvents} from "./actual-meditation.events.js";
 import {
     actualMeditationSelectors,
     actualMeditationSelectors as actualMediationSelectors
 } from "./actual-meditation.selectors.js";
 
 const startTicking = tickingService => ({dispatch}) => tickingService
-    .startTicking(TIMER_NAME, currentTimeInSeconds => dispatch(actualMeditationTimerTicked({currentTimeInSeconds})));
+    .startTicking(TIMER_NAME, currentTimeInSeconds => dispatch(actualMeditationEvents.timerTicked, {currentTimeInSeconds}));
 const dispatchCompletedIfTimeIsUp = ({state, dispatch}) =>
-    actualMediationSelectors.isTimeUp(state) && dispatch(actualMeditationCompleted());
+    actualMediationSelectors.isTimeUp(state) && dispatch(actualMeditationEvents.completed);
 
 const saveMeditation = (meditationRepository) =>
     async ({state, dispatch}) => {
         try {
             await meditationRepository.saveMeditation(actualMeditationSelectors.meditationToSave(state));
-            dispatch(actualMeditationSaveSucceeded());
+            dispatch(actualMeditationEvents.saveSucceeded);
         } catch (error) {
             console.error(error);
-            dispatch(actualMeditationSaveFailed(error));
+            dispatch(actualMeditationEvents.saveFailed, {error});
         }
     }
 
 const TIMER_NAME = 'actualMeditation';
 export const actualMeditationEffects = ({gongService, tickingService, meditationRepository}) => [
     {
-        onEvent: actualMeditationStartRequested,
+        onEvent: actualMeditationEvents.startRequested,
         then: gongService.play,
         cleanUp: gongService.stop
     },
     {
-        onEvent: actualMeditationCompleted,
+        onEvent: actualMeditationEvents.completed,
         then: gongService.play,
         cleanUp: gongService.stop
     },
     {
-        onEvent: actualMeditationCancelRequested,
+        onEvent: actualMeditationEvents.cancelRequested,
         then: gongService.stop
     },
     {
-        onEvent: actualMeditationStartRequested,
+        onEvent: actualMeditationEvents.startRequested,
         then: startTicking(tickingService),
         cleanUp: tickingService.stopTicking(TIMER_NAME),
     },
     {
-        onEvent: actualMeditationTimerTicked,
+        onEvent: actualMeditationEvents.timerTicked,
         then: dispatchCompletedIfTimeIsUp,
     },
     {
-        onEvent: actualMeditationStopped,
+        onEvent: actualMeditationEvents.stopped,
         then: tickingService.stopTicking(TIMER_NAME),
     },
     {
-        onEvent: actualMeditationSaveRequested,
+        onEvent: actualMeditationEvents.saveRequested,
         then: saveMeditation(meditationRepository),
     },
 ];

@@ -1,10 +1,4 @@
-import {
-    moreTimeDuringPreparationRequested,
-    preparationFinished,
-    preparationStartRequested,
-    preparationTimerTicked,
-    skipPreparationRequested
-} from "./preparation.events.js";
+import {preparationEvents} from "./preparation.events.js";
 import {max} from "lodash-es";
 import {PREPARATION_INITIAL_STATE} from "./preparation.state.js";
 
@@ -15,33 +9,41 @@ const remainingSeconds = currentTimeInSeconds => state => {
     return max([0, state.durationInSeconds - elapsedSeconds(currentTimeInSeconds)(state)]);
 }
 
-const onPreparationStartRequested = (state, {currentTimeInSeconds, requestedDurationInSeconds}) => ({
-    ...state,
-    durationInSeconds: requestedDurationInSeconds,
-    remainingSeconds: requestedDurationInSeconds,
-    startedTimeInSeconds: currentTimeInSeconds,
-});
-const onPreparationFinished = () => PREPARATION_INITIAL_STATE;
-
-const onPreparationTimerTicked = (state, {currentTimeInSeconds}) => ({
-    ...state,
-    remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
-});
-const onMoreTimeDuringPreparationRequested = (state) => ({
-    ...state,
-    durationInSeconds: state.durationInSeconds + state.timeIncrementInSeconds,
-    remainingSeconds: state.remainingSeconds + state.timeIncrementInSeconds,
-});
-const onSkipPreparationRequested = (state) => ({
-    ...state,
-    durationInSeconds: 0,
-    remainingSeconds: 0,
-});
-
-export const preparationEventHandlers = {
-    [preparationStartRequested.eventType]: onPreparationStartRequested,
-    [preparationFinished.eventType]: onPreparationFinished,
-    [preparationTimerTicked.eventType]: onPreparationTimerTicked,
-    [moreTimeDuringPreparationRequested.eventType]: onMoreTimeDuringPreparationRequested,
-    [skipPreparationRequested.eventType]: onSkipPreparationRequested,
-};
+//event handlers
+export const preparationEventHandlers = new Map();
+preparationEventHandlers.set(
+    preparationEvents.startRequested,
+    (state, {currentTimeInSeconds, requestedDurationInSeconds}) => ({
+        ...state,
+        durationInSeconds: requestedDurationInSeconds,
+        remainingSeconds: requestedDurationInSeconds,
+        startedTimeInSeconds: currentTimeInSeconds,
+    })
+);
+preparationEventHandlers.set(
+    preparationEvents.finished,
+    () => PREPARATION_INITIAL_STATE
+);
+preparationEventHandlers.set(
+    preparationEvents.timerTicked,
+    (state, {currentTimeInSeconds}) => ({
+        ...state,
+        remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
+    })
+);
+preparationEventHandlers.set(
+    preparationEvents.moreTimeRequested,
+    (state) => ({
+        ...state,
+        durationInSeconds: state.durationInSeconds + state.timeIncrementInSeconds,
+        remainingSeconds: state.remainingSeconds + state.timeIncrementInSeconds,
+    })
+);
+preparationEventHandlers.set(
+    preparationEvents.skipRequested,
+    (state) => ({
+        ...state,
+        durationInSeconds: 0,
+        remainingSeconds: 0,
+    })
+);
