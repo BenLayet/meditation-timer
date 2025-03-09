@@ -3,7 +3,6 @@ import {componentReducer} from "./create-reducers.js";
 import {createChainedEventFactories} from "./chained-events.js";
 import {getInitialState} from "./initial-state.js";
 import {componentEffects} from "./create-effects.js";
-import {actualMeditationEvents} from "../components/actual-meditation/actual-meditation.events.js";
 
 export class StateManager {
     constructor(app, dependencies) {
@@ -32,11 +31,6 @@ export class StateManager {
     }
 
     dispatch = (eventType, payload = {}) => {
-        Object.entries(actualMeditationEvents)
-            .filter(([, value]) => value === eventType)
-            .map(([key]) => key)
-            .forEach(console.log)
-
         //payload validation
         ow(payload, ow.object.exactShape(eventType));
         const event = {eventType, payload};
