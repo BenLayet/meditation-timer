@@ -7,16 +7,16 @@ const createChainedEvents = chainedEvents => (previousEvent, state) => chainedEv
     .map(createChainedEventFactory)
     .map(newEventFactory => newEventFactory(previousEvent, state));
 
-const createSubFeatureEventFactories = (key, subFeature) =>
-    (previousEvent, state) => createChainedEventFactories(subFeature)(previousEvent, state[key]);
+const createSubComponentEventFactories = (key, subComponent) =>
+    (previousEvent, state) => createChainedEventFactories(subComponent)(previousEvent, state[key]);
 
-export const createChainedEventFactories = (feature) =>
+export const createChainedEventFactories = (component) =>
     (previousEvent, state) => {
-        const ownEvents = createChainedEvents(feature.chainedEvents ?? [])(previousEvent, state);
+        const ownEvents = createChainedEvents(component.chainedEvents ?? [])(previousEvent, state);
 
         return Object
-            .keys(feature.subFeatures ?? {})
-            .map(key => ({key, subFeature: feature.subFeatures[key]}))
-            .map(({key, subFeature}) => createSubFeatureEventFactories(key, subFeature)(previousEvent, state))
-            .reduce((allEvents, subFeatureEvents) => [...allEvents, ...subFeatureEvents], ownEvents);
+            .keys(component.subComponents ?? {})
+            .map(key => ({key, subComponent: component.subComponents[key]}))
+            .map(({key, subComponent}) => createSubComponentEventFactories(key, subComponent)(previousEvent, state))
+            .reduce((allEvents, subComponentEvents) => [...allEvents, ...subComponentEvents], ownEvents);
     }

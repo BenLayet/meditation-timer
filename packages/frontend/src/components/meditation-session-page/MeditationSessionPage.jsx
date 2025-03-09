@@ -3,11 +3,11 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faStop} from '@fortawesome/free-solid-svg-icons';
 import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
-import {meditationSessionEvents} from "domain/src/features/meditation-session/meditation-session.events.js";
+import {meditationSessionEvents} from "domain/src/components/meditation-session/meditation-session.events.js";
 import Preparation from "../preparation/Preparation.jsx";
 import Timer from "../timer/Timer.jsx";
 import {InspiringImage} from "../inspiring-image/InspiringImage.jsx";
-import {meditationSessionSelectors} from "domain/src/features/meditation-session/meditation-session.selectors.js";
+import {meditationSessionSelectors} from "domain/src/components/meditation-session/meditation-session.selectors.js";
 
 function MeditationSessionPage({meditationSessionState}) {
     const {dispatch} = useContext(AppStateContext);

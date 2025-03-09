@@ -1,6 +1,6 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
-import {meditationSessionEvents} from "domain/src/features/meditation-session/meditation-session.events.js";
+import {meditationSessionEvents} from "domain/src/components/meditation-session/meditation-session.events.js";
 import {currentTimeInSeconds} from "../../lib/time.functions.js";
 import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";

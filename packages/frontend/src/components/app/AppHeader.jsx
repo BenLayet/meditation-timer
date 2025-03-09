@@ -1,6 +1,6 @@
 import {useContext} from "react";
 import {AppStateContext} from "./AppStateProvider.jsx";
-import {appSelectors} from "domain/src/features/meditation-timer-app/meditation-timer-app.selectors.js";
+import {appSelectors} from "domain/src/components/meditation-timer-app/meditation-timer-app.selectors.js";
 import Settings from "../settings/Settings.jsx";
 
 const AppHeader = () => {

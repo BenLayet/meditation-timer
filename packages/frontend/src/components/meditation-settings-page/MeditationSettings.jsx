@@ -5,8 +5,8 @@ import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {useTranslation} from "react-i18next";
 import GongControl from "../gong-control/GongControl.jsx";
-import {meditationSettingsEvents} from "domain/src/features/meditation-settings/meditation-settings.events.js";
-import {meditationSettingsSelectors} from "domain/src/features/meditation-settings/meditation-settings.selectors.js";
+import {meditationSettingsEvents} from "domain/src/components/meditation-settings/meditation-settings.events.js";
+import {meditationSettingsSelectors} from "domain/src/components/meditation-settings/meditation-settings.selectors.js";
 
 function MeditationSettings({meditationSettingsState}) {
     const {t} = useTranslation();

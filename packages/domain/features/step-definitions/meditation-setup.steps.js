@@ -1,9 +1,9 @@
 import {Given, Then, When} from "@cucumber/cucumber";
 import {dispatch, patchState, state} from "./state-manager/test-state-manager.js";
 import {expect} from "chai";
-import {appSelectors} from "../../src/features/meditation-timer-app/meditation-timer-app.selectors.js";
-import {meditationSettingsEvents} from "../../src/features/meditation-settings/meditation-settings.events.js";
-import {meditationSettingsSelectors} from "../../src/features/meditation-settings/meditation-settings.selectors.js";
+import {appSelectors} from "../../src/components/meditation-timer-app/meditation-timer-app.selectors.js";
+import {meditationSettingsEvents} from "../../src/components/meditation-settings/meditation-settings.events.js";
+import {meditationSettingsSelectors} from "../../src/components/meditation-settings/meditation-settings.selectors.js";
 
 Given(/^the next meditation duration is (\d{2}):00$/, function (minutes) {
     patchState("meditationSettings.meditationDurationInMinutes", parseInt(minutes));

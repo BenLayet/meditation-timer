@@ -1,12 +1,12 @@
 import {Given, Then, When} from "@cucumber/cucumber";
 import {dispatch, patchState, state} from "./state-manager/test-state-manager.js";
 import {expect} from "chai";
-import {appSelectors} from "../../src/features/meditation-timer-app/meditation-timer-app.selectors.js";
+import {appSelectors} from "../../src/components/meditation-timer-app/meditation-timer-app.selectors.js";
 import {mockServices} from "./state-manager/mock-services.js";
-import {preparationEvents} from "../../src/features/preparation/preparation.events.js";
+import {preparationEvents} from "../../src/components/preparation/preparation.events.js";
 import {BEGINNING_OF_TIME_IN_SECONDS, PREPARATION_DURATION_IN_SECONDS} from "./state-manager/test-constants.js";
-import {preparationSelectors} from "../../src/features/preparation/preparation.selectors.js";
-import {meditationSessionSelectors} from "../../src/features/meditation-session/meditation-session.selectors.js";
+import {preparationSelectors} from "../../src/components/preparation/preparation.selectors.js";
+import {meditationSessionSelectors} from "../../src/components/meditation-session/meditation-session.selectors.js";
 
 
 Given(/^the preparation has started$/, function () {

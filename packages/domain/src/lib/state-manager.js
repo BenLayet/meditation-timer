@@ -1,16 +1,16 @@
 import ow from "ow";
-import {featureReducer} from "./create-reducers.js";
+import {componentReducer} from "./create-reducers.js";
 import {createChainedEventFactories} from "./chained-events.js";
 import {getInitialState} from "./initial-state.js";
-import {featureEffects} from "./create-effects.js";
-import {actualMeditationEvents} from "../features/actual-meditation/actual-meditation.events.js";
+import {componentEffects} from "./create-effects.js";
+import {actualMeditationEvents} from "../components/actual-meditation/actual-meditation.events.js";
 
 export class StateManager {
     constructor(app, dependencies) {
         this.state = getInitialState(app);
-        this.reducer = featureReducer(app)
+        this.reducer = componentReducer(app)
         this.chainedEventsFactories = createChainedEventFactories(app);
-        this.effects = featureEffects(app, dependencies);
+        this.effects = componentEffects(app, dependencies);
         this.eventListeners = [];
     }
 

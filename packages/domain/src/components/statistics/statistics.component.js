@@ -3,7 +3,7 @@ import {STATISTICS_INITIAL_STATE} from "./statistics.state.js";
 import {statisticsSelectors} from "./statistics.selectors.js";
 import {statisticsEventHandlers} from "./statistics.reducers.js";
 
-export const statisticsFeature = {
+export const statisticsComponent = {
     initialState: STATISTICS_INITIAL_STATE,
     effects: statisticsEffects,
     eventHandlers: statisticsEventHandlers,

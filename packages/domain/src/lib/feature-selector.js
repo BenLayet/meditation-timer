@@ -3,12 +3,12 @@ const wrapSelectors = (selectors) =>
     Object.fromEntries(
         Object.entries(selectors)
             .map(([key, selector]) => ([key, wrapSelector(key, selector)])));
-export const createSelectors = (feature) =>
+export const createSelectors = (component) =>
     Object.fromEntries(
-        Object.entries(feature.subFeatures ?? {})
-            .map(([key, subFeature]) => ([
+        Object.entries(component.subComponents ?? {})
+            .map(([key, subComponent]) => ([
                 key, {
-                    ...wrapSelectors(subFeature.selectors),
-                    ...wrapSelectors(createSelectors(subFeature))
+                    ...wrapSelectors(subComponent.selectors),
+                    ...wrapSelectors(createSelectors(subComponent))
                 }
             ])));

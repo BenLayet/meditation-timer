@@ -1,8 +1,6 @@
-import {useContext} from "react";
-import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {useTranslation} from "react-i18next";
 import "./Statistics.css";
-import {statisticsSelectors} from "domain/src/features/statistics/statistics.selectors.js";
+import {statisticsSelectors} from "domain/src/components/statistics/statistics.selectors.js";
 
 export function Statistics({statisticsState}) {
     const {t} = useTranslation();

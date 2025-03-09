@@ -1,6 +1,8 @@
 import {mockServices, resetMocks} from "./mock-services.js";
 import {StateManager} from "../../../src/lib/state-manager.js";
-import {meditationTimerAppFeature} from "../../../src/features/meditation-timer-app/meditation-timer-app.feature.js";
+import {
+    meditationTimerAppComponent
+} from "../../../src/components/meditation-timer-app/meditation-timer-app.component.js";
 import {logEvent} from "../../../src/lib/logger.js";
 import {statePatcher} from "../../../src/lib/debugger.js";
 import {flow} from "lodash-es";
@@ -9,7 +11,7 @@ import {flow} from "lodash-es";
 export let state = {};
 
 //STATE MANAGER
-export const stateManager = new StateManager(meditationTimerAppFeature, mockServices);
+export const stateManager = new StateManager(meditationTimerAppComponent, mockServices);
 const initialState = stateManager.state;
 export const dispatch = (eventType, payload) => {
     stateManager.dispatch(eventType, payload);

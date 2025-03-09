@@ -2,9 +2,9 @@ import {useTranslation} from "react-i18next";
 import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import Timer from "../timer/Timer.jsx";
-import {preparationEvents} from "domain/src/features/preparation/preparation.events.js";
+import {preparationEvents} from "domain/src/components/preparation/preparation.events.js";
 import "./Preparation.css";
-import {preparationSelectors} from "domain/src/features/preparation/preparation.selectors.js";
+import {preparationSelectors} from "domain/src/components/preparation/preparation.selectors.js";
 
 function Preparation({preparationState}) {
     const {t} = useTranslation();

@@ -1,20 +1,20 @@
-const wrapFeatureEffectThen = (key) =>
+const wrapComponentEffectThen = (key) =>
     (then) =>
         ({payload, dispatch, state}) => then({payload, dispatch, state: state[key]});
 
-const wrapFeatureEffect = (key) => (featureEffect) => ({
-    ...featureEffect,
-    then: wrapFeatureEffectThen(key)(featureEffect.then)
+const wrapComponentEffect = (key) => (componentEffect) => ({
+    ...componentEffect,
+    then: wrapComponentEffectThen(key)(componentEffect.then)
 
 });
-const createSubFeatureEffects = (subFeatures, dependencies) =>
-    Object.entries(subFeatures)
-        .map(([key, subFeature]) => featureEffects(subFeature, dependencies).map(wrapFeatureEffect(key)))
+const createSubComponentEffects = (subComponents, dependencies) =>
+    Object.entries(subComponents)
+        .map(([key, subComponent]) => componentEffects(subComponent, dependencies).map(wrapComponentEffect(key)))
         .flat();
 
-export const featureEffects = (feature, dependencies) => {
-    const subFeatureEffects = createSubFeatureEffects(feature.subFeatures ?? {}, dependencies);
-    const ownEffects = feature.effects ? feature.effects(dependencies) : [];
-    return [...subFeatureEffects, ...ownEffects];
+export const componentEffects = (component, dependencies) => {
+    const subComponentEffects = createSubComponentEffects(component.subComponents ?? {}, dependencies);
+    const ownEffects = component.effects ? component.effects(dependencies) : [];
+    return [...subComponentEffects, ...ownEffects];
 }
 
