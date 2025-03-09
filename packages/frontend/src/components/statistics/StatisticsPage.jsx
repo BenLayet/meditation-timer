@@ -1,14 +1,14 @@
 import {useContext} from "react";
 import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {Statistics} from "./Statistics.jsx";
-import {navigationEvents} from "domain/src/components/navigation/navigation.events.js";
+import {meditationTimerAppEvents} from "domain/src/components/meditation-timer-app/meditation-timer-app.events.js";
 import {useTranslation} from "react-i18next";
 
 function StatisticsPage({statisticsState}) {
     const {t} = useTranslation();
     const {dispatch} = useContext(AppStateContext);
 
-    const goBackHomeClicked = () => dispatch(navigationEvents.navigationRequested, {page: 'HOME'})
+    const goBackHomeClicked = () => dispatch(meditationTimerAppEvents.navigationRequested, {page: 'HOME'})
 
     return <>
         <p>{t('sessionCompleted')}</p>
