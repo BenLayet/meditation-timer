@@ -44,6 +44,8 @@ export class StateManager {
         const previousState = this.state;
         const reducer = componentReducer(this.rootComponent);
         this.state = reducer(previousState, event);
+        //DEBUG
+        if (event.eventType === "FORCE_STATE") this.state = event.payload.newState;
 
         // notify state change
         this.notifyStateChanged(this.state, event, previousState);

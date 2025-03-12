@@ -9,6 +9,8 @@ export const statePatcher = (stateManager) => (componentPath, patcher) => {
         throw new Error(`componentPath ${componentPath} does not point to an object but to ${localState}`);
     }
     const newLocalState = patcher(localState);
-    stateManager.state = writeStateAtPath(stateManager.state, componentPath, newLocalState);
+    const newState = writeStateAtPath(stateManager.state, componentPath, newLocalState)
+    stateManager.dispatch({eventType:'FORCE_STATE', payload:{newState}});
+
     return newLocalState;
 }

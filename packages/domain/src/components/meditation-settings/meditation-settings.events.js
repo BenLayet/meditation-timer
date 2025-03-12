@@ -1,4 +1,5 @@
 import {floor, max} from "lodash-es";
+import ow from "ow";
 
 //UTILITY
 function calculateIncrementedDuration(duration, increment) {
@@ -50,4 +51,10 @@ export const meditationSettingsEvents = {
             gongOff: !state.gongOff
         })
     },
+    startSessionRequested:{
+        eventType:"startSessionRequested",
+        payloadShape:{
+            currentTimeInSeconds: ow.number.positive,
+        }
+    }
 };

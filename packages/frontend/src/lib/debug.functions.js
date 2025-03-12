@@ -28,7 +28,7 @@ const timeTravel = () => {
     window.sm.state(states[offset]);
 }
 
-export const addDebugger = (stateManager, setState) => {
+export const addDebugger = (stateManager) => {
     stateManager.addStateChangedListener(trackStateAndEvent)
     trackStateAndEvent(stateManager.state, {eventType: "INITIAL_STATE"});
     window.sm = {
@@ -68,7 +68,6 @@ export const addDebugger = (stateManager, setState) => {
         },
         state: (key, subPatch) => {
             statePatcher(stateManager)(key, subPatch);
-            setState(stateManager.state);
             console.log(stateManager.state);
         }
     };

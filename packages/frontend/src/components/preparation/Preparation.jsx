@@ -1,20 +1,15 @@
 import {useTranslation} from "react-i18next";
-import {useContext} from "react";
-import {AppStateContext} from "../app/AppStateProvider.jsx";
 import Timer from "../timer/Timer.jsx";
-import {preparationEvents} from "domain/src/components/preparation/preparation.events.js";
 import "./Preparation.css";
-import {preparationSelectors} from "domain/src/components/preparation/preparation.selectors.js";
 
-function Preparation({preparationState}) {
+function Preparation({vm}) {
     const {t} = useTranslation();
-    const {dispatch} = useContext(AppStateContext);
     //actions
-    const addTimeClicked = () => dispatch(preparationEvents.moreTimeRequested);
-    const skipClicked = () => dispatch(preparationEvents.skipRequested);
+    const addTimeClicked = vm.events.moreTimeRequested;
+    const skipClicked = vm.events.skipRequested;
     //selectors
-    const preparationRemainingTime = preparationSelectors.remainingTime(preparationState);
-    const timeIncrementInSeconds = preparationSelectors.timeIncrementInSeconds(preparationState);
+    const preparationRemainingTime = vm.selectors.remainingTime();
+    const timeIncrementInSeconds = vm.selectors.timeIncrementInSeconds();
     return (<div className="subtle">
         <p>{t("preparation")}</p>
         <Timer
