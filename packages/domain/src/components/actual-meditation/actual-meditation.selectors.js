@@ -1,5 +1,6 @@
 import {floor, flow} from 'lodash-es';
-import {formatSeconds} from "../../lib/duration.function.js";
+import {formatSeconds} from "../../lib/functions/duration.function.js";
+import {map} from "../../lib/functions/object.functions.js";
 
 const durationInSeconds = (state) => state.durationInMinutes * 60;
 const getRemainingSeconds = (state) => state.remainingSeconds;
@@ -18,9 +19,12 @@ const meditationToSave = (state) => ({
     durationInMinutes: elapsedTimeInMinutes(state)
 });
 
-export const actualMeditationSelectors = {
+const ownStateSelectors = {
     remainingTime,
     isRunning,
     isTimeUp,
     meditationToSave
 };
+
+const ownState = compositeState => compositeState.ownState;
+export const actualMeditationSelectors = map(ownStateSelectors, selector => flow(ownState, selector));

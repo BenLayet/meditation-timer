@@ -1,19 +1,55 @@
 import ow from "ow";
+import {floor, max} from "lodash-es";
+import {ACTUAL_MEDITATION_INITIAL_STATE} from "./actual-meditation.state.js";
 
+//utility
+const durationInSeconds = state => {
+    return state.durationInMinutes * 60;
+}
+const elapsedSeconds = currentTimeInSeconds => state => {
+    return state.startedTimeInSeconds ? floor((currentTimeInSeconds - state.startedTimeInSeconds)) : 0;
+}
+const remainingSeconds = currentTimeInSeconds => state => {
+    return max([0, durationInSeconds(state) - elapsedSeconds(currentTimeInSeconds)(state)]);
+}
+
+//event handlers
 export const actualMeditationEvents = {
     startRequested: {
-        currentTimeInSeconds: ow.number.integer.positive,
-        durationInMinutes: ow.number.integer.positive,
+        eventType: "startRequested",
+        payloadShape: {
+            currentTimeInSeconds: ow.number.integer.positive,
+            durationInMinutes: ow.number.integer.positive,
+        },
+        handler: (state, {currentTimeInSeconds, durationInMinutes}) => ({
+            ...state,
+            durationInMinutes,
+            startedTimeInSeconds: currentTimeInSeconds,
+            remainingSeconds: durationInMinutes * 60,
+        })
     },
-    cancelRequested: {},
-    completed: {},
-    stopped: {},
+    stopRequested: {
+        eventType: "stopRequested",
+        handler: () => ACTUAL_MEDITATION_INITIAL_STATE
+    },
+    completed: {eventType: "completed"},
     timerTicked: {
-        currentTimeInSeconds: ow.number.integer.positive,
+        eventType: "timerTicked",
+        payloadShape: {
+            currentTimeInSeconds: ow.number.integer.positive,
+        },
+        handler: (state, {currentTimeInSeconds}) => ({
+            ...state, remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
+        })
     },
-    saveRequested: {},
+    timerStartRequested: {eventType: "timerStartRequested"},
+    timerStopRequested: {eventType: "timerStopRequested"},
+    saveRequested: {eventType: "saveRequested"},
     saveFailed: {
-        error: ow.string
+        eventType: "saveFailed",
+        payloadShape: {
+            error: ow.string
+        }
     },
-    saveSucceeded: {},
+    saveSucceeded: {eventType: "saveSucceeded"},
 }

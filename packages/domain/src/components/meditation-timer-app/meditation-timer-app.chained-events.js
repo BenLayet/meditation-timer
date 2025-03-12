@@ -3,41 +3,93 @@ import {actualMeditationEvents} from "../actual-meditation/actual-meditation.eve
 import {statisticsEvents} from "../statistics/statistics.events.js";
 import {meditationTimerAppEvents} from "./meditation-timer-app.events.js";
 import {preparationEvents} from "../preparation/preparation.events.js";
+import {meditationTimerAppSelectors} from "./meditation-timer-app.selectors.js";
 
 export const meditationTimerAppChainedEvents = [
     {
-        onEvent: meditationSessionEvents.startRequested,
+        onEvent: {
+            ...meditationSessionEvents.startRequested,
+            childComponentPath: ["meditationSession"]
+        },
         thenDispatch: meditationTimerAppEvents.navigationRequested,
         withPayload: () => ({page: 'MEDITATION_SESSION'}),
     },
     {
-        onEvent: meditationSessionEvents.stopRequested,
+        onEvent: {
+            ...meditationSessionEvents.stopRequested,
+            childComponentPath: ["meditationSession"]
+        },
         thenDispatch: meditationTimerAppEvents.navigationRequested,
         withPayload: () => ({page: 'HOME'}),
     },
     {
-        onEvent: meditationSessionEvents.completed,
+        onEvent: {
+            ...meditationSessionEvents.completed,
+            childComponentPath: ["meditationSession"]
+        },
         thenDispatch: meditationTimerAppEvents.navigationRequested,
         withPayload: () => ({page: 'STATISTICS'}),
     },
     {
-        onEvent: meditationSessionEvents.startRequested,
-        thenDispatch: preparationEvents.startRequested,
-        withPayload: (previousPayload, state) => ({
+        onEvent: {
+            ...meditationSessionEvents.startRequested,
+            childComponentPath: ["meditationSession"]
+        },
+        thenDispatch: {
+            ...preparationEvents.startRequested,
+            childComponentPath: ["meditationSession", "preparation"]
+        },
+        withPayload: ({previousPayload, state}) => ({
             currentTimeInSeconds: previousPayload.currentTimeInSeconds,
-            requestedDurationInSeconds: state.meditationSettings.preparationDurationInSeconds
+            requestedDurationInSeconds: meditationTimerAppSelectors.preparationDurationInSeconds(state)
         }),
     },
     {
-        onEvent: preparationEvents.completed,
-        thenDispatch: actualMeditationEvents.startRequested,
-        withPayload: (previousPayload, state) => ({
+        onEvent: {
+            ...preparationEvents.completed,
+            childComponentPath: ["meditationSession", "preparation"]
+        },
+        thenDispatch: {
+            ...actualMeditationEvents.startRequested,
+            childComponentPath: ["meditationSession", "actualMeditation"]
+        },
+        withPayload: ({previousPayload, state}) => ({
             ...previousPayload,
-            durationInMinutes: state.meditationSettings.meditationDurationInMinutes
+            durationInMinutes: meditationTimerAppSelectors.meditationDurationInMinutes(state)
         }),
     },
     {
-        onEvent: actualMeditationEvents.saveSucceeded,
-        thenDispatch: statisticsEvents.fetchRequested
+        onEvent: {
+            ...actualMeditationEvents.saveSucceeded,
+            childComponentPath: ["meditationSession", "actualMeditation"]
+        },
+        thenDispatch: {
+            ...statisticsEvents.fetchRequested,
+            childComponentPath: ["statistics"]
+        },
+    },
+    {
+        onEvent: {
+            ...actualMeditationEvents.startRequested,
+            childComponentPath: ["meditationSession", "actualMeditation"]
+        },
+        onCondition: ({state}) => meditationTimerAppSelectors.isGongOn(state),
+        thenDispatch: meditationTimerAppEvents.gongPlayRequested
+    },
+    {
+        onEvent: {
+            ...actualMeditationEvents.completed,
+            childComponentPath: ["meditationSession", "actualMeditation"]
+        },
+        onCondition: ({state}) => meditationTimerAppSelectors.isGongOn(state),
+        thenDispatch: meditationTimerAppEvents.gongPlayRequested
+    },
+    {
+        onEvent: {
+            ...actualMeditationEvents.stopRequested,
+            childComponentPath: ["meditationSession", "actualMeditation"]
+        },
+        onCondition: ({state}) => meditationTimerAppSelectors.isGongOn(state),
+        thenDispatch: meditationTimerAppEvents.gongStopRequested
     },
 ];

@@ -1,11 +1,9 @@
-import {statisticsEffects} from "./statistics.effects.js";
 import {STATISTICS_INITIAL_STATE} from "./statistics.state.js";
 import {statisticsSelectors} from "./statistics.selectors.js";
-import {statisticsEventHandlers} from "./statistics.reducers.js";
+import {statisticsEvents} from "./statistics.events.js";
 
 export const statisticsComponent = {
     initialState: STATISTICS_INITIAL_STATE,
-    effects: statisticsEffects,
-    eventHandlers: statisticsEventHandlers,
+    events: statisticsEvents,
     selectors: statisticsSelectors
 };

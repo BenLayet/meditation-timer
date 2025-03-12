@@ -2,9 +2,25 @@ import ow from "ow";
 
 export const meditationSessionEvents = {
     startRequested: {
-        currentTimeInSeconds: ow.number.integer.positive,
+        eventType: "startRequested",
+        payloadShape: {
+            currentTimeInSeconds: ow.number.integer.positive,
+        }
     },
-    stopRequested: {},
-    completed: {},
-    finished: {},
+    stopRequested: {
+        eventType: "stopRequested",
+    },
+    completed: {
+        eventType: "completed",
+    },
+    finished: {
+        eventType: "finished",
+    },
+    disableSleepModeRequested: {
+        eventType: "disableSleepModeRequested",
+    },
+    enableSleepModeRequested: {
+        eventType: "enableSleepModeRequested",
+    },
+
 }

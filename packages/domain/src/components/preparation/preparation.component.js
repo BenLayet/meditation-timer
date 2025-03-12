@@ -1,11 +1,11 @@
 import {PREPARATION_INITIAL_STATE} from "./preparation.state.js";
 import {preparationSelectors} from "./preparation.selectors.js";
-import {preparationEffects} from "./preparation.effects.js";
-import {preparationEventHandlers} from "./preparation.reducers.js";
+import {preparationEvents} from "./preparation.events.js";
+import {preparationChainedEvents} from "./preparation.chained-events.js";
 
 export const preparationComponent = {
     initialState: PREPARATION_INITIAL_STATE,
-    eventHandlers: preparationEventHandlers,
+    events: preparationEvents,
     selectors: preparationSelectors,
-    effects: preparationEffects,
+    chainedEvents: preparationChainedEvents
 };

@@ -1,11 +1,7 @@
-import {useContext} from "react";
-import {AppStateContext} from "./AppStateProvider.jsx";
-import {appSelectors} from "domain/src/components/meditation-timer-app/meditation-timer-app.selectors.js";
 import Settings from "../settings/Settings.jsx";
 
-const AppHeader = () => {
-    const {state} = useContext(AppStateContext);
-    const canSettingsBeOpened = appSelectors.canSettingsBeOpened(state);
+export default ({vm}) => {
+    const canSettingsBeOpened = vm.selectors.canSettingsBeOpened();
     return (
         <div className="app-header">
             <span className={" fadeIn " + (canSettingsBeOpened ? 'visible' : 'hidden')}>
@@ -14,4 +10,3 @@ const AppHeader = () => {
         </div>
     );
 }
-export default AppHeader;

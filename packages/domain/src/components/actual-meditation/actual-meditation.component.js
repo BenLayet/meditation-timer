@@ -1,11 +1,11 @@
-import {actualMeditationEffects} from "./actual-meditation.effects.js";
 import {ACTUAL_MEDITATION_INITIAL_STATE} from "./actual-meditation.state.js";
 import {actualMeditationChainedEvents} from "./actual-meditation.chained-events.js";
-import {actualMeditationEventHandlers} from "./actual-meditation.reducers.js";
+import {actualMeditationEvents} from "./actual-meditation.events.js";
+import {actualMeditationSelectors} from "./actual-meditation.selectors.js";
 
 export const actualMeditationComponent = {
     initialState: ACTUAL_MEDITATION_INITIAL_STATE,
-    effects: actualMeditationEffects,
-    eventHandlers: actualMeditationEventHandlers,
+    events: actualMeditationEvents,
     chainedEvents: actualMeditationChainedEvents,
+    selectors: actualMeditationSelectors
 };

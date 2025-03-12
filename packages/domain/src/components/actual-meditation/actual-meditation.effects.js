@@ -1,13 +1,8 @@
 import {actualMeditationEvents} from "./actual-meditation.events.js";
-import {
-    actualMeditationSelectors,
-    actualMeditationSelectors as actualMediationSelectors
-} from "./actual-meditation.selectors.js";
+import {actualMeditationSelectors} from "./actual-meditation.selectors.js";
 
 const startTicking = tickingService => ({dispatch}) => tickingService
     .startTicking(TIMER_NAME, currentTimeInSeconds => dispatch(actualMeditationEvents.timerTicked, {currentTimeInSeconds}));
-const dispatchCompletedIfTimeIsUp = ({state, dispatch}) =>
-    actualMediationSelectors.isTimeUp(state) && dispatch(actualMeditationEvents.completed);
 
 const saveMeditation = (meditationRepository) =>
     async ({state, dispatch}) => {
@@ -33,17 +28,13 @@ export const actualMeditationEffects = ({gongService, tickingService, meditation
         cleanUp: gongService.stop
     },
     {
-        onEvent: actualMeditationEvents.cancelRequested,
+        onEvent: actualMeditationEvents.stopRequested,
         then: gongService.stop
     },
     {
         onEvent: actualMeditationEvents.startRequested,
         then: startTicking(tickingService),
         cleanUp: tickingService.stopTicking(TIMER_NAME),
-    },
-    {
-        onEvent: actualMeditationEvents.timerTicked,
-        then: dispatchCompletedIfTimeIsUp,
     },
     {
         onEvent: actualMeditationEvents.stopped,

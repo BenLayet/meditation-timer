@@ -1,23 +1,26 @@
 import {Given, Then} from "@cucumber/cucumber";
 import {expect} from "chai";
-import {mockServices, wasCalled, when} from "./state-manager/mock-services.js";
-import {appSelectors} from "../../src/components/meditation-timer-app/meditation-timer-app.selectors.js";
-import {state} from "./state-manager/test-state-manager.js";
-import {statisticsSelectors} from "../../src/components/statistics/statistics.selectors.js";
+import {eventWasSent, stateManager, statisticsApiResponse} from "./state-manager/test-state-manager.js";
+import {actualMeditationEvents} from "../../src/components/actual-meditation/actual-meditation.events.js";
+import {statisticsEvents} from "../../src/components/statistics/statistics.events.js";
 
 Given(/^I had a daily streak of (\d+) days and meditated (\d+) minutes this week$/, function (days, minutes) {
-    when(mockServices.meditationRepository.fetchStatistics).thenReturn(Promise.resolve({
+    statisticsApiResponse.statistics = {
         dailyStreak: days, totalMinutesThisWeek: minutes
-    }));
+    };
 });
 Then(/^the meditation session should be saved$/, function () {
-    expect(wasCalled('meditationRepository', 'saveMeditation')).to.be.true;
+    expect(eventWasSent(actualMeditationEvents.saveRequested)).to.be.true;
 });
 Then(/^my new daily streak should be displayed$/, function () {
-    expect(wasCalled('meditationRepository', 'fetchStatistics'), "fetchStatistics should have been called").to.be.true;
-    const statisticsState = appSelectors.statisticsState(state);
-    expect(statisticsSelectors.shouldDailyStreakBeDisplayed(statisticsState), 'daily streak should be displayed').to.be.true;
+    expect(eventWasSent({
+        ...statisticsEvents.fetchRequested,
+        componentPath: ["statistics"]
+    }), "fetchStatistics should have been called").to.be.true;
+    const actual = stateManager.getRootVM().children.statistics.selectors.shouldDailyStreakBeDisplayed();
+    expect(actual, 'daily streak should be displayed').to.be.true;
 });
 Then(/^the statistics are shown$/, function () {
-    expect(appSelectors.currentPage(state), 'statistics should be displayed').to.equal('STATISTICS');
+    const actual = stateManager.getRootVM().selectors.currentPage();
+    expect(actual, 'statistics should be displayed').to.equal('STATISTICS');
 });

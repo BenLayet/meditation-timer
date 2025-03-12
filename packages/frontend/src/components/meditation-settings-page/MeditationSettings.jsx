@@ -1,25 +1,19 @@
 import "./MeditationSettings.css";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faMinus, faPlus} from '@fortawesome/free-solid-svg-icons';
-import {useContext} from "react";
-import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {useTranslation} from "react-i18next";
 import GongControl from "../gong-control/GongControl.jsx";
-import {meditationSettingsEvents} from "domain/src/components/meditation-settings/meditation-settings.events.js";
-import {meditationSettingsSelectors} from "domain/src/components/meditation-settings/meditation-settings.selectors.js";
 
-function MeditationSettings({meditationSettingsState}) {
+function MeditationSettings({vm}) {
     const {t} = useTranslation();
-    const {dispatch} = useContext(AppStateContext);
     //actions
-    const preparationAddTimeClicked = () => dispatch(meditationSettingsEvents.morePreparationTimeRequested);
-    const preparationRemoveTimeClicked = () => dispatch(meditationSettingsEvents.lessPreparationTimeRequested);
-    const meditationAddTimeClicked = () => dispatch(meditationSettingsEvents.moreMeditationTimeRequested);
-    const meditationRemoveTimeClicked = () => dispatch(meditationSettingsEvents.lessMeditationTimeRequested);
+    const preparationAddTimeClicked = () => vm.events.morePreparationTimeRequested();
+    const preparationRemoveTimeClicked = () => vm.events.lessPreparationTimeRequested();
+    const meditationAddTimeClicked = () => vm.events.moreMeditationTimeRequested();
+    const meditationRemoveTimeClicked = () => vm.events.lessMeditationTimeRequested();
     //selectors
-    const meditationDuration = meditationSettingsSelectors.meditationDuration(meditationSettingsState);
-    const preparationDuration = meditationSettingsSelectors.preparationDuration(meditationSettingsState);
-    const isGongOff = meditationSettingsSelectors.isGongOff(meditationSettingsState);
+    const meditationDuration = vm.selectors.meditationDuration();
+    const preparationDuration = vm.selectors.preparationDuration();
 
     return <div className="flex-grow flex-column">
         <div className="meditation-settings flex-column">
@@ -58,7 +52,7 @@ function MeditationSettings({meditationSettingsState}) {
             <div className="meditation-setting flex-column">
                 <label>{t("gong")}</label>
                 <div className="meditation-setting-control flex-column bigger">
-                    <GongControl isGongOff={isGongOff}/>
+                    <GongControl vm={vm}/>
                 </div>
             </div>
         </div>

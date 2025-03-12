@@ -10,12 +10,12 @@ describe('actualMeditationSelectors', () => {
     };
 
     test('displayedTime should return formatted time', () => {
-        const result = actualMeditationSelectors.displayedTime(initialState);
+        const result = actualMeditationSelectors.remainingTime(initialState);
         expect(result).toBe('02:00');
     });
     test('displayedTime should return formatted time for 19:59', () => {
         const state = {...initialState, remainingSeconds: 1199};
-        const result = actualMeditationSelectors.displayedTime(state);
+        const result = actualMeditationSelectors.remainingTime(state);
         expect(result).toBe('19:59');
     });
 
@@ -34,11 +34,6 @@ describe('actualMeditationSelectors', () => {
         const state = {...initialState, remainingSeconds: 0};
         const result = actualMeditationSelectors.isRunning(state);
         expect(result).toBe(false);
-    });
-
-    test('getDurationInMinutes should return duration in minutes', () => {
-        const result = actualMeditationSelectors.durationInMinutes(initialState);
-        expect(result).toBe(5);
     });
 
     test('isTimeUp should return true if remaining seconds is 0', () => {

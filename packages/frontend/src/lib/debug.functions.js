@@ -1,4 +1,4 @@
-import {statePatcher} from "domain/src/lib/debugger.js";
+import {statePatcher} from "domain/src/lib/state-manager/debugger.js";
 
 const trackSize = 1000;
 const states = [];

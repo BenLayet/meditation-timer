@@ -1,40 +1,41 @@
 import {Given, Then, When} from "@cucumber/cucumber";
-import {dispatch, patchState, state} from "./state-manager/test-state-manager.js";
+import {patchState, stateManager} from "./state-manager/test-state-manager.js";
 import {expect} from "chai";
-import {appSelectors} from "../../src/components/meditation-timer-app/meditation-timer-app.selectors.js";
-import {mockServices} from "./state-manager/mock-services.js";
-import {preparationEvents} from "../../src/components/preparation/preparation.events.js";
 import {BEGINNING_OF_TIME_IN_SECONDS, PREPARATION_DURATION_IN_SECONDS} from "./state-manager/test-constants.js";
-import {preparationSelectors} from "../../src/components/preparation/preparation.selectors.js";
-import {meditationSessionSelectors} from "../../src/components/meditation-session/meditation-session.selectors.js";
 
 
 Given(/^the preparation has started$/, function () {
-    patchState("meditationSession.preparation.startedTimeInSeconds", BEGINNING_OF_TIME_IN_SECONDS);
+    patchState(["meditationSession", "preparation"], state => ({
+        ...state,
+        startedTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS
+    }));
 });
 Given(/^there are (\d+) seconds left in the preparation$/, function (remainingSeconds) {
-    patchState("meditationSession.preparation.remainingSeconds", remainingSeconds);
+    patchState(["meditationSession", "preparation"], state => ({
+        ...state,
+        remainingSeconds
+    }));
 });
 
 When(/^the preparation duration has elapsed$/, function () {
-    mockServices.tickingService.sendTick('preparation', BEGINNING_OF_TIME_IN_SECONDS + PREPARATION_DURATION_IN_SECONDS);
+    const currentTimeInSeconds = BEGINNING_OF_TIME_IN_SECONDS + PREPARATION_DURATION_IN_SECONDS;
+    stateManager.getRootVM().children.meditationSession.children.preparation.events.timerTicked({currentTimeInSeconds});
 });
 When(/^a second has elapsed during preparation$/, function () {
-    mockServices.tickingService.sendTick('preparation', BEGINNING_OF_TIME_IN_SECONDS + 1);
+    const currentTimeInSeconds = BEGINNING_OF_TIME_IN_SECONDS + 1;
+    stateManager.getRootVM().children.meditationSession.children.preparation.events.timerTicked({currentTimeInSeconds});
+
 });
 
 When(/^I request more time during the preparation$/, function () {
-    dispatch(preparationEvents.moreTimeRequested);
+    stateManager.getRootVM().children.meditationSession.children.preparation.events.moreTimeRequested();
 });
-
 Then(/^the preparation timer should (start|stop) running$/, function (start) {
-    const isRunning = start === 'start';
-    const meditationSessionState = appSelectors.meditationSessionState(state);
-    const preparationState = meditationSessionSelectors.preparationState(meditationSessionState);
-    expect(preparationSelectors.isRunning(preparationState)).to.equal(isRunning);
+    const expected = start === 'start';
+    const actual = stateManager.getRootVM().children.meditationSession.children.preparation.selectors.isRunning();
+    expect(actual).to.equal(expected);
 });
 Then(/^the preparation timer should display (\d\d:\d\d)$/, function (remainingTime) {
-    const meditationSessionState = appSelectors.meditationSessionState(state);
-    const preparationState = meditationSessionSelectors.preparationState(meditationSessionState);
-    expect(preparationSelectors.remainingTime(preparationState)).to.equal(remainingTime);
+    const actual = stateManager.getRootVM().children.meditationSession.children.preparation.selectors.remainingTime();
+    expect(actual).to.equal(remainingTime);
 });

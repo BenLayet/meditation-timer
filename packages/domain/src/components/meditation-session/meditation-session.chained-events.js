@@ -5,7 +5,7 @@ import {actualMeditationEvents} from "../actual-meditation/actual-meditation.eve
 export const meditationSessionChainedEvents = [
     {
         onEvent: meditationSessionEvents.completed,
-        thenDispatch: meditationSessionEvents.finished
+        thenDispatch: meditationSessionEvents.finished,
     },
     {
         onEvent: meditationSessionEvents.stopRequested,
@@ -13,14 +13,31 @@ export const meditationSessionChainedEvents = [
     },
     {
         onEvent: meditationSessionEvents.stopRequested,
-        thenDispatch: preparationEvents.finished,
+        thenDispatch: {
+            ...preparationEvents.stopRequested,
+            childComponentPath: ["preparation"],
+        },
     },
     {
         onEvent: meditationSessionEvents.stopRequested,
-        thenDispatch: actualMeditationEvents.cancelRequested
+        thenDispatch: {
+            ...actualMeditationEvents.stopRequested,
+            childComponentPath: ["actualMeditation"],
+        },
     },
     {
-        onEvent: actualMeditationEvents.completed,
+        onEvent: {
+            ...actualMeditationEvents.completed,
+            childComponentPath: ["actualMeditation"],
+        },
         thenDispatch: meditationSessionEvents.completed
+    },
+    {
+        onEvent: meditationSessionEvents.startRequested,
+        thenDispatch: meditationSessionEvents.disableSleepModeRequested
+    },
+    {
+        onEvent: meditationSessionEvents.finished,
+        thenDispatch: meditationSessionEvents.enableSleepModeRequested
     },
 ];
