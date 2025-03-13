@@ -66,8 +66,8 @@ export const addDebugger = (stateManager) => {
             offset++;
             timeTravel();
         },
-        state: (key, subPatch) => {
-            statePatcher(stateManager)(key, subPatch);
+        state: (componentPath, subPatch) => {
+            statePatcher(stateManager)(componentPath, subPatch);
             console.log(stateManager.state);
         }
     };
