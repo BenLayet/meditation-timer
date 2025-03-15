@@ -49,7 +49,7 @@ class MeditationRepository {
             WHERE device_uuid = ${deviceUuid}
               and started > now() - interval '7 days';
         `;
-        return parseInt(result[0].total);
+        return (result.length > 0 && result[0].total) ? parseInt(result[0].total) : 0;
     }
 }
 
