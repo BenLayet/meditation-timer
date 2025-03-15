@@ -1,13 +1,13 @@
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
-import './edges.css';
-import './colors.css';
-import './typography.css';
-import './button.css';
-import './range.css';
-import './animation.css';
-import './layout.css';
-import './index.css';
+import './style/edges.css';
+import './style/colors.css';
+import './style/typography.css';
+import './style/button.css';
+import './style/range.css';
+import './style/animation.css';
+import './style/layout.css';
+import './style/index.css';
 import App from './components/app/App.jsx'
 import {StateManager} from "domain/src/lib/state-manager/state-manager.js";
 import {
