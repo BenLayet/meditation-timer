@@ -1,14 +1,18 @@
 import {statePatcher} from "domain/src/lib/state-manager/debugger.js";
+import {stateManager} from "domain/features/step-definitions/state-manager/test-state-manager.js";
+import {createEffect} from "domain/src/lib/state-manager/create-effect.js";
 
 const trackSize = 1000;
 const states = [];
 const events = [];
-const trackStateAndEvent = (state, event) => {
+const trackStateAndEvent = (event, state) => {
     states.unshift(state);
     events.unshift(event);
     states.splice(trackSize);
     events.splice(trackSize);
 }
+
+
 let offset = 0;
 const timeTravel = () => {
     if (offset < 0) {
@@ -27,9 +31,17 @@ const timeTravel = () => {
     console.log(events[offset]);
     window.sm.state(states[offset]);
 }
+//FORCE STATE DEBUG EFFECT
+const forceStateEffect = createEffect({
+    afterEvent: {eventType: 'FORCE_STATE'},
+    then: ({payload}) => stateManager.state = payload.newState
+});
+
 
 export const addDebugger = (stateManager) => {
-    stateManager.addStateChangedListener(trackStateAndEvent)
+    stateManager.addEventListener(trackStateAndEvent);
+    stateManager.addEventListener(forceStateEffect);
+
     trackStateAndEvent(stateManager.state, {eventType: "INITIAL_STATE"});
     window.sm = {
         getRootVM: () => stateManager.getRootVM(),
@@ -73,9 +85,11 @@ export const addDebugger = (stateManager) => {
         }
     };
 };
-export const removeDebugger = stateManager=> () => {
+
+export const removeDebugger = stateManager => () => {
     events.length = 0;
     states.length = 0;
-    stateManager.removeStateChangedListener(trackStateAndEvent);
+    stateManager.removeEventListener(trackStateAndEvent);
+    stateManager.removeEventListener(forceStateEffect);
     delete window.sm;
 };
