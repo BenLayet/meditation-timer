@@ -25,12 +25,12 @@ export class StateManager {
         this.rootComponentListeners = [...this.rootComponentListeners.filter(l => !l === onRootVMChanged)];
     }
 
-    addStateChangedListener(onStateChanged) {
+    addStateChangedListener = (onStateChanged) => {
         ow(onStateChanged, ow.function);
         this.stateListeners.push(onStateChanged);
     }
 
-    removeStateChangedListener(onStateChanged) {
+    removeStateChangedListener = (onStateChanged) => {
         this.stateListeners = [...this.stateListeners.filter(l => !l === onStateChanged)];
     }
 
