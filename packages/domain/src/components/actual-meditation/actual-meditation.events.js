@@ -16,12 +16,9 @@ const remainingSeconds = currentTimeInSeconds => state => {
 //event handlers
 export const actualMeditationEvents = {
     startRequested: {
-        eventType: "startRequested",
-        payloadShape: {
-            currentTimeInSeconds: ow.number.integer.positive,
-            durationInMinutes: ow.number.integer.positive,
-        },
-        handler: (state, {currentTimeInSeconds, durationInMinutes}) => ({
+        eventType: "startRequested", payloadShape: {
+            currentTimeInSeconds: ow.number.integer.positive, durationInMinutes: ow.number.integer.positive,
+        }, handler: (state, {currentTimeInSeconds, durationInMinutes}) => ({
             ...state,
             durationInMinutes,
             startedTimeInSeconds: currentTimeInSeconds,
@@ -29,26 +26,28 @@ export const actualMeditationEvents = {
         })
     },
     stopRequested: {
-        eventType: "stopRequested",
-        handler: () => ACTUAL_MEDITATION_INITIAL_STATE
+        eventType: "stopRequested", handler: () => ACTUAL_MEDITATION_INITIAL_STATE
     },
     completed: {eventType: "completed"},
     timerTicked: {
-        eventType: "timerTicked",
-        payloadShape: {
+        eventType: "timerTicked", payloadShape: {
             currentTimeInSeconds: ow.number.integer.positive,
-        },
-        handler: (state, {currentTimeInSeconds}) => ({
+        }, handler: (state, {currentTimeInSeconds}) => ({
             ...state, remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
         })
     },
     timerStartRequested: {eventType: "timerStartRequested"},
     timerStopRequested: {eventType: "timerStopRequested"},
-    saveRequested: {eventType: "saveRequested"},
-    saveFailed: {
-        eventType: "saveFailed",
+    saveRequested: {
+        eventType: "saveRequested",
         payloadShape: {
-            error: ow.string
+            startedTimeInSeconds: ow.number.positive,
+            durationInMinutes: ow.number.positive
+        }
+    },
+    saveFailed: {
+        eventType: "saveFailed", payloadShape: {
+            error: ow.any
         }
     },
     saveSucceeded: {eventType: "saveSucceeded"},

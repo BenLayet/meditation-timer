@@ -1,15 +1,14 @@
 import {useTranslation} from "react-i18next";
 import "./Statistics.css";
-import {statisticsSelectors} from "domain/src/components/statistics/statistics.selectors.js";
 
-export function Statistics({statisticsState}) {
+export function Statistics({vm}) {
     const {t} = useTranslation();
     //selectors
-    const dailyStreak = statisticsSelectors.dailyStreak(statisticsState);
-    const hourCount = statisticsSelectors.hourCountThisWeek(statisticsState);
-    const minuteCount = statisticsSelectors.minuteCountThisWeek(statisticsState);
-    const shouldTotalMinutesThisWeekBeDisplayed = statisticsSelectors.shouldTotalMinutesThisWeekBeDisplayed(statisticsState);
-    const shouldDailyStreakBeDisplayed = statisticsSelectors.shouldDailyStreakBeDisplayed(statisticsState);
+    const dailyStreak = vm.selectors.dailyStreak();
+    const hourCount = vm.selectors.hourCountThisWeek();
+    const minuteCount = vm.selectors.minuteCountThisWeek();
+    const shouldTotalMinutesThisWeekBeDisplayed = vm.selectors.shouldTotalMinutesThisWeekBeDisplayed();
+    const shouldDailyStreakBeDisplayed = vm.selectors.shouldDailyStreakBeDisplayed();
 
     return (
         <ul className="statistics">

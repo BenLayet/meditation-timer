@@ -4,8 +4,7 @@ import {meditationRepository} from "../repositories/meditationRepository.js";
 export const saveMeditationEffect = (events) => async (newState, event) => {
     if (event.eventType === "saveRequested" && isEqual(event.componentPath, ["meditationSession", "actualMeditation"])) {
         try {
-            await meditationRepository
-                .saveMeditation(event.payload.meditationToSave);
+            await meditationRepository.saveMeditation(event.payload);
             events.saveSucceeded();
         } catch (error) {
             console.error(error);

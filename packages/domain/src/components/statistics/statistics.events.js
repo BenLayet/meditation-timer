@@ -27,7 +27,7 @@ export const statisticsEvents = {
     fetchFailed: {
         eventType: "fetchFailed",
         payloadShape: {
-            error: ow.string
+            error: ow.any
         },
         handler: (state) => ({
             ...state,

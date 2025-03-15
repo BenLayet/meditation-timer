@@ -32,6 +32,7 @@ export const addDebugger = (stateManager) => {
     stateManager.addStateChangedListener(trackStateAndEvent)
     trackStateAndEvent(stateManager.state, {eventType: "INITIAL_STATE"});
     window.sm = {
+        getRootVM: () => stateManager.getRootVM(),
         lastEvents: (start = 0, end) => {
             if (typeof end === "undefined") {
                 end = start || 1;
@@ -66,9 +67,9 @@ export const addDebugger = (stateManager) => {
             offset++;
             timeTravel();
         },
-        state: (componentPath, subPatch) => {
-            statePatcher(stateManager)(componentPath, subPatch);
-            console.log(stateManager.state);
+        state: (key, value) => {
+            const newValue = statePatcher(stateManager)(key, value);
+            console.log(newValue);
         }
     };
 };

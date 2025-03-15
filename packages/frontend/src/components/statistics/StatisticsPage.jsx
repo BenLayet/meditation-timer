@@ -1,19 +1,15 @@
-import {useContext} from "react";
-import {AppStateContext} from "../app/AppStateProvider.jsx";
-import {Statistics} from "./Statistics.jsx";
-import {meditationTimerAppEvents} from "domain/src/components/meditation-timer-app/meditation-timer-app.events.js";
 import {useTranslation} from "react-i18next";
+import {Statistics} from "./Statistics.jsx";
 
-function StatisticsPage({statisticsState}) {
+function StatisticsPage({vm}) {
     const {t} = useTranslation();
-    const {dispatch} = useContext(AppStateContext);
 
-    const goBackHomeClicked = () => dispatch(meditationTimerAppEvents.navigationRequested, {page: 'HOME'})
+    const goBackHomeClicked = () => vm.events.navigationRequested({page: 'HOME'})
 
     return <>
         <p>{t('sessionCompleted')}</p>
         <div className="flex-grow">
-            <Statistics statisticsState={statisticsState}/>
+            <Statistics vm={vm.children.statistics}/>
         </div>
         <a className="main-action" onClick={goBackHomeClicked}>
             {t('continue')}
