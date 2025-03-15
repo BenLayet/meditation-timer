@@ -5,16 +5,10 @@ import {BEGINNING_OF_TIME_IN_SECONDS, PREPARATION_DURATION_IN_SECONDS} from "./s
 
 
 Given(/^the preparation has started$/, function () {
-    patchState(["meditationSession", "preparation"], state => ({
-        ...state,
-        startedTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS
-    }));
+    patchState("meditationSession.preparation.startedTimeInSeconds", BEGINNING_OF_TIME_IN_SECONDS);
 });
 Given(/^there are (\d+) seconds left in the preparation$/, function (remainingSeconds) {
-    patchState(["meditationSession", "preparation"], state => ({
-        ...state,
-        remainingSeconds
-    }));
+    patchState("meditationSession.preparation.remainingSeconds", remainingSeconds);
 });
 
 When(/^the preparation duration has elapsed$/, function () {

@@ -8,7 +8,7 @@ export class StateManager {
     constructor(rootComponent) {
         this.rootComponent = rootComponent;
         this.state = getInitialState(rootComponent);
-        this.stateListeners = [];
+        this.eventListeners = [];
         this.rootComponentListeners = [];
     }
 
@@ -25,30 +25,27 @@ export class StateManager {
         this.rootComponentListeners = [...this.rootComponentListeners.filter(l => !l === onRootVMChanged)];
     }
 
-    addStateChangedListener = (onStateChanged) => {
-        ow(onStateChanged, ow.function);
-        this.stateListeners.push(onStateChanged);
+    addEventListener = (onEventOccurred) => {
+        ow(onEventOccurred, ow.function);
+        this.eventListeners.push(onEventOccurred);
     }
 
-    removeStateChangedListener = (onStateChanged) => {
-        this.stateListeners = [...this.stateListeners.filter(l => !l === onStateChanged)];
+    removeEventListener = (onEventOccurred) => {
+        this.eventListeners = [...this.eventListeners.filter(l => !l === onEventOccurred)];
     }
 
-    notifyStateChanged(newState, event, oldState) {
-        this.stateListeners.forEach(onStateChanged => onStateChanged(newState, event, oldState));
+    notifyEventOccurred(event, oldState) {
+        this.eventListeners.forEach(onEventOccurred => onEventOccurred(event, this.state, oldState));
         this.rootComponentListeners.forEach(onRootVMChanged => onRootVMChanged(this.getRootVM()));
     }
 
     dispatch = (event) => {
         // reducers
         const previousState = this.state;
-        const reducer = componentReducer(this.rootComponent);
-        this.state = reducer(previousState, event);
-        //DEBUG
-        if (event.eventType === "FORCE_STATE") this.state = event.payload.newState;
+        this.state = componentReducer(this.rootComponent)(previousState, event);
 
         // notify state change
-        this.notifyStateChanged(this.state, event, previousState);
+        this.notifyEventOccurred(event, previousState);
 
         //forward event
         this.forwardEvent(event);

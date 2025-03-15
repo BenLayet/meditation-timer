@@ -75,5 +75,5 @@ export const registerEffects = (stateManager) => {
     });
 
     //add effects as change listeners
-    effects.get().forEach(stateManager.addStateChangedListener)
+    effects.get().forEach(stateManager.addEventListener);
 };

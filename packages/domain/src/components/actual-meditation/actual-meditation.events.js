@@ -42,7 +42,7 @@ export const actualMeditationEvents = {
         eventType: "saveRequested",
         payloadShape: {
             startedTimeInSeconds: ow.number.positive,
-            durationInMinutes: ow.number.positive
+            durationInMinutes: ow.number.greaterThanOrEqual(0)
         }
     },
     saveFailed: {

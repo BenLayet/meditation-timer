@@ -3,11 +3,11 @@ import {patchState, stateManager} from "./state-manager/test-state-manager.js";
 import {expect} from "chai";
 
 Given(/^the next meditation duration is (\d{2}):00$/, function (minutes) {
-    patchState(["meditationSettings"], state => ({...state, meditationDurationInMinutes: parseInt(minutes)}));
+    patchState("meditationSettings.meditationDurationInMinutes", parseInt(minutes));
 });
 
 Given(/^the next preparation duration is 00:(\d{2})$/, function (seconds) {
-    patchState(["meditationSettings"], state => ({...state, preparationDurationInSeconds: parseInt(seconds)}));
+    patchState("meditationSettings.preparationDurationInSeconds", parseInt(seconds));
 });
 
 

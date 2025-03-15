@@ -1,7 +1,7 @@
 import {isEqual} from "lodash-es";
 
 const createEffect = (effectFunction, triggeringEvent, componentPath) =>
-    (state, event) => {
+    (event) => {
         if (event.eventType === triggeringEvent.eventType
             && (!componentPath || isEqual(componentPath, event.componentPath))) {
             effectFunction(event);
