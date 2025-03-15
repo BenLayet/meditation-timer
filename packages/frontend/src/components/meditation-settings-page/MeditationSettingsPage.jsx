@@ -1,16 +1,12 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
-import {meditationSessionStartRequested} from "domain/src/components/meditation-session/meditation-session.events.js";
 import {currentTimeInSeconds} from "../../lib/time.functions.js";
-import {useContext} from "react";
-import {AppStateContext} from "../app/AppStateProvider.jsx";
 import MeditationSettings from "./MeditationSettings.jsx";
 
-function MeditationSettingsPage() {
-    const {dispatch} = useContext(AppStateContext);
-    const playClicked = () => dispatch(meditationSessionStartRequested(currentTimeInSeconds()));
+function MeditationSettingsPage({vm}) {
+    const playClicked = () => vm.events.startSessionRequested({currentTimeInSeconds: currentTimeInSeconds()});
     return <>
-        <MeditationSettings/>
+        <MeditationSettings vm={vm}/>
         <button className="main-action" onClick={playClicked}>
             <FontAwesomeIcon icon={faPlay}/>
         </button>

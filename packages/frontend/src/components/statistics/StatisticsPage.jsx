@@ -1,19 +1,15 @@
-import {useContext} from "react";
-import {AppStateContext} from "../app/AppStateProvider.jsx";
-import {Statistics} from "./Statistics.jsx";
-import {navigationRequested} from "domain/src/components/navigation/navigation.events.js";
 import {useTranslation} from "react-i18next";
+import {Statistics} from "./Statistics.jsx";
 
-function StatisticsPage() {
+function StatisticsPage({vm}) {
     const {t} = useTranslation();
-    const {dispatch} = useContext(AppStateContext);
 
-    const goBackHomeClicked = () => dispatch(navigationRequested('HOME'))
+    const goBackHomeClicked = () => vm.events.navigationRequested({page: 'HOME'})
 
     return <>
         <p>{t('sessionCompleted')}</p>
         <div className="flex-grow">
-            <Statistics/>
+            <Statistics vm={vm.children.statistics}/>
         </div>
         <a className="main-action" onClick={goBackHomeClicked}>
             {t('continue')}

@@ -1,17 +1,12 @@
-import {useContext} from "react";
-import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faVolumeHigh, faVolumeXmark} from "@fortawesome/free-solid-svg-icons";
-import {appSelectors} from "domain/src/app/meditation-timer.app.js";
-import {gongToggled} from "domain/src/components/meditation-settings/meditation-settings.events.js";
 
 
-function GongControl() {
-    const {state, dispatch} = useContext(AppStateContext);
+function GongControl({vm}) {
     //actions
-    const gongToggleClicked = () => dispatch(gongToggled());
+    const gongToggleClicked = () => vm.events.gongToggled();
     //selectors
-    const isGongOff = appSelectors.meditationSettings.isGongOff(state);
+    const isGongOff = vm.selectors.isGongOff();
     return <FontAwesomeIcon
         icon={isGongOff ? faVolumeXmark : faVolumeHigh}
         className="round-button" onClick={gongToggleClicked}

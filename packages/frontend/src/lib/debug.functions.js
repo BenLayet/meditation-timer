@@ -1,4 +1,4 @@
-import {statePatcher} from "domain/src/lib/debugger.js";
+import {statePatcher} from "domain/src/lib/state-manager/debugger.js";
 
 const trackSize = 1000;
 const states = [];
@@ -28,10 +28,11 @@ const timeTravel = () => {
     window.sm.state(states[offset]);
 }
 
-export const addDebugger = (stateManager, setState) => {
+export const addDebugger = (stateManager) => {
     stateManager.addStateChangedListener(trackStateAndEvent)
     trackStateAndEvent(stateManager.state, {eventType: "INITIAL_STATE"});
     window.sm = {
+        getRootVM: () => stateManager.getRootVM(),
         lastEvents: (start = 0, end) => {
             if (typeof end === "undefined") {
                 end = start || 1;
@@ -66,10 +67,9 @@ export const addDebugger = (stateManager, setState) => {
             offset++;
             timeTravel();
         },
-        state: (key, subPatch) => {
-            statePatcher(stateManager)(key, subPatch);
-            setState(stateManager.state);
-            console.log(stateManager.state);
+        state: (key, value) => {
+            const newValue = statePatcher(stateManager)(key, value);
+            console.log(newValue);
         }
     };
 };

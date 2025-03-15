@@ -8,7 +8,7 @@ class TickingService {
         }
         this.intervalIds[timerName] = setInterval(() => callback(currentTimeInSeconds()), 1000);
     }
-    stopTicking = (timerName) => () => {
+    stopTicking = (timerName) => {
         clearInterval(this.intervalIds[timerName]);
         delete this.intervalIds[timerName];
     }

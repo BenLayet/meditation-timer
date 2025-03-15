@@ -1,13 +1,6 @@
 import {Given, Then, When} from "@cucumber/cucumber";
-import {dispatch, patchState, state} from "../state-manager/test-state-manager.js";
+import {patchState, stateManager} from "./state-manager/test-state-manager.js";
 import {expect} from "chai";
-import {appSelectors} from "../../src/app/meditation-timer.app.js";
-import {
-    lessMeditationTimeRequested,
-    lessPreparationTimeRequested,
-    moreMeditationTimeRequested,
-    morePreparationTimeRequested
-} from "../../src/components/meditation-settings/meditation-settings.events.js";
 
 Given(/^the next meditation duration is (\d{2}):00$/, function (minutes) {
     patchState("meditationSettings.meditationDurationInMinutes", parseInt(minutes));
@@ -20,24 +13,24 @@ Given(/^the next preparation duration is 00:(\d{2})$/, function (seconds) {
 
 When(/^I request (more|less) time for the meditation$/, function (moreOrLess) {
     if (moreOrLess === 'more') {
-        dispatch(moreMeditationTimeRequested());
+        stateManager.getRootVM().children.meditationSettings.events.moreMeditationTimeRequested();
     } else {
-        dispatch(lessMeditationTimeRequested());
+        stateManager.getRootVM().children.meditationSettings.events.lessMeditationTimeRequested();
     }
 });
 When(/^I request (more|less) time for the preparation$/, function (moreOrLess) {
     if (moreOrLess === 'more') {
-        dispatch(morePreparationTimeRequested());
+        stateManager.getRootVM().children.meditationSettings.events.morePreparationTimeRequested();
     } else {
-        dispatch(lessPreparationTimeRequested());
+        stateManager.getRootVM().children.meditationSettings.events.lessPreparationTimeRequested();
     }
 });
 
 Then(/^the next meditation duration should be (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
-    const actual = appSelectors.nextMeditationDuration(state);
+    const actual = stateManager.getRootVM().children.meditationSettings.selectors.meditationDuration();
     expect(actual).to.equal(expectedDisplayedTime);
 });
 Then(/^the next preparation duration should be (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
-    const actual = appSelectors.nextPreparationDuration(state);
+    const actual = stateManager.getRootVM().children.meditationSettings.selectors.preparationDuration();
     expect(actual).to.equal(expectedDisplayedTime);
 });

@@ -1,9 +1,60 @@
-import {createEventFactory} from "../../lib/event-factory.js";
+import {floor, max} from "lodash-es";
+import ow from "ow";
 
-export const moreMeditationTimeRequested = createEventFactory('moreMeditationTimeRequested');
-export const lessMeditationTimeRequested = createEventFactory('lessMeditationTimeRequested');
+//UTILITY
+function calculateIncrementedDuration(duration, increment) {
+    return floor((duration + increment) / increment) * increment;
+}
 
-export const morePreparationTimeRequested = createEventFactory('morePreparationTimeRequested');
-export const lessPreparationTimeRequested = createEventFactory('lessPreparationTimeRequested');
+function calculateDecrementedDuration(duration, increment) {
+    const diff = duration - increment;
+    if (diff < increment) {
+        return max([duration - 1, 1]);
+    }
+    return diff;
+}
 
-export const gongToggled = createEventFactory('gongToggled');
+//events
+export const meditationSettingsEvents = {
+    moreMeditationTimeRequested: {
+        eventType: "moreMeditationTimeRequested",
+        handler: (state) => ({
+            ...state,
+            meditationDurationInMinutes: calculateIncrementedDuration(state.meditationDurationInMinutes, state.meditationIncrementInMinutes)
+        })
+    },
+    lessMeditationTimeRequested: {
+        eventType: "lessMeditationTimeRequested",
+        handler: (state) => ({
+            ...state,
+            meditationDurationInMinutes: calculateDecrementedDuration(state.meditationDurationInMinutes, state.meditationIncrementInMinutes)
+        })
+    },
+    morePreparationTimeRequested: {
+        eventType: "morePreparationTimeRequested",
+        handler: (state) => ({
+            ...state,
+            preparationDurationInSeconds: calculateIncrementedDuration(state.preparationDurationInSeconds, state.preparationIncrementInSeconds)
+        })
+    },
+    lessPreparationTimeRequested: {
+        eventType: "lessPreparationTimeRequested",
+        handler: (state) => ({
+            ...state,
+            preparationDurationInSeconds: calculateDecrementedDuration(state.preparationDurationInSeconds, state.preparationIncrementInSeconds)
+        })
+    },
+    gongToggled: {
+        eventType: "gongToggled",
+        handler: (state) => ({
+            ...state,
+            gongOff: !state.gongOff
+        })
+    },
+    startSessionRequested:{
+        eventType:"startSessionRequested",
+        payloadShape:{
+            currentTimeInSeconds: ow.number.positive,
+        }
+    }
+};

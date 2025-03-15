@@ -1,20 +1,18 @@
-import {useContext} from "react";
-import {AppStateContext} from "./AppStateProvider.jsx";
-import {appSelectors} from "domain/src/app/meditation-timer.app.js";
 import MeditationSettingsPage from "../meditation-settings-page/MeditationSettingsPage.jsx";
 import MeditationSessionPage from "../meditation-session-page/MeditationSessionPage.jsx";
 import StatisticsPage from "../statistics/StatisticsPage.jsx";
 
-const AppBody = () => {
-    const {state} = useContext(AppStateContext);
+export default ({vm}) => {
     //selectors
-    const page = appSelectors.currentPage(state);
+    const page = vm.selectors.currentPage();
     return (
         <div className="app-body">
-            {page === 'HOME' && <MeditationSettingsPage/>}
-            {page === 'MEDITATION_SESSION' && <MeditationSessionPage/>}
-            {page === 'STATISTICS' && <StatisticsPage/>}
+            {page === 'HOME' &&
+                <MeditationSettingsPage vm={vm.children.meditationSettings}/>}
+            {page === 'MEDITATION_SESSION' &&
+                <MeditationSessionPage vm={vm.children.meditationSession}/>}
+            {page === 'STATISTICS' &&
+                <StatisticsPage vm={vm}/>}
         </div>
     );
 }
-export default AppBody;

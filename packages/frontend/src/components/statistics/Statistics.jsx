@@ -1,18 +1,14 @@
-import {useContext} from "react";
-import {AppStateContext} from "../app/AppStateProvider.jsx";
 import {useTranslation} from "react-i18next";
-import {appSelectors} from "domain/src/app/meditation-timer.app.js";
 import "./Statistics.css";
 
-export function Statistics() {
+export function Statistics({vm}) {
     const {t} = useTranslation();
-    const {state} = useContext(AppStateContext);
     //selectors
-    const dailyStreak = appSelectors.statistics.dailyStreak(state);
-    const hourCount = appSelectors.statistics.hourCountThisWeek(state);
-    const minuteCount = appSelectors.statistics.minuteCountThisWeek(state);
-    const shouldTotalMinutesThisWeekBeDisplayed = appSelectors.statistics.shouldTotalMinutesThisWeekBeDisplayed(state);
-    const shouldDailyStreakBeDisplayed = appSelectors.statistics.shouldDailyStreakBeDisplayed(state);
+    const dailyStreak = vm.selectors.dailyStreak();
+    const hourCount = vm.selectors.hourCountThisWeek();
+    const minuteCount = vm.selectors.minuteCountThisWeek();
+    const shouldTotalMinutesThisWeekBeDisplayed = vm.selectors.shouldTotalMinutesThisWeekBeDisplayed();
+    const shouldDailyStreakBeDisplayed = vm.selectors.shouldDailyStreakBeDisplayed();
 
     return (
         <ul className="statistics">

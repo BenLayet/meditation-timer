@@ -8,7 +8,6 @@ Feature: Meditation timer
     When the preparation duration has elapsed
     Then a gong sound should be played
     And the meditation timer should start running
-    And I can stop the meditation session
 
   Scenario: Meditation timer ticks
     Given the next meditation duration is 20:00
@@ -19,7 +18,7 @@ Feature: Meditation timer
   Scenario: Actual meditation ends
     Given I have started a meditation session
     And the actual meditation has started
-    When the actual meditation duration has elapsed
+    When the actual meditation has completed
     Then a gong sound should be played
     And the timer should stop
     And the statistics are shown

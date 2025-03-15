@@ -1,13 +1,20 @@
+/* eslint-disable react/prop-types */
 import './App.css'
 import '../../config/i18n';
-import {AppStateProvider} from "./AppStateProvider.jsx";
 import AppHeader from "./AppHeader.jsx";
 import AppBody from "./AppBody.jsx";
+import {useEffect, useState} from "react";
 
-const App = () => {
-    return (<AppStateProvider>
-            <AppHeader/>
-            <AppBody/>
-        </AppStateProvider>);
+const App = ({stateManager}) => {
+    const [vm, setVM] = useState(stateManager.getRootVM());
+    useEffect(() => {
+        stateManager.addRootVMChangedListener(setVM);
+        return () => stateManager.removeRootVMChangedListener(setVM)
+    }, []);
+
+    return (<>
+        <AppHeader vm={vm}/>
+        <AppBody vm={vm}/>
+    </>);
 }
 export default App;

@@ -1,4 +1,4 @@
-Feature: Meditation timer
+Feature: Meditation session setup
   As a meditation practitioner
   I want to set the parameters of my meditation
   so that I can meditate in the way I want

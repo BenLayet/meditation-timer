@@ -1,22 +1,54 @@
 import ow from "ow";
-import {createEventFactory} from "../../lib/event-factory.js";
+import {floor, max} from "lodash-es";
+import {ACTUAL_MEDITATION_INITIAL_STATE} from "./actual-meditation.state.js";
 
-export const actualMeditationStartRequested =
-    createEventFactory('actualMeditationStartRequested', (durationInMinutes, currentTimeInSeconds) => {
-        ow(currentTimeInSeconds, ow.number.integer.positive);
-        ow(durationInMinutes, ow.number.integer.positive);
-        return {currentTimeInSeconds, durationInMinutes};
-    });
-export const actualMeditationCancelRequested = createEventFactory('actualMeditationCancelRequested');
-export const actualMeditationCompleted = createEventFactory('actualMeditationCompleted');
-export const actualMeditationStopped = createEventFactory('actualMeditationStopped');
+//utility
+const durationInSeconds = state => {
+    return state.durationInMinutes * 60;
+}
+const elapsedSeconds = currentTimeInSeconds => state => {
+    return state.startedTimeInSeconds ? floor((currentTimeInSeconds - state.startedTimeInSeconds)) : 0;
+}
+const remainingSeconds = currentTimeInSeconds => state => {
+    return max([0, durationInSeconds(state) - elapsedSeconds(currentTimeInSeconds)(state)]);
+}
 
-export const actualMeditationTimerTicked =
-    createEventFactory('actualMeditationTimerTicked', (currentTimeInSeconds) => {
-        ow(currentTimeInSeconds, ow.number.integer.positive);
-        return {currentTimeInSeconds};
-    });
-
-export const actualMeditationSaveRequested = createEventFactory('actualMeditationSaveRequested');
-export const actualMeditationSaveFailed = createEventFactory('actualMeditationSaveFailed', error => ({error}));
-export const actualMeditationSaveSucceeded = createEventFactory('actualMeditationSaveSucceeded');
+//event handlers
+export const actualMeditationEvents = {
+    startRequested: {
+        eventType: "startRequested", payloadShape: {
+            currentTimeInSeconds: ow.number.integer.positive, durationInMinutes: ow.number.integer.positive,
+        }, handler: (state, {currentTimeInSeconds, durationInMinutes}) => ({
+            ...state,
+            durationInMinutes,
+            startedTimeInSeconds: currentTimeInSeconds,
+            remainingSeconds: durationInMinutes * 60,
+        })
+    },
+    stopRequested: {
+        eventType: "stopRequested", handler: () => ACTUAL_MEDITATION_INITIAL_STATE
+    },
+    completed: {eventType: "completed"},
+    timerTicked: {
+        eventType: "timerTicked", payloadShape: {
+            currentTimeInSeconds: ow.number.integer.positive,
+        }, handler: (state, {currentTimeInSeconds}) => ({
+            ...state, remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
+        })
+    },
+    timerStartRequested: {eventType: "timerStartRequested"},
+    timerStopRequested: {eventType: "timerStopRequested"},
+    saveRequested: {
+        eventType: "saveRequested",
+        payloadShape: {
+            startedTimeInSeconds: ow.number.positive,
+            durationInMinutes: ow.number.greaterThanOrEqual(0)
+        }
+    },
+    saveFailed: {
+        eventType: "saveFailed", payloadShape: {
+            error: ow.any
+        }
+    },
+    saveSucceeded: {eventType: "saveSucceeded"},
+}
