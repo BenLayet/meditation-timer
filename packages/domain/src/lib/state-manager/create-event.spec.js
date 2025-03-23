@@ -57,7 +57,7 @@ describe("createEvent", () => {
         };
 
         expect(() => createEvent({payloadShape, eventType}, componentPath, payload)).toThrow(
-            "Expected property `key2` to be of type `number` but received type `undefined` in object `::while creating event MissingKeyComponent:MissingKeyEvent`"
+            "Expected property `key2` to be of type `number` but received type `undefined` in object `::while creating event MissingKeyComponent:MissingKeyEvent with payload {\"key1\":\"Hello\"}`"
         );
     });
 
