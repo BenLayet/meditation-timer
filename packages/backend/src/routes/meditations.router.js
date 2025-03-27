@@ -24,8 +24,9 @@ export function meditationsRouter(meditationRepository) {
         console.log('Get meditation statistics');
         try {
             const deviceUuid = req.cookies['device_uuid'];
-            const dailyStreak = await meditationRepository.getDailyStreak({deviceUuid});
-            const totalMinutesThisWeek = await meditationRepository.totalMinutesThisWeek({deviceUuid});
+            const epochDay = req.query.epochDay ?? Math.floor(new Date() / (86400 * 1000))
+            const dailyStreak = await meditationRepository.getDailyStreak({deviceUuid}, epochDay);
+            const totalMinutesThisWeek = await meditationRepository.totalMinutesOnWeekBefore({deviceUuid}, epochDay);
             const statistics = {dailyStreak, totalMinutesThisWeek};
             res.status(200).json(statistics);
             console.log(`Got meditation statistics: ${JSON.stringify(statistics)}`);

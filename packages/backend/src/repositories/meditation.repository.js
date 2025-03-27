@@ -15,10 +15,10 @@ class MeditationRepository {
             VALUES (${id}, ${started}, ${durationInMinutes}, ${deviceUuid})
             RETURNING *;
         `;
-        return result[0];
+        return {id:result[0].id, ...meditation};
     }
 
-    async getDailyStreak(filter) {
+    async getDailyStreak(filter, epochDay) {
 
         const {deviceUuid} = filter;
         const results = await this.datasource`
@@ -26,11 +26,12 @@ class MeditationRepository {
             FROM (SELECT distinct floor(extract(epoch from started) / 86400) as day
                   FROM meditations
                   WHERE device_uuid = ${deviceUuid}) as days
+              WHERE day <= ${epochDay}
             ORDER BY day DESC;
         `;
         const allDays = results.map(result => result.day);
         let streak = 0;
-        let lastDay = Math.floor(new Date() / (86400 * 1000));
+        let lastDay = epochDay;
         for (let day of allDays) {
             if (lastDay && lastDay - day > 1) {
                 break;
@@ -41,13 +42,19 @@ class MeditationRepository {
         return streak;
     }
 
-    async totalMinutesThisWeek(filter) {
+    async totalMinutesOnWeekBefore(filter, epochDay) {
         const {deviceUuid} = filter;
+        // includes data for the current day
+        const beforeTimeInMs = (epochDay+1) * 86400 * 1000;
+        // 7 days before the current day
+        const afterTimeInMs = (epochDay-7) * 86400 * 1000;
         const result = await this.datasource`
             SELECT sum(duration_in_minutes) as total
-            from meditations
-            WHERE device_uuid = ${deviceUuid}
-              and started > now() - interval '7 days';
+            FROM meditations
+            WHERE
+              device_uuid = ${deviceUuid}
+              AND started <= ${beforeTimeInMs}
+              AND started > ${afterTimeInMs};
         `;
         return (result.length > 0 && result[0].total) ? parseInt(result[0].total) : 0;
     }
