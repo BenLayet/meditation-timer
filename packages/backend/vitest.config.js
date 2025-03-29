@@ -3,6 +3,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    environment: 'node', // Use Node.js environment for backend testing
+    environment: 'node',
+    globals: true
   },
 });

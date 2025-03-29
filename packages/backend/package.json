@@ -1,29 +1,26 @@
 {
   "name": "backend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "start": "node src/app.js",
-    "dev:start": "pnpm run dev:start:database && pnpm run dev:start:app &",
-    "dev:stop": "pnpm run dev:stop:database && pnpm run dev:stop:app",
-    "dev:start:app": "cross-env NODE_ENV=dev nodemon src/app.js --ignore test",
-    "dev:stop:app": "kill $(lsof -t -i:8000)",
-    "dev:start:database": "cd env/dev/database && docker-compose up -d && cd ../../..",
-    "dev:stop:database": "cd env/dev/database && docker-compose down -v && cd ../../..",
-    "test:integration": "vitest --config vitest.config.js",
-    "test:integration:ci": "pnpm run dev:start && pnpm run test:integration && pnpm run dev:stop"
+    "prod:start": "node src/main.js",
+    "dev:start": "pnpm run dev:db:start && pnpm run dev:api:start",
+    "dev:api:start": "cross-env NODE_ENV=dev nodemon src/main.js --watch src",
+    "dev:db:start": "docker-compose -p db-dev --env-file .env.dev -f database/docker-compose.yml up -d",
+    "dev:db:stop": "docker-compose -p db-dev --env-file .env.dev -f database/docker-compose.yml down -v",
+    "test:db:start": "docker-compose -p db-test --env-file .env.test -f database/docker-compose.yml up -d",
+    "test:db:stop": "docker-compose -p db-test --env-file .env.test -f database/docker-compose.yml down -v",
+    "test:api:start": "cross-env NODE_ENV=test  nodemon src/main.js --watch src",
+    "test:integration": "vitest --config vitest.integration.config.js"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "jest": "^29.7.0",
-    "jest-environment-node": "^29.7.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
     "vitest": "^3.0.7"
   },
   "dependencies": {
-    "@jest/globals": "^29.7.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "domain": "workspace:*",

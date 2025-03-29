@@ -1,11 +1,11 @@
-import { describe, it, expect } from 'vitest';
-import fetch from 'node-fetch';
-import { HEALTH_API_URL } from './ti-config.js';
+import { checkApiHealth } from './api.client.js';
 
 describe('Health Check Integration Tests', () => {
   it('should be up', async () => {
-    const response = await fetch(HEALTH_API_URL, { method: 'GET' });
-    const health = await response.json();
-    expect(health).toHaveProperty('status', 'UP');
+    const {status, body} = await checkApiHealth();
+    expect(status).toBe(200);
+    expect(body).toHaveProperty('status', 'UP');
+    expect(body).toHaveProperty('environment', 'test');
+    expect(body).toHaveProperty('version');
   });
 });
