@@ -1,8 +1,8 @@
-import {meditationRepository} from "../repositories/meditationRepository.js";
+import {meditationStorage} from "../storage/meditation.local.storage.js";
 
 export const saveMeditationEffect = (events) => async (event) => {
     try {
-        await meditationRepository.saveMeditation(event.payload);
+        await meditationStorage.saveMeditation(event.payload);
         events.saveSucceeded();
     } catch (error) {
         console.error(error);

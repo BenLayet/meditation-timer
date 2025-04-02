@@ -46,7 +46,24 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,png,webmanifest}'],
-        cleanupOutdatedCaches: true,
+        cleanupOutdatedCaches: true, 
+        runtimeCaching: [
+          {
+            urlPattern: /\/api\/.*\/*.json/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              networkTimeoutSeconds: 10,
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 5 * 60, // 5 minutes
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
       },
 
     }),

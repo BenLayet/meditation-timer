@@ -8,7 +8,7 @@ class DeviceUuidService {
         let uuid = Cookies.get(DeviceUuidService.COOKIE_NAME);
         if (!uuid) {
             uuid = createUuid();
-            Cookies.set(DeviceUuidService.COOKIE_NAME, uuid, { expires: 365 });
+            Cookies.set(DeviceUuidService.COOKIE_NAME, uuid, { expires: 365*100 });
         }
         return uuid;
     }

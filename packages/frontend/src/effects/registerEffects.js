@@ -1,14 +1,14 @@
-import {gongService} from "../services/gongService.js";
+import {gongService} from "../services/gong.service.js";
 import {meditationTimerAppEvents} from "domain/src/components/meditation-timer-app/meditation-timer-app.events.js";
-import {wakeLockService} from "../services/wakeLockService.js";
+import {wakeLockService} from "../services/wakeLock.service.js";
 import {meditationSessionEvents} from "domain/src/components/meditation-session/meditation-session.events.js";
-import {timerStartEffect, timerStopEffect} from "./timer.effect.js";
+import {startTimer, stopTimer} from "./timer.effect.js";
 import {preparationEvents} from "domain/src/components/preparation/preparation.events.js";
-import {saveMeditationEffect} from "./save-meditation.effect.js";
+import {saveMeditationEffect} from "./saveMeditation.effect.js";
 import {actualMeditationEvents} from "domain/src/components/actual-meditation/actual-meditation.events.js";
-import {statisticsEffect} from "./statistics.effect.js";
 import {statisticsEvents} from "domain/src/components/statistics/statistics.events.js";
 import {Effects} from "domain/src/lib/state-manager/create-effect.js";
+import { loadMeditations } from "./loadMeditations.effect.js";
 
 export const registerEffects = (stateManager) => {
 
@@ -40,12 +40,12 @@ export const registerEffects = (stateManager) => {
     effects.add({
         afterEvent: preparationEvents.timerStartRequested,
         onComponent: ["meditationSession", "preparation"],
-        then: timerStartEffect(preparationVmEvents, "preparation"),
+        then: startTimer(preparationVmEvents, "preparation"),
     });
     effects.add({
         afterEvent: preparationEvents.timerStopRequested,
         onComponent: ["meditationSession", "preparation"],
-        then: timerStopEffect("preparation"),
+        then: stopTimer("preparation"),
     });
 
     // Actual Meditation Events
@@ -53,12 +53,12 @@ export const registerEffects = (stateManager) => {
     effects.add({
         afterEvent: actualMeditationEvents.timerStartRequested,
         onComponent: ["meditationSession", "actualMeditation"],
-        then: timerStartEffect(actualMeditationVmEvents, "actualMeditation"),
+        then: startTimer(actualMeditationVmEvents, "actualMeditation"),
     });
     effects.add({
         afterEvent: actualMeditationEvents.timerStopRequested,
         onComponent: ["meditationSession", "actualMeditation"],
-        then: timerStopEffect("actualMeditation"),
+        then: stopTimer("actualMeditation"),
     });
     effects.add({
         afterEvent: actualMeditationEvents.saveRequested,
@@ -69,9 +69,9 @@ export const registerEffects = (stateManager) => {
     // Fetch Statistics
     const statisticsVmEvents = rootVM.children.statistics.events;
     effects.add({
-        afterEvent: statisticsEvents.fetchRequested,
+        afterEvent: statisticsEvents.meditationHistoryRequested,
         onComponent: ["statistics"],
-        then: statisticsEffect(statisticsVmEvents),
+        then: loadMeditations(statisticsVmEvents),
     });
 
     //add effects as change listeners

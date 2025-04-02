@@ -14,7 +14,7 @@ import {
     meditationTimerAppComponent
 } from "domain/src/components/meditation-timer-app/meditation-timer-app.component.js";
 import {addDebugger} from "./lib/debug.functions.js";
-import {registerEffects} from "./effects/register-effects.js";
+import {registerEffects} from "./effects/registerEffects.js";
 
 const stateManager = new StateManager(meditationTimerAppComponent);
 
