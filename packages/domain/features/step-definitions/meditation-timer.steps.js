@@ -1,25 +1,25 @@
 import {Given, Then, When} from "@cucumber/cucumber";
 import {eventWasSent, stateManager} from "./state-manager/test-state-manager.js";
 import {expect} from "chai";
-import {BEGINNING_OF_TIME_IN_SECONDS} from "./state-manager/test-constants.js";
+import {CURRENT_TIME_IN_SECONDS} from "./state-manager/test-constants.js";
 import {actualMeditationEvents} from "../../src/components/actual-meditation/actual-meditation.events.js";
 import {meditationTimerAppEvents} from "../../src/components/meditation-timer-app/meditation-timer-app.events.js";
 
 Given(/^the actual meditation has started$/, function () {
     stateManager.getRootVM().children.meditationSession.children.actualMeditation.events.startRequested({
         durationInMinutes: 20,
-        currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS
+        currentTimeInSeconds: CURRENT_TIME_IN_SECONDS
     });
 });
 Given(/^there are (\d+) minutes left in the meditation$/, function (remainingMinutes) {
     stateManager.getRootVM().children.meditationSession.children.actualMeditation.events.timerTicked({
-        currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS + ((20 - remainingMinutes) * 60)
+        currentTimeInSeconds: CURRENT_TIME_IN_SECONDS + ((20 - remainingMinutes) * 60)
     });
 });
 
 When(/^a second has elapsed during actual meditation$/, function () {
     stateManager.getRootVM().children.meditationSession.children.actualMeditation.events.timerTicked({
-        currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS + 1
+        currentTimeInSeconds: CURRENT_TIME_IN_SECONDS + 1
     });
 });
 When(/^the actual meditation has completed/, function () {

@@ -5,6 +5,7 @@ export const createEffect = ({afterEvent, onComponent, then}) =>
         const triggeringEvent = afterEvent;
         const componentPath = onComponent;
         const effectFunction = then;
+        
         if (event.eventType === triggeringEvent.eventType
             && (!componentPath || isEqual(componentPath, event.componentPath))) {
             effectFunction(event);

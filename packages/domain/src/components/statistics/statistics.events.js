@@ -1,38 +1,73 @@
 import ow from "ow";
 
 export const statisticsEvents = {
-    fetchRequested: {
-        eventType: "fetchRequested",
-        handler: (state) => ({
-            ...state,
-            loading: true,
-            error: false,
-        })
+  statisticsRequested: {
+    eventType: "statisticsRequested",
+    handler: (state) => ({
+      ...state,
+      loading: true,
+      error: false,
+    }),
+  },
+  statisticsRetrieved: {
+    eventType: "statisticsRetrieved",
+    payloadShape: {
+      statistics: ow.object.exactShape({
+        dailyStreak: ow.number.integer.greaterThanOrEqual(0),
+        totalMinutesThisWeek: ow.number.integer.greaterThanOrEqual(0),
+      }),
     },
-    fetchSucceeded: {
-        eventType: "fetchSucceeded",
-        payloadShape: {
-            statistics: ow.object.exactShape({
-                dailyStreak: ow.number.integer.greaterThanOrEqual(0),
-                totalMinutesThisWeek: ow.number.integer.greaterThanOrEqual(0),
-            })
-        },
-        handler: (state, {statistics}) => ({
-            ...state,
-            loading: false,
-            error: false,
-            ...statistics
-        })
+    handler: (state, { statistics }) => ({
+      ...state,
+      loading: false,
+      error: false,
+      ...statistics,
+    }),
+  },
+  currentDayRequested: {
+    eventType: "currentDayRequested",
+  },
+  currentDayObtained: {
+    eventType: "currentDayObtained",
+    payloadShape: {
+      currentEpochDay: ow.number.integer.greaterThanOrEqual(0),
     },
-    fetchFailed: {
-        eventType: "fetchFailed",
-        payloadShape: {
-            error: ow.any
-        },
-        handler: (state) => ({
-            ...state,
-            loading: false,
-            error: true,
+    handler: (state, { currentEpochDay }) => ({
+      ...state,
+      currentEpochDay,
+    }),
+  },
+  meditationHistoryRequested: {
+    eventType: "meditationHistoryRequested",
+    payloadShape: {
+      currentEpochDay: ow.number.positive
+    },
+  },
+  meditationHistoryRetrieved: {
+    eventType: "meditationHistoryRetrieved",
+    payloadShape: {
+      currentEpochDay: ow.number.positive,
+      meditationHistory: ow.array.ofType(
+        ow.object.exactShape({
+          startedTimeInSeconds: ow.number.positive,
+          durationInMinutes: ow.number.greaterThanOrEqual(0),
         })
-    }
+      ),
+    },
+    handler:(state, {meditationHistory}) => ({
+      ...state,
+      meditationHistory
+    })
+  },
+  meditationHistoryFailed: {
+    eventType: "meditationHistoryFailed",
+    payloadShape: {
+      error: ow.any,
+    },
+    handler: (state) => ({
+      ...state,
+      loading: false,
+      error: true,
+    }),
+  },
 };

@@ -1,5 +1,6 @@
 import {floor, flow} from "lodash-es";
 import {map} from "../../lib/functions/object.functions.js";
+import { calculateStatistics } from "./statistics.functions.js";
 
 const hourCount = (minutes) => ({count: floor(minutes / 60)});
 const minuteCount = (minutes) => ({count: minutes % 60});
@@ -19,7 +20,7 @@ export const ownStateSelectors = {
     hourCountThisWeek,
     minuteCountThisWeek,
     shouldTotalMinutesThisWeekBeDisplayed,
-    shouldDailyStreakBeDisplayed
+    shouldDailyStreakBeDisplayed,
 };
 const ownState = compositeState => compositeState.ownState;
 export const statisticsSelectors = map(ownStateSelectors, selector => flow(ownState, selector));

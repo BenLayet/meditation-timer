@@ -1,15 +1,15 @@
 import {Given, Then, When} from "@cucumber/cucumber";
 import {expect} from "chai";
-import {BEGINNING_OF_TIME_IN_SECONDS} from "./state-manager/test-constants.js";
+import {CURRENT_TIME_IN_SECONDS} from "./state-manager/test-constants.js";
 import {eventWasSent, stateManager} from "./state-manager/test-state-manager.js";
 import {meditationSessionEvents} from "../../src/components/meditation-session/meditation-session.events.js";
 
 Given(/^I have started a meditation session$/, function () {
-    stateManager.getRootVM().children.meditationSession.events.startRequested({currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS});
+    stateManager.getRootVM().children.meditationSession.events.startRequested({currentTimeInSeconds: CURRENT_TIME_IN_SECONDS});
 });
 
 When(/^I start a meditation session$/, function () {
-    stateManager.getRootVM().children.meditationSession.events.startRequested({currentTimeInSeconds: BEGINNING_OF_TIME_IN_SECONDS});
+    stateManager.getRootVM().children.meditationSession.events.startRequested({currentTimeInSeconds: CURRENT_TIME_IN_SECONDS});
 });
 When(/^I stop the meditation session$/, function () {
     stateManager.getRootVM().children.meditationSession.events.stopRequested();

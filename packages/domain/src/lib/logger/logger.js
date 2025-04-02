@@ -5,6 +5,7 @@ export const logEvent = (event, newState, oldState) => {
     const payload = event.payload ?? {};
     console.debug(`EVENT=${event.componentPath.map(p => p + '.').join('')}${event.eventType}
     | PAYLOAD=${JSON.stringify(payload)}
-    | DIFF=${JSON.stringify(diff)}
-    | STATE=${JSON.stringify(newState)}`);
+    | DIFF=${JSON.stringify(diff)}`)
+    //| STATE=${JSON.stringify(newState)}
+    ;
 }

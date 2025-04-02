@@ -1,22 +1,22 @@
 import {Given, Then, When} from "@cucumber/cucumber";
 import {patchState, stateManager} from "./state-manager/test-state-manager.js";
 import {expect} from "chai";
-import {BEGINNING_OF_TIME_IN_SECONDS, PREPARATION_DURATION_IN_SECONDS} from "./state-manager/test-constants.js";
+import {CURRENT_TIME_IN_SECONDS, PREPARATION_DURATION_IN_SECONDS} from "./state-manager/test-constants.js";
 
 
 Given(/^the preparation has started$/, function () {
-    patchState("meditationSession.preparation.startedTimeInSeconds", BEGINNING_OF_TIME_IN_SECONDS);
+    patchState("meditationSession.preparation.startedTimeInSeconds", CURRENT_TIME_IN_SECONDS);
 });
 Given(/^there are (\d+) seconds left in the preparation$/, function (remainingSeconds) {
     patchState("meditationSession.preparation.remainingSeconds", remainingSeconds);
 });
 
 When(/^the preparation duration has elapsed$/, function () {
-    const currentTimeInSeconds = BEGINNING_OF_TIME_IN_SECONDS + PREPARATION_DURATION_IN_SECONDS;
+    const currentTimeInSeconds = CURRENT_TIME_IN_SECONDS + PREPARATION_DURATION_IN_SECONDS;
     stateManager.getRootVM().children.meditationSession.children.preparation.events.timerTicked({currentTimeInSeconds});
 });
 When(/^a second has elapsed during preparation$/, function () {
-    const currentTimeInSeconds = BEGINNING_OF_TIME_IN_SECONDS + 1;
+    const currentTimeInSeconds = CURRENT_TIME_IN_SECONDS + 1;
     stateManager.getRootVM().children.meditationSession.children.preparation.events.timerTicked({currentTimeInSeconds});
 
 });
