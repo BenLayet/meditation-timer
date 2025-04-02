@@ -38,17 +38,14 @@ export const statisticsEvents = {
     }),
   },
   meditationHistoryRequested: {
-    eventType: "meditationHistoryRequested",
-    payloadShape: {
-      currentEpochDay: ow.number.positive
-    },
+    eventType: "meditationHistoryRequested"
   },
   meditationHistoryRetrieved: {
     eventType: "meditationHistoryRetrieved",
     payloadShape: {
       currentEpochDay: ow.number.positive,
-      meditationHistory: ow.array.ofType(
-        ow.object.exactShape({
+      meditations: ow.array.ofType(
+        ow.object.partialShape({
           startedTimeInSeconds: ow.number.positive,
           durationInMinutes: ow.number.greaterThanOrEqual(0),
         })

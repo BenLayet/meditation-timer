@@ -24,23 +24,16 @@ export const reset = () => {
 //EFFECTS
 const effects = new Effects();
 
-//current day
-effects.add({
-  afterEvent: statisticsEvents.currentDayRequested,
-  then: () => stateManager.getRootVM().children
-      .statistics.events.currentDayObtained({currentEpochDay:CURRENT_EPOCH_DAY}),
-});
-
 //statistics
-export const meditationStorage = {meditationHistory:[]};
+export const meditationStorage = {meditations:[]};
 effects.add({
   afterEvent: statisticsEvents.meditationHistoryRequested,
   onComponent: ["statistics"],
-  then: ({payload}) =>
+  then: () =>
     stateManager.getRootVM().children
   .statistics.events.meditationHistoryRetrieved(
     {...meditationStorage,
-       currentEpochDay:payload.currentEpochDay}),
+       currentEpochDay:CURRENT_EPOCH_DAY}),
 });
 
 //save meditation
