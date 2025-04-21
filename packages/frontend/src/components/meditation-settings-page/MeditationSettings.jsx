@@ -20,7 +20,7 @@ function MeditationSettings({vm}) {
             <div className="meditation-setting flex-column">
                 <label>{t('duration')}</label>
                 <div className="meditation-setting-control flex-column">
-                    {meditationDuration}
+                    <span className="time-display">{meditationDuration}</span>
                     <div className="round-button-group">
                         <FontAwesomeIcon
                             icon={faMinus}
@@ -35,8 +35,8 @@ function MeditationSettings({vm}) {
             </div>
             <div className="meditation-setting flex-column">
                 <label>{t("preparation")}</label>
-                <div className="meditation-setting-control flex-column">
-                    {preparationDuration}
+                    <div className="meditation-setting-control flex-column">
+                    <span className="time-display">{preparationDuration}</span>
                     <div className="round-button-group">
                         <FontAwesomeIcon
                             icon={faMinus}

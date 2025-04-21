@@ -44,4 +44,5 @@ button.main-action {
     display: flex;
     width: 100%;
     gap: 0.5em;
+    justify-content: center;
 }

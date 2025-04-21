@@ -27,9 +27,18 @@ a:hover {
 .clickable:hover {
     color: var(--accent-color);
 }
+
 .bigger{
     font-size: 1.5em;
 }
+
 .smaller{
     font-size: 0.75em;
+}
+.time-display{
+    display: flex;
+    font-family: Lekton, monospace;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
 }
