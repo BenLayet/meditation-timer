@@ -110,7 +110,6 @@ export const meditationTimerAppChainedEvents = [
       ...actualMeditationEvents.stopRequested,
       childComponentPath: ["meditationSession", "actualMeditation"],
     },
-    onCondition: ({ state }) => meditationTimerAppSelectors.isGongOn(state),
     thenDispatch: meditationTimerAppEvents.gongStopRequested,
   },
 ];

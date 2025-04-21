@@ -1,6 +1,7 @@
 import {flow} from 'lodash-es';
 import {formatSeconds} from "../../lib/functions/duration.function.js";
 import {map} from "../../lib/functions/object.functions.js";
+import {not} from "../../lib/functions/predicate.functions.js";
 
 //SELECTORS
 const meditationDurationInMinutes = (state) => state.meditationDurationInMinutes;
@@ -9,8 +10,10 @@ const preparationDurationInSeconds = (state) => state.preparationDurationInSecon
 const meditationDuration = flow(meditationDurationInSeconds, formatSeconds);
 const preparationDuration = flow(preparationDurationInSeconds, formatSeconds);
 const isGongOff = state => state.gongOff;
+const isGongOn = not(isGongOff);
 
 const ownStateSelectors = {
+    isGongOn,
     isGongOff,
     meditationDuration,
     preparationDuration,

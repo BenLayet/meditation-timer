@@ -42,7 +42,7 @@ export const addDebugger = (stateManager) => {
     stateManager.addEventListener(trackStateAndEvent);
     stateManager.addEventListener(forceStateEffect);
 
-    trackStateAndEvent(stateManager.state, {eventType: "INITIAL_STATE"});
+    trackStateAndEvent({eventType: "INITIAL_STATE"}, stateManager.state);
     window.sm = {
         getRootVM: () => stateManager.getRootVM(),
         lastEvents: (start = 0, end) => {

@@ -18,7 +18,6 @@ When(/^the preparation duration has elapsed$/, function () {
 When(/^a second has elapsed during preparation$/, function () {
     const currentTimeInSeconds = CURRENT_TIME_IN_SECONDS + 1;
     stateManager.getRootVM().children.meditationSession.children.preparation.events.timerTicked({currentTimeInSeconds});
-
 });
 
 When(/^I request more time during the preparation$/, function () {

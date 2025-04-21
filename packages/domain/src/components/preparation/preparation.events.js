@@ -22,6 +22,15 @@ export const preparationEvents = {
             startedTimeInSeconds: currentTimeInSeconds,
         }),
     },
+    stopRequested: {
+        eventType: "stopRequested",
+        handler: (state) => ({
+            ...state,
+            durationInSeconds: null,
+            remainingSeconds: null,
+            startedTimeInSeconds: null,
+        }),
+    },
     timerStartRequested: {
         eventType: "timerStartRequested",
     },
@@ -64,7 +73,4 @@ export const preparationEvents = {
             remainingSeconds: 0,
         })
     },
-    stopRequested: {
-        eventType: "stopRequested",
-    }
 };

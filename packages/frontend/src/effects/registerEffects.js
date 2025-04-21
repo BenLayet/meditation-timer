@@ -2,6 +2,7 @@ import {gongService} from "../services/gong.service.js";
 import {meditationTimerAppEvents} from "domain/src/components/meditation-timer-app/meditation-timer-app.events.js";
 import {wakeLockService} from "../services/wakeLock.service.js";
 import {meditationSessionEvents} from "domain/src/components/meditation-session/meditation-session.events.js";
+import {meditationSettingsEvents} from "domain/src/components/meditation-settings/meditation-settings.events.js";
 import {startTimer, stopTimer} from "./timer.effect.js";
 import {preparationEvents} from "domain/src/components/preparation/preparation.events.js";
 import {saveMeditationEffect} from "./saveMeditation.effect.js";
@@ -22,6 +23,14 @@ export const registerEffects = (stateManager) => {
     effects.add({
         afterEvent: meditationTimerAppEvents.gongStopRequested,
         then: gongService.stop,
+    });
+    effects.add({
+        afterEvent: meditationSettingsEvents.gongOffToggled,
+        then: gongService.volumeOff,
+    });
+    effects.add({
+        afterEvent: meditationSettingsEvents.gongOnToggled,
+        then: gongService.volumeOn,
     });
 
     //sleep mode
@@ -75,5 +84,5 @@ export const registerEffects = (stateManager) => {
     });
 
     //add effects as change listeners
-    effects.get().forEach(stateManager.addEventListener);
+    effects.get().forEach(stateManager.addEffect);
 };

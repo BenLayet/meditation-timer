@@ -11,11 +11,14 @@ class GongService {
 
     stop = () => {
         this.audio.pause();
+        this.audio.currentTime = 0;
     };
 
-    setVolume = (volume) => {
-        console.log('Setting volume to', volume);
-        this.audio.volume = volume;
+    volumeOff = () => {
+        this.audio.volume = 0;
+    }
+    volumeOn = () => {
+        this.audio.volume = 1;
     }
 }
 

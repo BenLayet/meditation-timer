@@ -51,6 +51,12 @@ export const meditationSettingsEvents = {
             gongOff: !state.gongOff
         })
     },
+    gongOffToggled: {
+        eventType: "gongOffToggled"
+    },
+    gongOnToggled: {
+        eventType: "gongOnToggled"
+    },
     startSessionRequested:{
         eventType:"startSessionRequested",
         payloadShape:{
