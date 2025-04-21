@@ -11,6 +11,10 @@ export const preparationChainedEvents = [
         thenDispatch: preparationEvents.timerStartRequested
     },
     {
+        onEvent: preparationEvents.stopRequested,
+        thenDispatch: preparationEvents.timerStopRequested
+    },
+    {
         onEvent: preparationEvents.timerTicked,
         onCondition: ({state}) => preparationSelectors.isTimeUp(state),
         thenDispatch: preparationEvents.completed,

@@ -4,8 +4,8 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "prod:start": "node src/main.js",
-    "dev:start": "pnpm run dev:db:start && pnpm run dev:api:start",
+    "start": "node src/main.js",
+    "dev": "pnpm run dev:db:start && pnpm run dev:api:start",
     "dev:api:start": "cross-env NODE_ENV=dev nodemon src/main.js --watch src",
     "dev:db:start": "docker-compose -p db-dev --env-file .env.dev -f database/docker-compose.yml up -d",
     "dev:db:stop": "docker-compose -p db-dev --env-file .env.dev -f database/docker-compose.yml down -v",

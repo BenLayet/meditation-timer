@@ -48,7 +48,14 @@ export class StateManager {
     }
 
     notifyEventOccurred(event, previousState) {
-        this.eventListeners.forEach(onEventOccurred => onEventOccurred(event, this.state, previousState));
+        this.eventListeners.forEach(onEventOccurred => {
+            try {
+               onEventOccurred(event, this.state, previousState);
+            }catch (e) {
+                console.error(`Error in event listener: ${e.message}`);
+                console.error(e);
+            }
+        });
         this.rootComponentListeners.forEach(onRootVMChanged => onRootVMChanged(this.getRootVM()));
     }
     notifying = false;
