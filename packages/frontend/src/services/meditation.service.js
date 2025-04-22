@@ -1,9 +1,13 @@
 export class MeditationService {
-  constructor(meditationLocalStorage) {
-    this.meditationLocalStorage = meditationLocalStorage;
+  constructor(meditationLocalStore, deviceUuidService) {
+    this.meditationLocalStore = meditationLocalStore;
+    this.deviceUuidService = deviceUuidService;
   }
   async saveMeditation(meditation) {
-    await this.meditationLocalStorage.saveMeditation(meditation);
+    // Ajouter l'UUID de l'appareil à la méditation
+    meditation.deviceUuid = this.deviceUuidService.getDeviceUuid();
+
+    await this.meditationLocalStore.add(meditation);
     // Enregistrer la tâche de synchronisation si le service worker est prêt
     if ("serviceWorker" in navigator && "SyncManager" in window) {
       navigator.serviceWorker.ready.then((registration) => {
@@ -16,7 +20,7 @@ export class MeditationService {
     }
   }
   async getAllMeditations() {
-    return this.meditationLocalStorage.getAllMeditations();
+    return this.meditationLocalStore.getAll();
   }
 }
 

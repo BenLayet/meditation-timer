@@ -7,18 +7,29 @@ import { meditationTimerAppComponent } from "domain/src/components/meditation-ti
 import { addDebugger } from "./lib/debug.functions.js";
 import { createEffects } from "./effects/effects.js";
 import { MeditationService } from "./services/meditation.service.js";
-import { LocalStorage } from "./storage/localStorage.js";
-import { wakeLockService } from "./services/wakeLock.service.js";
+import { LocalStore } from "./storage/local-store.js";
+import { wakeLockService } from "./services/wake-lock.service.js";
 import { gongService } from "./services/gong.service.js";
 import { tickingService } from "./services/ticking.service.js";
+import { createIndexedDb } from "./storage/indexed-db.js";
+import {
+  meditationsIndexedDbSchema,
+  MEDITATION_STORE_NAME,
+} from "./storage/meditations.indexed-db.schema.js";
+import { DeviceUuidService } from "./services/device-uuid.service.js";
 
 //STATE MANAGER
 const stateManager = new StateManager(meditationTimerAppComponent);
 const rootVM = stateManager.getRootVM();
 
 //DEPENDENCIES
-const meditationLocalStorage = new LocalStorage("meditations");
-const meditationService = new MeditationService(meditationLocalStorage);
+const deviceUuidService = new DeviceUuidService();
+const indexedDb = await createIndexedDb(meditationsIndexedDbSchema);
+const meditationLocalStore = new LocalStore(indexedDb, MEDITATION_STORE_NAME);
+const meditationService = new MeditationService(
+  meditationLocalStore,
+  deviceUuidService
+);
 const dependencies = {
   meditationService,
   gongService,

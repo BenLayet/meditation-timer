@@ -32,7 +32,7 @@ const timeTravel = () => {
     window.sm.state(states[offset]);
 }
 //FORCE STATE DEBUG EFFECT
-const forceStateEffect = createEffect({
+const forceStateEffect = (stateManager) => createEffect({
     afterEvent: {eventType: 'FORCE_STATE'},
     then: ({payload}) => stateManager.state = payload.newState
 });
@@ -40,10 +40,13 @@ const forceStateEffect = createEffect({
 
 export const addDebugger = (stateManager) => {
     stateManager.addEventListener(trackStateAndEvent);
-    stateManager.addEventListener(forceStateEffect);
-
+    stateManager.addEventListener(forceStateEffect(stateManager));
     trackStateAndEvent({eventType: "INITIAL_STATE"}, stateManager.state);
+
     window.sm = {
+        states,
+        events,
+        stateManager,
         getRootVM: () => stateManager.getRootVM(),
         lastEvents: (start = 0, end) => {
             if (typeof end === "undefined") {
