@@ -4,7 +4,6 @@ import {createEvent} from "./create-event.js";
 const getSelectors = (component, state) =>
     map(component.selectors ?? {}, selector => () => selector(state));
 
-
 const getEvents = (component, dispatch, componentPath) =>
     map(component.events ?? {}, ({payloadShape, eventType}) => (payload = {}) => {
         const event = createEvent({payloadShape, eventType}, componentPath, payload);
@@ -21,6 +20,6 @@ const getChildren = (component, state, dispatch, componentPath) =>
 
 export const getVM = (component, state, dispatch, componentPath = []) => ({
     selectors: getSelectors(component, state),
-    events: getEvents(component, dispatch, componentPath),
+    dispatchers: getEvents(component, dispatch, componentPath),
     children: getChildren(component, state, dispatch, componentPath),
 })

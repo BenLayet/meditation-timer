@@ -7,10 +7,10 @@ import GongControl from "../gong-control/GongControl.jsx";
 function MeditationSettings({vm}) {
     const {t} = useTranslation();
     //actions
-    const preparationAddTimeClicked = () => vm.events.morePreparationTimeRequested();
-    const preparationRemoveTimeClicked = () => vm.events.lessPreparationTimeRequested();
-    const meditationAddTimeClicked = () => vm.events.moreMeditationTimeRequested();
-    const meditationRemoveTimeClicked = () => vm.events.lessMeditationTimeRequested();
+    const preparationAddTimeClicked = () => vm.dispatchers.morePreparationTimeRequested();
+    const preparationRemoveTimeClicked = () => vm.dispatchers.lessPreparationTimeRequested();
+    const meditationAddTimeClicked = () => vm.dispatchers.moreMeditationTimeRequested();
+    const meditationRemoveTimeClicked = () => vm.dispatchers.lessMeditationTimeRequested();
     //selectors
     const meditationDuration = vm.selectors.meditationDuration();
     const preparationDuration = vm.selectors.preparationDuration();

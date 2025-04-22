@@ -7,7 +7,7 @@ import {InspiringImage} from "../inspiring-image/InspiringImage.jsx";
 
 function MeditationSessionPage({vm}) {
     //actions
-    const stopClicked = vm.events.stopRequested;
+    const stopClicked = vm.dispatchers.stopRequested;
 
     //selectors
     const preparationIsRunning = vm.selectors.preparationIsRunning();

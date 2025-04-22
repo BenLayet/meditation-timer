@@ -4,7 +4,7 @@ import {Statistics} from "./Statistics.jsx";
 function StatisticsPage({vm}) {
     const {t} = useTranslation();
 
-    const goBackHomeClicked = () => vm.events.navigationRequested({page: 'HOME'})
+    const goBackHomeClicked = () => vm.dispatchers.navigationRequested({page: 'HOME'})
 
     return <>
         <p>{t('sessionCompleted')}</p>

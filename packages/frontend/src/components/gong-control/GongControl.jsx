@@ -4,7 +4,7 @@ import {faVolumeHigh, faVolumeXmark} from "@fortawesome/free-solid-svg-icons";
 
 function GongControl({vm}) {
     //actions
-    const gongToggleClicked = () => vm.events.gongToggled();
+    const gongToggleClicked = () => vm.dispatchers.gongToggled();
     //selectors
     const isGongOff = vm.selectors.isGongOff();
     return <FontAwesomeIcon

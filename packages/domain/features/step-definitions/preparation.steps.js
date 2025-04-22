@@ -13,15 +13,15 @@ Given(/^there are (\d+) seconds left in the preparation$/, function (remainingSe
 
 When(/^the preparation duration has elapsed$/, function () {
     const currentTimeInSeconds = CURRENT_TIME_IN_SECONDS + PREPARATION_DURATION_IN_SECONDS;
-    stateManager.getRootVM().children.meditationSession.children.preparation.events.timerTicked({currentTimeInSeconds});
+    stateManager.getRootVM().children.meditationSession.children.preparation.dispatchers.timerTicked({currentTimeInSeconds});
 });
 When(/^a second has elapsed during preparation$/, function () {
     const currentTimeInSeconds = CURRENT_TIME_IN_SECONDS + 1;
-    stateManager.getRootVM().children.meditationSession.children.preparation.events.timerTicked({currentTimeInSeconds});
+    stateManager.getRootVM().children.meditationSession.children.preparation.dispatchers.timerTicked({currentTimeInSeconds});
 });
 
 When(/^I request more time during the preparation$/, function () {
-    stateManager.getRootVM().children.meditationSession.children.preparation.events.moreTimeRequested();
+    stateManager.getRootVM().children.meditationSession.children.preparation.dispatchers.moreTimeRequested();
 });
 Then(/^the preparation timer should (start|stop) running$/, function (start) {
     const expected = start === 'start';

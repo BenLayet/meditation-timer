@@ -33,24 +33,24 @@ const eventChainWithPayload = {
 const eventChainToChild = {
     onEvent: events.eventOneOccurred,
     thenDispatch: {
-        ...events.eventTwoOccurred,
+        ...dispatchers.eventTwoOccurred,
         childComponentPath: ["child1"]
     },
 }
 const eventChainFromChild = {
     onEvent: {
-        ...events.eventOneOccurred,
+        ...dispatchers.eventOneOccurred,
         childComponentPath: ["child1"]
     },
     thenDispatch: events.eventTwoOccurred
 }
 const eventChainFromChild1ToChild2 = {
     onEvent: {
-        ...events.eventOneOccurred,
+        ...dispatchers.eventOneOccurred,
         childComponentPath: ["child1"]
     },
     thenDispatch: {
-        ...events.eventTwoOccurred,
+        ...dispatchers.eventTwoOccurred,
         childComponentPath: ["child2"]
     },
 }

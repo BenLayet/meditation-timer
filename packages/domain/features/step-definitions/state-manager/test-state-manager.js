@@ -6,8 +6,7 @@ import { statisticsEvents } from "../../../src/components/statistics/statistics.
 import { isEqual } from "lodash-es";
 import { actualMeditationEvents } from "../../../src/components/actual-meditation/actual-meditation.events.js";
 import {
-  createEffect,
-  Effects,
+  createEffect
 } from "../../../src/lib/state-manager/create-effect.js";
 import { CURRENT_EPOCH_DAY } from "./test-constants.js";
 
@@ -22,29 +21,26 @@ export const reset = () => {
 };
 
 //EFFECTS
-const effects = new Effects();
 
 //statistics
 export const meditationStorage = {meditations:[]};
-effects.add({
+stateManager.addEffect(createEffect({
   afterEvent: statisticsEvents.meditationHistoryRequested,
   onComponent: ["statistics"],
   then: () =>
     stateManager.getRootVM().children
-  .statistics.events.meditationHistoryRetrieved(
+  .statistics.dispatchers.meditationHistoryRetrieved(
     {...meditationStorage,
        currentEpochDay:CURRENT_EPOCH_DAY}),
-});
+}));
 
 //save meditation
-effects.add({
+stateManager.addEffect(createEffect({
   afterEvent: actualMeditationEvents.saveRequested,
   then: stateManager.getRootVM().children.meditationSession.children
-    .actualMeditation.events.saveSucceeded,
-});
+    .actualMeditation.dispatchers.saveSucceeded,
+}));
 
-//register effects as event listeners
-effects.get().forEach(stateManager.addEffect);
 
 //patch state
 export const patchState = (path, patcher) => {

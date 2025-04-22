@@ -5,8 +5,8 @@ import "./Preparation.css";
 function Preparation({vm}) {
     const {t} = useTranslation();
     //actions
-    const addTimeClicked = vm.events.moreTimeRequested;
-    const skipClicked = vm.events.skipRequested;
+    const addTimeClicked = vm.dispatchers.moreTimeRequested;
+    const skipClicked = vm.dispatchers.skipRequested;
     //selectors
     const preparationRemainingTime = vm.selectors.remainingTime();
     const timeIncrementInSeconds = vm.selectors.timeIncrementInSeconds();

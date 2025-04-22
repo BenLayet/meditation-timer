@@ -1,0 +1,24 @@
+import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
+import { meditationTimerAppEvents } from "domain/src/components/meditation-timer-app/meditation-timer-app.events.js";
+import { meditationSettingsEvents } from "domain/src/components/meditation-settings/meditation-settings.events.js";
+
+export const createGongEffects = ({ gongService }) => {
+  return [
+    createEffect({
+      afterEvent: meditationTimerAppEvents.gongPlayRequested,
+      then: gongService.play,
+    }),
+    createEffect({
+      afterEvent: meditationTimerAppEvents.gongStopRequested,
+      then: gongService.stop,
+    }),
+    createEffect({
+      afterEvent: meditationSettingsEvents.gongOffToggled,
+      then: gongService.volumeOff,
+    }),
+    createEffect({
+      afterEvent: meditationSettingsEvents.gongOnToggled,
+      then: gongService.volumeOn,
+    }),
+  ];
+};

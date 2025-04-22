@@ -5,17 +5,17 @@ import {eventWasSent, stateManager} from "./state-manager/test-state-manager.js"
 import {meditationSessionEvents} from "../../src/components/meditation-session/meditation-session.events.js";
 
 Given(/^I have started a meditation session$/, function () {
-    stateManager.getRootVM().children.meditationSession.events.startRequested({currentTimeInSeconds: CURRENT_TIME_IN_SECONDS});
+    stateManager.getRootVM().children.meditationSession.dispatchers.startRequested({currentTimeInSeconds: CURRENT_TIME_IN_SECONDS});
 });
 
 When(/^I start a meditation session$/, function () {
-    stateManager.getRootVM().children.meditationSession.events.startRequested({currentTimeInSeconds: CURRENT_TIME_IN_SECONDS});
+    stateManager.getRootVM().children.meditationSession.dispatchers.startRequested({currentTimeInSeconds: CURRENT_TIME_IN_SECONDS});
 });
 When(/^I stop the meditation session$/, function () {
-    stateManager.getRootVM().children.meditationSession.events.stopRequested();
+    stateManager.getRootVM().children.meditationSession.dispatchers.stopRequested();
 });
 When(/^the session completes$/, function () {
-    stateManager.getRootVM().children.meditationSession.events.completed();
+    stateManager.getRootVM().children.meditationSession.dispatchers.completed();
 });
 
 Then(/^the sleep mode should be reenabled$/, function () {

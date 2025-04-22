@@ -36,7 +36,7 @@ describe("view model functions", () => {
 
         //when
         const actual = getVM(component, {}, dispatch);
-        actual.events.eventOneOccurred({prop1: 'value1'});
+        actual.dispatchers.eventOneOccurred({prop1: 'value1'});
 
         //then
         expect(dispatched.length).toBe(1);
@@ -84,7 +84,7 @@ describe("view model functions", () => {
         //when
         const actual = getVM(component, {}, dispatch);
         const childVM = actual.children.child1;
-        childVM.events.eventOneOccurred({prop1: 'value1'});
+        childVM.dispatchers.eventOneOccurred({prop1: 'value1'});
 
         //then
         expect(dispatched.length).toBe(1);
@@ -104,7 +104,7 @@ describe("view model functions", () => {
 
         //when
         const actual = getVM(component, {}, dispatch);
-        actual.events.eventOneOccurred();
+        actual.dispatchers.eventOneOccurred();
 
         //then
         expect(dispatched.length).toBe(1);

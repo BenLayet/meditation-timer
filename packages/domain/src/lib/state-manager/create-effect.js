@@ -11,15 +11,3 @@ export const createEffect = ({afterEvent, onComponent, then}) =>
             effectFunction(event);
         }
     }
-
-export class Effects {
-    effects = [];
-
-    add({afterEvent, onComponent, then}) {
-        this.effects.push(createEffect({afterEvent, onComponent, then}));
-    }
-
-    get() {
-        return this.effects;
-    }
-}

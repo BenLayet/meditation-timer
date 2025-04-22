@@ -29,26 +29,26 @@ When(/^I request (more|less) time for the meditation$/, function (moreOrLess) {
   if (moreOrLess === "more") {
     stateManager
       .getRootVM()
-      .children.meditationSettings.events.moreMeditationTimeRequested();
+      .children.meditationSettings.dispatchers.moreMeditationTimeRequested();
   } else {
     stateManager
       .getRootVM()
-      .children.meditationSettings.events.lessMeditationTimeRequested();
+      .children.meditationSettings.dispatchers.lessMeditationTimeRequested();
   }
 });
 When(/^I request (more|less) time for the preparation$/, function (moreOrLess) {
   if (moreOrLess === "more") {
     stateManager
       .getRootVM()
-      .children.meditationSettings.events.morePreparationTimeRequested();
+      .children.meditationSettings.dispatchers.morePreparationTimeRequested();
   } else {
     stateManager
       .getRootVM()
-      .children.meditationSettings.events.lessPreparationTimeRequested();
+      .children.meditationSettings.dispatchers.lessPreparationTimeRequested();
   }
 });
 When("I toggle the gong on/off", function () {
-  stateManager.getRootVM().children.meditationSettings.events.gongToggled();
+  stateManager.getRootVM().children.meditationSettings.dispatchers.gongToggled();
 });
 
 Then(

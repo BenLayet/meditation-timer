@@ -6,24 +6,24 @@ import {actualMeditationEvents} from "../../src/components/actual-meditation/act
 import {meditationTimerAppEvents} from "../../src/components/meditation-timer-app/meditation-timer-app.events.js";
 
 Given(/^the actual meditation has started$/, function () {
-    stateManager.getRootVM().children.meditationSession.children.actualMeditation.events.startRequested({
+    stateManager.getRootVM().children.meditationSession.children.actualMeditation.dispatchers.startRequested({
         durationInMinutes: 20,
         currentTimeInSeconds: CURRENT_TIME_IN_SECONDS
     });
 });
 Given(/^there are (\d+) minutes left in the meditation$/, function (remainingMinutes) {
-    stateManager.getRootVM().children.meditationSession.children.actualMeditation.events.timerTicked({
+    stateManager.getRootVM().children.meditationSession.children.actualMeditation.dispatchers.timerTicked({
         currentTimeInSeconds: CURRENT_TIME_IN_SECONDS + ((20 - remainingMinutes) * 60)
     });
 });
 
 When(/^a second has elapsed during actual meditation$/, function () {
-    stateManager.getRootVM().children.meditationSession.children.actualMeditation.events.timerTicked({
+    stateManager.getRootVM().children.meditationSession.children.actualMeditation.dispatchers.timerTicked({
         currentTimeInSeconds: CURRENT_TIME_IN_SECONDS + 1
     });
 });
 When(/^the actual meditation has completed/, function () {
-    stateManager.getRootVM().children.meditationSession.children.actualMeditation.events.completed();
+    stateManager.getRootVM().children.meditationSession.children.actualMeditation.dispatchers.completed();
 });
 
 Then(/^the timer should display (\d{2}:\d{2})$/, function (expectedDisplayedTime) {
