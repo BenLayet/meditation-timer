@@ -43,6 +43,12 @@ createEffects(rootVM, dependencies).forEach(stateManager.addEffect);
 //DEBUG
 addDebugger(stateManager);
 
+//CHECK SUPPORTED FEATURES
+console.log('Service Worker supported:', 'serviceWorker' in navigator);
+console.log('Background Sync supported:', 'SyncManager' in window);
+console.log('Wake Lock API supported:', 'wakeLock' in navigator);
+console.log('IndexedDB supported:', 'indexedDB' in window);
+
 //REACT APP
 createRoot(document.getElementById("root")).render(
   <StrictMode>
