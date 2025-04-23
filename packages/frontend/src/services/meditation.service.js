@@ -1,26 +1,20 @@
 export class MeditationService {
-  constructor(meditationLocalStore, deviceUuidService) {
-    this.meditationLocalStore = meditationLocalStore;
-    this.deviceUuidService = deviceUuidService;
+  constructor(transactionService, eventService, meditationStore) {
+    this.transactionService = transactionService;
+    this.eventService = eventService;
+    this.meditationStore = meditationStore;
   }
   async saveMeditation(meditation) {
-    // Add the device UUID to the meditation
-    meditation.deviceUuid = this.deviceUuidService.getDeviceUuid();
-
-    await this.meditationLocalStore.add(meditation);
-    // Register the sync task if the service worker is ready
-    if ("serviceWorker" in navigator && "SyncManager" in window) {
-      navigator.serviceWorker.ready.then((registration) => {
-        registration.sync.register("sync-meditations").catch((err) => {
-          console.error("Failed to register sync-meditations:", err);
-        });
-      });
-    } else {
-      console.warn("Background Sync is not supported in this browser.");
-    }
+    await this.eventService.addPendingEvent({
+      type: "meditation",
+      action: "create",
+      data: meditation,
+    });
   }
   async getAllMeditations() {
-    return this.meditationLocalStore.getAll();
+    return this.transactionService.runReadTransaction(
+      [this.meditationStore],
+      async (transaction) => this.meditationStore.getAll(transaction)
+    );
   }
 }
-

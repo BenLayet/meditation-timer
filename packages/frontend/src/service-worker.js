@@ -22,10 +22,12 @@ self.addEventListener('sync', (event) => {
 });
 
 async function syncMeditations() {
-  const db = await openDB('MeditationDB', 1);
-  const tx = db.transaction('meditations', 'readonly');
-  const store = tx.objectStore('meditations');
-  const pendingMeditations = await store.getAll();
+
+  console.log('Syncing meditations...');
+
+  const indexedDb = await createIndexedDb(meditationsIndexedDbSchema);
+  const meditationLocalStore = new LocalStore(indexedDb, MEDITATION_STORE_NAME);
+  const pendingMeditations = await meditationLocalStore.getAll();
 
   for (const meditation of pendingMeditations) {
     try {
