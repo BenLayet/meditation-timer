@@ -11,16 +11,10 @@ if (environment !== "test") {
 const apiBaseUrl = `http:/${apiHost}:${apiPort}/api/v1`;
 
 const eventsUrl = `${apiBaseUrl}/events`;
-export const postEvent = async (event, userUuid) =>
+export const logEvent = async (event, userUuid) =>
   httpPost(eventsUrl, event, { Cookie: `userUuid=${userUuid}` });
-export const getEventPage = async (event, userUuid) =>
-  httpGet(eventsUrl, event, { Cookie: `userUuid=${userUuid}` });
-
-const devicesUrl = `${apiBaseUrl}/devices`;
-export const registerDevice = async (device, userUuid) =>
-  httpPost(devicesUrl, device, { Cookie: `userUuid=${userUuid}` });
-export const getDevices = async (userUuid) =>
-  httpGet(devicesUrl, { Cookie: `userUuid=${userUuid}` });
+export const getEventPage = async (userUuid, afterId, size) =>
+  httpGet(eventsUrl, { Cookie: `userUuid=${userUuid}`}, {afterId, size} );
 
 const healthUrl = `${apiBaseUrl}/health`;
 export const checkApiHealth = async () => httpGet(healthUrl);

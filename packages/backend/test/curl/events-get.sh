@@ -1,0 +1,1 @@
+curl "http://localhost:8000/api/v1/events?afterId=0&size=10" -H "Cookie: userUuid=11111111-0000-1000-8000-000000000001"

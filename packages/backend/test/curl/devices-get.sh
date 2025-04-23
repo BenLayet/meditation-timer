@@ -1,1 +1,0 @@
-curl "http://localhost:8000/api/v1/devices" -H "Cookie: userUuid=11111111-0000-1000-8000-000000000001"

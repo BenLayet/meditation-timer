@@ -1,3 +1,4 @@
+import { parsePageRequest } from "./page-request.parser.js";
 import express from "express";
 
 export function eventsRouter(eventRepository) {
@@ -5,9 +6,10 @@ export function eventsRouter(eventRepository) {
 
   router.post("", async (req, res) => {
     const event = req.body;
-    console.log(`Save event requested: ${JSON.stringify(event)}`);
+    const userUuid = req.cookies["userUuid"];
+    console.log(`Save event requested: ${JSON.stringify(event)}, user: ${userUuid}`);
     try {
-      const created = await eventRepository.saveEvent(event);
+      const created = await eventRepository.saveEvent(userUuid, event);
       res.status(201).json(created);
       console.log(`Event created: ${created.id}`);
     } catch (error) {
@@ -15,13 +17,10 @@ export function eventsRouter(eventRepository) {
       console.error(error, event);
     }
   });
-  router.get("/events", async (req, res) => {
+  router.get("", async (req, res) => {
     const userUuid = req.cookies["userUuid"];
-    const pageRequest = {
-      afterId: req.query.afterId,
-      size: req.query.size,
-    };
-    console.log(`Event page requested for user: ${userUuid}, pageRequest: ${JSON.stringify(pageRequest)}`);
+    console.log(`Event page requested for user: ${userUuid}`);
+    const pageRequest = parsePageRequest(req);
     try {
       const page = await eventRepository.getEventPage(userUuid, pageRequest);
       res.status(200).json(page);

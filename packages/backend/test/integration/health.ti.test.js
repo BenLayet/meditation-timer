@@ -1,7 +1,7 @@
 import { checkApiHealth } from './api.client.js';
 
 describe('Health Check Integration Tests', () => {
-  it('should be up', async () => {
+  test('should be up', async () => {
     const {status, body} = await checkApiHealth();
     expect(status).toBe(200);
     expect(body).toHaveProperty('status', 'UP');

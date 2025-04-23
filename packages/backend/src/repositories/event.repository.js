@@ -1,40 +1,50 @@
-import {validateNewEvent} from "../validators/event.validator.js";
-import {validateUserUuid} from "../validators/user.validator.js";
-import {toPage, validatePageRequest} from "./pagination.js";
+import { validateNewEvent } from "../validators/event.validator.js";
+import { validateUserUuid } from "../validators/user.validator.js";
+import { toPage } from "./pagination.js";
 
 export class EventRepository {
   constructor(datasource) {
     this.datasource = datasource;
   }
 
-  async saveEvent(event) {
+  async saveEvent(userUuid, event) {
+    validateUserUuid(userUuid);
     validateNewEvent(event);
-    return this.datasource`
-      INSERT INTO events (type, device_uuid, payload)
-            VALUES (${event.type}, ${event.deviceUuid}, ${event.payload})
+
+    //create user if it does not exist
+    insertUserIfNecessary(this.datasource, userUuid);
+
+    const row = await this.datasource`
+      INSERT INTO events (user_uuid, uuid, type, payload)
+            VALUES (${userUuid}, ${event.uuid}, ${event.type}, ${event.payload})
             RETURNING *;
-        `.then(toEvent);
+        `;
+    console.log("Event saved", row);
+    return toEvent(row[0]);
   }
 
   async getEventPage(userUuid, pageRequest) {
     validateUserUuid(userUuid);
-    validatePageRequest(pageRequest);
-    return this.datasource`
-            SELECT events.*
+    const rows = await  this.datasource`
+            SELECT *
             FROM events
-            INNER JOIN devices 
-            ON devices.uuid = events.device_uuid
             WHERE id > ${pageRequest.afterId}
-              AND devices.user_uuid = ${userUuid}
+              AND user_uuid = ${userUuid}
             ORDER BY id
             LIMIT ${pageRequest.size};
-        `.then(toPage(pageRequest.size, toEvents));
+        `
+     return toPage(pageRequest.size, toEvents)(rows);
   }
 }
 const toEvent = (row) => ({
   id: row.id,
-  eventType: row.event_type,
+  uuid: row.uuid,
+  type: row.type,
   payload: row.payload,
-  deviceUuid: row.device_uuid,
 });
 const toEvents = (rows) => rows.map(toEvent);
+
+const insertUserIfNecessary = async (datasource, userUuid) => datasource`
+        INSERT INTO users (uuid)
+        VALUES (${userUuid})
+        ON CONFLICT (uuid) DO NOTHING;`;
