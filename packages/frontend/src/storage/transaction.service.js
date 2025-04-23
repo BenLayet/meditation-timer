@@ -3,8 +3,7 @@ export class TransactionService {
     this.indexedDb = indexedDb;
   }
 
-  async runTransaction(stores, mode, callback) {
-    const storeNames = stores.map((store) => store.storeName);
+  async runTransaction(storeNames, mode, callback) {
     const transaction = this.indexedDb.transaction(storeNames, mode);
     try {
       const result = await callback(transaction);
@@ -15,11 +14,11 @@ export class TransactionService {
       throw error;
     }
   }
-  async runReadTransaction(stores, callback) {
-    return this.runTransaction(stores, "readonly", callback);
+  async runReadTransaction(storeNames, callback) {
+    return this.runTransaction(storeNames, "readonly", callback);
   }
-  async runWriteTransaction(stores, callback) {
-    return this.runTransaction(stores, "readwrite", callback);
+  async runWriteTransaction(storeNames, callback) {
+    return this.runTransaction(storeNames, "readwrite", callback);
   }
 
 }

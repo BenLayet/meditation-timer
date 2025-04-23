@@ -1,18 +1,14 @@
 export class KeyValueStore {
-  constructor(indexedDb, storeName) {
+  constructor(storeName) {
     this.storeName = storeName;
-    this.db = indexedDb;
   }
 
-  async put(key, value) {
-    const tx = this.db.transaction(this.storeName, "readwrite");
-    const store = tx.objectStore(this.storeName);
+  put = (key, value) => async (transaction) => {
+    const store = transaction.objectStore(this.storeName);
     await store.put(value, key);
-    await tx.done;
-  }
-  async get(key) {
-    const tx = this.db.transaction(this.storeName, "readonly");
-    const store = tx.objectStore(this.storeName);
+  };
+  get = (key) => async (transaction) => {
+    const store = transaction.objectStore(this.storeName);
     return await store.get(key);
-  }
+  };
 }

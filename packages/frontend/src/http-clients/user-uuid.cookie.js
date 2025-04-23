@@ -1,7 +1,7 @@
 import { v4 as createUuid } from 'uuid';
 import Cookies from 'js-cookie';
 
-export class UserUuidService {
+export class UserUuidCookie {
     static COOKIE_NAME = 'user_uuid';
 
     constructor(cookieLibrary = Cookies, uuidGenerator = createUuid) {
@@ -9,12 +9,11 @@ export class UserUuidService {
         this.uuidGenerator = uuidGenerator;
     }
 
-    getUuid() {
+    ensureCookieIsSet() {
         let uuid = this.cookieLibrary.get(UserUuidService.COOKIE_NAME);
         if (!uuid) {
             uuid = this.uuidGenerator();
             this.cookieLibrary.set(UserUuidService.COOKIE_NAME, uuid, { expires: 365 * 100 });
         }
-        return uuid;
     }
 }

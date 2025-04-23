@@ -6,7 +6,7 @@ export function createIndexedDb(schema) {
       console.debug(`Upgrading IndexedDB from version ${event.oldVersion} to version ${event.newVersion}`);
       
       schema.changelog
-        .slice(event.oldVersion-1)
+        .slice(event.oldVersion)
         .forEach((change) => change(db));
     };
     request.onsuccess = () => resolve(request.result);

@@ -1,6 +1,7 @@
 import { registerRoute } from 'workbox-routing';
 import { NetworkFirst } from 'workbox-strategies';
 import { BackgroundSyncPlugin } from 'workbox-background-sync';
+import { resolveServiceWorkerDependencies } from './service-worker.dependencies';
 
 const bgSyncPlugin = new BackgroundSyncPlugin('meditationQueue', {
   maxRetentionTime: 24 * 60, // Retry for max of 24 Hours
@@ -16,33 +17,18 @@ registerRoute(
 
 // Event listener for sync event
 self.addEventListener('sync', (event) => {
-  if (event.tag === 'sync-meditations') {
-    event.waitUntil(syncMeditations());
+  if (event.tag === 'sync-events') {
+    event.waitUntil(synchronizeEvents());
   }
 });
 
-async function syncMeditations() {
+async function synchronizeEvents() {
+  console.log('Syncing events...');
 
-  console.log('Syncing meditations...');
+  const {eventSynchronizationService, indexedDb} = await resolveServiceWorkerDependencies();
+  await eventSynchronizationService.synchronizeEvents();
+  console.log('Events synchronized');
 
-  const indexedDb = await createIndexedDb(meditationsIndexedDbSchema);
-  const meditationLocalStore = new LocalStore(indexedDb, MEDITATION_STORE_NAME);
-  const pendingMeditations = await meditationLocalStore.getAll();
-
-  for (const meditation of pendingMeditations) {
-    try {
-      await fetch('/api/v1/meditations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(meditation),
-      });
-      const deleteTx = db.transaction('meditations', 'readwrite');
-      const deleteStore = deleteTx.objectStore('meditations');
-      await deleteStore.delete(meditation.id);
-    } catch (error) {
-      console.error('Error syncing meditation:', error);
-    }
-  }
+  indexedDb.close();
+  console.log('IndexedDB closed');
 }

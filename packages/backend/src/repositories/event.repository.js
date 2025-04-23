@@ -33,7 +33,7 @@ export class EventRepository {
             ORDER BY id
             LIMIT ${pageRequest.size};
         `
-     return toPage(pageRequest.size, toEvents)(rows);
+     return toPage(pageRequest, toEvents)(rows);
   }
 }
 const toEvent = (row) => ({

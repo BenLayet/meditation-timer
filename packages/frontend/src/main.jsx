@@ -6,7 +6,7 @@ import { StateManager } from "domain/src/lib/state-manager/state-manager.js";
 import { meditationTimerAppComponent } from "domain/src/components/meditation-timer-app/meditation-timer-app.component.js";
 import { addDebugger } from "./lib/debug.functions.js";
 import { createEffects } from "./effects/effects.js";
-import { resolveEffectsDependencies } from "./effect-depencencies.js";
+import { resolveEffectsDependencies } from "./main.dependencies.js";
 
 //STATE MANAGER
 const stateManager = new StateManager(meditationTimerAppComponent);

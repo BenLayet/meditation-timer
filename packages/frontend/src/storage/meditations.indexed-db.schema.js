@@ -1,20 +1,20 @@
-export const meditationStoreName = "meditation";
-export const pendingEventStoreName = "pendingEvent";
-export const keyValueStoreName = "keyValue";
-export const lastProcessedIdKey = "lastProcessedId";
+import {
+  meditationStoreName,
+  pendingEventStoreName,
+  keyValueStoreName,
+} from "./store-names.constants.js";
 
 export const meditationsIndexedDbSchema = {
-    name: "MeditationDB",
-    changelog: [
-        db => db.createObjectStore(meditationStoreName, {
-            keyPath: "localId",
-            autoIncrement: true,
-          }),
-        db => db.createObjectStore(pendingEventStoreName, {
-            keyPath: "localId",
-            autoIncrement: true,
-        }),
-        db => db.createObjectStore(keyValueStoreName),
-    ],
+  name: "MeditationDB",
+  changelog: [
+    (db) =>
+      db.createObjectStore(meditationStoreName, {
+        keyPath: "uuid",
+      }),
+    (db) =>
+      db.createObjectStore(pendingEventStoreName, {
+        keyPath: "uuid",
+      }),
+    (db) => db.createObjectStore(keyValueStoreName),
+  ],
 };
-

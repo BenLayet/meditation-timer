@@ -1,19 +1,21 @@
+import { v4 as createUuid } from 'uuid';
+
 export class MeditationService {
-  constructor(transactionService, eventService, meditationStore) {
+  constructor(transactionService, pendingEventService, meditationStore) {
     this.transactionService = transactionService;
-    this.eventService = eventService;
+    this.pendingEventService = pendingEventService;
     this.meditationStore = meditationStore;
   }
   async saveMeditation(meditation) {
-    await this.eventService.addPendingEvent({
-      type: "meditation",
-      action: "create",
-      data: meditation,
+    await this.pendingEventService.addPendingEvent({
+      type: "ADD_MEDITATION",
+      payload: {...meditation, uuid: createUuid() },
+      uuid: createUuid(),
     });
   }
   async getAllMeditations() {
     return this.transactionService.runReadTransaction(
-      [this.meditationStore],
+      [this.meditationStore.storeName],
       async (transaction) => this.meditationStore.getAll(transaction)
     );
   }

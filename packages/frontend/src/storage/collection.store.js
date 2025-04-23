@@ -2,28 +2,40 @@ export class CollectionStore {
   constructor(storeName) {
     this.storeName = storeName;
   }
-  async add(transaction, item) {
+  add = (item) => async (transaction) => {
     return new Promise((resolve, reject) => {
       const store = transaction.objectStore(this.storeName);
       const request = store.add(item);
       request.onsuccess = () => resolve();
       request.onerror = () => reject(request.error);
     });
-  }
-  async getAll(transaction) {
+  };
+  getAll = async (transaction) => {
     return new Promise((resolve, reject) => {
       const store = transaction.objectStore(this.storeName);
       const request = store.getAll();
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
-  }
-  async getById(transaction, id) {
+  };
+
+  existsById = (id) => async (transaction) => {
     return new Promise((resolve, reject) => {
       const store = transaction.objectStore(this.storeName);
-      const request = store.get(id)
-      request.onsuccess = () => resolve(request.result);
+      const request = store.get(id);
+
+      request.onsuccess = () => resolve(!!request.result); // Return true if the record exists
       request.onerror = () => reject(request.error);
     });
-  }
+  };
+
+  deleteById = (id) => async (transaction) => {
+    return new Promise((resolve, reject) => {
+      const store = transaction.objectStore(this.storeName);
+      const request = store.delete(id);
+
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  };
 }

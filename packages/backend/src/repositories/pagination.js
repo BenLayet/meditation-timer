@@ -1,11 +1,11 @@
-export const toPage = (pageSize, toEntities) => (rows) => {
+export const toPage = (pageRequest, toEntities) => (rows) => {
     const entities = toEntities(rows);
-    const hasNextPage = entities.length === pageSize;
+    const hasNextPage = entities.length === pageRequest.size;
+    const lastId = entities.length > 0 ? entities[entities.length - 1].id : pageRequest.afterId;
     return {
       entities,
-      nextPage: hasNextPage
-        ? { afterId: entities[entities.length - 1].id, size: pageSize }
-        : null,
+      hasNextPage,
+      lastId
     };
   };
 

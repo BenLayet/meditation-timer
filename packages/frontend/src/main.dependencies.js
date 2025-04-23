@@ -6,31 +6,32 @@ import { tickingService } from "./services/ticking.service.js";
 import { createIndexedDb } from "./storage/indexed-db.js";
 import {
   meditationsIndexedDbSchema,
+} from "./storage/meditations.indexed-db.schema.js";
+import {
   meditationStoreName,
   pendingEventStoreName,
-} from "./storage/meditations.indexed-db.schema.js";
-import { UserUuidService } from "./services/device-uuid.service.js";
+} from "./storage/store-names.constants.js";
+import { EventProcessor } from "./services/event-processor.service.js";
 import { TransactionService } from "./storage/transaction.service.js";
-import { EventService } from "./services/event.service.js";
+import { PendingEventService } from "./services/pending-event.service.js";
 
 export const resolveEffectsDependencies = async () => {
-  const userUuidService = new UserUuidService();
   const indexedDb = await createIndexedDb(meditationsIndexedDbSchema);
   const transactionService = new TransactionService(indexedDb);
 
   const meditationStore = new CollectionStore(meditationStoreName);
   const pendingEventStore = new CollectionStore(pendingEventStoreName);
+  const eventProcessor = new EventProcessor(meditationStore);
 
-  const eventService = new EventService(
+  const pendingEventService = new PendingEventService(
     transactionService,
-    userUuidService,
     pendingEventStore,
-    meditationStore
+    eventProcessor
   );
 
   const meditationService = new MeditationService(
     transactionService,
-    eventService,
+    pendingEventService,
     meditationStore
   );
   return {
