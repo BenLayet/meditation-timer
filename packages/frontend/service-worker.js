@@ -1,8 +1,9 @@
 import { registerRoute } from 'workbox-routing';
 import { NetworkFirst } from 'workbox-strategies';
 import { BackgroundSyncPlugin } from 'workbox-background-sync';
-import { resolveServiceWorkerDependencies } from './service-worker.dependencies';
+import { resolveServiceWorkerDependencies } from './src/service-worker.dependencies';
 
+console.log('Service worker loaded');
 const bgSyncPlugin = new BackgroundSyncPlugin('meditationQueue', {
   maxRetentionTime: 24 * 60, // Retry for max of 24 Hours
 });

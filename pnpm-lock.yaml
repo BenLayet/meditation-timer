@@ -120,6 +120,15 @@ importers:
       uuid:
         specifier: ^11.0.5
         version: 11.0.5
+      workbox-background-sync:
+        specifier: ^7.3.0
+        version: 7.3.0
+      workbox-routing:
+        specifier: ^7.3.0
+        version: 7.3.0
+      workbox-strategies:
+        specifier: ^7.3.0
+        version: 7.3.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.17.0

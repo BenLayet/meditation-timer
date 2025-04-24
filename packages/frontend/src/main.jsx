@@ -27,6 +27,17 @@ console.log('Background Sync supported:', 'SyncManager' in window);
 console.log('Wake Lock API supported:', 'wakeLock' in navigator);
 console.log('IndexedDB supported:', 'indexedDB' in window);
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('/service-worker.js', { type: 'module' })
+    .then((registration) => {
+      console.log('Service Worker registered with scope:', registration.scope);
+    })
+    .catch((error) => {
+      console.error('Service Worker registration failed:', error);
+    });
+}
+
 //REACT APP
 createRoot(document.getElementById("root")).render(
   <StrictMode>
