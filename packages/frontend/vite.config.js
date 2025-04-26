@@ -1,78 +1,87 @@
-import { defineConfig } from "vite";
+import {defineConfig} from "vite";
 import react from "@vitejs/plugin-react";
-import { VitePWA } from "vite-plugin-pwa";
+import {VitePWA} from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    VitePWA({
-      registerType: "autoUpdate",
-      type: "module",
-      manifest: {
-        name: "Meditation Timer",
-        short_name: "Meditation Timer",
-        start_url: "/",
-        display: "standalone",
-        background_color: "#000000",
-        theme_color: "#000000",
-        screenshots: [
-          {
-            src: "/screenshot.png",
-            sizes: "321x643",
-            type: "image/png",
-            description: "Main meditation timer screen",
-          },
-          {
-            src: "/screenshot-wide.png",
-            sizes: "747x645",
-            type: "image/png",
-            form_factor: "wide",
-            description: "Main meditation timer screen",
-          },
-        ],
-        icons: [
-          {
-            src: "/android-chrome-192x192.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "/android-chrome-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
-        ],
-      },
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,png,webmanifest}"],
-        cleanupOutdatedCaches: true,
-        runtimeCaching: [
-          {
-            urlPattern: /\/api\/.*\/*.json/,
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "api-cache",
-              networkTimeoutSeconds: 10,
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 5 * 60, // 5 minutes
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-        ],
-      }
-    }),
-  ],
-  server: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:8000", // Replace with your backend server URL
-        changeOrigin: true,
-      },
+    build: {
+        target: "esnext", // Allows top-level await and modern syntax
     },
-  },
+    plugins: [
+        react(),
+        VitePWA({
+            registerType: "autoUpdate",
+            devOptions: {
+                enabled: true
+            },
+            strategies: 'injectManifest',
+            type: "module",
+            manifest: {
+                name: "Meditation Timer",
+                short_name: "Meditation Timer",
+                start_url: "/",
+                display: "standalone",
+                background_color: "#000000",
+                theme_color: "#000000",
+                screenshots: [
+                    {
+                        src: "/screenshot.png",
+                        sizes: "321x643",
+                        type: "image/png",
+                        description: "Main meditation timer screen",
+                    },
+                    {
+                        src: "/screenshot-wide.png",
+                        sizes: "747x645",
+                        type: "image/png",
+                        form_factor: "wide",
+                        description: "Main meditation timer screen",
+                    },
+                ],
+                icons: [
+                    {
+                        src: "/android-chrome-192x192.png",
+                        sizes: "192x192",
+                        type: "image/png",
+                    },
+                    {
+                        src: "/android-chrome-512x512.png",
+                        sizes: "512x512",
+                        type: "image/png",
+                    },
+                ],
+            },
+            workbox: {
+                importScripts: "src/service-worker.js",
+                globPatterns: ["**/*.{js,css,html,png,webmanifest,ogg,svg,ico}"],
+                sourcemap: true,
+                cleanupOutdatedCaches: true,
+                runtimeCaching: [
+                    {
+                        urlPattern: /\/api\/.*\/*.json/,
+                        handler: "NetworkFirst",
+                        options: {
+                            cacheName: "api-cache",
+                            networkTimeoutSeconds: 10,
+                            expiration: {
+                                maxEntries: 50,
+                                maxAgeSeconds: 5 * 60, // 5 minutes
+                            },
+                            cacheableResponse: {
+                                statuses: [0, 200],
+                            },
+                        },
+                    },
+                ],
+            },
+        }),
+    ],
+    server: {
+        proxy: {
+            "/api": {
+                target: "http://localhost:8000", // Replace with your backend server URL
+                changeOrigin: true,
+            },
+        },
+    },
 });
