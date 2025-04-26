@@ -1,8 +1,4 @@
-import {
-  pendingEventStoreName,
-  meditationStoreName,
-  keyValueStoreName,
-} from "../storage/store-names.constants";
+import {keyValueStoreName, meditationStoreName, pendingEventStoreName,} from "../storage/store-names.constants";
 
 const PAGE_SIZE = 100;
 export const lastProcessedIdKey = "lastProcessedId";
@@ -49,22 +45,22 @@ export class EventSynchronizationService {
     // Get lastProcessedId
     const lastProcessedId = await this.transactionService.runReadTransaction(
       [keyValueStoreName],
-      this.keyValueStore.get(lastProcessedIdKey)
+        this.keyValueStore.get(lastProcessedIdKey, 0)
     );
 
     const page = await this.eventApi.getEventPage(lastProcessedId, PAGE_SIZE);
-    for (const event in page.entities) {
+    for (const event of page.entities) {
       await this.processRemoteEvent(event);
     }
     return page.hasNextPage;
   };
 
   processRemoteEvent = async (event) => {
-    this.transactionService.runWriteTransaction(
+    await this.transactionService.runWriteTransaction(
       [pendingEventStoreName, meditationStoreName, keyValueStoreName],
       async (transaction) => {
-        if (await this.pendingEventStore.existsById(event.uuid)(this.transaction)) {
-          await this.pendingEventStore.deleteById(event.uuid)(this.transaction);
+        if (await this.pendingEventStore.existsById(event.uuid)(transaction)) {
+          await this.pendingEventStore.deleteById(event.uuid)(transaction);
         } else {
           await this.eventProcessor.processEvent(transaction, event);
         }

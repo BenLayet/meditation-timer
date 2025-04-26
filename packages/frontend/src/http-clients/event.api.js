@@ -1,11 +1,6 @@
 const EVENT_API_URL = "/api/v1/events";
 export class EventApi {
-  constructor(userUuidCookie) {
-    this.userUuidCookie = userUuidCookie;
-  }
-
   getEventPage = async (afterId, size) => {
-    this.userUuidCookie.ensureCookieIsSet();
     return fetch(`${EVENT_API_URL}?afterId=${afterId}&size=${size}`).then(
       (response) => {
         if (!response.ok) {
@@ -16,7 +11,6 @@ export class EventApi {
     );
   };
   postEvent = async (event) => {
-    this.userUuidCookie.ensureCookieIsSet();
     return fetch(EVENT_API_URL, {
       method: "POST",
       headers: {

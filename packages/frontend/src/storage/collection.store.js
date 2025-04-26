@@ -7,7 +7,7 @@ export class CollectionStore {
       const store = transaction.objectStore(this.storeName);
       const request = store.add(item);
       request.onsuccess = () => resolve();
-      request.onerror = () => reject(request.error);
+      request.onerror = () => reject(`${this.storeName} add error: ${request.error}`);
     });
   };
   getAll = async (transaction) => {
@@ -15,7 +15,7 @@ export class CollectionStore {
       const store = transaction.objectStore(this.storeName);
       const request = store.getAll();
       request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
+      request.onerror = () => reject(`${this.storeName} getAll error: ${request.error}`);
     });
   };
 
@@ -25,6 +25,17 @@ export class CollectionStore {
       const request = store.get(id);
 
       request.onsuccess = () => resolve(!!request.result); // Return true if the record exists
+      request.onerror = () => reject(`${this.storeName} existsById error: ${request.error}`);
+    });
+  };
+
+
+  get = (key, defaultValue) => async (transaction) => {
+    return new Promise((resolve, reject) => {
+      const store = transaction.objectStore(this.storeName);
+      const request = store.get(key);
+      request.onsuccess = () => resolve(
+          typeof request.result === "undefined" ? defaultValue : request.result);
       request.onerror = () => reject(request.error);
     });
   };

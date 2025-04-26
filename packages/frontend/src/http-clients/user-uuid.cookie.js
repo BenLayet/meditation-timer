@@ -1,8 +1,8 @@
-import { v4 as createUuid } from 'uuid';
+import {v4 as createUuid} from 'uuid';
 import Cookies from 'js-cookie';
 
+const COOKIE_NAME = 'userUuid';
 export class UserUuidCookie {
-    static COOKIE_NAME = 'user_uuid';
 
     constructor(cookieLibrary = Cookies, uuidGenerator = createUuid) {
         this.cookieLibrary = cookieLibrary;
@@ -10,10 +10,10 @@ export class UserUuidCookie {
     }
 
     ensureCookieIsSet() {
-        let uuid = this.cookieLibrary.get(UserUuidService.COOKIE_NAME);
+        let uuid = this.cookieLibrary.get(COOKIE_NAME);
         if (!uuid) {
             uuid = this.uuidGenerator();
-            this.cookieLibrary.set(UserUuidService.COOKIE_NAME, uuid, { expires: 365 * 100 });
+            this.cookieLibrary.set(COOKIE_NAME, uuid, {expires: 365 * 100});
         }
     }
 }

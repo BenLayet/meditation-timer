@@ -1,8 +1,4 @@
-import {
-  meditationStoreName,
-  pendingEventStoreName,
-  keyValueStoreName,
-} from "./store-names.constants.js";
+import {keyValueStoreName, meditationStoreName, pendingEventStoreName,} from "./store-names.constants.js";
 
 export const meditationsIndexedDbSchema = {
   name: "MeditationDB",
@@ -15,6 +11,8 @@ export const meditationsIndexedDbSchema = {
       db.createObjectStore(pendingEventStoreName, {
         keyPath: "uuid",
       }),
-    (db) => db.createObjectStore(keyValueStoreName),
+    (db) => db.createObjectStore(keyValueStoreName, {
+      keyPath: "key",
+    }),
   ],
 };

@@ -1,6 +1,6 @@
-import { validateNewEvent } from "../validators/event.validator.js";
-import { validateUserUuid } from "../validators/user.validator.js";
-import { toPage } from "./pagination.js";
+import {validateNewEvent} from "../validators/event.validator.js";
+import {validateUserUuid} from "../validators/user.validator.js";
+import {toPage} from "./pagination.js";
 
 export class EventRepository {
   constructor(datasource) {
@@ -12,13 +12,16 @@ export class EventRepository {
     validateNewEvent(event);
 
     //create user if it does not exist
-    insertUserIfNecessary(this.datasource, userUuid);
-
+    await insertUserIfNecessary(this.datasource, userUuid);
     const row = await this.datasource`
       INSERT INTO events (user_uuid, uuid, type, payload)
             VALUES (${userUuid}, ${event.uuid}, ${event.type}, ${event.payload})
-            RETURNING *;
-        `;
+      ON CONFLICT (uuid)
+        DO UPDATE SET type    = EXCLUDED.type,
+                      payload = EXCLUDED.payload
+      RETURNING *;
+
+    `;
     console.log("Event saved", row);
     return toEvent(row[0]);
   }
@@ -32,7 +35,7 @@ export class EventRepository {
               AND user_uuid = ${userUuid}
             ORDER BY id
             LIMIT ${pageRequest.size};
-        `
+    `;
      return toPage(pageRequest, toEvents)(rows);
   }
 }
