@@ -1,5 +1,10 @@
 import {resolveServiceWorkerDependencies} from './service-worker.dependencies.js';
 
+self.addEventListener('activate', async (event) => {
+    console.log('Service worker activate');
+    console.log(event)
+    event.waitUntil(synchronizeEvents());
+});
 // Event listener for sync event
 self.addEventListener('sync', (event) => {
     if (event.tag === 'sync-events') {

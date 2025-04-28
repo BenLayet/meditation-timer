@@ -36,6 +36,5 @@ export const resolveEffectsDependencies = async () => {
         gongService,
         wakeLockService,
         tickingService,
-        synchronizationTaskService,
     };
 };

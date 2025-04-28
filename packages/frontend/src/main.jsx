@@ -26,7 +26,6 @@ const dependencies = await resolveEffectsDependencies();
 
 //START UP
 new UserUuidCookie().ensureCookieIsSet();
-await dependencies.synchronizationTaskService.queueSynchronizationTask();
 
 //EFFECTS
 createEffects(rootVM, dependencies).forEach(stateManager.addEffect);
