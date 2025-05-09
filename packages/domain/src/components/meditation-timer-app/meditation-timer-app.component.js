@@ -5,6 +5,7 @@ import {meditationTimerAppChainedEvents} from "./meditation-timer-app.chained-ev
 import {MEDITATION_TIMER_APP_INITIAL_STATE} from "./meditation-timer-app.state.js";
 import {meditationTimerAppSelectors} from "./meditation-timer-app.selectors.js";
 import {meditationTimerAppEvents} from "./meditation-timer-app.events.js";
+import { accountComponent } from "../account/account.component.js";
 
 
 export const meditationTimerAppComponent = {
@@ -13,6 +14,7 @@ export const meditationTimerAppComponent = {
         meditationSettings: meditationSettingsComponent,
         meditationSession: meditationSessionComponent,
         statistics: statisticsComponent,
+        account: accountComponent,
     },
     chainedEvents: meditationTimerAppChainedEvents,
     selectors: meditationTimerAppSelectors,

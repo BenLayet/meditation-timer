@@ -3,6 +3,9 @@ import ow from "ow";
 const VALID_PAGES = ['HOME', 'MEDITATION_SESSION', 'STATISTICS']
 
 export const meditationTimerAppEvents = {
+    appOpened: {
+        eventType: "appOpened",
+    },
     navigationRequested: {
         eventType: "navigationRequested",
         payloadShape: {page: ow.string.oneOf(VALID_PAGES)},

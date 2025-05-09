@@ -5,6 +5,7 @@ import { meditationTimerAppEvents } from "./meditation-timer-app.events.js";
 import { preparationEvents } from "../preparation/preparation.events.js";
 import { meditationTimerAppSelectors } from "./meditation-timer-app.selectors.js";
 import { meditationSettingsEvents } from "../meditation-settings/meditation-settings.events.js";
+import { accountEvents } from "../account/account.events.js";
 
 export const meditationTimerAppChainedEvents = [
   {
@@ -111,5 +112,12 @@ export const meditationTimerAppChainedEvents = [
       childComponentPath: ["meditationSession", "actualMeditation"],
     },
     thenDispatch: meditationTimerAppEvents.gongStopRequested,
+  },
+  {
+    onEvent: meditationTimerAppEvents.appOpened,
+    thenDispatch: {
+      ...accountEvents.accountFetchRequested,
+      childComponentPath: ["account"],
+    },
   },
 ];

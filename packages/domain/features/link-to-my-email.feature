@@ -7,13 +7,14 @@ Scenario: Link a device to my email
     Given I have used the app without an account
     When I provide my email
     Then I should receive an email with a activation link in my inbox
-    And clicking the link should link my device to my email
+    And I can see that my email is pending validation in the app settings
 
-Scenario: Sync meditation history across devices
-    Given I have linked a device to my email
-    And I have meditation history saved on the server
-    When I link another device to the same email
-    Then my meditation history should be available on the new device
+Scenario: Receive an activation link
+    Given I have received an email with an activation link
+    When I click the link
+    And I open the app
+    Then my device should be linked to my email
+    And I can see that my email is validated in the app settings
 
 Scenario: Share meditations across devices
     Given I have linked multiple devices to my email

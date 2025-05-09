@@ -1,5 +1,8 @@
 export const STATISTICS_INITIAL_STATE = {
     loading: false,
     error: false,
-    currentEpochDay: null
+    currentEpochDay: null,
+    dailyStreak: 0,
+    totalMinutesThisWeek: 0,
+    meditationHistory: [],
 };

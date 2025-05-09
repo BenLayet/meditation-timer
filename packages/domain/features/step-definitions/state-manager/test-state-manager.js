@@ -9,19 +9,12 @@ import {
   createEffect
 } from "../../../src/lib/state-manager/create-effect.js";
 import { CURRENT_EPOCH_DAY } from "./test-constants.js";
+import { accountEvents } from "../../../src/components/account/account.events.js";
 
 //STATE MANAGER
 export const stateManager = new StateManager(meditationTimerAppComponent);
 
-//RESET
-const initialState = stateManager.state;
-export const reset = () => {
-  stateManager.state = initialState;
-  events.length = 0;
-};
-
 //EFFECTS
-
 //statistics
 export const meditationStorage = {meditations:[]};
 stateManager.addEffect(createEffect({
@@ -41,10 +34,17 @@ stateManager.addEffect(createEffect({
     .actualMeditation.dispatchers.saveSucceeded,
 }));
 
+//account
+export let account = {devices:[], email: null, isEmailValidated: false, isEmailPendingValidation: false};
+stateManager.addEffect(createEffect({
+  afterEvent: accountEvents.accountFetchRequested,
+  then: () =>
+    stateManager.getRootVM().children.account.dispatchers.accountFetchSucceeded(account),
+}));
 
 //patch state
 export const patchState = (path, patcher) => {
-  const res = statePatcher(stateManager)(path, patcher);
+  statePatcher(stateManager)(path, patcher); //
   //console.log(`patchState with ${JSON.stringify(res)}`);
 };
 //FORCE STATE DEBUG EFFECT
@@ -66,3 +66,12 @@ export const eventWasSent = ({ eventType, componentPath, payload }) =>
   );
 stateManager.addEventListener((event) => events.push(event));
 stateManager.addEventListener(logEvent);
+
+//RESET
+const initialState = stateManager.state;
+const initialAccount = {...account};
+export const reset = () => {
+  stateManager.state = initialState;
+  events.length = 0;
+  account = initialAccount;
+};
