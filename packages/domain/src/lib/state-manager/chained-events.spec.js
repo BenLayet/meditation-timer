@@ -1,5 +1,5 @@
 import {describe, expect, test} from 'vitest';
-import {createChainedEventFactories} from "./chained-events.js";
+import {eventChainFactory} from "./chained-events.js";
 import ow from "ow";
 
 const events = {
@@ -33,24 +33,24 @@ const eventChainWithPayload = {
 const eventChainToChild = {
     onEvent: events.eventOneOccurred,
     thenDispatch: {
-        ...dispatchers.eventTwoOccurred,
+        ...events.eventTwoOccurred,
         childComponentPath: ["child1"]
     },
 }
 const eventChainFromChild = {
     onEvent: {
-        ...dispatchers.eventOneOccurred,
+        ...events.eventOneOccurred,
         childComponentPath: ["child1"]
     },
     thenDispatch: events.eventTwoOccurred
 }
 const eventChainFromChild1ToChild2 = {
     onEvent: {
-        ...dispatchers.eventOneOccurred,
+        ...events.eventOneOccurred,
         childComponentPath: ["child1"]
     },
     thenDispatch: {
-        ...dispatchers.eventTwoOccurred,
+        ...events.eventTwoOccurred,
         childComponentPath: ["child2"]
     },
 }
@@ -62,10 +62,10 @@ describe('createAllComponentEvents', () => {
         const component = {chainedEvents: [simpleEventChain]};
         const previousEvent = {componentPath: [], eventType: "eventOneOccurred", payload: {key1: 'value1'}};
         const state = {};
-        const chainedEventsFactory = createChainedEventFactories(component);
+        const eventChain = eventChainFactory(component);
 
         //when
-        const chainedEvents = chainedEventsFactory(previousEvent, state);
+        const chainedEvents = eventChain(previousEvent, state);
 
         //then
         expect(chainedEvents).toEqual([
@@ -82,7 +82,7 @@ describe('createAllComponentEvents', () => {
         const state = {ownState: {property1: 'stateProperty1'}};
 
         //when
-        const newEvents = createChainedEventFactories(component)(previousEvent, state);
+        const newEvents = eventChainFactory(component)(previousEvent, state);
 
         //then
         expect(newEvents).toEqual([{
@@ -98,7 +98,7 @@ describe('createAllComponentEvents', () => {
         const previousEvent = {componentPath: ["child1"], eventType: "eventOneOccurred", payload: {key1: 'value1'}};
         const child1State = {ownState: {property1: 'stateProperty1'}};
         const state = {children: {child1: child1State}};
-        const eventChain = createChainedEventFactories(component);
+        const eventChain = eventChainFactory(component);
 
         //when
         const newEvents = eventChain(previousEvent, state);
@@ -125,7 +125,7 @@ describe('createAllComponentEvents', () => {
         const child2State = {ownState: {property1: 'stateProperty1'}};
         const child1State = {children: {child2: child2State}};
         const state = {children: {child1: child1State}};
-        const eventChain = createChainedEventFactories(component);
+        const eventChain = eventChainFactory(component);
 
         //when
         const newEvents = eventChain(previousEvent, state);
@@ -148,7 +148,7 @@ describe('createAllComponentEvents', () => {
             payload: {key1: 'value1'}
         };
         const state = {};
-        const eventChain = createChainedEventFactories(component);
+        const eventChain = eventChainFactory(component);
 
         //when
         const newEvents = eventChain(previousEvent, state);
@@ -172,7 +172,7 @@ describe('createAllComponentEvents', () => {
             payload: {key1: 'value1'}
         };
         const state = {};
-        const eventChain = createChainedEventFactories(component);
+        const eventChain = eventChainFactory(component);
 
         //when
         const newEvents = eventChain(previousEvent, state);
@@ -194,7 +194,7 @@ describe('createAllComponentEvents', () => {
             payload: {key1: 'value1'}
         };
         const state = {};
-        const eventChain = createChainedEventFactories(component);
+        const eventChain = eventChainFactory(component);
 
         //when
         const newEvents = eventChain(previousEvent, state);

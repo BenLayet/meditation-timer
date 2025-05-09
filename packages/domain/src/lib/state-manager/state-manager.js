@@ -1,6 +1,6 @@
 import ow from "ow";
 import {componentReducer} from "./create-reducers.js";
-import {createChainedEventFactories} from "./chained-events.js";
+import {eventChainFactory} from "./chained-events.js";
 import {getInitialState} from "./initial-state.js";
 import {getVM} from "./view-model.js";
 
@@ -83,8 +83,8 @@ export class StateManager {
     }
 
     forwardEvent(event) {
-        const chainedEventFactories = createChainedEventFactories(this.rootComponent);
-        chainedEventFactories(event, this.state).forEach(this.dispatch);
+        const eventChain = eventChainFactory(this.rootComponent);
+        eventChain(event, this.state).forEach(this.dispatch);
     }
 
 

@@ -33,9 +33,9 @@ const createChildrenChainedEvents = (component, componentPath) => (previousEvent
     return Object
         .entries(component.children ?? {})
         .flatMap(([childName, childComponent]) =>
-            createChainedEventFactories(childComponent, [...componentPath, childName])(previousEvent, globalState));
+            eventChainFactory(childComponent, [...componentPath, childName])(previousEvent, globalState));
 };
-export const createChainedEventFactories = (component, componentPath = []) => (previousEvent, globalState) => {
+export const eventChainFactory = (component, componentPath = []) => (previousEvent, globalState) => {
     const childrenEvents = createChildrenChainedEvents(component, componentPath)(previousEvent, globalState);
     const ownEvents = createOwnChainedEvents(component, componentPath)(previousEvent, globalState);
     return [...childrenEvents, ...ownEvents];
