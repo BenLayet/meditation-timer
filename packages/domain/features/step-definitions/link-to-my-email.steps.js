@@ -15,12 +15,12 @@ Then(/^I should receive an email with a activation link in my inbox$/, function 
     expect(eventWasSent(accountEvents.emailActivationLinkRequested)).to.be.true;
 });
 
-Then(/^I can see that my email is pending validation in the app settings$/, function () {
+Then(/^I can see that my email is pending activation in the app settings$/, function () {
     const isEmailProvided = stateManager.getRootVM().children.account.selectors.isEmailProvided();
     expect(isEmailProvided).to.be.true;
     const email = stateManager.getRootVM().children.account.selectors.email();
     expect(email).to.equal("test@example.com");
-    const isPending = stateManager.getRootVM().children.account.selectors.isEmailPendingValidation();
+    const isPending = stateManager.getRootVM().children.account.selectors.isEmailPendingActivation();
     expect(isPending).to.be.true;
 });
 
@@ -37,8 +37,8 @@ Then(/^my device should be linked to my email$/, function () {
     expect(isEmailProvided, "email is not provided").to.be.true;
     const email = stateManager.getRootVM().children.account.selectors.email();
     expect(email, "email is not provided").to.equal("test@example.com");
-    const isPending = stateManager.getRootVM().children.account.selectors.isEmailPendingValidation();
-    expect(isPending, "email is still pending validation").to.be.false;
+    const isPending = stateManager.getRootVM().children.account.selectors.isEmailPendingActivation();
+    expect(isPending, "email is still pending activation").to.be.false;
     const isEmailValidated = stateManager.getRootVM().children.account.selectors.isEmailValidated();
     expect(isEmailValidated, "email is not validated").to.be.true;
 });

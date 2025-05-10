@@ -18,7 +18,7 @@ export const accountEvents = {
         },
         handler: (state) => ({
             ...state,
-            isEmailPendingValidation: true,
+            isEmailPendingActivation: true,
         }),
     },
     accountFetchRequested: {
@@ -33,14 +33,14 @@ export const accountEvents = {
         eventType: "accountFetchSucceeded",
         payloadShape: {
             email: ow.string.email,
-            isEmailPendingValidation: ow.boolean,
+            isEmailPendingActivation: ow.boolean,
             isEmailValidated: ow.boolean,
             devices: ow.optional.array,
         },
-        handler: (state, {email, isEmailPendingValidation, isEmailValidated}) => ({
+        handler: (state, {email, isEmailPendingActivation, isEmailValidated}) => ({
             ...state,
             email,
-            isEmailPendingValidation,
+            isEmailPendingActivation,
             isEmailValidated,
             loading: false,
             error: false

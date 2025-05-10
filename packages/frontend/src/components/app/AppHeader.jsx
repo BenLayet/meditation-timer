@@ -5,7 +5,7 @@ export default ({vm}) => {
     return (
         <div className="app-header">
             <span className={" fadeIn " + (canSettingsBeOpened ? 'visible' : 'hidden')}>
-                <Settings/>
+                <Settings vm={vm} />
             </span>
         </div>
     );

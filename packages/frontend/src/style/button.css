@@ -1,4 +1,5 @@
-button, input{
+button, input{   
+    font-family: var(--primary-font, Arial, sans-serif); /* Use a variable or fallback font */
     font-size: 1.2em; /* Increased font size */
     padding: 0.2em; /* Added padding */
     min-width: 6em;
@@ -29,13 +30,18 @@ button:focus-visible {
     font-size: 0.5em;
     padding: 0.5em;
     border-radius: 50%;
-    background-color: #ffffff18;
     cursor: pointer;
 }
 .round-rectangle-button {
     border-radius: 0.5em;
-    background-color: #ffffff18;
     cursor: pointer;
+}
+
+button{
+    background-color: #ffffff18;
+    border-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
 }
 button.main-action {
     border-color: var(--accent-color);
@@ -45,4 +51,7 @@ button.main-action {
     width: 100%;
     gap: 0.5em;
     justify-content: center;
+}
+.front-icon-button{
+    margin-right: 0.5em;
 }

@@ -15,5 +15,13 @@
   "english": "English",
   "continue": "Continue",
   "sessionCompleted": "Session completed",
-  "skip": "skip"
+  "skip": "skip",
+  "account": "Account",
+  "linkEmailDescription": "In order to secure your stats and use multiple devices:",
+  "linkEmail": "link",
+  "disconnect": "disconnect",
+  "emailPlaceholder": "Enter email",
+  "pendingActivation": "Waiting for activation, check your inbox",
+  "emailKey": "Email:",
+  "statusKey": "Status:"
 }

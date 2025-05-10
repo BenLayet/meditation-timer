@@ -35,7 +35,7 @@ stateManager.addEffect(createEffect({
 }));
 
 //account
-export let account = {devices:[], email: null, isEmailValidated: false, isEmailPendingValidation: false};
+export let account = {devices:[], email: null, isEmailValidated: false, isEmailPendingActivation: false};
 stateManager.addEffect(createEffect({
   afterEvent: accountEvents.accountFetchRequested,
   then: () =>

@@ -7,7 +7,7 @@ Scenario: Link a device to my email
     Given I have used the app without an account
     When I provide my email
     Then I should receive an email with a activation link in my inbox
-    And I can see that my email is pending validation in the app settings
+    And I can see that my email is pending activation in the app settings
 
 Scenario: Receive an activation link
     Given I have received an email with an activation link

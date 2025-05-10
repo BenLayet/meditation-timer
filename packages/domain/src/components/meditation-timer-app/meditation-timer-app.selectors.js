@@ -10,6 +10,7 @@ const ownStateSelectors = {
     canSettingsBeOpened,
     currentPage,
 };
+//TODO remove this when the app is refactored
 const meditationSettingsState = compositeState => compositeState.children.meditationSettings;
 const isGongOn = flow(meditationSettingsState, meditationSettingsSelectors.isGongOff, not);
 const meditationDurationInMinutes = flow(meditationSettingsState, meditationSettingsSelectors.meditationDurationInMinutes);
