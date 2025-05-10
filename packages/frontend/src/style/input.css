@@ -1,8 +1,9 @@
-
+/* EMAIL INPUT */
 input[type="email"]{
     min-width: 17em
 }
 
+/* RADIO BUTTONS */
 input[type="radio"] {
      display: none;
  }

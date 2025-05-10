@@ -37,7 +37,6 @@ function Settings({ vm }) {
                 {t("language")}
               </label>
               <div className="settings-menu-item-content">
-                <div className="settings-menu-item-option">
                   <input
                     type="radio"
                     id="language-en"
@@ -47,8 +46,6 @@ function Settings({ vm }) {
                     onChange={changeLanguage}
                   />
                   <label htmlFor="language-en">{t("english")}</label>
-                </div>
-                <div className="settings-menu-item-option">
                   <input
                     type="radio"
                     id="language-fr"
@@ -58,7 +55,6 @@ function Settings({ vm }) {
                     onChange={changeLanguage}
                   />
                   <label htmlFor="language-fr">{t("french")}</label>
-                </div>
               </div>
             </div>
             <div className="settings-menu-item">

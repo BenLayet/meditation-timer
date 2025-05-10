@@ -15,12 +15,6 @@ form:invalid button[type="submit"] {
     pointer-events: none; /* Prevent clicking */
 }
 
-/* Enable the button when the form is valid */
-form:valid button[type="submit"] {
-    background-color: var(--button-background); /* Default button color */
-    color:  var(--text-color);
-    cursor: pointer;
-}
 .form-explanation {
     text-align: left;
     margin-bottom: 0.5em;

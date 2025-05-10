@@ -35,7 +35,7 @@ function Account({ vm }) {
           {isEmailValidated && (
             <button
               onClick={unlinkEmailRequested}
-              className="button disconnect-button"
+              className="icon-button"
             >
               <FontAwesomeIcon icon={faUnlock} />
               {t("disconnect")}
@@ -54,7 +54,7 @@ function Account({ vm }) {
               required
               className="form-input"
             />
-            <button type="submit" className="button submit-button">
+            <button type="submit" className="icon-button">
               <FontAwesomeIcon icon={faUserLock} />
               {t("linkEmail")}
             </button>
