@@ -1,5 +1,6 @@
 export const ACCOUNT_INITIAL_STATE = {
-    email: null,
-    isEmailValidated: false,
-    isEmailPendingActivation: false,
+  email: null,
+  status: "ANONYMOUS",
+  loading: false,
+  errorMessage: null,
 };

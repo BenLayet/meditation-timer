@@ -8,17 +8,41 @@ export const accountEvents = {
         },
         handler: (state, { email }) => ({
             ...state,
-            email
+            email,
+            status: 'PENDING_ACTIVATION',
         }),
     },
-    emailActivationLinkRequested: {
-        eventType: "emailActivationLinkRequested",
+    sendEmailActivationRequested: {
+        eventType: "sendEmailActivationRequested",
         payloadShape: {
             email: ow.string.email,
         },
         handler: (state) => ({
             ...state,
-            isEmailPendingActivation: true,
+            loading: true,
+        }),
+    },
+    sendEmailActivationFailed: {
+        eventType: "sendEmailActivationFailed",
+        payloadShape: {
+            errorMessage: ow.string,
+        },
+        handler: (state, {errorMessage}) => ({
+            ...state,
+            status: 'ACTIVATION_MAIL_FAILED',
+            loading: false,
+            errorMessage
+        }),
+    },
+    sendEmailActivationSuccceeded: {
+        eventType: "sendEmailActivationSuccceeded",
+        payloadShape: {
+            email: ow.string.email,
+        },
+        handler: (state) => ({
+            ...state,
+            status: 'ACTIVATION_MAIL_SENT',
+            loading: false,
         }),
     },
     accountFetchRequested: {
@@ -26,24 +50,20 @@ export const accountEvents = {
         handler: (state) => ({
             ...state,
             loading: true,
-            error: false
         }),
     },
     accountFetchSucceeded: {
         eventType: "accountFetchSucceeded",
         payloadShape: {
             email: ow.string.email,
-            isEmailPendingActivation: ow.boolean,
-            isEmailValidated: ow.boolean,
+            status: ow.string.oneOf(['ANONYMOUS', 'ACTIVATION_MAIL_SENT', 'ACTIVATION_MAIL_FAILED', 'ACTIVATED']),
             devices: ow.optional.array,
         },
-        handler: (state, {email, isEmailPendingActivation, isEmailValidated}) => ({
+        handler: (state, {email, status}) => ({
             ...state,
             email,
-            isEmailPendingActivation,
-            isEmailValidated,
+            status,
             loading: false,
-            error: false
         }),
     },
     accountFetchFailed: {
@@ -51,11 +71,15 @@ export const accountEvents = {
         handler: (state) => ({
             ...state,
             loading: false,
-            error: true
         }),
     },
-    unlinkEmailRequested: {
-        eventType: "unlinkEmailRequested"
-        //TODO
+    unlinkingRequested: {
+        eventType: "unlinkingRequested", //TODO generate new device id
+        handler: (state) => ({
+            ...state,
+            loading: false,
+            status: 'ANONYMOUS',
+            email: null,
+        }),
     },
 };

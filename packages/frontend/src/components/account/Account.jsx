@@ -5,17 +5,20 @@ import "./Account.css";
 
 function Account({ vm }) {
   const { t } = useTranslation();
-  const isEmailProvided = vm.selectors.isEmailProvided();
+  const status = vm.selectors.status();
   const email = vm.selectors.email();
-  const isEmailValidated = vm.selectors.isEmailValidated();
-  const isEmailPendingActivation = vm.selectors.isEmailPendingActivation();
+  const hasError = vm.selectors.hasError();
+  const errorMessage = vm.selectors.errorMessage();
+  const isLoading = vm.selectors.isLoading();
+  const isEmailProvided = vm.selectors.isEmailProvided();
+  const canUnlinkingBeRequested = vm.selectors.canUnlinkingBeRequested();
   const emailProvided = (e) => {
     e.preventDefault();
     vm.dispatchers.emailProvided({
       email: e.target.elements.email.value,
     });
   };
-  const unlinkEmailRequested = vm.dispatchers.unlinkEmailRequested;
+  const unlinkingRequested = vm.dispatchers.unlinkingRequested;
 
   return (
     <section className="account-section">
@@ -25,20 +28,21 @@ function Account({ vm }) {
               <dd>{email}</dd>
               <dt>{t("statusKey")}</dt>
               <dd>
-                {isEmailPendingActivation
-                  ? t("pendingActivation")
-                  : isEmailValidated
-                  ? t("validated")
-                  : t("unknown")}
+                {t(`status_${status}`) || t("status_UNKNOWN")}
+                {hasError && (
+                  <p className="error">
+                    {errorMessage}
+                  </p>
+                )}
               </dd>
           </dl>
-          {isEmailValidated && (
+          {canUnlinkingBeRequested && (
             <button
-              onClick={unlinkEmailRequested}
+              onClick={unlinkingRequested}
               className="icon-button"
             >
               <FontAwesomeIcon icon={faUnlock} />
-              {t("disconnect")}
+              {t("unlinkEmail")}
             </button>
           )}
         </div>

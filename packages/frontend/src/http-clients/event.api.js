@@ -1,7 +1,7 @@
-const EVENT_API_URL = "/api/v1/events";
+const API_URL = "/api/v1/events";
 export class EventApi {
   getEventPage = async (afterId, size) => {
-    return fetch(`${EVENT_API_URL}?afterId=${afterId}&size=${size}`).then(
+    return fetch(`${API_URL}?afterId=${afterId}&size=${size}`).then(
       (response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -11,7 +11,7 @@ export class EventApi {
     );
   };
   postEvent = async (event) => {
-    return fetch(EVENT_API_URL, {
+    return fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -17,11 +17,16 @@
   "sessionCompleted": "Session terminée",
   "skip": "passer",
   "account": "Compte",
-  "linkEmailDescription": "Pour sécuriser vos stats et utiliser plusieurs appareils :",
+  "linkEmailDescription": "Sécurisez vos stats et utilisez plusieurs appareils :",
   "linkEmail": "lier",
-  "disconnect": "déconnecter",
+  "unlinkEmail": "déconnecter",
   "emailPlaceholder": "Entrez votre email",
-  "pendingActivation": "Attente d'activation, vérifiez votre boîte de réception",
   "emailKey": "Email :",
-  "statusKey": "Statut :"
+  "statusKey": "Statut :",
+  "status_ANONYMOUS": "Anonyme",
+  "status_PENDING_ACTIVATION": "Attente de connexion pour envoyer l'email d'activation",
+  "status_ACTIVATION_MAIL_SENT": "Mail d'activation envoyé, vérifiez votre boîte de réception",
+  "status_ACTIVATION_MAIL_FAILED": "Échec de l'envoi de l'email d'activation",
+  "status_ACTIVATED": "Activé",
+  "status_UNKNOWN": "Il semble qu'il y a eu une erreur dans l'activation de votre compte, contactez le support."
 }

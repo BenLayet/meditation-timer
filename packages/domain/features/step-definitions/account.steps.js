@@ -12,7 +12,7 @@ When(/^I provide my email$/, function () {
 });
 
 Then(/^I should receive an email with a activation link in my inbox$/, function () {
-    expect(eventWasSent(accountEvents.emailActivationLinkRequested)).to.be.true;
+    expect(eventWasSent(accountEvents.sendEmailActivationRequested)).to.be.true;
 });
 
 Then(/^I can see that my email is pending activation in the app settings$/, function () {
@@ -20,8 +20,8 @@ Then(/^I can see that my email is pending activation in the app settings$/, func
     expect(isEmailProvided).to.be.true;
     const email = stateManager.getRootVM().children.account.selectors.email();
     expect(email).to.equal("test@example.com");
-    const isPending = stateManager.getRootVM().children.account.selectors.isEmailPendingActivation();
-    expect(isPending).to.be.true;
+    const status = stateManager.getRootVM().children.account.selectors.status();
+    expect(status).to.equal("PENDING_ACTIVATION");
 });
 
 Given(/^I have received an email with an activation link$/, function () {
@@ -29,7 +29,7 @@ Given(/^I have received an email with an activation link$/, function () {
 });
 
 When(/^I click the link$/, function () {
-    account.isEmailValidated = true;
+    account.status = "ACTIVATED";
 });
 
 Then(/^my device should be linked to my email$/, function () {
@@ -37,16 +37,10 @@ Then(/^my device should be linked to my email$/, function () {
     expect(isEmailProvided, "email is not provided").to.be.true;
     const email = stateManager.getRootVM().children.account.selectors.email();
     expect(email, "email is not provided").to.equal("test@example.com");
-    const isPending = stateManager.getRootVM().children.account.selectors.isEmailPendingActivation();
-    expect(isPending, "email is still pending activation").to.be.false;
-    const isEmailValidated = stateManager.getRootVM().children.account.selectors.isEmailValidated();
-    expect(isEmailValidated, "email is not validated").to.be.true;
+    const status = stateManager.getRootVM().children.account.selectors.status();
+    expect(status).to.equal("ACTIVATED");
 });
 
-Then(/^I can see that my email is validated in the app settings$/, function () {
-    const isValidated = stateManager.getRootVM().children.account.selectors.isEmailValidated();
-    expect(isValidated).to.be.true;
-});
 
 
 Given(/^I have linked multiple devices to my email$/, function () {
@@ -66,9 +60,13 @@ Given(/^I have linked a device to my email$/, function () {
     account.email = "";
     account.isEmailValidated = true;
 });
+Then('I should be able to unlink the device from my email', function () {
+    const canUnlinkingBeRequested = stateManager.getRootVM().children.account.selectors.canUnlinkingBeRequested();
+    expect(canUnlinkingBeRequested).to.true;
+});
 
-When(/^I remove the link$/, function () {
-    stateManager.getRootVM().children.account.dispatchers.unlinkEmailRequested();
+When(/^I unlink the device from my email$/, function () {
+    stateManager.getRootVM().children.account.dispatchers.unlinkingRequested();
 });
 
 Then(/^my meditation history on the device should be cleared$/, function () {

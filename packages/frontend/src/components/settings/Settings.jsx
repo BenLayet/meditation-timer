@@ -33,6 +33,12 @@ function Settings({ vm }) {
         {isMenuVisible && (
           <div className="settings-menu">
             <div className="settings-menu-item">
+              <label className="settings-menu-item-label">{t("account")}</label>
+              <div className="settings-menu-item-content">
+                <Account vm={vm.children.account} />
+              </div>
+            </div>
+            <div className="settings-menu-item">
               <label className="settings-menu-item-label">
                 {t("language")}
               </label>
@@ -55,12 +61,6 @@ function Settings({ vm }) {
                     onChange={changeLanguage}
                   />
                   <label htmlFor="language-fr">{t("french")}</label>
-              </div>
-            </div>
-            <div className="settings-menu-item">
-              <label className="settings-menu-item-label">{t("account")}</label>
-              <div className="settings-menu-item-content">
-                <Account vm={vm.children.account} />
               </div>
             </div>
           </div>

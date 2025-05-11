@@ -20,7 +20,10 @@ a:hover {
 .subtle{
     opacity: 0.8;
     font-size: 0.7em;
-    
+}
+.error{
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--error-color);
 }
 .clickable {
     cursor: pointer;

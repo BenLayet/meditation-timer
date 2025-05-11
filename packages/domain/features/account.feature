@@ -1,4 +1,4 @@
-Feature: Link my device to my email
+Feature: Account Management
   As a meditation practitioner
   I want my meditation history to be saved not only on my device
   so that I can access it from any device and retrieve it if I lose my device
@@ -14,7 +14,7 @@ Scenario: Receive an activation link
     When I click the link
     And I open the app
     Then my device should be linked to my email
-    And I can see that my email is validated in the app settings
+    And I should be able to unlink the device from my email
 
 Scenario: Share meditations across devices
     Given I have linked multiple devices to my email
@@ -23,7 +23,8 @@ Scenario: Share meditations across devices
 
 Scenario: Remove a device link
     Given I have linked a device to my email
-    When I remove the link
+    When I unlink the device from my email
+    Then the device should no longer be linked to my email
     Then my meditation history on the device should be cleared
     And I can link the device to a different email
     And my meditation history on the server should remain intact
