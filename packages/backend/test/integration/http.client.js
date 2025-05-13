@@ -1,11 +1,13 @@
 import fetch from "node-fetch";
+import { environment } from "./api.client";
 
 const HTTP_CLIENT_TIMEOUT_IN_MS = 1000;
 
 export const processResponse = async (response) => {
   const status = response.status;
   const body = await response.json();
-  return { status, body };
+  const headers = response.headers;
+  return {status, body, headers};
 };
 export const httpPost = async (url, data, headers = {}) =>{
   console.log(`POST ${url} requested`);

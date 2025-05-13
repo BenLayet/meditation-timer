@@ -6,7 +6,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
 
     CREATE TABLE users (
         uuid UUID NOT NULL CONSTRAINT users_pkey PRIMARY KEY,
-        email TEXT,
+        email TEXT NOT NULL UNIQUE,
         created_at TIMESTAMP DEFAULT NOW()
     );
     CREATE TABLE events (
@@ -20,6 +20,13 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
     );
     CREATE INDEX events_user_uuid_idx ON events (user_uuid);
     CREATE INDEX events_type_idx ON events (type);
+    
+    CREATE TABLE email_activations (
+        uuid UUID NOT NULL CONSTRAINT email_activations_pkey PRIMARY KEY,
+        email TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW(),
+        status TEXT NOT NULL
+    );
 EOSQL
 
 echo "Tables created successfully in database $DATABASE_NAME."

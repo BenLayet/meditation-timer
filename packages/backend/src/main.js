@@ -1,6 +1,6 @@
 import { loadEnvironmentProperties } from "./config/environment.properties.js";
-import { appDependencies } from "./config/configuration.js";
-import { startApp } from "./app.js";
+import { appDependencies } from "./app.dependencies.js";
+import { startApp } from "./startApp.js";
 
 // resolve dependencies
 const environmentProperties = loadEnvironmentProperties();

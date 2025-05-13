@@ -1,7 +1,7 @@
-import {httpGet, httpPost} from "./http.client.js";
-import {loadEnvironmentProperties} from "../../src/config/environment.properties.js";
+import { httpGet, httpPost } from "./http.client.js";
+import { loadEnvironmentProperties } from "../../src/config/environment.properties.js";
 // load environment properties
-export const {environment, apiHost, apiPort} = loadEnvironmentProperties();
+export const { environment, apiHost, apiPort } = loadEnvironmentProperties();
 
 // check if the environment is test
 if (environment !== "test") {
@@ -10,11 +10,24 @@ if (environment !== "test") {
 
 const apiBaseUrl = `http:/${apiHost}:${apiPort}/api/v1`;
 
-const eventsUrl = `${apiBaseUrl}/events`;
-export const logEvent = async (event, userUuid) =>
-  httpPost(eventsUrl, event, { Cookie: `userUuid=${userUuid}` });
-export const getEventPage = async (userUuid, afterId, size) =>
-  httpGet(eventsUrl, { Cookie: `userUuid=${userUuid}`}, {afterId, size} );
-
+//HEALTH CHECK
 const healthUrl = `${apiBaseUrl}/health`;
 export const checkApiHealth = async () => httpGet(healthUrl);
+
+//EVENTS
+const eventsUrl = `${apiBaseUrl}/events`;
+export const logEvent = async (event, userToken) =>
+  httpPost(eventsUrl, event, { Cookie: `userToken=${userToken}` });
+export const getEventPage = async (userToken, afterId, size) =>
+  httpGet(eventsUrl, { Cookie: `userToken=${userToken}` }, { afterId, size });
+
+//EMAIL ACTIVATIONS
+const emailActivationsUrl = `${apiBaseUrl}/email-activations`;
+export const postEmailActivation = async (emailActivation) =>
+  httpPost(emailActivationsUrl, emailActivation);
+export const activateEmail = async (activateToken) =>
+  httpPost(`${emailActivationsUrl}/activate?token=${activateToken}`);
+export const createUser = async (createUserToken) =>
+  httpPost(`${emailActivationsUrl}/createUser`,{
+    Authorization: `Bearer ${createUserToken}`,
+  });

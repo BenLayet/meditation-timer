@@ -11,8 +11,6 @@ export class EventRepository {
     validateUserUuid(userUuid);
     validateNewEvent(event);
 
-    //create user if it does not exist
-    await insertUserIfNecessary(this.datasource, userUuid);
     const row = await this.datasource`
       INSERT INTO events (user_uuid, uuid, type, payload)
             VALUES (${userUuid}, ${event.uuid}, ${event.type}, ${event.payload})
@@ -46,8 +44,3 @@ const toEvent = (row) => ({
   payload: row.payload,
 });
 const toEvents = (rows) => rows.map(toEvent);
-
-const insertUserIfNecessary = async (datasource, userUuid) => datasource`
-        INSERT INTO users (uuid)
-        VALUES (${userUuid})
-        ON CONFLICT (uuid) DO NOTHING;`;
