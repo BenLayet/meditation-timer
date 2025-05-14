@@ -7,7 +7,8 @@ export class EmailActivationService {
     emailActivationApiUrl,
     emailService,
     tokenService,
-    uuidService
+    uuidService,
+    mailFrom
   ) {
     this.transactionService = transactionService;
     this.emailActivationRepository = emailActivationRepository;
@@ -16,6 +17,7 @@ export class EmailActivationService {
     this.emailActivationApiUrl = emailActivationApiUrl;
     this.tokenService = tokenService;
     this.uuidService = uuidService;
+    this.mailFrom = mailFrom;
   }
   async sendActivationEmail(email) {
     const uuid = await this.uuidService.createUuid();
@@ -33,8 +35,10 @@ export class EmailActivationService {
     });
     const activationLink = `${this.emailActivationApiUrl}/activate?token=${activateToken}`;
     const subject = "Activate your account"; //TODO localize
-    const text = `Click to link your mail to your app: ${activationLink}`;
-    await this.emailService.sendEmail({ to: email, subject, text });
+    const body = `Click to link your mail to your app: ${activationLink}`;
+    const sender = this.mailFrom;
+    const receipient = email;
+    await this.emailService.sendEmail({sender, receipient, subject, body });
     return { createUserToken };
   }
   async activate(activateToken) {

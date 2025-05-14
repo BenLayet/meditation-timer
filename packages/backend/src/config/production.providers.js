@@ -31,6 +31,7 @@ export const providers = {
     emailService,
     tokenService,
     uuidService,
+    mailFrom
   }) =>
     new EmailActivationService(
       transactionService,
@@ -39,7 +40,8 @@ export const providers = {
       emailActivationUrl,
       emailService,
       tokenService,
-      uuidService
+      uuidService,
+      mailFrom
     ),
     serverConfig
 };

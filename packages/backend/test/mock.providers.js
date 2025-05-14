@@ -1,34 +1,53 @@
-const emailService = {
-  sendEmail: ({ to, subject, text }) => {
-    console.log("Email sent to:", to);
-    console.log("Subject:", subject);
-    console.log("Text:", text);
-  },
+const emailService = async (datasource, environment) => {
+  if (environment !== "test")
+    throw new Error("This file should only be run in test mode");
+  await datasource`DROP TABLE IF EXISTS fake_mails;`;
+  await datasource`CREATE TABLE fake_mails(id SERIAL PRIMARY KEY, mail JSON);`;
+
+  const sendEmail = async (mail) => {
+    console.log("Fake email sent", mail);
+    await datasource`INSERT INTO fake_mails (mail)
+                     VALUES (${mail});`;
+  };
+
+  return {
+    sendEmail,
+  };
 };
 
-
-const uuidService = datasource => ({
-  createUuid: async () => {
+const uuidService = async (datasource, environment) => {
+  if (environment !== "test")
+    throw new Error("This file should only be run in test mode");
+  await datasource`DROP SEQUENCE IF EXISTS fake_uuid;`;
+  await datasource`CREATE SEQUENCE fake_uuid START 1;`;
+  const createUuid = async () => {
     const rows = await datasource`SELECT nextval('fake_uuid') as counter;`;
-    const {counter} = rows[0];
-    return `10000000-0000-1000-8000-${(counter).padStart(12,'0')}`;
-  },
-});
+    const { counter } = rows[0];
+    return `10000000-0000-1000-8000-${counter.padStart(12, "0")}`;
+  };
+  return {
+    createUuid,
+  };
+};
 
 export const tokenService = {
-  createShortLivedToken: (payload) => JSON.stringify({
-    life: "short",
-    payload,
-  }),
-  createPermanentToken: (payload) => JSON.stringify({
-    life: "long",
-    payload,
-  }),
+  createShortLivedToken: (payload) =>
+    JSON.stringify({
+      life: "short",
+      payload,
+    }),
+  createPermanentToken: (payload) =>
+    JSON.stringify({
+      life: "long",
+      payload,
+    }),
   verify: (token) => JSON.parse(token).payload,
 };
 
 export const mockProviders = {
-  emailService: () => emailService,
+  emailService: ({ datasource, environment }) =>
+    emailService(datasource, environment),
   tokenService: () => tokenService,
-  uuidService: ({datasource}) => uuidService(datasource),
+  uuidService: ({ datasource, environment }) =>
+    uuidService(datasource, environment),
 };

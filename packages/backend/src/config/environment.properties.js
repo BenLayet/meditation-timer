@@ -18,6 +18,7 @@ export const loadEnvironmentProperties = () => {
   const apiPort = process.env.API_PORT ?? 8000;
   const apiVersion = process.env.API_VERSION ?? "v1";
   const jwtSecret = process.env.JWT_SECRET ?? "JWT_SECRET";
+  const mailFrom = process.env.MAIL_FROM ?? "no-reply@localhost";
 
   const datasourceConfig = {
     host: process.env.DATABASE_HOST,
@@ -27,5 +28,5 @@ export const loadEnvironmentProperties = () => {
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
   };
-  return { version, environment, apiHost, apiPort, apiVersion, datasourceConfig };
+  return { version, environment, apiHost, apiPort, apiVersion, jwtSecret, mailFrom, datasourceConfig };
 };

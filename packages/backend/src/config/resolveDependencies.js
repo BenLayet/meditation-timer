@@ -1,15 +1,17 @@
-export function resolveDependencies(providers) {
-  const resolved = providers.environmentProperties();
-  resolved.emailActivationUrl = providers.emailActivationUrl(resolved);
-  resolved.datasource = providers.datasource(resolved);
-  resolved.transactionService = providers.transactionService(resolved);
-  resolved.uuidService =    providers.uuidService(resolved);
-  resolved.tokenService =    providers.tokenService(resolved);
-  resolved.emailService =    providers.emailService(resolved);
-  resolved.eventRepository = providers.eventRepository(resolved);
-  resolved.userRepository = providers.userRepository(resolved);
-  resolved.emailActivationRepository =    providers.emailActivationRepository(resolved);
-  resolved.emailActivationService = providers.emailActivationService(resolved);
-  resolved.serverConfig = providers.serverConfig(resolved);
+export async function resolveDependencies(providers) {
+  const resolved = await providers.environmentProperties();
+  resolved.emailActivationUrl = await providers.emailActivationUrl(resolved);
+  resolved.datasource = await providers.datasource(resolved);
+  resolved.transactionService = await providers.transactionService(resolved);
+  resolved.uuidService = await providers.uuidService(resolved);
+  resolved.tokenService = await providers.tokenService(resolved);
+  resolved.emailService = await providers.emailService(resolved);
+  resolved.eventRepository = await providers.eventRepository(resolved);
+  resolved.userRepository = await providers.userRepository(resolved);
+  resolved.emailActivationRepository =
+    await providers.emailActivationRepository(resolved);
+  resolved.emailActivationService =
+    await providers.emailActivationService(resolved);
+  resolved.serverConfig = await providers.serverConfig(resolved);
   return resolved;
 }
