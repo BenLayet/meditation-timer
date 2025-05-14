@@ -18,13 +18,13 @@ export class EmailActivationService {
     this.uuidService = uuidService;
   }
   async sendActivationEmail(email) {
-    const uuid = this.uuidService.createUuid();
+    const uuid = await this.uuidService.createUuid();
     // Generate a signed token
-    const activateToken = this.tokenService.createShortLivedToken(
-      { uuid, scope: "ACTIVATE" }
+    const activateToken = await this.tokenService.createShortLivedToken(
+      { uuid, scope: [ACTIVATE_PERMISSION] }
     );
-    const getStatusToken = this.tokenService.createShortLivedToken(
-      { uuid, scope: "GET_STATUS" }
+    const createUserToken = await  this.tokenService.createShortLivedToken(
+      { uuid, scope: [CREATE_USER_PERMISSION] }
     );
     await this.emailActivationRepository.createEmailActivation({
       uuid,
@@ -35,12 +35,14 @@ export class EmailActivationService {
     const subject = "Activate your account"; //TODO localize
     const text = `Click to link your mail to your app: ${activationLink}`;
     await this.emailService.sendEmail({ to: email, subject, text });
-    return { getStatusToken };
+    return { createUserToken };
   }
   async activate(activateToken) {
     try {
-      const decoded = jwt.verify(token, this.jwtSecret);
-      const { email, uuid } = decoded;
+      const  { uuid, scope }  = this.tokenService.verify(activateToken);
+      if(!scope.includes(CREATE_USER_PERMISSION)){
+        throw new Error(`Missing permission in token ${CREATE_USER_PERMISSION}`);
+      }
       console.log(`Activating request uuid: ${uuid}`);
       await this.emailActivationRepository.updateEmailActivationStatus(
         uuid,
@@ -54,8 +56,10 @@ export class EmailActivationService {
   }
   async createUser(createUserToken) {
     try {
-      const decoded = this.tokenService.verify(createUserToken);
-      const { uuid } = decoded;
+      const  { uuid, scope }  = this.tokenService.verify(createUserToken);
+      if(!scope.includes(CREATE_USER_PERMISSION)){
+        throw new Error(`Missing permission in token ${CREATE_USER_PERMISSION}`);
+      }
       console.log(`Create user requested uuid: ${uuid}`);
       this.transactionService.executeInTransaction(async () => {
         const { status, email } =
@@ -79,3 +83,6 @@ export class EmailActivationService {
     }
   }
 }
+
+const CREATE_USER_PERMISSION = "CREATE_USER";
+const ACTIVATE_PERMISSION = "ACTIVATE";

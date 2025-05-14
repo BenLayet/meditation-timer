@@ -1,12 +1,12 @@
 import { postEmailActivation} from "./api.client.js";
-import {clearUserData} from "./database.admin.js";
-import { checkApiHealth } from './api.client.js';
-
+import {clearUserData, resetFakeUuidSequence} from "./database.admin.js";
+import { tokenService } from "../mock.providers.js";
 
 describe("activating emails", () => {
 
   const email = 'email@example.org';
   afterEach(clearUserData(email));
+  beforeEach(resetFakeUuidSequence)
 
   test("should create email activation", async () => {
     //WHEN
@@ -14,8 +14,8 @@ describe("activating emails", () => {
 
     //THEN
     expect(body).toEqual({createUserToken: expect.any(String)});  
-    expect(body.createUserToken).toHaveLength(64);
-    expect(body.createUserToken).toMatch(/^[a-zA-Z0-9]{64}$/);
+    const {uuid} = tokenService.verify(body.createUserToken);
+    expect(uuid).toBe("10000000-0000-1000-8000-000000000001");
   });
 
 });

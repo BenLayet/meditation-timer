@@ -1,10 +1,8 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
 import cookieParser from "cookie-parser";
-import { fileURLToPath } from "url";
 
-export const startApp = async ({ apiPort, routes , cleanupTasks }) => {
+export const startHttpServer = async ({ apiPort, baseUrl, routes , cleanupTasks, staticFilesPath }) => {
   const app = express();
 
   // Middleware
@@ -12,15 +10,11 @@ export const startApp = async ({ apiPort, routes , cleanupTasks }) => {
   app.use(express.json());
   app.use(cookieParser());
 
-  // Serve static files from the React app
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  const staticFilesPath = path.join(__dirname, "../node_modules/frontend/dist");
   app.use(express.static(staticFilesPath));
 
   // Routes
   Object.entries(routes).forEach(([routeName, route]) => {
-    app.use(`/api/v1/${routeName}`, route);
+    app.use(`${baseUrl}/${routeName}`, route);
   });
   // Error-handling middleware
   app.use((err, req, res, next) => {
@@ -28,7 +22,7 @@ export const startApp = async ({ apiPort, routes , cleanupTasks }) => {
     res.status(500).json({ error: "Internal Server Error" });
   });
 
-  // Start server and return a promise
+  // Start server
   const server = app.listen(apiPort, () => {
     console.log(`Server running on port ${apiPort}`);
   });

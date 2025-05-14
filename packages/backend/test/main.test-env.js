@@ -1,7 +1,8 @@
 import { loadEnvironmentProperties } from "../src/config/environment.properties.js";
-import { appDependencies } from "../src/app.dependencies.js";
-import { startApp } from "../src/startApp.js";
-import { mockProviders } from "./mocks.js";
+import { resolveDependencies } from "../src/config/resolveDependencies.js";
+import { startHttpServer } from "../src/adapters/http-server.js";
+import { mockProviders } from "./mock.providers.js";
+import { providers } from "../src/config/production.providers.js";
 // load environment properties
 const environmentProperties = loadEnvironmentProperties();
 
@@ -9,4 +10,11 @@ const environmentProperties = loadEnvironmentProperties();
 if (environmentProperties.environment !== "test") {
   throw new Error("This file should only be run in test mode");
 }
-startApp(appDependencies(environmentProperties, mockProviders));
+
+const testProviders = {
+  ...providers,
+  ...mockProviders
+}
+
+// start server
+startHttpServer(resolveDependencies(testProviders).serverConfig);

@@ -5,12 +5,17 @@ const emailService = {
     console.log("Text:", text);
   },
 };
-let counter = 1;
-const uuidService = {
-  createUuid: () => `10000000-0000-1000-8000-${('0'+counter++).padStart(12,'0')}`,
-};
 
-const tokenService = {
+
+const uuidService = datasource => ({
+  createUuid: async () => {
+    const rows = await datasource`SELECT nextval('fake_uuid') as counter;`;
+    const {counter} = rows[0];
+    return `10000000-0000-1000-8000-${(counter).padStart(12,'0')}`;
+  },
+});
+
+export const tokenService = {
   createShortLivedToken: (payload) => JSON.stringify({
     life: "short",
     payload,
@@ -23,7 +28,7 @@ const tokenService = {
 };
 
 export const mockProviders = {
-  emailServiceProvider: () => emailService,
-  tokenServiceProvider: () => tokenService,
-  uuidServiceProvider: () => uuidService,
+  emailService: () => emailService,
+  tokenService: () => tokenService,
+  uuidService: ({datasource}) => uuidService(datasource),
 };

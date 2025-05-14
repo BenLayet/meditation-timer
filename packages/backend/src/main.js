@@ -1,10 +1,5 @@
-import { loadEnvironmentProperties } from "./config/environment.properties.js";
-import { appDependencies } from "./app.dependencies.js";
-import { startApp } from "./startApp.js";
-
-// resolve dependencies
-const environmentProperties = loadEnvironmentProperties();
-const dependencies = appDependencies(environmentProperties);
-
+import { resolveDependencies } from "./config/resolveDependencies.js";
+import { providers } from "./config/production.providers.js";
+import { startHttpServer } from "./adapters/http-server.js";
 // start server
-startApp(dependencies);
+startHttpServer(resolveDependencies(providers).serverConfig);
