@@ -14,13 +14,27 @@ export const loadEnvironmentProperties = () => {
 
   const version = process.env.BUILD_VERSION ?? "unknown";
   const environment = process.env.NODE_ENV ?? "unknown";
-  const apiHost = process.env.API_HOST ?? "localhost";
-  const apiPort = process.env.API_PORT ?? 8000;
-  const apiVersion = process.env.API_VERSION ?? "v1";
   const jwtSecret = process.env.JWT_SECRET ?? "JWT_SECRET";
   const mailFrom = process.env.MAIL_FROM ?? "no-reply@localhost";
 
-  const datasourceConfig = {
+  //api properties
+  const apiHost = process.env.API_HOST ?? "localhost";
+  const apiPort = process.env.API_PORT ?? 8000;
+  const apiProtocol = process.env.API_PROTOCOL ?? "http";
+  const apiVersion = process.env.API_VERSION ?? "v1";
+  const apiProperties = {
+    host: apiHost,
+    port: apiPort,
+    protocol: apiProtocol,
+    version: apiVersion,
+    basePath: `/api/${apiVersion}`,
+  };
+  // mail server properties
+  const mailProperties = {
+    mailgunApiKey: process.env.MAILGUN_API_KEY ?? "MAILGUN_API_KEY",
+  };
+  // datasource properties
+  const datasourceProperties = {
     host: process.env.DATABASE_HOST,
     port: process.env.POSTGRES_PORT ?? 5432,
     ssl: process.env.POSTGRES_SSL_MODE,
@@ -28,5 +42,13 @@ export const loadEnvironmentProperties = () => {
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
   };
-  return { version, environment, apiHost, apiPort, apiVersion, jwtSecret, mailFrom, datasourceConfig };
+  return {
+    version,
+    environment,
+    jwtSecret,
+    mailFrom,
+    apiProperties,
+    mailProperties,
+    datasourceProperties,
+  };
 };

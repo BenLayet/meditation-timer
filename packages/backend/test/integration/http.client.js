@@ -1,5 +1,4 @@
 import fetch from "node-fetch";
-import { environment } from "./api.client";
 
 const HTTP_CLIENT_TIMEOUT_IN_MS = 1000;
 

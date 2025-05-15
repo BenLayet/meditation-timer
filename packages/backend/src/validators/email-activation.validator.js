@@ -21,5 +21,5 @@ export function validateStatusTransition(fromStatus, toStatus){
   const toStatusIndex = statusSequence.indexOf(toStatus);
   if(fromStatusIndex === -1) throw new Error(`Email activation status ${fromStatus} is not valid`);
   if(toStatusIndex === -1) throw new Error(`Email activation status ${toStatus} is not valid`);
-  if(toStatusIndex !== fromStatus + 1) throw new Error(`Email activation status cannot be changed from ${fromStatus} to ${toStatus}`);
+  if(toStatusIndex !== fromStatusIndex + 1) throw new Error(`Email activation status cannot be changed from ${fromStatus} to ${toStatus}`);
 }

@@ -4,20 +4,20 @@ export class EmailActivationService {
     transactionService,
     emailActivationRepository,
     userRepository,
-    emailActivationApiUrl,
     emailService,
     tokenService,
     uuidService,
-    mailFrom
+    mailFrom,
+    apiProperties
   ) {
     this.transactionService = transactionService;
     this.emailActivationRepository = emailActivationRepository;
     this.userRepository = userRepository;
     this.emailService = emailService;
-    this.emailActivationApiUrl = emailActivationApiUrl;
     this.tokenService = tokenService;
     this.uuidService = uuidService;
     this.mailFrom = mailFrom;
+    this.apiProperties = apiProperties;
   }
   async sendActivationEmail(email) {
     const uuid = await this.uuidService.createUuid();
@@ -32,9 +32,10 @@ export class EmailActivationService {
       uuid,
       email,
       status: "PENDING_VERIFICATION"
-    });
-    const activationLink = `${this.emailActivationApiUrl}/activate?token=${activateToken}`;
+    });    
     const subject = "Activate your account"; //TODO localize
+    const {protocol, host, port, basePath} = this.apiProperties;
+    const activationLink = `${protocol}://${host}:${port}${basePath}/email-activations/activate/${activateToken}`;
     const body = `Click to link your mail to your app: ${activationLink}`;
     const sender = this.mailFrom;
     const receipient = email;
@@ -44,8 +45,8 @@ export class EmailActivationService {
   async activate(activateToken) {
     try {
       const  { uuid, scope }  = this.tokenService.verify(activateToken);
-      if(!scope.includes(CREATE_USER_PERMISSION)){
-        throw new Error(`Missing permission in token ${CREATE_USER_PERMISSION}`);
+      if(!scope.includes(ACTIVATE_PERMISSION)){
+        throw new Error(`Missing permission in token ${ACTIVATE_PERMISSION}`);
       }
       console.log(`Activating request uuid: ${uuid}`);
       await this.emailActivationRepository.updateEmailActivationStatus(

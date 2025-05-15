@@ -1,14 +1,16 @@
 import { httpGet, httpPost } from "./http.client.js";
 import { loadEnvironmentProperties } from "../../src/config/environment.properties.js";
 // load environment properties
-export const { environment, apiHost, apiPort } = loadEnvironmentProperties();
+export const { environment, apiProperties } = loadEnvironmentProperties();
 
 // check if the environment is test
 if (environment !== "test") {
   throw new Error("This file should only be run in test mode");
 }
 
-const apiBaseUrl = `http:/${apiHost}:${apiPort}/api/v1`;
+const {protocol, host, port, basePath} = apiProperties;
+
+const apiBaseUrl = `${protocol}://${host}:${port}${basePath}`;
 
 //HEALTH CHECK
 const healthUrl = `${apiBaseUrl}/health`;

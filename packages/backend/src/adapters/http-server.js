@@ -1,8 +1,28 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { eventsRouter } from "../routes/events.router.js";
+import { healthRouter } from "../routes/health.router.js";
+import { emailActivationsRouter } from "../routes/email-activations.router.js";
+import { fileURLToPath } from "url";
+import path from "path";
 
-export const startHttpServer = async ({ apiPort, baseUrl, routes , cleanupTasks, staticFilesPath }) => {
+export const startHttpServer = async ({
+  eventRepository,
+  emailActivationService,
+  apiProperties,
+  version,
+  environment,
+  cleanupTasks,
+}) => {
+  // Serve static files from the React app
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const staticFilesPath = path.join(
+    __dirname,
+    "../../node_modules/frontend/dist"
+  );
+  const routes = {};
   const app = express();
 
   // Middleware
@@ -13,9 +33,14 @@ export const startHttpServer = async ({ apiPort, baseUrl, routes , cleanupTasks,
   app.use(express.static(staticFilesPath));
 
   // Routes
-  Object.entries(routes).forEach(([routeName, route]) => {
-    app.use(`${baseUrl}/${routeName}`, route);
-  });
+  const { port, basePath } = apiProperties;
+  app.use(`${basePath}/health`, healthRouter({ version, environment }));
+  app.use(
+    `${basePath}/email-activations`,
+    emailActivationsRouter(emailActivationService)
+  );
+  app.use(`${basePath}/events`, eventsRouter(eventRepository));
+
   // Error-handling middleware
   app.use((err, req, res, next) => {
     console.error("Error occurred:", err.message);
@@ -23,8 +48,8 @@ export const startHttpServer = async ({ apiPort, baseUrl, routes , cleanupTasks,
   });
 
   // Start server
-  const server = app.listen(apiPort, () => {
-    console.log(`Server running on port ${apiPort}`);
+  const server = app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
   });
   // Graceful shutdown logic
   const shutdown = async (signal) => {
@@ -50,12 +75,16 @@ export const startHttpServer = async ({ apiPort, baseUrl, routes , cleanupTasks,
       process.exit(0);
     });
   };
-    process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unexpected unhandled rejection at:', promise, 'reason:', reason);
-    });
+  process.on("unhandledRejection", (reason, promise) => {
+    console.error(
+      "Unexpected unhandled rejection at:",
+      promise,
+      "reason:",
+      reason
+    );
+  });
   // Listen for termination signals
   process.on("SIGINT", () => shutdown("SIGINT")); // Ctrl+C
   process.on("SIGUSR2", () => shutdown("SIGUSR2")); // Nodeamon restart
   process.on("SIGTERM", () => shutdown("SIGTERM")); // Termination signal (e.g., from Docker or Kubernetes)
-
 };
