@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 
-export class UuidService{
+export class UuidGenerator{
     createUuid(){
         return v4();
     }

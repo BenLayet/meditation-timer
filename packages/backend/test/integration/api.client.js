@@ -30,6 +30,7 @@ export const postEmailActivation = async (emailActivation) =>
 export const activateEmail = async (activateToken) =>
   httpPost(`${emailActivationsUrl}/activate?token=${activateToken}`);
 export const createUser = async (createUserToken) =>
-  httpPost(`${emailActivationsUrl}/createUser`,{
+  httpPost(`${emailActivationsUrl}/create-user`, {},{
+
     Authorization: `Bearer ${createUserToken}`,
   });

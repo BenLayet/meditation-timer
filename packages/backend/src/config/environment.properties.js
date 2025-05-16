@@ -4,18 +4,13 @@ import path from "path";
 export const loadEnvironmentProperties = () => {
   // Determine the environment and load the corresponding .env file
   const envFile = `.env${process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : ""}`;
-
   dotenv.config({ path: path.resolve(process.cwd(), envFile) });
-  // Override console.debug to respect the DEBUG environment variable
-  if (!process.env.DEBUG) {
-    console.debug = () => {}; // No-op if DEBUG is not set
-  }
-  console.debug(`Environment loaded from ${envFile}`);
-
+  // Load environment variables
   const version = process.env.BUILD_VERSION ?? "unknown";
   const environment = process.env.NODE_ENV ?? "unknown";
   const jwtSecret = process.env.JWT_SECRET ?? "JWT_SECRET";
   const mailFrom = process.env.MAIL_FROM ?? "no-reply@localhost";
+  const logLevel = process.env.LOG_LEVEL ?? "info";
 
   //api properties
   const apiHost = process.env.API_HOST ?? "localhost";
@@ -43,6 +38,7 @@ export const loadEnvironmentProperties = () => {
     password: process.env.DATABASE_PASSWORD,
   };
   return {
+    logLevel,
     version,
     environment,
     jwtSecret,

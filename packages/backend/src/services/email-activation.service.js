@@ -1,90 +1,107 @@
+import { validateNotNull } from "../validators/not-null.validator.js";
 
 export class EmailActivationService {
   constructor(
-    transactionService,
     emailActivationRepository,
-    userRepository,
+    //TODO mail sender
     emailService,
     tokenService,
-    uuidService,
+    //TODO mail builder
     mailFrom,
-    apiProperties
+    apiProperties,
+    logger
   ) {
-    this.transactionService = transactionService;
     this.emailActivationRepository = emailActivationRepository;
-    this.userRepository = userRepository;
     this.emailService = emailService;
     this.tokenService = tokenService;
-    this.uuidService = uuidService;
     this.mailFrom = mailFrom;
     this.apiProperties = apiProperties;
+    this.logger = logger;
   }
   async sendActivationEmail(email) {
-    const uuid = await this.uuidService.createUuid();
+    validateNotNull(email, "email should not be null");
+    //TODO one line per action (same level of abstraction)
+    const { uuid } = await this.emailActivationRepository.createEmailActivation(
+      {
+        email,
+        status: "PENDING_VERIFICATION",
+      }
+    );
+    this.logger.debug(
+      `Creating email activation with uuid ${uuid}, email ${email}, status PENDING_VERIFICATION`
+    );
     // Generate a signed token
-    const activateToken = await this.tokenService.createShortLivedToken(
-      { uuid, scope: [ACTIVATE_PERMISSION] }
-    );
-    const createUserToken = await  this.tokenService.createShortLivedToken(
-      { uuid, scope: [CREATE_USER_PERMISSION] }
-    );
-    await this.emailActivationRepository.createEmailActivation({
+    const activateToken = await this.tokenService.createShortLivedToken({
       uuid,
-      email,
-      status: "PENDING_VERIFICATION"
-    });    
+      scope: [ACTIVATE_PERMISSION],
+    });
+
+    const createUserToken = await this.tokenService.createShortLivedToken({
+      uuid,
+      scope: [CREATE_USER_PERMISSION],
+    });
     const subject = "Activate your account"; //TODO localize
-    const {protocol, host, port, basePath} = this.apiProperties;
+    const { protocol, host, port, basePath } = this.apiProperties;
     const activationLink = `${protocol}://${host}:${port}${basePath}/email-activations/activate/${activateToken}`;
     const body = `Click to link your mail to your app: ${activationLink}`;
     const sender = this.mailFrom;
     const receipient = email;
-    await this.emailService.sendEmail({sender, receipient, subject, body });
+    await this.emailService.sendEmail({ sender, receipient, subject, body });
+    this.logger.debug(
+      `Sending email to ${email} with activation link ${activationLink}`
+    );
+    this.logger.debug(`Return createUserToken ${createUserToken}`);
+
     return { createUserToken };
   }
   async activate(activateToken) {
+    validateNotNull(activateToken, "activateToken should not be null");
     try {
-      const  { uuid, scope }  = this.tokenService.verify(activateToken);
-      if(!scope.includes(ACTIVATE_PERMISSION)){
+      const { uuid: emailActivationUuid, scope } =
+        this.tokenService.verify(activateToken);
+      if (!scope.includes(ACTIVATE_PERMISSION)) {
         throw new Error(`Missing permission in token ${ACTIVATE_PERMISSION}`);
       }
-      console.log(`Activating request uuid: ${uuid}`);
+      this.logger.info(
+        `Activating request emailActivationUuid: ${emailActivationUuid}`
+      );
       await this.emailActivationRepository.updateEmailActivationStatus(
-        uuid,
+        emailActivationUuid,
         "VERIFIED"
       );
       return { success: true, message: "Account activated successfully" };
     } catch (error) {
-      console.error("Invalid or expired token:", error.message);
+      this.logger.error("Invalid or expired token:", error);
       throw new Error("Invalid or expired activation token");
     }
   }
   async createUser(createUserToken) {
-    try {
-      const  { uuid, scope }  = this.tokenService.verify(createUserToken);
-      if(!scope.includes(CREATE_USER_PERMISSION)){
-        throw new Error(`Missing permission in token ${CREATE_USER_PERMISSION}`);
+    validateNotNull(createUserToken, "createUserToken should not be null");
+    const { uuid: emailActivationUuid, scope } =
+      this.tokenService.verify(createUserToken);
+    if (!scope.includes(CREATE_USER_PERMISSION)) {
+      throw new Error(`Missing permission in token ${CREATE_USER_PERMISSION}`);
+    }
+    this.logger.info(
+      `Create user requested emailActivationUuid: ${emailActivationUuid}`
+    );
+    const result =
+      await this.emailActivationRepository.markAsUserCreated(
+        emailActivationUuid
+      );
+    if (result.success) {
+      const { userUuid } = result;
+      this.logger.debug(`User created userUuid: ${userUuid}`);
+      const userToken = this.tokenService.createPermanentToken({ userUuid });
+      return { success: true, userToken };
+    } else {
+      this.logger.debug(`User not created status: ${status}`);
+      const { status } = result;
+      if (status === "VERIFIED") {
+        return { success: false, message: "User already created" };
+      } else {
+        return { success: false, message: "Invalid status" };
       }
-      console.log(`Create user requested uuid: ${uuid}`);
-      this.transactionService.executeInTransaction(async () => {
-        const { status, email } =
-          await this.emailActivationRepository.getEmailActivation(uuid);
-        if (status === "VERIFIED") {
-          await this.emailActivationRepository.updateEmailActivationStatus(
-            uuid,
-            "USER_ALREADY_CREATED"
-          );
-          const { userUuid } =
-            await this.userRepository.createUser(email);
-          const userToken = this.tokenService.createPermanentToken({ userUuid });
-          return { success: true, userToken };
-        } else {
-          return { success: false, status };
-        }
-      });
-    } catch (error) {
-      console.error("Invalid or expired token:", error.message);
-      throw new Error("Invalid or expired status token");
     }
   }
 }

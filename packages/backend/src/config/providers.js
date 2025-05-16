@@ -1,43 +1,39 @@
 import { createDatasource } from "../adapters/datasource.js";
 import { EventRepository } from "../repositories/event.repository.js";
-import { MailgunEmailService } from "../adapters/email.service.js";
+import { MailgunEmailSender } from "../adapters/email-sender.js";
 import { EmailActivationRepository } from "../repositories/email-activation.repository.js";
 import { EmailActivationService } from "../services/email-activation.service.js";
 import { JwtTokenService } from "../adapters/token.service.js";
-import { UuidService } from "../adapters/uuid.service.js";
+import { UuidGenerator } from "../adapters/uuid-generator.js";
 import { TransactionService } from "../repositories/transaction.service.js";
-import { UserRepository } from "../repositories/user.repository.js";
+import {logger} from "../adapters/logger.js";
 
 export const providers = {
+  logger: ({logLevel, environment}) => logger(logLevel, environment),
   datasource: ({ datasourceProperties }) =>
     createDatasource(datasourceProperties),
-  eventRepository: ({ datasource }) => new EventRepository(datasource),
+  eventRepository: ({ datasource, logger }) => new EventRepository(datasource, logger),
+  uuidGenerator: () => new UuidGenerator(),
   transactionService: ({ datasource }) => new TransactionService(datasource),
-  emailActivationRepository: ({ datasource }) =>
-    new EmailActivationRepository(datasource),
-  userRepository: ({ datasource }) => new UserRepository(datasource),
-  tokenService: ({ jwtSecret }) => new JwtTokenService(jwtSecret),
-  emailService: ({ mailProperties }) => new MailgunEmailService(mailProperties),
-  uuidService: () => new UuidService(),
+  emailActivationRepository: ({ datasource, transactionService, uuidGenerator, logger }) =>
+    new EmailActivationRepository(datasource, transactionService, uuidGenerator, logger),
+  tokenService: ({ jwtSecret, logger }) => new JwtTokenService(jwtSecret, logger),
+  emailService: ({ mailProperties, logger }) => new MailgunEmailSender(mailProperties, logger),
   emailActivationService: ({
-    transactionService,
     emailActivationRepository,
-    userRepository,
     emailService,
     tokenService,
-    uuidService,
     mailFrom,
     apiProperties,
+    logger
   }) =>
     new EmailActivationService(
-      transactionService,
       emailActivationRepository,
-      userRepository,
       emailService,
       tokenService,
-      uuidService,
       mailFrom,
-      apiProperties
+      apiProperties,
+      logger
     ),
   cleanupTasks: ({ datasource }) => [datasource.end],
 };

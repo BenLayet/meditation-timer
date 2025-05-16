@@ -3,8 +3,9 @@ import {validateUserUuid} from "../validators/user.validator.js";
 import {toPage} from "./pagination.js";
 
 export class EventRepository {
-  constructor(datasource) {
+  constructor(datasource, logger) {
     this.datasource = datasource;
+    this.logger = logger;
   }
 
   async saveEvent(userUuid, event) {
@@ -20,7 +21,6 @@ export class EventRepository {
       RETURNING *;
 
     `;
-    console.log("Event saved", row);
     return toEvent(row[0]);
   }
 

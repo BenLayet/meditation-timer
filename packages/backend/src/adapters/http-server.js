@@ -14,6 +14,7 @@ export const startHttpServer = async ({
   version,
   environment,
   cleanupTasks,
+  logger
 }) => {
   // Serve static files from the React app
   const __filename = fileURLToPath(import.meta.url);
@@ -30,30 +31,32 @@ export const startHttpServer = async ({
   app.use(express.json());
   app.use(cookieParser());
 
+
   app.use(express.static(staticFilesPath));
 
   // Routes
   const { port, basePath } = apiProperties;
-  app.use(`${basePath}/health`, healthRouter({ version, environment }));
+  app.use(`${basePath}/health`, healthRouter( version, environment, logger));
   app.use(
     `${basePath}/email-activations`,
-    emailActivationsRouter(emailActivationService)
+    emailActivationsRouter(emailActivationService, logger)
   );
-  app.use(`${basePath}/events`, eventsRouter(eventRepository));
+  app.use(`${basePath}/events`, eventsRouter(eventRepository, logger));
 
   // Error-handling middleware
   app.use((err, req, res, next) => {
-    console.error("Error occurred:", err.message);
+    logger.error("Error occurred:", err.message);
     res.status(500).json({ error: "Internal Server Error" });
   });
+  //app.use(bearerToken());
 
   // Start server
   const server = app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    logger.info(`Server running on port ${port}`);
   });
   // Graceful shutdown logic
   const shutdown = async (signal) => {
-    console.log(`Received ${signal}. Shutting down gracefully...`);
+    logger.info(`Received ${signal}. Shutting down gracefully...`);
 
     // Stop accepting new connections
     server.close(async (err) => {
@@ -61,22 +64,22 @@ export const startHttpServer = async ({
         console.error("Error while closing the server:", err);
         process.exit(1);
       }
-      console.log("HTTP server closed.");
+      logger.info("HTTP server closed.");
 
       // Execute cleanup tasks (e.g., closing database connections)
       for (const task of cleanupTasks) {
         try {
           await task();
         } catch (cleanupError) {
-          console.error("Error during cleanup:", cleanupError);
+          logger.error("Error during cleanup:", cleanupError);
         }
       }
-      console.log("Cleanup completed. Exiting process.");
+      logger.info("Cleanup completed. Exiting process.");
       process.exit(0);
     });
   };
   process.on("unhandledRejection", (reason, promise) => {
-    console.error(
+    logger.error(
       "Unexpected unhandled rejection at:",
       promise,
       "reason:",
