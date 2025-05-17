@@ -5,6 +5,7 @@ import { meditationTimerAppEvents } from "./meditation-timer-app.events.js";
 import { preparationEvents } from "../preparation/preparation.events.js";
 import { meditationTimerAppSelectors } from "./meditation-timer-app.selectors.js";
 import { meditationSettingsEvents } from "../meditation-settings/meditation-settings.events.js";
+import { persistentStateEvents } from "../persistent-state/persistent-state.events.js";
 import { accountEvents } from "../account/account.events.js";
 
 export const meditationTimerAppChainedEvents = [
@@ -115,9 +116,14 @@ export const meditationTimerAppChainedEvents = [
   },
   {
     onEvent: meditationTimerAppEvents.appOpened,
-    thenDispatch: {
-      ...accountEvents.accountFetchRequested,
-      childComponentPath: ["account"],
+    thenDispatch: persistentStateEvents.persistentStateLoadRequested,
+  },
+  {
+    onEvent: {
+      ...persistentStateEvents.persistentStateLoaded,
+      childComponentPath: ["persistentState"],
     },
+    thenDispatch: accountEvents.createUserRequested,
+    onCondition: ({ previousPayload }) => !!previousPayload.createUserToken,
   },
 ];

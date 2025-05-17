@@ -30,14 +30,14 @@ export const createEmailActivationEffects = (
   };
 
   // Requests the creation of a user
-  const createUserRequested = async (payload) => {
+  const createUserRequested = async () => {
     const createUserToken = await keyValueStorageService.get("createUserToken");
     const dispatchers = rootVM.children.account.dispatchers;
     try {
       const {userToken} = await emailActivationService.createUser(createUserToken);
       keyValueStorageService.delete("createUserToken");
       keyValueStorageService.set("userToken", userToken);
-      dispatchers.createUserSuccceeded();
+      dispatchers.createUserSucceeded();
     } catch (error) {
       console.error(error);
       dispatchers.createUserFailed({ errorMessage: error.message });

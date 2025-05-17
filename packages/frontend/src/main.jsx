@@ -39,3 +39,6 @@ createRoot(document.getElementById("root")).render(
         <App stateManager={stateManager}/>
     </StrictMode>
 );
+
+//notify that the app is ready
+stateManager.getRootVM().dispatchers.appOpened();

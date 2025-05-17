@@ -70,8 +70,8 @@ export const accountEvents = {
             loading: true,
         }),
     },
-    createUserSucceededed: {
-        eventType: "createUserSucceededed",
+    createUserSucceeded: {
+        eventType: "createUserSucceeded",
         payloadShape: {
             userToken: ow.string,
         },
@@ -92,4 +92,24 @@ export const accountEvents = {
             email: null,
         }),
     },
+    accountFetchRequested: {
+        eventType: "accountFetchRequested",
+        handler: (state) => ({
+            ...state,
+            loading: true,
+        }),
+    },
+    accountFetchSucceeded: {
+        eventType: "accountFetchSucceeded",
+        payloadShape: {
+            email: ow.string.email,
+            status: ow.string.oneOf(['ANONYMOUS', 'PENDING_ACTIVATION', 'ACTIVATED']),
+        },
+        handler: (state, { email, status }) => ({
+            ...state,
+            loading: false,
+            email,
+            status,
+        }),
+    },  
 };
