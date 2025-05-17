@@ -1,17 +1,20 @@
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserLock, faUnlock} from "@fortawesome/free-solid-svg-icons";
+import {
+  faUserLock,
+  faUnlock,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import "./Account.css";
 
 function Account({ vm }) {
   const { t } = useTranslation();
   const status = vm.selectors.status();
   const email = vm.selectors.email();
-  const hasError = vm.selectors.hasError();
-  const errorMessage = vm.selectors.errorMessage();
   const isLoading = vm.selectors.isLoading();
   const isEmailProvided = vm.selectors.isEmailProvided();
   const canUnlinkingBeRequested = vm.selectors.canUnlinkingBeRequested();
+  const isResettable = vm.selectors.isResettable();
   const emailProvided = (e) => {
     e.preventDefault();
     vm.dispatchers.emailProvided({
@@ -19,28 +22,31 @@ function Account({ vm }) {
     });
   };
   const unlinkingRequested = vm.dispatchers.unlinkingRequested;
+  const resetRequested = vm.dispatchers.resetRequested;
 
   return (
     <section className="account-section">
-      {isEmailProvided ? ( <div className="account-info">
+      {isEmailProvided ? (
+        <div className="account-info">
           <dl>
-              <dt>{t("emailKey")}</dt>
-              <dd>{email}</dd>
-              <dt>{t("statusKey")}</dt>
-              <dd>
-                {t(`status_${status}`) || t("status_UNKNOWN")}
-                {hasError && (
-                  <p className="error">
-                    {errorMessage}
-                  </p>
-                )}
-              </dd>
+            <dt>{t("emailKey")}</dt>
+            <dd>{email}</dd>
+            <dt>{t("statusKey")}</dt>
+            <dd>
+              {isLoading ? (
+                <FontAwesomeIcon
+                  icon={faSpinner}
+                  spin
+                  className="status-spinner"
+                />
+              ) : (
+                t(`status_${status}`) || t("status_UNKNOWN")
+              )}
+            </dd>
           </dl>
+          {isResettable && <a onClick={resetRequested}>{t("reset")}</a>}
           {canUnlinkingBeRequested && (
-            <button
-              onClick={unlinkingRequested}
-              className="icon-button"
-            >
+            <button onClick={unlinkingRequested} className="icon-button">
               <FontAwesomeIcon icon={faUnlock} />
               {t("unlinkEmail")}
             </button>
@@ -48,8 +54,8 @@ function Account({ vm }) {
         </div>
       ) : (
         <>
-        <div className="form-explanation">{t("linkEmailDescription")}</div>
-        <form onSubmit={emailProvided} className="compact">
+          <div className="form-explanation">{t("linkEmailDescription")}</div>
+          <form onSubmit={emailProvided} className="compact">
             <input
               type="email"
               id="email"
@@ -62,7 +68,7 @@ function Account({ vm }) {
               <FontAwesomeIcon icon={faUserLock} />
               {t("linkEmail")}
             </button>
-        </form>         
+          </form>
         </>
       )}
     </section>

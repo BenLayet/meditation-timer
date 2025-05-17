@@ -19,7 +19,7 @@ export class EmailActivationService {
     this.logger = logger;
   }
   async sendActivationEmail(email) {
-    validateNotNull(email, "email should not be null");
+    validateNotNull({email});
     //TODO one line per action (same level of abstraction)
     const { uuid } = await this.emailActivationRepository.createEmailActivation(
       {
@@ -43,10 +43,10 @@ export class EmailActivationService {
     const subject = "Activate your account"; //TODO localize
     const { protocol, host, port, basePath } = this.apiProperties;
     const activationLink = `${protocol}://${host}:${port}${basePath}/email-activations/activate/${activateToken}`;
-    const body = `Click to link your mail to your app: ${activationLink}`;
-    const sender = this.mailFrom;
-    const receipient = email;
-    await this.emailService.sendEmail({ sender, receipient, subject, body });
+    const html = `Click to let Meditation Timer know that this is your email adress: <a href="${activationLink}" target="_blank">${activationLink}</a>`;
+    const from = this.mailFrom;
+    const to = email;
+    await this.emailService.sendEmail({ from, to, subject, html });
     this.logger.debug(
       `Sending email to ${email} with activation link ${activationLink}`
     );
@@ -55,7 +55,7 @@ export class EmailActivationService {
     return { createUserToken };
   }
   async activate(activateToken) {
-    validateNotNull(activateToken, "activateToken should not be null");
+    validateNotNull({activateToken});
     try {
       const { uuid: emailActivationUuid, scope } =
         this.tokenService.verify(activateToken);
@@ -76,7 +76,7 @@ export class EmailActivationService {
     }
   }
   async createUser(createUserToken) {
-    validateNotNull(createUserToken, "createUserToken should not be null");
+    validateNotNull({createUserToken});
     const { uuid: emailActivationUuid, scope } =
       this.tokenService.verify(createUserToken);
     if (!scope.includes(CREATE_USER_PERMISSION)) {

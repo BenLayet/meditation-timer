@@ -25,8 +25,9 @@ export const loadEnvironmentProperties = () => {
     basePath: `/api/${apiVersion}`,
   };
   // mail server properties
-  const mailProperties = {
-    mailgunApiKey: process.env.MAILGUN_API_KEY ?? "MAILGUN_API_KEY",
+  const mailgunProperties = {
+    apiKey: process.env.MAILGUN_API_KEY,
+    domain: process.env.MAILGUN_DOMAIN,
   };
   // datasource properties
   const datasourceProperties = {
@@ -44,7 +45,7 @@ export const loadEnvironmentProperties = () => {
     jwtSecret,
     mailFrom,
     apiProperties,
-    mailProperties,
+    mailgunProperties,
     datasourceProperties,
   };
 };

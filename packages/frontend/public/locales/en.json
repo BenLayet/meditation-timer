@@ -29,5 +29,6 @@
   "status_ACTIVATION_MAIL_SENT": "Email sent, check your inbox",
   "status_ACTIVATION_MAIL_FAILED": "Failed to send activation email",
   "status_ACTIVATED": "Activated",
-  "status_UNKNOWN": "It seems there was an error activating your account, please contact support."
+  "status_UNKNOWN": "It seems there was an error activating your account, please contact support.",
+  "reset": "Reset"
 }

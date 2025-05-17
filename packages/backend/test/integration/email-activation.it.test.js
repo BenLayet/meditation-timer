@@ -35,10 +35,10 @@ describe("activating emails", () => {
     //THEN
     const lastMail = await getLastMailSent();
     expect(lastMail).toEqual({
-      sender: "mailfrom@test",
-      receipient: email,
+      from: "mailfrom@test",
+      to: email,
       subject: "Activate your account",
-      body: expect.stringMatching(/Click to link your mail to your app:/),
+      html: expect.stringMatching(/Click to let Meditation Timer know that this is your email adress/),
     });
   });
 
@@ -47,8 +47,8 @@ describe("activating emails", () => {
     await postEmailActivation({ email });
 
     //THEN
-    const { body } = await getLastMailSent();
-    const link = extractFirstLink(body);
+    const { html } = await getLastMailSent();
+    const link = extractFirstLink(html);
     expect(link).toBe(activationLink);
   });
 
@@ -92,7 +92,7 @@ describe("activating emails", () => {
 });
 
 function extractFirstLink(text) {
-  const regex = /(https?:\/\/[^\s]+)/;
+  const regex = /(https?:\/\/[\w\/:\-\=]+)/;
   const match = text.match(regex);
   return match ? match[1] : null;
 }

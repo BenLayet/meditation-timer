@@ -11,8 +11,6 @@ export const meditationsIndexedDbSchema = {
       db.createObjectStore(pendingEventStoreName, {
         keyPath: "uuid",
       }),
-    (db) => db.createObjectStore(keyValueStoreName, {
-      keyPath: "key",
-    }),
+    (db) => db.createObjectStore(keyValueStoreName),
   ],
 };

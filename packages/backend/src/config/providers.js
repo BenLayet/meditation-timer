@@ -18,7 +18,7 @@ export const providers = {
   emailActivationRepository: ({ datasource, transactionService, uuidGenerator, logger }) =>
     new EmailActivationRepository(datasource, transactionService, uuidGenerator, logger),
   tokenService: ({ jwtSecret, logger }) => new JwtTokenService(jwtSecret, logger),
-  emailService: ({ mailProperties, logger }) => new MailgunEmailSender(mailProperties, logger),
+  emailService: ({ mailgunProperties, logger }) => new MailgunEmailSender(mailgunProperties, logger),
   emailActivationService: ({
     emailActivationRepository,
     emailService,

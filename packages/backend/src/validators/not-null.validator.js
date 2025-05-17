@@ -1,16 +1,24 @@
-
-export const validateNotNull = (value, message = "Value cannot be null or undefined") => {
+export const validateNotNull = (holder) => {
+  const [key] = Object.keys(holder);
+  const value = holder[key];
   if (value === null || value === undefined) {
-    throw new Error(message);
+    throw new Error(message, `Value of ${key} should not be null or undefined but was of type: ${typeof value}`);
   }
-}
-export const validateNotNullObject = (value, message = "Value should be a non null object but was of type: ") => {
+};
+export const validateNotNullObject = (holder) => {
+  const [key] = Object.keys(holder);
+  const value = holder[key];
   if (typeof value !== "object" || value === null) {
-    throw new Error(message + typeof value);
+    throw new Error(`Value of ${key} should a non null object but was of type: ${typeof value}`);
   }
-}
-export const validateNotEmptyString = (value, message = "Value should be a non empty string") => {
-  if (typeof value !== "string" || value.trim() === "") {
-    throw new Error(message);
+};
+export const validateNotEmptyString = (holder) => {
+  const [key] = Object.keys(holder);
+  const value = holder[key];
+  if (typeof value !== "string" ) {
+    throw new Error(`Value of ${key} should be a non empty string, but was of type: ${typeof value}`);
   }
-}
+  if (value.trim() === "") {
+    throw new Error(`Value of ${key} should be a non empty string, but was: '${value}'`);
+  }
+};

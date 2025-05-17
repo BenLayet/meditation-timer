@@ -8,6 +8,6 @@ export const createEffect = ({afterEvent, onComponent, then}) =>
         
         if (event.eventType === triggeringEvent.eventType
             && (!componentPath || isEqual(componentPath, event.componentPath))) {
-            effectFunction(event);
+            effectFunction(event.payload);
         }
     }

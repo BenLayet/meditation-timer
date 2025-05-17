@@ -7,6 +7,7 @@ const status = accountState => accountState.status;
 const canUnlinkingBeRequested = accountState => accountState.status === "ACTIVATED";
 const hasError = accountState => !!accountState.errorMessage;
 const isLoading = accountState => accountState.loading;
+const isResettable = accountState => ["ACTIVATION_MAIL_FAILED", "ACTIVATION_MAIL_SENT"].includes(accountState.status);
 const errorMessage = accountState => accountState.errorMessage;
 
 const ownStateSelectors = {
@@ -16,6 +17,7 @@ const ownStateSelectors = {
     canUnlinkingBeRequested,
     hasError,
     isLoading,
+    isResettable,
     errorMessage,
 };
 

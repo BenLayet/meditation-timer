@@ -12,6 +12,16 @@ export const accountEvents = {
             status: 'PENDING_ACTIVATION',
         }),
     },
+    resetRequested: {
+        eventType: "resetRequested",
+        handler: (state) => ({
+            ...state,
+            errorMessage: null,
+            loading: false,
+            email: null,
+            status: 'ANONYMOUS',
+        }),
+    },
     sendEmailActivationRequested: {
         eventType: "sendEmailActivationRequested",
         payloadShape: {
@@ -37,7 +47,7 @@ export const accountEvents = {
     sendEmailActivationSuccceeded: {
         eventType: "sendEmailActivationSuccceeded",
         payloadShape: {
-            email: ow.string.email,
+            createUserToken: ow.string,
         },
         handler: (state) => ({
             ...state,
@@ -45,29 +55,29 @@ export const accountEvents = {
             loading: false,
         }),
     },
-    accountFetchRequested: {
-        eventType: "accountFetchRequested",
+    scheduledCreateUserRequested: {
+        eventType: "scheduledCreateUserRequested",
+    },
+    scheduledCreateUserTimeUp: {
+        eventType: "scheduledCreateUserTimeUp"
+    },
+    createUserRequested: {
+        eventType: "createUserRequested",
+        payloadShape: {
+        },
         handler: (state) => ({
             ...state,
             loading: true,
         }),
     },
-    accountFetchSucceeded: {
-        eventType: "accountFetchSucceeded",
+    createUserSucceededed: {
+        eventType: "createUserSucceededed",
         payloadShape: {
-            email: ow.string.email,
-            status: ow.string.oneOf(['ANONYMOUS', 'ACTIVATION_MAIL_SENT', 'ACTIVATION_MAIL_FAILED', 'ACTIVATED']),
-            devices: ow.optional.array,
+            userToken: ow.string,
         },
-        handler: (state, {email, status}) => ({
-            ...state,
-            email,
-            status,
-            loading: false,
-        }),
     },
-    accountFetchFailed: {
-        eventType: "accountFetchFailed",
+    createUserFailed: {
+        eventType: "createUserFailed",
         handler: (state) => ({
             ...state,
             loading: false,

@@ -5,7 +5,12 @@ export class KeyValueStore {
 
     set = (key, value) => async (transaction) => {
         const store = transaction.objectStore(this.storeName);
-        await store.put({value, key});
+        await store.put(value, key);
+    };
+
+    delete = (key) => async (transaction) => {
+        const store = transaction.objectStore(this.storeName);
+        await store.delete(key);
     };
 
     get = (key, defaultValue) => async (transaction) => {
@@ -13,7 +18,7 @@ export class KeyValueStore {
             const store = transaction.objectStore(this.storeName);
             const request = store.get(key);
             request.onsuccess = () => resolve(
-                typeof request.result === "undefined" ? defaultValue : request.result.value);
+                typeof request.result === "undefined" ? defaultValue : request.result);
             request.onerror = () => reject(request.error);
         });
     };

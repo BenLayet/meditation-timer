@@ -7,12 +7,19 @@ import { createEmailActivationEffects } from "./email-activation.effect.js";
 
 export const createEffects = (
   rootVM,
-  { meditationService, gongService, wakeLockService, tickingService, emailActivationService }
+  {
+    meditationService,
+    gongService,
+    wakeLockService,
+    tickingService,
+    emailActivationService,
+    keyValueStorageService,
+  }
 ) => [
   ...createGongEffects({ gongService }),
   ...createWakeLockEffects({ wakeLockService }),
   ...createTimerEffects({ tickingService }, rootVM),
-  ...createSaveMeditationEffects( { meditationService }, rootVM),
-  ...createLoadMeditationsEffects( { meditationService }, rootVM),
-  ...createEmailActivationEffects( { emailActivationService }, rootVM),
+  ...createSaveMeditationEffects({ meditationService }, rootVM),
+  ...createLoadMeditationsEffects({ meditationService }, rootVM),
+  ...createEmailActivationEffects({ emailActivationService, keyValueStorageService }, rootVM),
 ];

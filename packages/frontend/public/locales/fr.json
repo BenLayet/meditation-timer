@@ -28,5 +28,6 @@
   "status_ACTIVATION_MAIL_SENT": "Mail d'activation envoyé, vérifiez votre boîte de réception",
   "status_ACTIVATION_MAIL_FAILED": "Échec de l'envoi de l'email d'activation",
   "status_ACTIVATED": "Activé",
-  "status_UNKNOWN": "Il semble qu'il y a eu une erreur dans l'activation de votre compte, contactez le support."
+  "status_UNKNOWN": "Il semble qu'il y a eu une erreur dans l'activation de votre compte, contactez le support.",
+  "reset": "Réinitialiser"
 }

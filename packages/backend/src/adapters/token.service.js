@@ -3,24 +3,29 @@ import { validateNotNull, validateNotNullObject, validateNotEmptyString} from ".
 
 export class JwtTokenService {
   constructor(jwtSecret, logger) {
-    validateNotNull(jwtSecret, "jwtSecret should not be null");
-    validateNotNull(logger, "logger should not be null");
+    validateNotNull({jwtSecret});
+    validateNotNull({logger});
     this.jwtSecret = jwtSecret;
     this.logger = logger;
   }
   createShortLivedToken(payload) {
-    validateNotNullObject(payload);
+    validateNotNullObject({payload});
     this.logger.debug(`createShortLivedToken ${JSON.stringify(payload)}`);
     return jwt.sign(payload, this.jwtSecret, { expiresIn: "1h" });
   }
   createPermanentToken(payload) {
-    validateNotNullObject(payload);
+    validateNotNullObject({payload});
     this.logger.debug(`createPermanentToken ${JSON.stringify(payload)}`);
     return jwt.sign(payload, this.jwtSecret);
   }
   verify(token) {
-    validateNotEmptyString(token);
-    this.logger.debug(`Verifying token ${token}`);
-    return jwt.verify(token);
+    validateNotEmptyString({token});
+    try {
+      return jwt.verify(token, this.jwtSecret);
+    }
+    catch (error) {
+      this.logger.debug(error, `Error verifying token: ${error.message}`);
+      throw new Error("Invalid or expired token");
+    }
   }
 }
