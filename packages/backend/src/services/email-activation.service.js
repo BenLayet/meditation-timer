@@ -95,8 +95,8 @@ export class EmailActivationService {
       const userToken = this.tokenService.createPermanentToken({ userUuid });
       return { success: true, userToken };
     } else {
-      this.logger.debug(`User not created status: ${status}`);
       const { status } = result;
+      this.logger.debug(`User not created status: ${status}`);
       if (status === "VERIFIED") {
         return { success: false, message: "User already created" };
       } else {

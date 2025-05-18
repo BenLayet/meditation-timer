@@ -1,84 +1,110 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import { expect } from "chai";
-import { stateManager, eventWasSent, account } from "./state-manager/test-state-manager.js";
-import { accountEvents } from "../../src/components/account/account.events.js";
+import { emailVerificationEvents } from "../../src/components/email-verification/email-verification.events.js";
+import { accountStatus } from "../../src/components/account/account.state.js";
+import { emailVerificationStatus } from "../../src/components/email-verification/email-verification.state.js";
 
-Given(/^I have used the app without an account$/, function () {
-    account.email = null;
+Given(/^I have not created an account yet$/, function () {
+  this.account.email = null;
+  this.account.status = accountStatus.ANONYMOUS;
+});
+Given("I have just created an account", function () {
+  this.account.email = "test@example.org";
+  this.account.status = accountStatus.PENDING_VERIFICATION;
 });
 
-When(/^I provide my email$/, function () {
-    stateManager.getRootVM().children.account.dispatchers.emailProvided({ email: "test@example.com" });
+When(/^I create an account with my email$/, function () {
+  this.vm().children.account.dispatchers.createAccountRequested({
+    email: "test@example.org",
+  });
 });
 
-Then(/^I should receive an email with a activation link in my inbox$/, function () {
-    expect(eventWasSent(accountEvents.sendEmailActivationRequested)).to.be.true;
+Then(
+  /^I should receive an email with a activation link in my inbox$/,
+  function () {
+    expect(
+      this.eventWasSent(emailVerificationEvents.sendActivationMailRequested)
+    ).to.be.true;
+  }
+);
+
+Then(/^I can see that my email is pending verification$/, function () {
+  const email = this.vm().children.account.selectors.email();
+  expect(email).to.equal("test@example.org");
+  const isPendingVerification =
+    this.vm().children.account.selectors.isPendingVerification();
+  expect(isPendingVerification).to.be.true;
 });
 
-Then(/^I can see that my email is pending activation in the app settings$/, function () {
-    const isEmailProvided = stateManager.getRootVM().children.account.selectors.isEmailProvided();
-    expect(isEmailProvided).to.be.true;
-    const email = stateManager.getRootVM().children.account.selectors.email();
-    expect(email).to.equal("test@example.com");
-    const status = stateManager.getRootVM().children.account.selectors.status();
-    expect(status).to.equal("PENDING_ACTIVATION");
+Then(/^I can cancel the account creation$/, function () {
+  const canAccountCreationBeCancelled =
+    this.vm().children.account.selectors.canAccountCreationBeCancelled();
+  expect(canAccountCreationBeCancelled).to.be.true;
 });
 
-Given(/^I have received an email with an activation link$/, function () {
-    account.email = "test@example.com";
+When(/^I cancel the account creation$/, function () {
+  this.vm().children.account.dispatchers.createAccountCancelled();
 });
 
-When(/^I click the link$/, function () {
-    account.status = "ACTIVATED";
+Then("my email should not be visible anymore", function () {
+  const isAnonymous = this.vm().children.account.selectors.isAnonymous();
+  expect(isAnonymous).to.be.true;
+});
+Then("I should be able to connect again", function () {
+  const canConnect = this.vm().children.account.selectors.canConnect();
+  expect(canConnect).to.be.true;
 });
 
-Then(/^my device should be linked to my email$/, function () {
-    const isEmailProvided = stateManager.getRootVM().children.account.selectors.isEmailProvided();
-    expect(isEmailProvided, "email is not provided").to.be.true;
-    const email = stateManager.getRootVM().children.account.selectors.email();
-    expect(email, "email is not provided").to.equal("test@example.com");
-    const status = stateManager.getRootVM().children.account.selectors.status();
-    expect(status).to.equal("ACTIVATED");
+Given(/^I have not verified my email yet$/, function () {
+  this.remoteEmailVerification.status = emailVerificationStatus.REQUESTED;
 });
 
-
-
-Given(/^I have linked multiple devices to my email$/, function () {
-    account.devices = ["device1", "device2"];
+Given(/^I have just clicked the link to verify my email$/, function () {
+  this.account.email = "test@example.org";
+  this.account.status = accountStatus.PENDING_VERIFICATION;
+  this.remoteEmailVerification.status = emailVerificationStatus.VERIFIED;
 });
+
+Then(/^I should be authenticated$/, function () {
+  const isAuthenticated = this.vm().children.account.selectors.isAuthenticated();
+  expect(isAuthenticated).to.be.true;
+  const email = this.vm().children.account.selectors.email();
+  expect(email).to.equal("test@example.org");
+});
+
+Then(/^I should be able to log out$/, function () {
+  const canLogOut = this.vm().children.account.selectors.canLogOut();
+  expect(canLogOut).to.be.true;
+});
+
+Given(
+  /^I have connected on multiple devices using the same email address$/,
+  function () {
+    //TODO
+  }
+);
 
 When(/^I add a new meditation on one device$/, function () {
-    //TODO
+  //TODO
 });
 
-Then(/^the new meditation should appear on all linked devices$/, function () {
-    //TODO
+Then(/^the new meditation should appear on all devices$/, function () {
+  //TODO
 });
 
-Given(/^I have linked a device to my email$/, function () {
-    account.devices = ["device1"];
-    account.email = "";
-    account.isEmailValidated = true;
-});
-Then('I should be able to unlink the device from my email', function () {
-    const canUnlinkingBeRequested = stateManager.getRootVM().children.account.selectors.canUnlinkingBeRequested();
-    expect(canUnlinkingBeRequested).to.true;
+Given("I am authenticated", function () {
+  this.account.email = "test@example.org";
+  this.account.status = accountStatus.AUTHENTICATED;
 });
 
-When(/^I unlink the device from my email$/, function () {
-    stateManager.getRootVM().children.account.dispatchers.unlinkingRequested();
+When("I log out", function () {
+  this.vm().children.account.dispatchers.logOutRequested();
 });
-
 Then(/^my meditation history on the device should be cleared$/, function () {
-    const dailyStreak = stateManager.getRootVM().children.statistics.selectors.dailyStreak();
-    expect(dailyStreak).to.equal(0);
-});
-
-Then(/^I can link the device to a different email$/, function () {
-    const isEmailProvided = stateManager.getRootVM().children.account.selectors.isEmailProvided();
-    expect(isEmailProvided).to.be.false;
+  const dailyStreak = this.vm().children.statistics.selectors.dailyStreak();
+  expect(dailyStreak).to.equal(0);
 });
 
 Then(/^my meditation history on the server should remain intact$/, function () {
-    //TODO
+  //TODO
 });

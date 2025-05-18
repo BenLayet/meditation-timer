@@ -116,14 +116,9 @@ export const meditationTimerAppChainedEvents = [
   },
   {
     onEvent: meditationTimerAppEvents.appOpened,
-    thenDispatch: persistentStateEvents.persistentStateLoadRequested,
-  },
-  {
-    onEvent: {
-      ...persistentStateEvents.persistentStateLoaded,
-      childComponentPath: ["persistentState"],
+    thenDispatch: {
+      ...accountEvents.loadAccountRequested,
+      childComponentPath: ["account"],
     },
-    thenDispatch: accountEvents.createUserRequested,
-    onCondition: ({ previousPayload }) => !!previousPayload.createUserToken,
   },
 ];

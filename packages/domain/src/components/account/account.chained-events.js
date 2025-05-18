@@ -1,16 +1,36 @@
+import { emailVerificationEvents } from "../email-verification/email-verification.events.js";
 import { accountEvents } from "./account.events.js";
+import { ownStateSelectors } from "./account.selectors.js";
+import { ownStateSelectors as emailVerificationOwnSelectors } from "../email-verification/email-verification.selectors.js";
 
 export const accountChainedEvents = [
     {
-        onEvent: accountEvents.emailProvided,
-        thenDispatch: accountEvents.sendEmailActivationRequested,
+        onEvent: accountEvents.createAccountRequested,
+        thenDispatch: {
+            ...emailVerificationEvents.sendActivationMailRequested,
+            childComponentPath:["emailVerification"],
+        },
     },
     {
-        onEvent: accountEvents.scheduledCreateUserTimeUp,
-        thenDispatch: accountEvents.createUserRequested,
+        onEvent: accountEvents.accountLoaded,
+        onCondition: ({state}) => ownStateSelectors.isPendingVerification(state.ownState),
+        thenDispatch: accountEvents.checkEmailVerificationStatusRequested,
     },
     {
-        onEvent: accountEvents.createUserFailed,
-        thenDispatch: accountEvents.scheduledCreateUserRequested,
+        onEvent: accountEvents.checkEmailVerificationStatusRequested,
+        thenDispatch: {
+            ...emailVerificationEvents.checkStatusRequested,
+            childComponentPath:["emailVerification"],
+        },
+    },
+    {
+        onEvent: {
+            ...emailVerificationEvents.checkStatusCompleted,
+            childComponentPath:["emailVerification"],
+        },
+        thenDispatch: accountEvents.checkEmailVerificationStatusCompleted,
+        withPayload: ({state}) => ({
+            isVerified: emailVerificationOwnSelectors.isVerified(state.children.emailVerification.ownState),
+        }),
     },
 ];

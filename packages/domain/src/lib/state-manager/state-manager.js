@@ -59,10 +59,25 @@ export class StateManager {
         this.rootComponentListeners.forEach(onRootVMChanged => onRootVMChanged(this.getRootVM()));
     }
     notifying = false;
+    cycleEvents = [];
+    detectCycle(event) {
+        if (event.isNewCycle) {
+            this.cycleEvents = [];
+        }
+        const eventIdentifier = event.componentPath.join('.') + "#" + event.eventType;
+        if (this.cycleEvents.includes(eventIdentifier)) {
+            console.error(`Cycle detected:`, this.cycleEvents);
+            throw Error(`event in cycle: eventIdentifier=${eventIdentifier}`);
+        }
+        this.cycleEvents = [...this.cycleEvents, eventIdentifier];
+    }
 
     dispatch = (event) => {
         //assert not notifying
         if(this.notifying) throw Error(`event dispatched by event listener: eventType=${event.eventType}`);
+
+        //cycle detection
+        this.detectCycle(event);
 
         // reducers
         const previousState = this.state;

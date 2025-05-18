@@ -8,6 +8,7 @@ export const persistentStateEvents = {
         eventType: "persistentStateLoaded",
         payloadShape: {
             createUserToken: ow.optional.string,
+            email: ow.optional.string,
         },
     },
 };

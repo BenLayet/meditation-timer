@@ -1,16 +1,16 @@
 import {map} from "../functions/object.functions.js";
 import {createEvent} from "./create-event.js";
 
-const getSelectors = (component, state) =>
+const selectors = (component, state) =>
     map(component.selectors ?? {}, selector => () => selector(state));
 
-const getEvents = (component, dispatch, componentPath) =>
-    map(component.events ?? {}, ({payloadShape, eventType}) => (payload = {}) => {
-        const event = createEvent({payloadShape, eventType}, componentPath, payload);
+const dispatchers = (component, dispatch, componentPath) =>
+    map(component.events ?? {}, ({payloadShape, eventType}) => (payload = {}, isNewCycle=true) => {
+        const event = createEvent({payloadShape, eventType}, componentPath, payload, isNewCycle);
         dispatch(event);
     });
 
-const getChildren = (component, state, dispatch, componentPath) =>
+const children = (component, state, dispatch, componentPath) =>
     map(component.children ?? {}, (childComponent, childName) =>
         getVM(
             childComponent,
@@ -19,7 +19,7 @@ const getChildren = (component, state, dispatch, componentPath) =>
             [...componentPath, childName]));
 
 export const getVM = (component, state, dispatch, componentPath = []) => ({
-    selectors: getSelectors(component, state),
-    dispatchers: getEvents(component, dispatch, componentPath),
-    children: getChildren(component, state, dispatch, componentPath),
+    selectors: selectors(component, state),
+    dispatchers: dispatchers(component, dispatch, componentPath),
+    children: children(component, state, dispatch, componentPath),
 })

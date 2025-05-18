@@ -3,28 +3,41 @@ Feature: Account Management
   I want my meditation history to be saved not only on my device
   so that I can access it from any device and retrieve it if I lose my device
 
-Scenario: Link a device to my email
-    Given I have used the app without an account
-    When I provide my email
+Scenario: Create an account
+    Given I have not created an account yet
+    When I create an account with my email
     Then I should receive an email with a activation link in my inbox
-    And I can see that my email is pending activation in the app settings
+    And I can see that my email is pending verification
 
-Scenario: Receive an activation link
-    Given I have received an email with an activation link
-    When I click the link
-    And I open the app
-    Then my device should be linked to my email
-    And I should be able to unlink the device from my email
+Scenario: Open the app before verifying email
+    Given I have just created an account
+    And I have not verified my email yet
+    When I open the app
+    Then I can see that my email is pending verification
+    And I can cancel the account creation
+
+Scenario: Cancel account creation
+    Given I have just created an account
+    And I have not verified my email yet
+    When I cancel the account creation
+    Then my email should not be visible anymore
+    And I should be able to connect again
+
+Scenario: Verify my email
+    Given I have just clicked the link to verify my email
+    When I open the app
+    Then I should be authenticated
+    And I should be able to log out
 
 Scenario: Share meditations across devices
-    Given I have linked multiple devices to my email
+    Given I have connected on multiple devices using the same email address
     When I add a new meditation on one device
-    Then the new meditation should appear on all linked devices
+    Then the new meditation should appear on all devices
 
-Scenario: Remove a device link
-    Given I have linked a device to my email
-    When I unlink the device from my email
-    Then the device should no longer be linked to my email
-    Then my meditation history on the device should be cleared
-    And I can link the device to a different email
+Scenario: Log out
+    Given I am authenticated
+    When I log out
+    Then my email should not be visible anymore
+    And my meditation history on the device should be cleared
     And my meditation history on the server should remain intact
+    And I should be able to connect again

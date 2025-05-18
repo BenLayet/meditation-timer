@@ -7,9 +7,11 @@ function sanitizePayload(payload, payloadShape) {
     );
 }
 
-export const createEvent = ({payloadShape, eventType}, componentPath, payload) => {
+export const createEvent = ({payloadShape, eventType}, componentPath, payload, isNewCycle=false) => {
 
     payload = sanitizePayload(payload ?? {}, payloadShape ?? {});
     ow(payload, `::while creating event ${componentPath.join('.')}:${eventType} with payload ${JSON.stringify(payload)}`, ow.object.exactShape(payloadShape ?? {}));
-    return {componentPath, eventType, payload};
+    return {componentPath, eventType, payload, isNewCycle};
 }
+
+

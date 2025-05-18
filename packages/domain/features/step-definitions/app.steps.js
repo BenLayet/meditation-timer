@@ -1,9 +1,5 @@
-import {Before, When} from "@cucumber/cucumber";
-import {reset} from "./state-manager/test-state-manager.js";
-import { stateManager } from "./state-manager/test-state-manager.js";
-
-Before(reset);
+import {When} from "@cucumber/cucumber";
 
 When(/^I open the app$/, function () {
-    stateManager.getRootVM().dispatchers.appOpened();
+    this.vm().dispatchers.appOpened();
 });

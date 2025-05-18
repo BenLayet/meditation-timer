@@ -1,7 +1,6 @@
 const API_URL = "/api/v1/email-activations";
 export class EmailActivationApi {
    requestEmailActivation = async (email) => {
-    console.debug("requesting email activation for", email);
     if (!email) {
       throw new Error("Email is required");
     }
@@ -19,7 +18,6 @@ export class EmailActivationApi {
     });
   };
   createUser = async (createUserToken) => {
-    console.debug("creating user with token", createUserToken);
     if (!createUserToken) {
       throw new Error("Create user token is required");
     }

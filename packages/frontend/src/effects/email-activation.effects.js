@@ -11,14 +11,14 @@ export const createEmailActivationEffects = (
     const { email } = payload;
     const dispatchers = rootVM.children.account.dispatchers;
     try {
+      keyValueStorageService.set("email", email);
       const {createUserToken} =
         await emailActivationService.requestEmailActivation(email);
       keyValueStorageService.set("createUserToken", createUserToken);
-      dispatchers.sendEmailActivationSuccceeded({ email, createUserToken });
-      dispatchers.scheduledCreateUserRequested({ createUserToken });
+      dispatchers.sendEmailActivationSucceeded({ email, createUserToken }, false);
+      dispatchers.scheduledCreateUserRequested({ createUserToken }, false);
     } catch (error) {
-      console.error(error);
-      dispatchers.sendEmailActivationFailed({ errorMessage: error.message });
+      dispatchers.sendEmailActivationFailed({ errorMessage: error.message }, false);
     }
   };
   // Schedules a create user task
@@ -39,7 +39,6 @@ export const createEmailActivationEffects = (
       keyValueStorageService.set("userToken", userToken);
       dispatchers.createUserSucceeded();
     } catch (error) {
-      console.error(error);
       dispatchers.createUserFailed({ errorMessage: error.message });
     }
   };

@@ -12,10 +12,10 @@ export const createLoadMeditationsEffects = ({ meditationService }, rootVM) => {
       dispatchers.meditationHistoryRetrieved({
         meditations,
         currentEpochDay,
-      });
+      }, false);
     } catch (error) {
       console.error(error);
-      dispatchers.meditationHistoryFailed({ error });
+      dispatchers.meditationHistoryFailed({ error }, false);
     }
   };
 
