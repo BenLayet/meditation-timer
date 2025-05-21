@@ -1,6 +1,6 @@
-import {validateNewEvent} from "../validators/event.validator.js";
-import {validateUserUuid} from "../validators/user.validator.js";
-import {toPage} from "./pagination.js";
+import { validateNewEvent } from "domain/src/models/event.model.js";
+import { validateUserUuid } from "domain/src/models/user.model.js";
+import { toPage } from "./pagination.js";
 
 export class EventRepository {
   constructor(datasource, logger) {
@@ -26,7 +26,7 @@ export class EventRepository {
 
   async getEventPage(userUuid, pageRequest) {
     validateUserUuid(userUuid);
-    const rows = await  this.datasource`
+    const rows = await this.datasource`
             SELECT *
             FROM events
             WHERE id > ${pageRequest.afterId}
@@ -34,7 +34,7 @@ export class EventRepository {
             ORDER BY id
             LIMIT ${pageRequest.size};
     `;
-     return toPage(pageRequest, toEvents)(rows);
+    return toPage(pageRequest, toEvents)(rows);
   }
 }
 const toEvent = (row) => ({

@@ -3,7 +3,7 @@ import Mailgun from "mailgun.js";
 import {
   validateNotEmptyString,
   validateNotNullObject,
-} from "../validators/not-null.validator.js";
+} from "domain/src/models/not-null.validator.js";
 
 export class MailgunEmailSender {
   constructor({ apiKey, domain }, logger) {

@@ -1,29 +1,32 @@
 import jwt from "jsonwebtoken";
-import { validateNotNull, validateNotNullObject, validateNotEmptyString} from "../validators/not-null.validator.js";
+import {
+  validateNotNull,
+  validateNotNullObject,
+  validateNotEmptyString,
+} from "domain/src/models/not-null.validator.js";
 
 export class JwtTokenService {
   constructor(jwtSecret, logger) {
-    validateNotNull({jwtSecret});
-    validateNotNull({logger});
+    validateNotNull({ jwtSecret });
+    validateNotNull({ logger });
     this.jwtSecret = jwtSecret;
     this.logger = logger;
   }
   createShortLivedToken(payload) {
-    validateNotNullObject({payload});
+    validateNotNullObject({ payload });
     this.logger.debug(`createShortLivedToken ${JSON.stringify(payload)}`);
     return jwt.sign(payload, this.jwtSecret, { expiresIn: "1h" });
   }
   createPermanentToken(payload) {
-    validateNotNullObject({payload});
+    validateNotNullObject({ payload });
     this.logger.debug(`createPermanentToken ${JSON.stringify(payload)}`);
     return jwt.sign(payload, this.jwtSecret);
   }
   verify(token) {
-    validateNotEmptyString({token});
+    validateNotEmptyString({ token });
     try {
       return jwt.verify(token, this.jwtSecret);
-    }
-    catch (error) {
+    } catch (error) {
       this.logger.debug(error, `Error verifying token: ${error.message}`);
       throw new Error("Invalid or expired token");
     }

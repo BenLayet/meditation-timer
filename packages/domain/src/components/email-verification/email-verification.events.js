@@ -1,5 +1,5 @@
 import ow from "ow";
-import { emailVerificationStatus } from "./email-verification.state.js";
+import { emailVerificationStatus } from "../../models/email-verification.model.js";
 
 export const emailVerificationEvents = {
   sendVerificationMailRequested: {

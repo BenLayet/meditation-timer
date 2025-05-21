@@ -74,6 +74,9 @@ importers:
       ow:
         specifier: ^2.0.0
         version: 2.0.0
+      uuid:
+        specifier: ^11.1.0
+        version: 11.1.0
     devDependencies:
       '@cucumber/cucumber':
         specifier: ^11.2.0

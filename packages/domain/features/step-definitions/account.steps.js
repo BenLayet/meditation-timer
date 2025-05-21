@@ -2,7 +2,7 @@ import { Given, When, Then } from "@cucumber/cucumber";
 import { expect } from "chai";
 import { emailVerificationEvents } from "../../src/components/email-verification/email-verification.events.js";
 import { accountStatus } from "../../src/components/account/account.state.js";
-import { emailVerificationStatus } from "../../src/components/email-verification/email-verification.state.js";
+import { emailVerificationStatus } from "../../src/models/email-verification.model.js";
 
 Given(/^I have not created an account yet$/, function () {
   this.account.email = null;
@@ -23,9 +23,9 @@ Then(
   /^I should receive an email with a verification link in my inbox$/,
   function () {
     expect(
-      this.eventWasSent(emailVerificationEvents.sendVerificationMailRequested)
+      this.eventWasSent(emailVerificationEvents.sendVerificationMailRequested),
     ).to.be.true;
-  }
+  },
 );
 
 Then(/^I can see that my email is pending verification$/, function () {
@@ -51,7 +51,8 @@ Then("my email should not be visible anymore", function () {
   expect(isAnonymous).to.be.true;
 });
 Then("I should be able to create an account again", function () {
-  const canCreateAccount = this.vm().children.account.selectors.canCreateAccount();
+  const canCreateAccount =
+    this.vm().children.account.selectors.canCreateAccount();
   expect(canCreateAccount).to.be.true;
 });
 
@@ -66,7 +67,8 @@ Given(/^I have just clicked the link to verify my email$/, function () {
 });
 
 Then(/^I should be authenticated$/, function () {
-  const isAuthenticated = this.vm().children.account.selectors.isAuthenticated();
+  const isAuthenticated =
+    this.vm().children.account.selectors.isAuthenticated();
   expect(isAuthenticated).to.be.true;
   const email = this.vm().children.account.selectors.email();
   expect(email).to.equal("test@example.org");
@@ -81,7 +83,7 @@ Given(
   /^I have connected on multiple devices using the same email address$/,
   function () {
     //TODO
-  }
+  },
 );
 
 When(/^I add a new meditation on one device$/, function () {

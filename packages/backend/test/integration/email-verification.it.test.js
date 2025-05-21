@@ -1,7 +1,4 @@
-import {
-  postEmailVerification,
-  getEmailVerification,
-} from "./api.client.js";
+import { postEmailVerification, getEmailVerification } from "./api.client.js";
 import {
   clearUserData,
   resetFakeUuidSequence,
@@ -9,26 +6,20 @@ import {
 } from "./database.admin.js";
 import { fakeTokenService } from "../mock.providers.js";
 import { httpGet } from "./http.client.js";
-import { emailVerificationStatus } from "domain/src/components/email-verification/email-verification.state.js";
+import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
 
 const emailVerificationUuid = "10000000-0000-1000-8000-000000000001";
-const userToken = fakeTokenService.createPermanentToken(
-  {
-    userUuid: "10000000-0000-1000-8000-000000000002"
-  }
-);
-const checkStatusToken = fakeTokenService.createShortLivedToken(
-  {
-    emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
-    scope: ["CHECK_STATUS"],
-  }
-);
-const activateToken = fakeTokenService.createShortLivedToken(
-  {
-    emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
-    scope: ["ACTIVATE"],
-  }
-);
+const userToken = fakeTokenService.createPermanentToken({
+  userUuid: "10000000-0000-1000-8000-000000000002",
+});
+const retrieveEmailVerificationToken = fakeTokenService.createShortLivedToken({
+  emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
+  scope: ["CHECK_STATUS"],
+});
+const activateToken = fakeTokenService.createShortLivedToken({
+  emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
+  scope: ["ACTIVATE"],
+});
 const verificationLink = `http://localhost:18000/api/v1/email-verifications/activate/${activateToken}`;
 
 describe("activating emails", () => {
@@ -36,16 +27,18 @@ describe("activating emails", () => {
   afterEach(clearUserData(email));
   beforeAll(resetFakeUuidSequence);
 
-  test("posting an email verification should return a checkStatusToken", async () => {
+  test("posting an email verification should return a retrieveEmailVerificationToken", async () => {
     //WHEN
     const { body, status } = await postEmailVerification({ email });
 
     //THEN
     expect(status, "status should be 201").toBe(201);
-    expect(body).toEqual({status:emailVerificationStatus.REQUESTED, checkStatusToken});
+    expect(body).toEqual({
+      status: emailVerificationStatus.REQUESTED,
+      retrieveEmailVerificationToken,
+    });
   });
 
-  
   test("posting an email verification should send an email", async () => {
     //WHEN
     await postEmailVerification({ email });
@@ -57,7 +50,7 @@ describe("activating emails", () => {
       to: email,
       subject: "Activate your account",
       html: expect.stringMatching(
-        /Click to let Meditation Timer know that this is your email adress/
+        /Click to let Meditation Timer know that this is your email adress/,
       ),
     });
   });
@@ -96,21 +89,26 @@ describe("activating emails", () => {
   test("should return userToken when requested if email is verified", async () => {
     //GIVEN
     const {
-      body: { checkStatusToken },
+      body: { retrieveEmailVerificationToken },
     } = await postEmailVerification({ email });
     await httpGet(verificationLink); // verify email
     //WHEN
-    const { body, status } = await getEmailVerification(emailVerificationUuid, checkStatusToken); // Check the status of the email verification
+    const { body, status } = await getEmailVerification(
+      emailVerificationUuid,
+      retrieveEmailVerificationToken,
+    ); // Check the status of the email verification
 
     // THEN
     expect(status).toBe(200);
-    expect(body).toEqual({status:emailVerificationStatus.VERIFIED, userToken});
+    expect(body).toEqual({
+      status: emailVerificationStatus.VERIFIED,
+      userToken,
+    });
   });
 });
 
 function extractFirstLink(text) {
-  const regex = /(https?:\/\/[\w\/:\-\=]+)/;
+  const regex = /(https?:\/\/[\w\/:\-=]+)/;
   const match = text.match(regex);
   return match ? match[1] : null;
 }
-

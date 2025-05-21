@@ -7,7 +7,7 @@ export const createEmailVerificationEffects = (
 ) => {
   const dispatchers = rootVM.children.account.children.emailVerification.dispatchers;
   // sendVerificationMailRequested
-  const sendVerificationMailRequested = async ({}) => {
+  const sendVerificationMailRequested = async ({email}) => {
     const status = await emailVerificationService.requestEmailVerification();
     dispatchers.checkStatusCompleted({ status }, false);
   };

@@ -14,14 +14,14 @@ export const startHttpServer = async ({
   version,
   environment,
   cleanupTasks,
-  logger
+  logger,
 }) => {
   // Serve static files from the React app
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
   const staticFilesPath = path.join(
     __dirname,
-    "../../node_modules/frontend/dist"
+    "../../node_modules/frontend/dist",
   );
   const routes = {};
   const app = express();
@@ -35,15 +35,15 @@ export const startHttpServer = async ({
 
   // Routes
   const { port, basePath } = apiProperties;
-  app.use(`${basePath}/health`, healthRouter( version, environment, logger));
+  app.use(`${basePath}/health`, healthRouter(version, environment, logger));
   app.use(
     `${basePath}/email-verifications`,
-    emailVerificationsRouter(emailVerificationService, logger)
+    emailVerificationsRouter(emailVerificationService, logger),
   );
   app.use(`${basePath}/events`, eventsRouter(eventRepository, logger));
 
   // Error-handling middleware
-  app.use((err, req, res, next) => {
+  app.use((err, req, res) => {
     logger.error("Error occurred:", err.message);
     res.status(500).json({ error: "Internal Server Error" });
   });
@@ -82,7 +82,7 @@ export const startHttpServer = async ({
       "Unexpected unhandled rejection at:",
       promise,
       "reason:",
-      reason
+      reason,
     );
   });
   // Listen for termination signals

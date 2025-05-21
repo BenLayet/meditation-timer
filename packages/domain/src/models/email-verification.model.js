@@ -1,5 +1,9 @@
-import { emailVerificationStatus } from "packages/domain/src/components/email-verification/email-verification.state.js";
-
+export const emailVerificationStatus = {
+  NOT_REQUESTED: "NOT_REQUESTED",
+  REQUESTED: "REQUESTED",
+  VERIFIED: "VERIFIED",
+  EXPIRED: "EXPIRED",
+};
 const statusSequence = Object.values(emailVerificationStatus);
 export function validateNewEmailVerification(emailVerification) {
   if (typeof emailVerification !== "object")

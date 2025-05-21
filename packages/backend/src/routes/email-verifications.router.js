@@ -1,5 +1,5 @@
 import express from "express";
-import { emailVerificationStatus } from "domain/src/components/email-verification/email-verification.state.js";
+import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
 
 export function emailVerificationsRouter(emailVerificationService, logger) {
   const router = express.Router();
@@ -12,7 +12,7 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
         return res.status(400).json({ error: "Email is required" });
       }
       logger.info(
-        `Send verification email requested: ${JSON.stringify(email)}`
+        `Send verification email requested: ${JSON.stringify(email)}`,
       );
       const emailVerificationResponse =
         await emailVerificationService.sendVerificationEmail(email);
@@ -42,15 +42,19 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
   router.get("/:emailVerificationUuid", async (req, res) => {
     try {
       const { emailVerificationUuid } = req.params;
-      logger.info(`Check Status requested, for emailVerificationUuid: ${emailVerificationUuid}`);
+      logger.info(
+        `Check Status requested, for emailVerificationUuid: ${emailVerificationUuid}`,
+      );
       logger.debug(req.headers);
       const token = extractBearerToken(req); // Extract token from Authorization header
       if (!token) {
         logger.error(`token is missing`);
         return res.status(401).json({ error: "security token is required" });
       }
-      const emailVerification =
-        await emailVerificationService.get(emailVerificationUuid, token);
+      const emailVerification = await emailVerificationService.get(
+        emailVerificationUuid,
+        token,
+      );
       res.status(200).json(emailVerification);
     } catch (error) {
       res.status(403).json({ status: emailVerificationStatus.EXPIRED });

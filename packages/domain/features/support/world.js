@@ -12,14 +12,14 @@ import { emailVerificationEvents } from "../../src/components/email-verification
 import { Before, AfterStep, setWorldConstructor } from "@cucumber/cucumber";
 import { compareObjects } from "../../src/lib/logger/compare-objects.js";
 import { accountStatus } from "../../src/components/account/account.state.js";
-import { emailVerificationStatus } from "../../src/components/email-verification/email-verification.state.js";
+import { emailVerificationStatus } from "../../src/models/email-verification.model.js";
 
 let stateManager;
 let mockState;
 
 const addMockedEffects = (
   stateManager,
-  { meditationStorage, account, remoteEmailVerification, events }
+  { meditationStorage, account, remoteEmailVerification, events },
 ) => {
   //EFFECTS
   //statistics
@@ -34,7 +34,7 @@ const addMockedEffects = (
             ...meditationStorage,
             currentEpochDay: CURRENT_EPOCH_DAY,
           }),
-    })
+    }),
   );
 
   //save meditation
@@ -43,7 +43,7 @@ const addMockedEffects = (
       afterEvent: actualMeditationEvents.saveRequested,
       then: stateManager.getRootVM().children.meditationSession.children
         .actualMeditation.dispatchers.saveSucceeded,
-    })
+    }),
   );
 
   //account
@@ -54,7 +54,7 @@ const addMockedEffects = (
         stateManager
           .getRootVM()
           .children.account.dispatchers.accountLoaded(account),
-    })
+    }),
   );
   //email verification
   stateManager.addEffect(
@@ -63,11 +63,10 @@ const addMockedEffects = (
       then: () =>
         stateManager
           .getRootVM()
-          .children.account
-          .children.emailVerification.dispatchers.checkStatusCompleted(
-            remoteEmailVerification
+          .children.account.children.emailVerification.dispatchers.checkStatusCompleted(
+            remoteEmailVerification,
           ),
-    })
+    }),
   );
 
   //FORCE STATE DEBUG EFFECT
@@ -75,7 +74,7 @@ const addMockedEffects = (
     createEffect({
       afterEvent: { eventType: "FORCE_STATE" },
       then: (payload) => (stateManager.state = payload.newState),
-    })
+    }),
   );
 
   //EVENTS
@@ -87,14 +86,13 @@ const initializeScenario = () => {
     meditationStorage: { meditations: [] },
     account: { email: null, status: accountStatus.ANONYMOUS },
     remoteEmailVerification: {
-      status: emailVerificationStatus.NOT_REQUESTED
+      status: emailVerificationStatus.NOT_REQUESTED,
     },
     events: [],
   };
   stateManager = new StateManager(meditationTimerAppComponent);
   addMockedEffects(stateManager, mockState);
 };
-
 
 class CustomWorld {
   constructor() {}
@@ -124,7 +122,7 @@ class CustomWorld {
       (evt) =>
         evt.eventType === eventType &&
         (!componentPath || isEqual(evt.componentPath, componentPath)) &&
-        (!payload || isEqual(evt.payload, payload))
+        (!payload || isEqual(evt.payload, payload)),
     );
 }
 
@@ -138,7 +136,14 @@ AfterStep(function ({ result }) {
     console.log(mockState.events);
     console.log("------LAST STATE COMPARED WITH INITIAL STATE------");
     console.log(
-      JSON.stringify(compareObjects(new StateManager(meditationTimerAppComponent).state , stateManager.state), null, 2)
+      JSON.stringify(
+        compareObjects(
+          new StateManager(meditationTimerAppComponent).state,
+          stateManager.state,
+        ),
+        null,
+        2,
+      ),
     );
   }
 });

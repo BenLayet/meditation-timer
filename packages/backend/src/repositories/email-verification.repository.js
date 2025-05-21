@@ -1,9 +1,9 @@
 import {
   validateNewEmailVerification,
   validateStatusTransition,
-} from "../validators/email-verification.validator.js";
-import { emailVerificationStatus } from "domain/src/components/email-verification/email-verification.state.js";
-import { validateNotNullObject } from "../validators/not-null.validator.js";
+  emailVerificationStatus,
+} from "domain/src/models/email-verification.model.js";
+import { validateNotNullObject } from "domain/src/models/not-null.validator.js";
 
 export class EmailVerificationRepository {
   constructor(datasource, transactionService, uuidGenerator, logger) {
@@ -17,9 +17,14 @@ export class EmailVerificationRepository {
     const { email, status } = emailVerification;
     const uuid = await this.uuidGenerator.createUuid();
     this.logger.debug(
-      `Creating email verification with uuid ${uuid}, email ${email}, status ${status}`
+      `Creating email verification with uuid ${uuid}, email ${email}, status ${status}`,
     );
-    const row = await insertEmailVerification(this.datasource, uuid, email, status);
+    const row = await insertEmailVerification(
+      this.datasource,
+      uuid,
+      email,
+      status,
+    );
     return fromRow(row);
   }
   async getByUuid(uuid) {
@@ -32,48 +37,48 @@ export class EmailVerificationRepository {
   }
   async updateEmailVerificationStatus(emailVerificationUuid, newStatus) {
     this.logger.debug(
-      `update status emailVerificationUuid: ${emailVerificationUuid}, newStatus: ${newStatus}`
+      `update status emailVerificationUuid: ${emailVerificationUuid}, newStatus: ${newStatus}`,
     );
     return await this.transactionService.executeInTransaction(
       async (transaction) => {
         //TODO same level of abstraction
         this.logger.debug(
-          `Updating email verification with uuid ${emailVerificationUuid}, new status=${newStatus}`
+          `Updating email verification with uuid ${emailVerificationUuid}, new status=${newStatus}`,
         );
         const emailVerification = await getEmailVerificationByUuid(
           transaction,
-          emailVerificationUuid
+          emailVerificationUuid,
         );
         validateNotNullObject({ emailVerification });
         const { status: existingStatus, email } = emailVerification;
         this.logger.debug(
-          `Found email verification with uuid ${emailVerificationUuid}, existing status=${existingStatus}`
+          `Found email verification with uuid ${emailVerificationUuid}, existing status=${existingStatus}`,
         );
         if (!existingStatus)
           throw new Error(
-            `Email verification with uuid ${emailVerificationUuid} not found`
+            `Email verification with uuid ${emailVerificationUuid} not found`,
           );
         validateStatusTransition(existingStatus, newStatus);
         await updateEmailVerificationStatus(
           transaction,
           emailVerificationUuid,
-          newStatus
+          newStatus,
         );
         if (newStatus === emailVerificationStatus.VERIFIED) {
           const newUuid = await this.uuidGenerator.createUuid();
           await insertUserIfNecessary(transaction, email, newUuid);
           const { uuid: userUuid } = await selectUserUuid(transaction, email);
           this.logger.debug(
-            `User created with uuid ${userUuid} for email ${email}`
+            `User created with uuid ${userUuid} for email ${email}`,
           );
           return { status: newStatus, userUuid };
         } else {
           this.logger.debug(
-            `Email verification with uuid ${emailVerificationUuid} updated to ${newStatus}`
+            `Email verification with uuid ${emailVerificationUuid} updated to ${newStatus}`,
           );
           return { status: newStatus };
         }
-      }
+      },
     );
   }
 }
@@ -97,7 +102,12 @@ const getEmailVerificationByUuid = async (datasource, emailVerificationUuid) =>
         LEFT JOIN users u USING (email)
         WHERE v.uuid = ${emailVerificationUuid}`
   )[0];
-const insertEmailVerification = async (datasource, emailVerificationUuid, email, status) =>
+const insertEmailVerification = async (
+  datasource,
+  emailVerificationUuid,
+  email,
+  status,
+) =>
   (
     await datasource`
         INSERT INTO email_verifications (uuid, email, status)
@@ -107,7 +117,7 @@ const insertEmailVerification = async (datasource, emailVerificationUuid, email,
 const updateEmailVerificationStatus = async (
   datasource,
   emailVerificationUuid,
-  status
+  status,
 ) => datasource`
         UPDATE email_verifications
         SET status = ${status}
