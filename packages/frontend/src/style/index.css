@@ -10,7 +10,4 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: lighter; /* Adjusted font-weight */
-  font-size: 2em;
-
 }

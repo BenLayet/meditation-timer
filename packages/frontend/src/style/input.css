@@ -34,3 +34,7 @@ input[type="radio"]:checked + label {
     background-color: var(--primary-color);
     color: var(--secondary-color);
 }
+
+input[type="email"] {
+    font-size: 1.2em;
+}

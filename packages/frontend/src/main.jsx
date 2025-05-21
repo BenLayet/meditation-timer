@@ -9,7 +9,6 @@ import {
 import {addDebugger} from "./lib/debug.functions.js";
 import {createEffects} from "./effects/effects.js";
 import {resolveEffectsDependencies} from "./main.dependencies.js";
-import {UserUuidCookie} from "./http-clients/user-uuid.cookie.js";
 
 //CHECK SUPPORTED FEATURES
 console.log('Service Worker supported:', 'serviceWorker' in navigator);
@@ -23,9 +22,6 @@ const rootVM = stateManager.getRootVM();
 
 //DEPENDENCIES
 const dependencies = await resolveEffectsDependencies();
-
-//START UP
-new UserUuidCookie().ensureCookieIsSet();
 
 //EFFECTS
 createEffects(rootVM, dependencies).forEach(stateManager.addEffect);
