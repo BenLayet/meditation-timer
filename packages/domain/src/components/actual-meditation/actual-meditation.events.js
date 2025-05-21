@@ -32,6 +32,7 @@ export const actualMeditationEvents = {
       startedTimeInSeconds: currentTimeInSeconds,
       remainingSeconds: durationInMinutes * 60,
     }),
+    isNewCycle: true,
   },
   stopRequested: {
     eventType: "stopRequested",
@@ -47,6 +48,7 @@ export const actualMeditationEvents = {
       ...state,
       remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
     }),
+    isNewCycle: true,
   },
   timerStartRequested: { eventType: "timerStartRequested" },
   timerStopRequested: { eventType: "timerStopRequested" },

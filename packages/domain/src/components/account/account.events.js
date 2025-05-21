@@ -7,19 +7,21 @@ export const accountEvents = {
     payloadShape: {
       email: ow.string.email,
     },
-    handler: (state, {email}) => ({
+    handler: (state, { email }) => ({
       ...state,
       email,
       status: accountStatus.PENDING_VERIFICATION,
     }),
+    isNewCycle: true,
   },
-  createAccountCancelled:{
+  createAccountCancelled: {
     eventType: "createAccountCancelled",
     handler: (state) => ({
       ...state,
       status: accountStatus.ANONYMOUS,
-      email:null,
+      email: null,
     }),
+    isNewCycle: true,
   },
   loadAccountRequested: {
     eventType: "loadAccountRequested",
@@ -56,9 +58,7 @@ export const accountEvents = {
     handler: (state, { isVerified }) => ({
       ...state,
       loading: false,
-      status: isVerified
-        ? accountStatus.AUTHENTICATED
-        : state.status,
+      status: isVerified ? accountStatus.AUTHENTICATED : state.status,
     }),
   },
   logInRequested: {
