@@ -3,13 +3,13 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { eventsRouter } from "../routes/events.router.js";
 import { healthRouter } from "../routes/health.router.js";
-import { emailActivationsRouter } from "../routes/email-activations.router.js";
+import { emailVerificationsRouter } from "../routes/email-verifications.router.js";
 import { fileURLToPath } from "url";
 import path from "path";
 
 export const startHttpServer = async ({
   eventRepository,
-  emailActivationService,
+  emailVerificationService,
   apiProperties,
   version,
   environment,
@@ -31,15 +31,14 @@ export const startHttpServer = async ({
   app.use(express.json());
   app.use(cookieParser());
 
-
   app.use(express.static(staticFilesPath));
 
   // Routes
   const { port, basePath } = apiProperties;
   app.use(`${basePath}/health`, healthRouter( version, environment, logger));
   app.use(
-    `${basePath}/email-activations`,
-    emailActivationsRouter(emailActivationService, logger)
+    `${basePath}/email-verifications`,
+    emailVerificationsRouter(emailVerificationService, logger)
   );
   app.use(`${basePath}/events`, eventsRouter(eventRepository, logger));
 

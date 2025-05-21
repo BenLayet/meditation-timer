@@ -5,7 +5,7 @@ const emailService = async (datasource, environment, logger) => {
   await datasource`CREATE TABLE fake_mails(id SERIAL PRIMARY KEY, mail JSON);`;
 
   const sendEmail = async (mail) => {
-    logger.info("Fake email sent", mail);
+    logger.debug("Fake email sent", mail);
     await datasource`INSERT INTO fake_mails (mail)
                      VALUES (${mail});`;
   };
@@ -15,7 +15,7 @@ const emailService = async (datasource, environment, logger) => {
   };
 };
 
-const uuidGenerator = async (datasource, environment, logger) => {
+const uuidGenerator = async (datasource, environment) => {
   if (environment !== "test")
     throw new Error("This file should only be run in test mode");
   await datasource`DROP SEQUENCE IF EXISTS fake_uuid;`;
@@ -23,9 +23,7 @@ const uuidGenerator = async (datasource, environment, logger) => {
   const createUuid = async () => {
     const rows = await datasource`SELECT nextval('fake_uuid') as counter;`;
     const { counter } = rows[0];
-    const uuid = `10000000-0000-1000-8000-${counter.padStart(12, "0")}`
-    logger.debug(`Fake UUID generated: ${uuid}`);
-    return uuid;
+    return `10000000-0000-1000-8000-${counter.padStart(12, "0")}`;
   };
   return {
     createUuid,
@@ -43,13 +41,17 @@ export const fakeTokenService = {
       life: "long",
       payload,
     })),
-  verify: (token) => JSON.parse(atob(token)).payload,
+  verify: (token) => {
+    const decoded = atob(token);
+    const { payload } = JSON.parse(decoded);
+    return payload;
+  },
 };
 
 export const mockProviders = {
   emailService: ({ datasource, environment, logger }) =>
     emailService(datasource, environment, logger),
   tokenService: () => fakeTokenService,
-  uuidGenerator: ({ datasource, environment, logger }) =>
-    uuidGenerator(datasource, environment, logger),
+  uuidGenerator: ({ datasource, environment }) =>
+    uuidGenerator(datasource, environment),
 };

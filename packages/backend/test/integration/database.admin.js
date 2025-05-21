@@ -19,7 +19,7 @@ export const clearUserData = (email) => async () => {
                      FROM users
                      WHERE email = ${email};`;
   await datasource`DELETE
-                     FROM email_activations
+                     FROM email_verifications
                      WHERE email = ${email};`;
 };
 

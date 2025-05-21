@@ -7,7 +7,7 @@ export const accountChainedEvents = [
     {
         onEvent: accountEvents.createAccountRequested,
         thenDispatch: {
-            ...emailVerificationEvents.sendActivationMailRequested,
+            ...emailVerificationEvents.sendVerificationMailRequested,
             childComponentPath:["emailVerification"],
         },
     },
@@ -32,5 +32,12 @@ export const accountChainedEvents = [
         withPayload: ({state}) => ({
             isVerified: emailVerificationOwnSelectors.isVerified(state.children.emailVerification.ownState),
         }),
+    },
+    {
+        onEvent: {
+            ...emailVerificationEvents.resetRequested,
+            childComponentPath:["emailVerification"],
+        },
+        thenDispatch: accountEvents.logOutRequested
     },
 ];

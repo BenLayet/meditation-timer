@@ -6,7 +6,7 @@ Feature: Account Management
 Scenario: Create an account
     Given I have not created an account yet
     When I create an account with my email
-    Then I should receive an email with a activation link in my inbox
+    Then I should receive an email with a verification link in my inbox
     And I can see that my email is pending verification
 
 Scenario: Open the app before verifying email
@@ -21,7 +21,7 @@ Scenario: Cancel account creation
     And I have not verified my email yet
     When I cancel the account creation
     Then my email should not be visible anymore
-    And I should be able to connect again
+    And I should be able to create an account again
 
 Scenario: Verify my email
     Given I have just clicked the link to verify my email
@@ -40,4 +40,4 @@ Scenario: Log out
     Then my email should not be visible anymore
     And my meditation history on the device should be cleared
     And my meditation history on the server should remain intact
-    And I should be able to connect again
+    And I should be able to create an account again

@@ -8,7 +8,7 @@ if (environment !== "test") {
   throw new Error("This file should only be run in test mode");
 }
 
-const {protocol, host, port, basePath} = apiProperties;
+const { protocol, host, port, basePath } = apiProperties;
 
 const apiBaseUrl = `${protocol}://${host}:${port}${basePath}`;
 
@@ -23,14 +23,13 @@ export const logEvent = async (event, userToken) =>
 export const getEventPage = async (userToken, afterId, size) =>
   httpGet(eventsUrl, { Cookie: `userToken=${userToken}` }, { afterId, size });
 
-//EMAIL ACTIVATIONS
-const emailActivationsUrl = `${apiBaseUrl}/email-activations`;
-export const postEmailActivation = async (emailActivation) =>
-  httpPost(emailActivationsUrl, emailActivation);
-export const activateEmail = async (activateToken) =>
-  httpPost(`${emailActivationsUrl}/activate?token=${activateToken}`);
-export const createUser = async (createUserToken) =>
-  httpPost(`${emailActivationsUrl}/create-user`, {},{
-
-    Authorization: `Bearer ${createUserToken}`,
+//EMAIL VERIFICATIONS
+const emailVerificationsUrl = `${apiBaseUrl}/email-verifications`;
+export const postEmailVerification = async (emailVerification) =>
+  httpPost(emailVerificationsUrl, emailVerification);
+export const activateEmail = async (token) =>
+  httpPost(`${emailVerificationsUrl}/activate?token=${token}`);
+export const getEmailVerification = async (emailVerificationUuid, token) =>
+  httpGet(`${emailVerificationsUrl}/${emailVerificationUuid}`, {
+    Authorization: `Bearer ${token}`,
   });

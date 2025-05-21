@@ -1,22 +1,30 @@
 import { emailVerificationEvents } from "./email-verification.events.js";
 
 export const emailVerificationChainedEvents = [
-    /*
     {
-        onEvent: emailVerificationEvents.newEmailProvided,
-        thenDispatch: emailVerificationEvents.sendEmailActivationRequested,
+        onEvent: emailVerificationEvents.checkStatusCompleted,
+        onCondition: (state) => state.status === "NOT_REQUESTED",
+        thenDispatch: emailVerificationEvents.sendVerificationMailScheduledTaskRequested,
     },
     {
-        onEvent: emailVerificationEvents.newEmailProvided,
-        thenDispatch: emailVerificationEvents.emailSet,
+        onEvent: emailVerificationEvents.checkStatusCompleted,
+        onCondition: (state) => state.status === "REQUESTED",
+        thenDispatch: emailVerificationEvents.checkStatusScheduledTaskRequested,
     },
     {
-        onEvent: emailVerificationEvents.scheduledCreateUserTimeUp,
-        thenDispatch: emailVerificationEvents.createUserRequested,
+        onEvent: emailVerificationEvents.sendVerificationMailScheduledTaskTimeUp,
+        thenDispatch: emailVerificationEvents.sendVerificationMailRequested,
     },
     {
-        onEvent: emailVerificationEvents.createUserFailed,
-        thenDispatch: emailVerificationEvents.scheduledCreateUserRequested,
+        onEvent: emailVerificationEvents.checkStatusScheduledTaskTimeUp,
+        thenDispatch: emailVerificationEvents.checkStatusRequested,
     },
-    */
+    {
+        onEvent: emailVerificationEvents.retryRequested,
+        thenDispatch: emailVerificationEvents.sendVerificationMailRequested,
+    },
+    {
+        onEvent: emailVerificationEvents.refreshRequested,
+        thenDispatch: emailVerificationEvents.checkStatusRequested,
+    }
 ];

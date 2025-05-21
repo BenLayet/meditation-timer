@@ -21,8 +21,8 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
     CREATE INDEX events_user_uuid_idx ON events (user_uuid);
     CREATE INDEX events_type_idx ON events (type);
     
-    CREATE TABLE IF NOT EXISTS email_activations (
-        uuid UUID NOT NULL CONSTRAINT email_activations_pkey PRIMARY KEY,
+    CREATE TABLE IF NOT EXISTS email_verifications (
+        uuid UUID NOT NULL CONSTRAINT email_verifications_pkey PRIMARY KEY,
         email TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
         status TEXT NOT NULL

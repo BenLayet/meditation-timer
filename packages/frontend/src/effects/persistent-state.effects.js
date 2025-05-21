@@ -7,11 +7,11 @@ export const createPersistentStateEffects = (
   rootVM
 ) => {
   const persistentStateLoadRequested = async () => {
-    const createUserToken = await keyValueStorageService.get("createUserToken");
+    const checkStatusToken = await keyValueStorageService.get("checkStatusToken");
     const email = await keyValueStorageService.get("email");
     const accountStatus = await keyValueStorageService.get("accountStatus");
     rootVM.children.persistentState.dispatchers.persistentStateLoaded({
-      createUserToken,
+      checkStatusToken,
       email,
       accountStatus
     }, false);

@@ -1,9 +1,10 @@
 import express from "express";
+import { emailVerificationStatus } from "domain/src/components/email-verification/email-verification.state.js";
 
-export function emailActivationsRouter(emailActivationService, logger) {
+export function emailVerificationsRouter(emailVerificationService, logger) {
   const router = express.Router();
 
-  // Route to send an activation email
+  // Route to send verification email
   router.post("/", async (req, res) => {
     try {
       const { email } = req.body;
@@ -11,15 +12,15 @@ export function emailActivationsRouter(emailActivationService, logger) {
         return res.status(400).json({ error: "Email is required" });
       }
       logger.info(
-        `Send an activation email requested: ${JSON.stringify(email)}`
+        `Send verification email requested: ${JSON.stringify(email)}`
       );
-      const emailActivationResponse =
-        await emailActivationService.sendActivationEmail(email);
-      logger.info(`activation email created`);
-      res.status(201).json(emailActivationResponse);
+      const emailVerificationResponse =
+        await emailVerificationService.sendVerificationEmail(email);
+      logger.info(`verification email created`);
+      res.status(201).json(emailVerificationResponse);
     } catch (error) {
-      res.status(500).json({ error: "Failed to send activation email" });
-      logger.error(` post activation email error: ${error}`, error);
+      res.status(500).json({ error: "Failed to send verification email" });
+      logger.error(`Post verification email error: ${error}`, error);
     }
   });
 
@@ -28,31 +29,31 @@ export function emailActivationsRouter(emailActivationService, logger) {
     try {
       const { activateToken } = req.params;
       logger.info(`Activate email requested`);
-      await emailActivationService.activate(activateToken);
-      logger.info(`email activated successfully`);
+      await emailVerificationService.activate(activateToken);
+      logger.debug(`email activated successfully`);
       res.status(200).json({ message: "email activated successfully" });
     } catch (error) {
-      res.status(403).json({ error: "Invalid or expired activation token" });
+      res.status(403).json({ error: "Invalid or expired verification token" });
       logger.error(`activate error: ${error}`, error);
     }
   });
 
   // Route to create a user
-  router.post("/create-user", async (req, res) => {
+  router.get("/:emailVerificationUuid", async (req, res) => {
     try {
-      logger.info(`Create user requested`);
-      const createUserToken = extractBearerToken(req); // Extract token from Authorization header
-      if (!createUserToken) {
-        logger.error(`Create user token is required`);
-        return res.status(401).json({ error: "Create user token is required" });
+      const { emailVerificationUuid } = req.params;
+      logger.info(`Check Status requested, for emailVerificationUuid: ${emailVerificationUuid}`);
+      logger.debug(req.headers);
+      const token = extractBearerToken(req); // Extract token from Authorization header
+      if (!token) {
+        logger.error(`token is missing`);
+        return res.status(401).json({ error: "security token is required" });
       }
-      logger.info(`Create user requested`);
-      const user = await emailActivationService.createUser(createUserToken);
-      logger.info(`user created successfully`);
-      res.status(201).json(user);
+      const emailVerification =
+        await emailVerificationService.get(emailVerificationUuid, token);
+      res.status(200).json(emailVerification);
     } catch (error) {
-      res.status(403).json({ error: "Invalid or expired create user token" });
-      logger.error(`create user error: ${error}`, error);
+      res.status(403).json({ status: emailVerificationStatus.EXPIRED });
     }
   });
 

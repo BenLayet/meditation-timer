@@ -14,9 +14,10 @@ import { EventProcessor } from "./services/event-processor.service.js";
 import { TransactionService } from "./storage/transaction.service.js";
 import { PendingEventService } from "./services/pending-event.service.js";
 import { SynchronizationTaskService } from "./services/synchronization-task.service.js";
-import { EmailActivationApi } from "./http-clients/email-activation.api.js";
+import { EmailVerificationApi } from "./http-clients/email-verification.api.js";
 import { KeyValueStore } from "./storage/key-value.store.js";
 import { KeyValueStorageService } from "./services/key-value-storage.service.js";
+import { EmailVerificationService } from "./services/email-verification.service.js";
 
 export const resolveEffectsDependencies = async () => {
   const indexedDb = await createIndexedDb(meditationsIndexedDbSchema);
@@ -43,13 +44,17 @@ export const resolveEffectsDependencies = async () => {
     pendingEventService,
     meditationStore
   );
-  const emailActivationService = new EmailActivationApi(meditationStore);
+  const emailVerificationApi= new EmailVerificationApi(meditationStore);
+  const emailVerificationService = new EmailVerificationService(
+    keyValueStorageService,
+    emailVerificationApi
+  );
   return {
     meditationService,
     gongService,
     wakeLockService,
     tickingService,
-    emailActivationService,
+    emailVerificationService,
     keyValueStorageService,
   };
 };

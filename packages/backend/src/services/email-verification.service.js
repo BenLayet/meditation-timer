@@ -1,8 +1,9 @@
 import { validateNotNull } from "../validators/not-null.validator.js";
+import { emailVerificationStatus } from "domain/src/components/email-verification/email-verification.state.js";
 
-export class EmailActivationService {
+export class EmailVerificationService {
   constructor(
-    emailActivationRepository,
+    emailVerificationRepository,
     //TODO mail sender
     emailService,
     tokenService,
@@ -11,100 +12,113 @@ export class EmailActivationService {
     apiProperties,
     logger
   ) {
-    this.emailActivationRepository = emailActivationRepository;
+    this.emailVerificationRepository = emailVerificationRepository;
     this.emailService = emailService;
     this.tokenService = tokenService;
     this.mailFrom = mailFrom;
     this.apiProperties = apiProperties;
     this.logger = logger;
   }
-  async sendActivationEmail(email) {
-    validateNotNull({email});
+  async sendVerificationEmail(email) {
+    validateNotNull({ email });
     //TODO one line per action (same level of abstraction)
-    const { uuid } = await this.emailActivationRepository.createEmailActivation(
-      {
+    let status = emailVerificationStatus.NOT_REQUESTED;
+    const { emailVerificationUuid } =
+      await this.emailVerificationRepository.createEmailVerification({
         email,
-        status: "PENDING_VERIFICATION",
-      }
-    );
-    this.logger.debug(
-      `Creating email activation with uuid ${uuid}, email ${email}, status PENDING_VERIFICATION`
+        status,
+      });
+    this.logger.info(
+      `Email verification created with uuid ${emailVerificationUuid}, email ${email}, status ${status}`
     );
     // Generate a signed token
     const activateToken = await this.tokenService.createShortLivedToken({
-      uuid,
+      emailVerificationUuid,
       scope: [ACTIVATE_PERMISSION],
     });
 
-    const createUserToken = await this.tokenService.createShortLivedToken({
-      uuid,
-      scope: [CREATE_USER_PERMISSION],
+    const checkStatusToken = await this.tokenService.createShortLivedToken({
+      emailVerificationUuid,
+      scope: [CHECK_STATUS_PERMISSION],
     });
     const subject = "Activate your account"; //TODO localize
     const { protocol, host, port, basePath } = this.apiProperties;
-    const activationLink = `${protocol}://${host}:${port}${basePath}/email-activations/activate/${activateToken}`;
-    const html = `Click to let Meditation Timer know that this is your email adress: <a href="${activationLink}" target="_blank">${activationLink}</a>`;
+    const verificationLink = `${protocol}://${host}:${port}${basePath}/email-verifications/activate/${activateToken}`;
+    const html = `Click to let Meditation Timer know that this is your email adress: <a href="${verificationLink}" target="_blank">${verificationLink}</a>`;
     const from = this.mailFrom;
     const to = email;
     await this.emailService.sendEmail({ from, to, subject, html });
+    status = emailVerificationStatus.REQUESTED;
     this.logger.debug(
-      `Sending email to ${email} with activation link ${activationLink}`
+      `Sending email to ${email} with verification link ${verificationLink}`
     );
-    this.logger.debug(`Return createUserToken ${createUserToken}`);
+    await this.emailVerificationRepository.updateEmailVerificationStatus(
+      emailVerificationUuid,
+      status,
+    );
 
-    return { createUserToken };
+    this.logger.debug(`Return checkStatusToken ${checkStatusToken}`);
+
+    return { checkStatusToken, status };
   }
   async activate(activateToken) {
-    validateNotNull({activateToken});
+    validateNotNull({ activateToken });
     try {
-      const { uuid: emailActivationUuid, scope } =
-        this.tokenService.verify(activateToken);
+      const { emailVerificationUuid, scope } =
+        await this.tokenService.verify(activateToken);
       if (!scope.includes(ACTIVATE_PERMISSION)) {
         throw new Error(`Missing permission in token ${ACTIVATE_PERMISSION}`);
       }
       this.logger.info(
-        `Activating request emailActivationUuid: ${emailActivationUuid}`
+        `Activating request emailVerificationUuid: ${emailVerificationUuid}`
       );
-      await this.emailActivationRepository.updateEmailActivationStatus(
-        emailActivationUuid,
-        "VERIFIED"
+
+      return this.emailVerificationRepository.updateEmailVerificationStatus(
+        emailVerificationUuid,
+        emailVerificationStatus.VERIFIED
       );
-      return { success: true, message: "Account activated successfully" };
     } catch (error) {
       this.logger.error("Invalid or expired token:", error);
-      throw new Error("Invalid or expired activation token");
+      throw new Error("Invalid or expired verification token");
     }
   }
-  async createUser(createUserToken) {
-    validateNotNull({createUserToken});
-    const { uuid: emailActivationUuid, scope } =
-      this.tokenService.verify(createUserToken);
-    if (!scope.includes(CREATE_USER_PERMISSION)) {
-      throw new Error(`Missing permission in token ${CREATE_USER_PERMISSION}`);
+  async get(requestedUuid, checkStatusToken) {
+    this.logger.info(`Check Status requested for emailVerificationUuid: ${requestedUuid}`);
+    validateNotNull({ checkStatusToken });
+    //TODO check if token is expired and delete email verification if so
+    this.tokenService.verify(checkStatusToken);
+    const { emailVerificationUuid, scope } = this.tokenService.verify(checkStatusToken);
+    if (!scope.includes(CHECK_STATUS_PERMISSION)) {
+      throw new Error(`Missing permission in token ${CHECK_STATUS_PERMISSION}`);
     }
-    this.logger.info(
-      `Create user requested emailActivationUuid: ${emailActivationUuid}`
-    );
-    const result =
-      await this.emailActivationRepository.markAsUserCreated(
-        emailActivationUuid
+    if (emailVerificationUuid !== requestedUuid) {
+      throw new Error(
+        `Requested uuid ${requestedUuid} does not match token uuid ${emailVerificationUuid}`
       );
-    if (result.success) {
-      const { userUuid } = result;
-      this.logger.debug(`User created userUuid: ${userUuid}`);
-      const userToken = this.tokenService.createPermanentToken({ userUuid });
-      return { success: true, userToken };
-    } else {
-      const { status } = result;
-      this.logger.debug(`User not created status: ${status}`);
-      if (status === "VERIFIED") {
-        return { success: false, message: "User already created" };
-      } else {
-        return { success: false, message: "Invalid status" };
-      }
+    }
+    const emailVerification = await this.emailVerificationRepository.getByUuid(emailVerificationUuid);
+    if (!emailVerification) {
+      this.logger.debug(
+        `No email verification found with uuid ${emailVerificationUuid}`
+      );
+      return null;
+    }
+    if(emailVerification.status === emailVerificationStatus.VERIFIED) {
+      this.logger.debug(
+        `Email verification with uuid ${emailVerificationUuid} is verified`
+      );
+      const userToken = await this.tokenService.createPermanentToken({
+        userUuid: emailVerification.userUuid,
+      });
+      return { status: emailVerification.status, userToken };
+    }else {
+      this.logger.debug(
+        `Email verification with uuid ${emailVerificationUuid} is not verified`
+      );
+      return { status: emailVerification.status };
     }
   }
 }
 
-const CREATE_USER_PERMISSION = "CREATE_USER";
+const CHECK_STATUS_PERMISSION = "CHECK_STATUS";
 const ACTIVATE_PERMISSION = "ACTIVATE";

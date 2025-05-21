@@ -20,10 +20,10 @@ When(/^I create an account with my email$/, function () {
 });
 
 Then(
-  /^I should receive an email with a activation link in my inbox$/,
+  /^I should receive an email with a verification link in my inbox$/,
   function () {
     expect(
-      this.eventWasSent(emailVerificationEvents.sendActivationMailRequested)
+      this.eventWasSent(emailVerificationEvents.sendVerificationMailRequested)
     ).to.be.true;
   }
 );
@@ -50,9 +50,9 @@ Then("my email should not be visible anymore", function () {
   const isAnonymous = this.vm().children.account.selectors.isAnonymous();
   expect(isAnonymous).to.be.true;
 });
-Then("I should be able to connect again", function () {
-  const canConnect = this.vm().children.account.selectors.canConnect();
-  expect(canConnect).to.be.true;
+Then("I should be able to create an account again", function () {
+  const canCreateAccount = this.vm().children.account.selectors.canCreateAccount();
+  expect(canCreateAccount).to.be.true;
 });
 
 Given(/^I have not verified my email yet$/, function () {
@@ -73,8 +73,8 @@ Then(/^I should be authenticated$/, function () {
 });
 
 Then(/^I should be able to log out$/, function () {
-  const canLogOut = this.vm().children.account.selectors.canLogOut();
-  expect(canLogOut).to.be.true;
+  const canDisconnect = this.vm().children.account.selectors.canDisconnect();
+  expect(canDisconnect).to.be.true;
 });
 
 Given(

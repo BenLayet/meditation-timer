@@ -1,5 +1,4 @@
 import {statePatcher} from "domain/src/lib/state-manager/debugger.js";
-import {stateManager} from "domain/features/step-definitions/state-manager/test-state-manager.js";
 import {createEffect} from "domain/src/lib/state-manager/create-effect.js";
 
 const trackSize = 1000;

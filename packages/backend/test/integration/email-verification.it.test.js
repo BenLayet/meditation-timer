@@ -1,4 +1,7 @@
-import { postEmailActivation, createUser } from "./api.client.js";
+import {
+  postEmailVerification,
+  getEmailVerification,
+} from "./api.client.js";
 import {
   clearUserData,
   resetFakeUuidSequence,
@@ -6,31 +9,46 @@ import {
 } from "./database.admin.js";
 import { fakeTokenService } from "../mock.providers.js";
 import { httpGet } from "./http.client.js";
+import { emailVerificationStatus } from "domain/src/components/email-verification/email-verification.state.js";
+
+const emailVerificationUuid = "10000000-0000-1000-8000-000000000001";
+const userToken = fakeTokenService.createPermanentToken(
+  {
+    userUuid: "10000000-0000-1000-8000-000000000002"
+  }
+);
+const checkStatusToken = fakeTokenService.createShortLivedToken(
+  {
+    emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
+    scope: ["CHECK_STATUS"],
+  }
+);
+const activateToken = fakeTokenService.createShortLivedToken(
+  {
+    emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
+    scope: ["ACTIVATE"],
+  }
+);
+const verificationLink = `http://localhost:18000/api/v1/email-verifications/activate/${activateToken}`;
 
 describe("activating emails", () => {
-  const email = "email@example.org";
+  const email = "email1@example.org";
   afterEach(clearUserData(email));
-  beforeEach(resetFakeUuidSequence);
+  beforeAll(resetFakeUuidSequence);
 
-  test("posting an email activation should return a createUserToken", async () => {
+  test("posting an email verification should return a checkStatusToken", async () => {
     //WHEN
-    const { body, status } = await postEmailActivation({ email });
+    const { body, status } = await postEmailVerification({ email });
 
     //THEN
-    expect(status, "status should be 201").toBe(201); 
-    expect(body, "body should contain createUserToken").toEqual({ createUserToken: expect.any(String) });
-    console.log("body", body);
-    console.log("body.createUserToken", body.createUserToken);
-    const b= atob(body.createUserToken);
-    console.log("body.createUserToken decoded b", b);
-    console.log("body.createUserToken decoded parsed", JSON.parse(b));
-    const { uuid, scope } = fakeTokenService.verify(body.createUserToken);
-    expect(scope, "scope should contain CREATE_USER").toContain("CREATE_USER");
-    expect(uuid, "uuid should be the first one").toBe("10000000-0000-1000-8000-000000000001");
+    expect(status, "status should be 201").toBe(201);
+    expect(body).toEqual({status:emailVerificationStatus.REQUESTED, checkStatusToken});
   });
-  test("posting an email activation should send an email", async () => {
+
+  
+  test("posting an email verification should send an email", async () => {
     //WHEN
-    await postEmailActivation({ email });
+    await postEmailVerification({ email });
 
     //THEN
     const lastMail = await getLastMailSent();
@@ -38,56 +56,55 @@ describe("activating emails", () => {
       from: "mailfrom@test",
       to: email,
       subject: "Activate your account",
-      html: expect.stringMatching(/Click to let Meditation Timer know that this is your email adress/),
+      html: expect.stringMatching(
+        /Click to let Meditation Timer know that this is your email adress/
+      ),
     });
   });
 
-  test("posting an email activation should send an activation link", async () => {
+  test("posting an email verification should send an verification link", async () => {
     //WHEN
-    await postEmailActivation({ email });
+    await postEmailVerification({ email });
 
     //THEN
     const { html } = await getLastMailSent();
     const link = extractFirstLink(html);
-    expect(link).toBe(activationLink);
+    expect(link).toBe(verificationLink);
   });
 
   test("should activate email when link is clicked once", async () => {
     //GIVEN
-    await postEmailActivation({ email });
+    await postEmailVerification({ email });
     //WHEN
-    const { body, status } =  await httpGet(activationLink); // Fetch returns a Response object
+    const { body, status } = await httpGet(verificationLink); // Fetch returns a Response object
 
     // THEN
     expect(status).toBe(200); // Check the status code
-    expect(body).toEqual({message: "email activated successfully"}); // Check the response body content
+    expect(body).toEqual({ message: "email activated successfully" }); // Check the response body content
   });
-  test("should return error when activation link is clicked twice", async () => {
+  test("should return error when verification link is clicked twice", async () => {
     //GIVEN
-    await postEmailActivation({ email });
-    await httpGet(activationLink); // Click once
+    await postEmailVerification({ email });
+    await httpGet(verificationLink); // Click once
     //WHEN
-    const { body, status } =  await httpGet(activationLink); // Click again
+    const { body, status } = await httpGet(verificationLink); // Click again
 
     // THEN
     expect(status).toBe(403); // Check the status code
-    expect(body).toEqual({error: "Invalid or expired activation token"}); // Check the response body content
+    expect(body).toEqual({ error: "Invalid or expired verification token" }); // Check the response body content
   });
-  test("should create user when requested if email is verified", async () => {
+  test("should return userToken when requested if email is verified", async () => {
     //GIVEN
-    const { body:{ createUserToken } } = await postEmailActivation({ email });
-    await httpGet(activationLink); // verify email
+    const {
+      body: { checkStatusToken },
+    } = await postEmailVerification({ email });
+    await httpGet(verificationLink); // verify email
     //WHEN
-    const {body, status} =  await createUser(createUserToken);
+    const { body, status } = await getEmailVerification(emailVerificationUuid, checkStatusToken); // Check the status of the email verification
 
     // THEN
-    expect(status).toBe(201); // Check the status code
-    expect(body.success).to.be.true;
-    const userToken = body.userToken;
-    expect(userToken).toBeDefined();
-
-    const {userUuid} = fakeTokenService.verify(userToken);
-    expect(userUuid).toEqual("10000000-0000-1000-8000-000000000002");
+    expect(status).toBe(200);
+    expect(body).toEqual({status:emailVerificationStatus.VERIFIED, userToken});
   });
 });
 
@@ -97,7 +114,3 @@ function extractFirstLink(text) {
   return match ? match[1] : null;
 }
 
-const activationLink = `http://localhost:18000/api/v1/email-activations/activate/${fakeTokenService.createShortLivedToken({
-      uuid: "10000000-0000-1000-8000-000000000001",
-      scope: ["ACTIVATE"],
-    })}`;
