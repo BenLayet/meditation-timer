@@ -91,4 +91,22 @@ describe("createEvent", () => {
       isNewCycle: false,
     });
   });
+
+  it("should take isNewCycle=true into account", () => {
+    const eventType = "TestEvent";
+    const componentPath = [];
+
+    const result = createEvent(
+      { eventType, isNewCycle: true },
+      componentPath,
+      {},
+    );
+
+    expect(result).toEqual({
+      componentPath: [],
+      eventType: "TestEvent",
+      payload: {},
+      isNewCycle: true,
+    });
+  });
 });

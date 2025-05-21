@@ -42,6 +42,7 @@ export const emailVerificationEvents = {
       ...state,
       loading: true,
     }),
+    isNewCycle: true,
   },
   refreshRequested: {
     eventType: "refreshRequested",

@@ -26,12 +26,12 @@ export const providers = {
       datasource,
       transactionService,
       uuidGenerator,
-      logger
+      logger,
     ),
   tokenService: ({ jwtSecret, logger }) =>
     new JwtTokenService(jwtSecret, logger),
   emailService: ({ mailgunProperties, logger }) =>
-    mailgunProperties.key === "mock"
+    mailgunProperties.apiKey === "mock"
       ? { sendEmail: console.log }
       : new MailgunEmailSender(mailgunProperties, logger),
   emailVerificationService: ({
@@ -48,7 +48,7 @@ export const providers = {
       tokenService,
       mailFrom,
       apiProperties,
-      logger
+      logger,
     ),
   cleanupTasks: ({ datasource }) => [datasource.end],
 };

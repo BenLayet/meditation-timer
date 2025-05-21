@@ -116,4 +116,27 @@ describe("view model functions", () => {
       isNewCycle: false,
     });
   });
+  test("get view model: with isNewCycle true", () => {
+    //given
+    const dispatched = [];
+    const dispatch = (event) => dispatched.push(event);
+    const component = {
+      events: {
+        eventOneOccurred: { eventType: "eventOneOccurred", isNewCycle: true },
+      },
+    };
+
+    //when
+    const actual = getVM(component, {}, dispatch);
+    actual.dispatchers.eventOneOccurred();
+
+    //then
+    expect(dispatched.length).toBe(1);
+    expect(dispatched[0]).toEqual({
+      componentPath: [],
+      eventType: "eventOneOccurred",
+      payload: {},
+      isNewCycle: true,
+    });
+  });
 });

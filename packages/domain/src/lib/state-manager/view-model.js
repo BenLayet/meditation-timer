@@ -7,13 +7,12 @@ const selectors = (component, state) =>
 const dispatchers = (component, dispatch, componentPath) =>
   map(
     component.events ?? {},
-    ({ payloadShape, eventType }) =>
-      (payload = {}, isNewCycle = false) => {
+    ({ payloadShape, eventType, isNewCycle }) =>
+      (payload = {}) => {
         const event = createEvent(
-          { payloadShape, eventType },
+          { payloadShape, eventType, isNewCycle },
           componentPath,
           payload,
-          isNewCycle,
         );
         dispatch(event);
       },

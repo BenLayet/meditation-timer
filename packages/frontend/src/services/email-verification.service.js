@@ -13,10 +13,13 @@ export class EmailVerificationService {
       emailVerificationStatus.NOT_REQUESTED;
     switch (status) {
       case emailVerificationStatus.NOT_REQUESTED:
-        status = await this.verifyEmail();
+        status = await this.verifyStoredEmail();
         break;
       case emailVerificationStatus.REQUESTED:
-        retrieveEmailVerificationToken
+        const emailVerificationUuid =
+            await this.keyValueStorageService.get("emailVerificationUuid");
+        const retrieveEmailVerificationToken =
+            await this.keyValueStorageService.get("retrieveEmailVerificationToken");
         const result = await this.emailVerificationApi.getEmailVerification(emailVerificationUuid, retrieveEmailVerificationToken);
         if (result.isVerified) {
           status = emailVerificationStatus.VERIFIED;
@@ -35,7 +38,7 @@ export class EmailVerificationService {
     return status;
   }
 
-  async verifyEmail() {
+  async verifyStoredEmail() {
     const email = await this.keyValueStorageService.get("email");
     validateNotEmptyString(email);
     await this.keyValueStorageService.set(
