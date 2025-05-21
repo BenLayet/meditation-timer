@@ -18,8 +18,10 @@ const validateEventPayload = (payload) => {
 
 export const validateNewEvent = (event) => {
   if (!event) throw new Error("Event cannot be null or undefined");
-  if(typeof event.id !== "undefined") throw new Error("Event ID must not be set");
-  if (!validate(event.uuid)) throw new Error("event UUID must be a valid UUID but was: " + userUuid);
+  if (typeof event.id !== "undefined")
+    throw new Error("Event ID must not be set");
+  if (!validate(event.uuid))
+    throw new Error("event UUID must be a valid UUID but was: " + userUuid);
   validateEventType(event.type);
   validateEventPayload(event.payload);
 };

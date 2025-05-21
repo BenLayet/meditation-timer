@@ -1,4 +1,4 @@
-import { emailVerificationStatus } from "domain/src/components/email-verification/email-verification.state.js";
+import { emailVerificationStatus } from "packages/domain/src/components/email-verification/email-verification.state.js";
 
 const statusSequence = Object.values(emailVerificationStatus);
 export function validateNewEmailVerification(emailVerification) {
@@ -12,7 +12,7 @@ export function validateNewEmailVerification(emailVerification) {
     throw new Error("Email verification email must be a valid email");
   if (emailVerification.status !== statusSequence[0])
     throw new Error(
-      `Email verification status must be ${statusSequence[0]} at creation`
+      `Email verification status must be ${statusSequence[0]} at creation`,
     );
 }
 const isEmailFormat = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -26,6 +26,6 @@ export function validateStatusTransition(fromStatus, toStatus) {
     throw new Error(`Email verification status ${toStatus} is not valid`);
   if (toStatusIndex !== fromStatusIndex + 1)
     throw new Error(
-      `Email verification status cannot be changed from ${fromStatus} to ${toStatus}`
+      `Email verification status cannot be changed from ${fromStatus} to ${toStatus}`,
     );
 }
