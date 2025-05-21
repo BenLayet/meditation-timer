@@ -44,7 +44,7 @@ export class StateManager {
         this.eventListeners.push(onEventOccurred);
     }
     removeEventListener = (onEventOccurred) => {
-        this.eventListeners = [...this.eventListeners.filter(l => !l === onEventOccurred)];
+        this.eventListeners = [...this.eventListeners.filter(listener => listener !== onEventOccurred)];
     }
 
     notifyEventOccurred(event, previousState) {
@@ -56,6 +56,7 @@ export class StateManager {
                 console.error(e);
             }
         });
+        
         this.rootComponentListeners.forEach(onRootVMChanged => onRootVMChanged(this.getRootVM()));
     }
     notifying = false;
