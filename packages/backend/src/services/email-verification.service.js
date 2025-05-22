@@ -19,7 +19,8 @@ export class EmailVerificationService {
     this.apiProperties = apiProperties;
     this.logger = logger;
   }
-  async sendVerificationEmail(email) {
+
+  async createEmailVerification(email) {
     validateNotNull({ email });
     //TODO one line per action (same level of abstraction)
     let status = emailVerificationStatus.NOT_REQUESTED;

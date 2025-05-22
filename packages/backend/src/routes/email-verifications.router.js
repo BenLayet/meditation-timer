@@ -15,7 +15,7 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
         `Send verification email requested: ${JSON.stringify(email)}`,
       );
       const emailVerificationResponse =
-        await emailVerificationService.sendVerificationEmail(email);
+        await emailVerificationService.createEmailVerification(email);
       logger.info(`verification email created`);
       res.status(201).json(emailVerificationResponse);
     } catch (error) {
