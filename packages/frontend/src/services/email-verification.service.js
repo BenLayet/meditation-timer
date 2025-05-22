@@ -45,12 +45,12 @@ export class EmailVerificationService {
       "emailVerificationStatus",
       emailVerificationStatus.NOT_REQUESTED
     );
-    const result =
-        await this.emailVerificationApi.verifyEmail(email);
-    if (result.success) {
+    const emailVerification =
+        await this.emailVerificationApi.createEmailVerification(email);
+    if (emailVerification.status === emailVerificationStatus.REQUESTED) {
       await this.keyValueStorageService.set(
           "retrieveEmailVerificationToken",
-          result.retrieveEmailVerificationToken
+          emailVerification.retrieveEmailVerificationToken
       );
       await this.keyValueStorageService.set(
         "emailVerificationStatus",
@@ -60,23 +60,5 @@ export class EmailVerificationService {
     } else {
       return emailVerificationStatus.NOT_REQUESTED;
     }
-  }
-  async checkRemoteStatus() {
-    const retrieveEmailVerificationToken =
-        await this.keyValueStorageService.get("retrieveEmailVerificationToken");
-    const emailVerificationUuid =
-        await this.keyValueStorageService.get("emailVerificationUuid");
-    const emailVerification =
-        await this.emailVerificationApi.getEmailVerification(emailVerificationUuid, retrieveEmailVerificationToken);
-    if (emailVerification.status === emailVerificationStatus.VERIFIED) {
-      await this.keyValueStorageService.set("userToken", emailVerification.userToken);
-      await this.keyValueStorageService.delete("retrieveEmailVerificationToken");
-      //TODO store directly object emailVerification
-      await this.keyValueStorageService.delete("emailVerificationStatus");
-      await this.keyValueStorageService.delete("emailVerificationUuid");
-    } else {
-      await this.keyValueStorageService.set("emailVerificationStatus", emailVerification.status);
-    }
-    return emailVerification.status;
   }
 }

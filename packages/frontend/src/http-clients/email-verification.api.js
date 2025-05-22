@@ -1,6 +1,6 @@
 const API_URL = "/api/v1/email-verifications";
 export class EmailVerificationApi {
-  verifyEmail = async (email) => {
+  createEmailVerification = async (email) => {
     if (!email) {
       throw new Error("Email is required");
     }
