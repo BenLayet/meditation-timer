@@ -24,6 +24,10 @@ export const createEmailVerificationEffects = (
   // Schedules a send verification mail task
   let createEmailVerificationScheduledTaskId = null;
   const createEmailVerificationScheduledTaskRequested = async () => {
+    if (createEmailVerificationScheduledTaskId) {
+      clearTimeout(createEmailVerificationScheduledTaskId);
+      createEmailVerificationScheduledTaskId = null;
+    }
     createEmailVerificationScheduledTaskId = setTimeout(
       () => {
         dispatchers.createEmailVerificationScheduledTaskTimeUp();
@@ -42,6 +46,10 @@ export const createEmailVerificationEffects = (
   // Schedules a check status task
   let refreshEmailVerificationScheduledTaskId = null;
   const refreshEmailVerificationScheduledTaskRequested = async ({ email }) => {
+    if (refreshEmailVerificationScheduledTaskId) {
+      clearTimeout(refreshEmailVerificationScheduledTaskId);
+      refreshEmailVerificationScheduledTaskId = null;
+    }
     refreshEmailVerificationScheduledTaskId = setTimeout(() => {
       dispatchers.refreshEmailVerificationScheduledTaskTimeUp(email);
     }, 1000 * 60); // 1 minute
