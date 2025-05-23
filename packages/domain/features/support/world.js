@@ -1,6 +1,5 @@
 import { StateManager } from "../../src/lib/state-manager/state-manager.js";
 import { meditationTimerAppComponent } from "../../src/components/meditation-timer-app/meditation-timer-app.component.js";
-import { logEvent } from "../../src/lib/logger/logger.js";
 import { statePatcher } from "../../src/lib/state-manager/debugger.js";
 import { statisticsEvents } from "../../src/components/statistics/statistics.events.js";
 import { isEqual } from "lodash-es";
@@ -54,6 +53,15 @@ const addMockedEffects = (
         stateManager
           .getRootVM()
           .children.account.dispatchers.accountLoaded(account),
+    }),
+  );
+  stateManager.addEffect(
+    createEffect({
+      afterEvent: accountEvents.disconnectRequested,
+      then: () =>
+        stateManager
+          .getRootVM()
+          .children.account.dispatchers.disconnectSucceeded(),
     }),
   );
   //email verification

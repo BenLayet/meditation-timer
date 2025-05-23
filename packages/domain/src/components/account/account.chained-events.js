@@ -41,7 +41,7 @@ export const accountChainedEvents = [
       ...emailVerificationEvents.resetRequested,
       childComponentPath: ["emailVerification"],
     },
-    thenDispatch: accountEvents.logOutRequested,
+    thenDispatch: accountEvents.disconnectRequested,
   },
   {
     onEvent: {

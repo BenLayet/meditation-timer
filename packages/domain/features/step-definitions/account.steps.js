@@ -76,7 +76,7 @@ Then(/^I should be authenticated$/, function () {
   expect(email).to.equal("test@example.org");
 });
 
-Then(/^I should be able to log out$/, function () {
+Then(/^I should be able to disconnect$/, function () {
   const canDisconnect = this.vm().children.account.selectors.canDisconnect();
   expect(canDisconnect).to.be.true;
 });
@@ -101,8 +101,8 @@ Given("I am authenticated", function () {
   this.account.status = accountStatus.AUTHENTICATED;
 });
 
-When("I log out", function () {
-  this.vm().children.account.dispatchers.logOutRequested();
+When("I disconnect", function () {
+  this.vm().children.account.dispatchers.disconnectRequested();
 });
 Then(/^my meditation history on the device should be cleared$/, function () {
   const dailyStreak = this.vm().children.statistics.selectors.dailyStreak();
