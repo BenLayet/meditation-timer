@@ -8,6 +8,7 @@ export const emailVerificationStatus = {
   EXPIRED: "EXPIRED",
 };
 const statusSequence = Object.values(emailVerificationStatus);
+
 export function validateNewEmailVerification(emailVerification) {
   if (typeof emailVerification !== "object")
     throw new Error("Email verification cannot be null or undefined");
@@ -44,9 +45,9 @@ export function validateEmailVerification(emailVerification) {
   validateEmailFormat(emailVerification.email);
   validateEmailVerificationStatus(emailVerification.status);
   if (emailVerification.status === emailVerificationStatus.REQUESTED) {
-    validateNotEmptyString({ retrieveToken: emailVerification.retrieveToken };
+    validateNotEmptyString({ retrieveToken: emailVerification.retrieveToken });
   }
   if (emailVerification.status === emailVerificationStatus.VERIFIED) {
-    validateNotEmptyString({ userToken: emailVerification.userToken };
+    validateNotEmptyString({ userToken: emailVerification.userToken });
   }
 }
