@@ -1,4 +1,4 @@
-import { v4 as createUuid } from 'uuid';
+import { v4 as createUuid } from "uuid";
 
 export class MeditationService {
   constructor(transactionService, pendingEventService, meditationStore) {
@@ -9,14 +9,14 @@ export class MeditationService {
   async saveMeditation(meditation) {
     await this.pendingEventService.addPendingEvent({
       type: "ADD_MEDITATION",
-      payload: {...meditation, uuid: createUuid() },
+      payload: { ...meditation, uuid: createUuid() },
       uuid: createUuid(),
     });
   }
   async getAllMeditations() {
     return this.transactionService.runReadTransaction(
       [this.meditationStore.storeName],
-      async (transaction) => this.meditationStore.getAll(transaction)
+      async (transaction) => this.meditationStore.getAll(transaction),
     );
   }
 }

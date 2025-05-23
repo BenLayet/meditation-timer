@@ -7,7 +7,7 @@ export class EventApi {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
-      }
+      },
     );
   };
   postEvent = async (event) => {

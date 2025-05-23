@@ -1,4 +1,8 @@
-import {keyValueStoreName, meditationStoreName, pendingEventStoreName,} from "../storage/store-names.constants";
+import {
+  keyValueStoreName,
+  meditationStoreName,
+  pendingEventStoreName,
+} from "../storage/store-names.constants";
 
 const PAGE_SIZE = 100;
 export const lastProcessedIdKey = "lastProcessedId";
@@ -9,7 +13,7 @@ export class EventSynchronizationService {
     pendingEventStore,
     keyValueStore,
     eventProcessor,
-    eventApi
+    eventApi,
   ) {
     this.transactionService = transactionService;
     this.pendingEventStore = pendingEventStore;
@@ -26,7 +30,7 @@ export class EventSynchronizationService {
     // Get all pending events
     const pendingEvents = await this.transactionService.runReadTransaction(
       [pendingEventStoreName],
-      this.pendingEventStore.getAll
+      this.pendingEventStore.getAll,
     );
     // Map each event to a promise
     const promises = pendingEvents.map(this.eventApi.postEvent);
@@ -45,7 +49,7 @@ export class EventSynchronizationService {
     // Get lastProcessedId
     const lastProcessedId = await this.transactionService.runReadTransaction(
       [keyValueStoreName],
-        this.keyValueStore.get(lastProcessedIdKey, 0)
+      this.keyValueStore.get(lastProcessedIdKey, 0),
     );
 
     const page = await this.eventApi.getEventPage(lastProcessedId, PAGE_SIZE);
@@ -65,7 +69,7 @@ export class EventSynchronizationService {
           await this.eventProcessor.processEvent(transaction, event);
         }
         await this.keyValueStore.set(lastProcessedIdKey, event.id)(transaction);
-      }
+      },
     );
   };
 }

@@ -1,4 +1,8 @@
-import {keyValueStoreName, meditationStoreName, pendingEventStoreName,} from "./store-names.constants.js";
+import {
+  keyValueStoreName,
+  meditationStoreName,
+  pendingEventStoreName,
+} from "./store-names.constants.js";
 
 export const meditationsIndexedDbSchema = {
   name: "MeditationDB",

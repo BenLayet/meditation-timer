@@ -4,9 +4,9 @@ import { mockProviders } from "./mock.providers.js";
 import { providers } from "../src/config/providers.js";
 
 // resolve dependencies
-const dependencies = await resolveDependencies( {
+const dependencies = await resolveDependencies({
   ...providers,
-  ...mockProviders
+  ...mockProviders,
 });
 // start server
 startHttpServer(dependencies);

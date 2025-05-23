@@ -1,11 +1,10 @@
 // filepath: /workspaces/meditation-timer/packages/backend/vitest.config.js
-import {defineConfig} from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
     globals: true,
-    include: ['./test/integration/**/*.it.test.js'],
-  //  globalSetup: './test/integration/globalSetup.js',
-    
+    include: ["./test/integration/**/*.it.test.js"],
+    //  globalSetup: './test/integration/globalSetup.js',
   },
 });

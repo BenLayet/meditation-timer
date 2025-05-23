@@ -1,5 +1,5 @@
-import {When} from "@cucumber/cucumber";
+import { When } from "@cucumber/cucumber";
 
 When(/^I open the app$/, function () {
-    this.vm().dispatchers.appOpened();
+  this.vm().dispatchers.appOpened();
 });

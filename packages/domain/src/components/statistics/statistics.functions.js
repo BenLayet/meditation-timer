@@ -15,18 +15,21 @@ const totalMinutesOnWeekBefore = (meditations, currentEpochDay) =>
   meditations
     .filter(
       (meditation) =>
-        getEpochDay(meditation) >= currentEpochDay - DAYS_IN_A_WEEK
+        getEpochDay(meditation) >= currentEpochDay - DAYS_IN_A_WEEK,
     )
     .map(getDurationInMinutes)
     .reduce((a, b) => a + b, 0);
-    
-export const calculateStatistics = (previousMeditations = [], currentEpochDay=0) => ({
+
+export const calculateStatistics = (
+  previousMeditations = [],
+  currentEpochDay = 0,
+) => ({
   dailyStreak: getDailyStreak(
     previousMeditations.map(getEpochDay),
-    currentEpochDay
+    currentEpochDay,
   ),
   totalMinutesThisWeek: totalMinutesOnWeekBefore(
     previousMeditations,
-    currentEpochDay
+    currentEpochDay,
   ),
 });

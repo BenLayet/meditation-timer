@@ -12,7 +12,7 @@ export const resetFakeUuidSequence = async () => {
 export const clearUserData = (email) => async () => {
   if (environment !== "test") {
     throw new Error(
-      `This file should only be run in test mode, environment=${environment}`
+      `This file should only be run in test mode, environment=${environment}`,
     );
   }
   await datasource`DELETE
@@ -24,6 +24,7 @@ export const clearUserData = (email) => async () => {
 };
 
 export const getLastMailSent = async () => {
-  const rows = await datasource`SELECT mail FROM fake_mails ORDER BY id DESC LIMIT 1;`;
+  const rows =
+    await datasource`SELECT mail FROM fake_mails ORDER BY id DESC LIMIT 1;`;
   return rows[0]?.mail;
 };

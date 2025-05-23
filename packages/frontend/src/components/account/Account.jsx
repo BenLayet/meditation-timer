@@ -60,10 +60,10 @@ function Account({ vm }) {
             <EmailVerification vm={vm.children.emailVerification} />
           )}
           {canDisconnect && (
-              <a onClick={disconnectRequested} className="icon-button">
+            <a onClick={disconnectRequested} className="icon-button">
               <FontAwesomeIcon icon={faUnlock} />
               {t("disconnect")}
-              </a>
+            </a>
           )}
         </>
       )}

@@ -3,7 +3,7 @@ services:
     image: postgres
     shm_size: 128mb
     volumes:
-     - ./initdb:/docker-entrypoint-initdb.d
+      - ./initdb:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -12,4 +12,3 @@ services:
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
     ports:
       - ${POSTGRES_PORT}:5432
-

@@ -43,24 +43,24 @@ function Settings({ vm }) {
                 {t("language")}
               </label>
               <div className="settings-menu-item-content">
-                  <input
-                    type="radio"
-                    id="language-en"
-                    name="language"
-                    value="en"
-                    checked={i18n.language === "en"}
-                    onChange={changeLanguage}
-                  />
-                  <label htmlFor="language-en">{t("english")}</label>
-                  <input
-                    type="radio"
-                    id="language-fr"
-                    name="language"
-                    value="fr"
-                    checked={i18n.language === "fr"}
-                    onChange={changeLanguage}
-                  />
-                  <label htmlFor="language-fr">{t("french")}</label>
+                <input
+                  type="radio"
+                  id="language-en"
+                  name="language"
+                  value="en"
+                  checked={i18n.language === "en"}
+                  onChange={changeLanguage}
+                />
+                <label htmlFor="language-en">{t("english")}</label>
+                <input
+                  type="radio"
+                  id="language-fr"
+                  name="language"
+                  value="fr"
+                  checked={i18n.language === "fr"}
+                  onChange={changeLanguage}
+                />
+                <label htmlFor="language-fr">{t("french")}</label>
               </div>
             </div>
           </div>

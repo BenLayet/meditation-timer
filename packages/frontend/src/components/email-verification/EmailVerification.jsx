@@ -25,19 +25,13 @@ function EmailVerification({ vm }) {
       {isSent && <p>{t("emailVerificationSent")}</p>}
       {isExpired && <p>{t("emailVerificationExpired")}</p>}
       {isRefreshable && (
-        <button
-          className="main-action icon-button"
-          onClick={refreshRequested}
-        >
+        <button className="main-action icon-button" onClick={refreshRequested}>
           <FontAwesomeIcon icon={faSync} />
           {t("refresh")}
         </button>
       )}
       {isRetryable && (
-        <button
-          className="main-action icon-button"
-          onClick={retryRequested}
-        >
+        <button className="main-action icon-button" onClick={retryRequested}>
           <FontAwesomeIcon icon={faSync} />
           {t("retry")}
         </button>

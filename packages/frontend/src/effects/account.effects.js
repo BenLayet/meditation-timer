@@ -1,39 +1,36 @@
-import { createEffect } from 'domain/src/lib/state-manager/create-effect.js'
-import { accountEvents } from 'domain/src/components/account/account.events.js'
-import { accountStatus } from 'domain/src/components/account/account.state.js'
+import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
+import { accountEvents } from "domain/src/components/account/account.events.js";
+import { accountStatus } from "domain/src/components/account/account.state.js";
 
-export const createAccountEffects = (
-  { keyValueStorageService },
-  rootVM
-) => {
+export const createAccountEffects = ({ keyValueStorageService }, rootVM) => {
+  const dispatchers = rootVM.children.account.dispatchers;
+
   //loadAccountRequested
   const loadAccountRequested = async () => {
     //TODO : fix architecture : email stored in effect but retrieved in service
-    const email = await keyValueStorageService.get('email')
+    const email = await keyValueStorageService.get("email");
     const status =
-      (await keyValueStorageService.get('accountStatus')) ??
-      accountStatus.ANONYMOUS
-    rootVM.children.account.dispatchers.accountLoaded(
-      {
-        email,
-        status,
-      }
-    )
-  }
+      (await keyValueStorageService.get("accountStatus")) ??
+      accountStatus.ANONYMOUS;
+    dispatchers.accountLoaded({ email, status });
+  };
 
   //createAccountRequested
   const createAccountRequested = async ({ email }) => {
-    await keyValueStorageService.set('email', email)
-    await keyValueStorageService.set('accountStatus', accountStatus.PENDING_VERIFICATION)
-  }
+    await keyValueStorageService.set("email", email);
+    await keyValueStorageService.set(
+      "accountStatus",
+      accountStatus.PENDING_VERIFICATION,
+    );
+  };
 
   //disconnectRequested
   const disconnectRequested = async () => {
-    await keyValueStorageService.delete('email')
-    await keyValueStorageService.delete('accountStatus')
-    await keyValueStorageService.delete('emailVerification')
-    rootVM.children.account.dispatchers.disconnectSucceeded()
-  }
+    await keyValueStorageService.delete("email");
+    await keyValueStorageService.delete("accountStatus");
+    await keyValueStorageService.delete("emailVerification");
+    dispatchers.disconnectSucceeded();
+  };
 
   return [
     createEffect({
@@ -48,5 +45,5 @@ export const createAccountEffects = (
       afterEvent: accountEvents.disconnectRequested,
       then: disconnectRequested,
     }),
-  ]
-}
+  ];
+};

@@ -26,7 +26,7 @@ export const resolveEffectsDependencies = async () => {
   const keyValueStore = new KeyValueStore(keyValueStoreName);
   const keyValueStorageService = new KeyValueStorageService(
     keyValueStore,
-    transactionService
+    transactionService,
   );
   const meditationStore = new CollectionStore(meditationStoreName);
   const pendingEventStore = new CollectionStore(pendingEventStoreName);
@@ -36,18 +36,18 @@ export const resolveEffectsDependencies = async () => {
     transactionService,
     pendingEventStore,
     eventProcessor,
-    synchronizationTaskService
+    synchronizationTaskService,
   );
 
   const meditationService = new MeditationService(
     transactionService,
     pendingEventService,
-    meditationStore
+    meditationStore,
   );
-  const emailVerificationApi= new EmailVerificationApi(meditationStore);
+  const emailVerificationApi = new EmailVerificationApi(meditationStore);
   const emailVerificationService = new EmailVerificationService(
     keyValueStorageService,
-    emailVerificationApi
+    emailVerificationApi,
   );
   return {
     meditationService,

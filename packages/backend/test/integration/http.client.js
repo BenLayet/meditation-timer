@@ -6,9 +6,9 @@ export const processResponse = async (response) => {
   const status = response.status;
   const body = await response.json();
   const headers = response.headers;
-  return {status, body, headers};
+  return { status, body, headers };
 };
-export const httpPost = async (url, data, headers = {}) =>{
+export const httpPost = async (url, data, headers = {}) => {
   const response = await fetch(url, {
     method: "POST",
     headers: {

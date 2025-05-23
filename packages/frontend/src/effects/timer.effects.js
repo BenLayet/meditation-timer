@@ -2,11 +2,10 @@ import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
 import { actualMeditationEvents } from "domain/src/components/actual-meditation/actual-meditation.events.js";
 import { preparationEvents } from "domain/src/components/preparation/preparation.events.js";
 
-
 export const createTimerEffects = ({ tickingService }, rootVM) => {
   const startTimer = (events, componentName) => () =>
     tickingService.startTicking(componentName, (currentTimeInSeconds) =>
-      events.timerTicked({ currentTimeInSeconds })
+      events.timerTicked({ currentTimeInSeconds }),
     );
 
   const stopTimer = (componentName) => () =>

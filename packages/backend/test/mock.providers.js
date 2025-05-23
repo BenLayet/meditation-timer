@@ -1,6 +1,8 @@
 const emailService = async (datasource, environment, logger) => {
   if (environment !== "test")
-    throw new Error(`This file should only be run in test mode. environment=${environment}`);
+    throw new Error(
+      `This file should only be run in test mode. environment=${environment}`,
+    );
   await datasource`DROP TABLE IF EXISTS fake_mails;`;
   await datasource`CREATE TABLE fake_mails(id SERIAL PRIMARY KEY, mail JSON);`;
 
@@ -32,15 +34,19 @@ const uuidGenerator = async (datasource, environment) => {
 
 export const fakeTokenService = {
   createShortLivedToken: (payload) =>
-    btoa(JSON.stringify({
-      life: "short",
-      payload,
-    })),
+    btoa(
+      JSON.stringify({
+        life: "short",
+        payload,
+      }),
+    ),
   createPermanentToken: (payload) =>
-    btoa(JSON.stringify({
-      life: "long",
-      payload,
-    })),
+    btoa(
+      JSON.stringify({
+        life: "long",
+        payload,
+      }),
+    ),
   verify: (token) => {
     const decoded = atob(token);
     const { payload } = JSON.parse(decoded);

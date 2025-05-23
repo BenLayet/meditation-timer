@@ -1,12 +1,16 @@
-import {CollectionStore} from "./storage/collection.store.js";
-import {createIndexedDb} from "./storage/indexed-db.js";
-import {meditationsIndexedDbSchema,} from "./storage/meditations.indexed-db.schema.js";
-import {keyValueStoreName, meditationStoreName, pendingEventStoreName,} from "./storage/store-names.constants.js";
-import {EventProcessor} from "./services/event-processor.service.js";
-import {TransactionService} from "./storage/transaction.service.js";
-import {EventApi} from "./http-clients/event.api.js";
-import {EventSynchronizationService} from "./services/event-synchronization.service.js";
-import {KeyValueStore} from "./storage/key-value.store.js";
+import { CollectionStore } from "./storage/collection.store.js";
+import { createIndexedDb } from "./storage/indexed-db.js";
+import { meditationsIndexedDbSchema } from "./storage/meditations.indexed-db.schema.js";
+import {
+  keyValueStoreName,
+  meditationStoreName,
+  pendingEventStoreName,
+} from "./storage/store-names.constants.js";
+import { EventProcessor } from "./services/event-processor.service.js";
+import { TransactionService } from "./storage/transaction.service.js";
+import { EventApi } from "./http-clients/event.api.js";
+import { EventSynchronizationService } from "./services/event-synchronization.service.js";
+import { KeyValueStore } from "./storage/key-value.store.js";
 
 export const resolveServiceWorkerDependencies = async () => {
   const indexedDb = await createIndexedDb(meditationsIndexedDbSchema);
@@ -21,9 +25,10 @@ export const resolveServiceWorkerDependencies = async () => {
     pendingEventStore,
     keyValueStore,
     eventProcessor,
-      eventApi
+    eventApi,
   );
   return {
-    eventSynchronizationService,indexedDb
+    eventSynchronizationService,
+    indexedDb,
   };
 };

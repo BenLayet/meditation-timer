@@ -1,40 +1,42 @@
 /* EMAIL INPUT */
-input[type="email"]{
-    min-width: 17em
+input[type="email"] {
+  min-width: 17em;
 }
 
 /* RADIO BUTTONS */
 input[type="radio"] {
-     display: none;
- }
+  display: none;
+}
 
 input[type="radio"] + label {
-    padding: 0.5em ;
-    border: 2px solid var(--primary-color);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    display: flex;
-    min-width: 6em;
+  padding: 0.5em;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  display: flex;
+  min-width: 6em;
 }
 
 input[type="radio"] + label::before {
-    content: "✓ "; /* A checkmark icon */
-    margin-right: 0.5em;
-    color: var(--secondary-color);
-    font-weight: bold;
-    opacity: 0;
+  content: "✓ "; /* A checkmark icon */
+  margin-right: 0.5em;
+  color: var(--secondary-color);
+  font-weight: bold;
+  opacity: 0;
 }
 
 input[type="radio"]:checked + label::before {
-    opacity: 1;
+  opacity: 1;
 }
 
 input[type="radio"]:checked + label {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
 }
 
 input[type="email"] {
-    font-size: 1.2em;
+  font-size: 1.2em;
 }

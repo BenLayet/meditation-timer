@@ -6,14 +6,14 @@ import { meditationSettingsEvents } from "../../src/components/meditation-settin
 Given(/^the next meditation duration is (\d{2}):00$/, function (minutes) {
   this.patchState(
     "meditationSettings.meditationDurationInMinutes",
-    parseInt(minutes)
+    parseInt(minutes),
   );
 });
 
 Given(/^the next preparation duration is 00:(\d{2})$/, function (seconds) {
   this.patchState(
     "meditationSettings.preparationDurationInSeconds",
-    parseInt(seconds)
+    parseInt(seconds),
   );
 });
 Given(/^the gong is (on|off)$/, function (onOrOff) {
@@ -42,16 +42,18 @@ When("I toggle the gong on/off", function () {
 Then(
   /^the next meditation duration should be (\d{2}:\d{2})$/,
   function (expectedDisplayedTime) {
-    const actual = this.vm().children.meditationSettings.selectors.meditationDuration();
+    const actual =
+      this.vm().children.meditationSettings.selectors.meditationDuration();
     expect(actual).to.equal(expectedDisplayedTime);
-  }
+  },
 );
 Then(
   /^the next preparation duration should be (\d{2}:\d{2})$/,
   function (expectedDisplayedTime) {
-    const actual = this.vm().children.meditationSettings.selectors.preparationDuration();
+    const actual =
+      this.vm().children.meditationSettings.selectors.preparationDuration();
     expect(actual).to.equal(expectedDisplayedTime);
-  }
+  },
 );
 Then(/^the gong should be (on|off)$/, function (onOrOff) {
   const expected = onOrOff === "on";
@@ -63,8 +65,14 @@ Then(/^the gong should be (on|off)$/, function (onOrOff) {
   expect(isGongOff).to.equal(!expected);
 
   if (onOrOff === "on") {
-    expect(this.eventWasSent(meditationSettingsEvents.gongOnToggled), 'gongOnToggled not called').to.be.true;
+    expect(
+      this.eventWasSent(meditationSettingsEvents.gongOnToggled),
+      "gongOnToggled not called",
+    ).to.be.true;
   } else {
-    expect(this.eventWasSent(meditationSettingsEvents.gongOffToggled), 'gongOffToggled not called').to.be.true;
+    expect(
+      this.eventWasSent(meditationSettingsEvents.gongOffToggled),
+      "gongOffToggled not called",
+    ).to.be.true;
   }
 });

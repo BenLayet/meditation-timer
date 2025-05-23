@@ -1,4 +1,4 @@
- const Timer = ({ displayedTime }) => (
+const Timer = ({ displayedTime }) => (
   <div className="time-display">
     <span className="bigger">{displayedTime}</span>
   </div>

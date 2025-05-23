@@ -20,5 +20,4 @@ export class TransactionService {
   async runWriteTransaction(storeNames, callback) {
     return this.runTransaction(storeNames, "readwrite", callback);
   }
-
 }

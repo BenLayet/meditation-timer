@@ -9,12 +9,12 @@
 }
 
 .account-info dt {
-    text-align: left;
+  text-align: left;
   font-weight: bold;
   color: var(--primary-color);
 }
 
 .account-info dd {
-    text-align: left;
+  text-align: left;
   margin: 0;
 }

@@ -38,7 +38,7 @@ export const statisticsEvents = {
     }),
   },
   meditationHistoryRequested: {
-    eventType: "meditationHistoryRequested"
+    eventType: "meditationHistoryRequested",
   },
   meditationHistoryRetrieved: {
     eventType: "meditationHistoryRetrieved",
@@ -48,13 +48,13 @@ export const statisticsEvents = {
         ow.object.partialShape({
           startedTimeInSeconds: ow.number.positive,
           durationInMinutes: ow.number.greaterThanOrEqual(0),
-        })
+        }),
       ),
     },
-    handler:(state, {meditationHistory}) => ({
+    handler: (state, { meditationHistory }) => ({
       ...state,
-      meditationHistory
-    })
+      meditationHistory,
+    }),
   },
   meditationHistoryFailed: {
     eventType: "meditationHistoryFailed",

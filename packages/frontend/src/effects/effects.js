@@ -15,7 +15,7 @@ export const createEffects = (
     tickingService,
     emailVerificationService,
     keyValueStorageService,
-  }
+  },
 ) => [
   ...createGongEffects({ gongService }),
   ...createWakeLockEffects({ wakeLockService }),
@@ -23,5 +23,8 @@ export const createEffects = (
   ...createSaveMeditationEffects({ meditationService }, rootVM),
   ...createLoadMeditationsEffects({ meditationService }, rootVM),
   ...createAccountEffects({ keyValueStorageService }, rootVM),
-  ...createEmailVerificationEffects({ emailVerificationService, keyValueStorageService }, rootVM),
+  ...createEmailVerificationEffects(
+    { emailVerificationService, keyValueStorageService },
+    rootVM,
+  ),
 ];

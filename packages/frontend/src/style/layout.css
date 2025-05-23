@@ -1,22 +1,21 @@
-.flex-grow{
+.flex-grow {
   flex-grow: 1;
   align-self: stretch;
 }
-.flex-column{
+.flex-column {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.flex-row{
+.flex-row {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.justify-end{
+.justify-end {
   justify-content: flex-end;
 }
-
 
 .stack-layout {
   position: relative;
