@@ -6,8 +6,8 @@ import "./EmailVerification.css";
 function EmailVerification({ vm }) {
   const { t } = useTranslation();
   const isLoading = vm.selectors.isLoading();
-  const isPending = vm.selectors.isPending();
-  const isSent = vm.selectors.isSent();
+  const isNotRequestedYet = vm.selectors.isNotRequestedYet();
+  const isRequested = vm.selectors.isRequested();
   const isExpired = vm.selectors.isExpired();
   const isRefreshable = vm.selectors.isRefreshable();
   const isResettable = vm.selectors.isResettable();
@@ -21,8 +21,8 @@ function EmailVerification({ vm }) {
       {isLoading && (
         <FontAwesomeIcon icon={faSpinner} spin className="status-spinner" />
       )}
-      {isPending && <p>{t("emailVerificationPending")}</p>}
-      {isSent && <p>{t("emailVerificationSent")}</p>}
+      {isNotRequestedYet && <p>{t("emailVerificationPending")}</p>}
+      {isRequested && <p>{t("emailVerificationSent")}</p>}
       {isExpired && <p>{t("emailVerificationExpired")}</p>}
       {isRefreshable && (
         <button className="main-action icon-button" onClick={refreshRequested}>

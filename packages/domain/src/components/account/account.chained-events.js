@@ -19,6 +19,24 @@ export const accountChainedEvents = [
   },
   {
     onEvent: accountEvents.checkEmailVerificationStatusRequested,
+    onCondition: ({ state }) =>
+      emailVerificationOwnSelectors.isNotRequestedYet(
+        state.children.emailVerification.ownState,
+      ),
+    thenDispatch: {
+      ...emailVerificationEvents.createEmailVerificationRequested,
+      childComponentPath: ["emailVerification"],
+    },
+    withPayload: ({ state }) => ({
+      email: state.ownState.email,
+    }),
+  },
+  {
+    onEvent: accountEvents.checkEmailVerificationStatusRequested,
+    onCondition: ({ state }) =>
+      emailVerificationOwnSelectors.isRequested(
+        state.children.emailVerification.ownState,
+      ),
     thenDispatch: {
       ...emailVerificationEvents.refreshEmailVerificationRequested,
       childComponentPath: ["emailVerification"],

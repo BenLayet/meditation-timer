@@ -3,24 +3,24 @@ import { map } from "../../lib/functions/object.functions.js";
 import { emailVerificationStatus } from "../../models/email-verification.model.js";
 import { or, not, and } from "../../lib/functions/predicate.functions.js";
 
-const isPending = (emailVerificationState) =>
+const isNotRequestedYet = (emailVerificationState) =>
   emailVerificationState.status === emailVerificationStatus.NOT_REQUESTED;
-const isSent = (emailVerificationState) =>
+const isRequested = (emailVerificationState) =>
   emailVerificationState.status === emailVerificationStatus.REQUESTED;
 const isExpired = (emailVerificationState) =>
   emailVerificationState.status === emailVerificationStatus.EXPIRED;
 const isVerified = (emailVerificationState) =>
   emailVerificationState.status === emailVerificationStatus.VERIFIED;
 const isLoading = (emailVerificationState) => emailVerificationState.loading;
-const isRefreshable = and(not(isLoading), isSent);
-const isRetryable = and(not(isLoading), isPending);
+const isRefreshable = and(not(isLoading), isRequested);
+const isRetryable = and(not(isLoading), isNotRequestedYet);
 const isResettable = () => true;
 
 export const ownStateSelectors = {
-  isVerified,
   isLoading,
-  isPending,
-  isSent,
+  isNotRequestedYet,
+  isRequested,
+  isVerified,
   isExpired,
   isRefreshable,
   isResettable,
