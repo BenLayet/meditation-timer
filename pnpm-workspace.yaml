@@ -1,4 +1,4 @@
 packages:
-  - 'packages/backend'
-  - 'packages/frontend'
-  - 'packages/domain'
+  - "packages/backend"
+  - "packages/frontend"
+  - "packages/domain"
