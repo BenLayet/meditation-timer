@@ -5,7 +5,7 @@ export const emailVerificationChainedEvents = [
     onEvent: emailVerificationEvents.checkIfEmailVerifiedCompleted,
     onCondition: ({ state }) => state.ownState.status === "NOT_REQUESTED",
     thenDispatch:
-      emailVerificationEvents.sendVerificationMailScheduledTaskRequested,
+      emailVerificationEvents.createEmailVerificationScheduledTaskRequested,
     withPayload: ({ state }) => ({
       email: state.ownState.email,
     }),
@@ -17,13 +17,13 @@ export const emailVerificationChainedEvents = [
       emailVerificationEvents.checkIfEmailVerifiedScheduledTaskRequested,
   },
   {
-    onEvent: emailVerificationEvents.sendVerificationMailScheduledTaskTimeUp,
-    thenDispatch: emailVerificationEvents.sendVerificationMailRequested,
+    onEvent: emailVerificationEvents.createEmailVerificationScheduledTaskTimeUp,
+    thenDispatch: emailVerificationEvents.createEmailVerificationRequested,
   },
   {
     onEvent: emailVerificationEvents.resetRequested,
     thenDispatch:
-      emailVerificationEvents.sendVerificationMailScheduledTaskCancelled,
+      emailVerificationEvents.createEmailVerificationScheduledTaskCancelled,
   },
   {
     onEvent: emailVerificationEvents.resetRequested,
@@ -36,6 +36,6 @@ export const emailVerificationChainedEvents = [
   },
   {
     onEvent: emailVerificationEvents.retryRequested,
-    thenDispatch: emailVerificationEvents.sendVerificationMailRequested,
+    thenDispatch: emailVerificationEvents.createEmailVerificationRequested,
   },
 ];

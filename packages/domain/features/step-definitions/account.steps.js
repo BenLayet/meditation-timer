@@ -23,7 +23,9 @@ Then(
   /^I should receive an email with a verification link in my inbox$/,
   function () {
     expect(
-      this.eventWasSent(emailVerificationEvents.sendVerificationMailRequested),
+      this.eventWasSent(
+        emailVerificationEvents.createEmailVerificationRequested,
+      ),
     ).to.be.true;
   },
 );

@@ -2,8 +2,8 @@ import ow from "ow";
 import { emailVerificationStatus } from "../../models/email-verification.model.js";
 
 export const emailVerificationEvents = {
-  sendVerificationMailRequested: {
-    eventType: "sendVerificationMailRequested",
+  createEmailVerificationRequested: {
+    eventType: "createEmailVerificationRequested",
     payloadShape: {
       email: ow.string.email,
     },
@@ -29,14 +29,14 @@ export const emailVerificationEvents = {
       status,
     }),
   },
-  sendVerificationMailScheduledTaskRequested: {
-    eventType: "sendVerificationMailScheduledTaskRequested",
+  createEmailVerificationScheduledTaskRequested: {
+    eventType: "createEmailVerificationScheduledTaskRequested",
   },
-  sendVerificationMailScheduledTaskCancelled: {
-    eventType: "sendVerificationMailScheduledTaskCancelled",
+  createEmailVerificationScheduledTaskCancelled: {
+    eventType: "createEmailVerificationScheduledTaskCancelled",
   },
-  sendVerificationMailScheduledTaskTimeUp: {
-    eventType: "sendVerificationMailScheduledTaskTimeUp",
+  createEmailVerificationScheduledTaskTimeUp: {
+    eventType: "createEmailVerificationScheduledTaskTimeUp",
   },
   checkIfEmailVerifiedScheduledTaskRequested: {
     eventType: "checkIfEmailVerifiedScheduledTaskRequested",

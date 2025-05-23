@@ -7,8 +7,8 @@ export const createEmailVerificationEffects = (
 ) => {
   const dispatchers = rootVM.children.account.children.emailVerification.dispatchers
 
-  // sendVerificationMailRequested
-  const sendVerificationMailRequested = async ({ email }) => {
+  // createEmailVerificationRequested
+  const createEmailVerificationRequested = async ({ email }) => {
     const { status } = await emailVerificationService.createEmailVerification(email)
     dispatchers.checkStatusCompleted({ status })
   }
@@ -20,20 +20,20 @@ export const createEmailVerificationEffects = (
   }
 
   // Schedules a send verification mail task
-  let sendVerificationMailScheduledTaskId = null
-  const sendVerificationMailScheduledTaskRequested = async () => {
-    sendVerificationMailScheduledTaskId = setTimeout(
+  let createEmailVerificationScheduledTaskId = null
+  const createEmailVerificationScheduledTaskRequested = async () => {
+    createEmailVerificationScheduledTaskId = setTimeout(
       () => {
-        dispatchers.sendVerificationMailScheduledTaskTimeUp()
+        dispatchers.createEmailVerificationScheduledTaskTimeUp()
       },
       1000 * 60 * 60
     ) // 1 hour
   }
   // Cancels the send verification mail task
-  const sendVerificationMailScheduledTaskCancelled = async () => {
-    if (sendVerificationMailScheduledTaskId) {
-      clearTimeout(sendVerificationMailScheduledTaskId)
-      sendVerificationMailScheduledTaskId = null
+  const createEmailVerificationScheduledTaskCancelled = async () => {
+    if (createEmailVerificationScheduledTaskId) {
+      clearTimeout(createEmailVerificationScheduledTaskId)
+      createEmailVerificationScheduledTaskId = null
     }
   }
 
@@ -58,21 +58,21 @@ export const createEmailVerificationEffects = (
       then: checkStatusRequested,
     }),
     createEffect({
-      afterEvent: emailVerificationEvents.sendVerificationMailRequested,
-      then: sendVerificationMailRequested,
+      afterEvent: emailVerificationEvents.createEmailVerificationRequested,
+      then: createEmailVerificationRequested,
     }),
     createEffect({
       afterEvent:
-      emailVerificationEvents.sendVerificationMailScheduledTaskRequested,
-      then: sendVerificationMailScheduledTaskRequested,
+      emailVerificationEvents.createEmailVerificationScheduledTaskRequested,
+      then: createEmailVerificationScheduledTaskRequested,
     }),
     createEffect({
       afterEvent: emailVerificationEvents.checkStatusScheduledTaskRequested,
       then: checkStatusScheduledTaskRequested,
     }),
     createEffect({
-      afterEvent: emailVerificationEvents.sendVerificationMailScheduledTaskCancelled,
-      then: sendVerificationMailScheduledTaskCancelled,
+      afterEvent: emailVerificationEvents.createEmailVerificationScheduledTaskCancelled,
+      then: createEmailVerificationScheduledTaskCancelled,
     }),
     createEffect({
       afterEvent: emailVerificationEvents.checkStatusScheduledTaskCancelled,

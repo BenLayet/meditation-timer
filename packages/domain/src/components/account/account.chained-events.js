@@ -7,7 +7,7 @@ export const accountChainedEvents = [
   {
     onEvent: accountEvents.createAccountRequested,
     thenDispatch: {
-      ...emailVerificationEvents.sendVerificationMailRequested,
+      ...emailVerificationEvents.createEmailVerificationRequested,
       childComponentPath: ["emailVerification"],
     },
   },
