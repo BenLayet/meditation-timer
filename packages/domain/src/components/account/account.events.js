@@ -64,15 +64,15 @@ export const accountEvents = {
       status: isVerified ? accountStatus.AUTHENTICATED : state.status,
     }),
   },
-  logInRequested: {
-    eventType: "logInRequested",
+  disconnectRequested: {
+    eventType: "disconnectRequested",
     handler: (state) => ({
       ...state,
       loading: true,
     }),
   },
-  logOutRequested: {
-    eventType: "logOutRequested",
+  disconnectSucceeded: {
+    eventType: "disconnectSucceeded",
     handler: (state) => ({
       ...state,
       loading: false,

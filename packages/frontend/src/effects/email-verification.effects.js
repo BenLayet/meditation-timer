@@ -1,37 +1,56 @@
-import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { emailVerificationEvents } from "domain/src/components/email-verification/email-verification.events.js";
+import { createEffect } from 'domain/src/lib/state-manager/create-effect.js'
+import { emailVerificationEvents } from 'domain/src/components/email-verification/email-verification.events.js'
 
 export const createEmailVerificationEffects = (
   { emailVerificationService },
   rootVM
 ) => {
-  const dispatchers = rootVM.children.account.children.emailVerification.dispatchers;
+  const dispatchers = rootVM.children.account.children.emailVerification.dispatchers
+
   // sendVerificationMailRequested
-  const sendVerificationMailRequested = async (email) => {
-    const {status} = await emailVerificationService.createEmailVerification(email);
-    dispatchers.checkStatusCompleted({ status }, false);
-  };
+  const sendVerificationMailRequested = async ({ email }) => {
+    const { status } = await emailVerificationService.createEmailVerification(email)
+    dispatchers.checkStatusCompleted({ status })
+  }
   // checkStatusRequested
-  const checkStatusRequested = async ({email}) => {
-    const {status} =
-        await emailVerificationService.getEmailVerification(email);
-    dispatchers.checkStatusCompleted({ status }, false);
-  };
+  const checkStatusRequested = async ({ email }) => {
+    const { status } =
+      await emailVerificationService.getEmailVerification(email)
+    dispatchers.checkStatusCompleted({ status })
+  }
+
   // Schedules a send verification mail task
+  let sendVerificationMailScheduledTaskId = null
   const sendVerificationMailScheduledTaskRequested = async () => {
-    setTimeout(
+    sendVerificationMailScheduledTaskId = setTimeout(
       () => {
-        dispatchers.sendVerificationMailScheduledTaskTimeUp();
+        dispatchers.sendVerificationMailScheduledTaskTimeUp()
       },
       1000 * 60 * 60
-    ); // 1 hour
-  };
+    ) // 1 hour
+  }
+  // Cancels the send verification mail task
+  const sendVerificationMailScheduledTaskCancelled = async () => {
+    if (sendVerificationMailScheduledTaskId) {
+      clearTimeout(sendVerificationMailScheduledTaskId)
+      sendVerificationMailScheduledTaskId = null
+    }
+  }
+
   // Schedules a check status task
-  const checkStatusScheduledTaskRequested = async () => {
-    setTimeout(() => {
-      dispatchers.checkStatusScheduledTaskTimeUp();
-    }, 1000 * 60); // 1 minute
-  };
+  let checkStatusScheduledTaskId = null
+  const checkStatusScheduledTaskRequested = async ({ email }) => {
+    checkStatusScheduledTaskId = setTimeout(() => {
+      dispatchers.checkStatusScheduledTaskTimeUp(email)
+    }, 1000 * 60) // 1 minute
+  }
+  // Cancels the check status task
+  const checkStatusScheduledTaskCancelled = async () => {
+    if (checkStatusScheduledTaskId) {
+      clearTimeout(checkStatusScheduledTaskId)
+      checkStatusScheduledTaskId = null
+    }
+  }
 
   return [
     createEffect({
@@ -44,12 +63,20 @@ export const createEmailVerificationEffects = (
     }),
     createEffect({
       afterEvent:
-        emailVerificationEvents.sendVerificationMailScheduledTaskRequested,
+      emailVerificationEvents.sendVerificationMailScheduledTaskRequested,
       then: sendVerificationMailScheduledTaskRequested,
     }),
     createEffect({
       afterEvent: emailVerificationEvents.checkStatusScheduledTaskRequested,
       then: checkStatusScheduledTaskRequested,
     }),
-  ];
-};
+    createEffect({
+      afterEvent: emailVerificationEvents.sendVerificationMailScheduledTaskCancelled,
+      then: sendVerificationMailScheduledTaskCancelled,
+    }),
+    createEffect({
+      afterEvent: emailVerificationEvents.checkStatusScheduledTaskCancelled,
+      then: checkStatusScheduledTaskCancelled,
+    }),
+  ]
+}

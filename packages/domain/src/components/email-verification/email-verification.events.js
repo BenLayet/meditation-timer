@@ -5,13 +5,13 @@ export const emailVerificationEvents = {
   sendVerificationMailRequested: {
     eventType: "sendVerificationMailRequested",
     payloadShape: {
-      email: ow.string,
+      email: ow.string.email,
     },
   },
   checkStatusRequested: {
     eventType: "checkStatusRequested",
     payloadShape: {
-      email: ow.string,
+      email: ow.string.email,
     },
     handler: (state) => ({
       ...state,
@@ -32,11 +32,17 @@ export const emailVerificationEvents = {
   sendVerificationMailScheduledTaskRequested: {
     eventType: "sendVerificationMailScheduledTaskRequested",
   },
+  sendVerificationMailScheduledTaskCancelled: {
+    eventType: "sendVerificationMailScheduledTaskCancelled",
+  },
   sendVerificationMailScheduledTaskTimeUp: {
     eventType: "sendVerificationMailScheduledTaskTimeUp",
   },
   checkStatusScheduledTaskRequested: {
     eventType: "checkStatusScheduledTaskRequested",
+  },
+  checkStatusScheduledTaskCancelled: {
+    eventType: "checkStatusScheduledTaskCancelled",
   },
   checkStatusScheduledTaskTimeUp: {
     eventType: "checkStatusScheduledTaskTimeUp",
