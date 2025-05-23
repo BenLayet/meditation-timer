@@ -30,3 +30,13 @@ export const validateNotEmptyString = (holder) => {
     );
   }
 };
+
+export const validateFunction = (holder) => {
+  const [key] = Object.keys(holder);
+  const value = holder[key];
+  if (typeof value !== "function") {
+    throw new Error(
+      `Value of ${key} should be a function, but was of type: ${typeof value}`,
+    );
+  }
+};

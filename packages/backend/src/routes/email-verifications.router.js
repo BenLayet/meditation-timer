@@ -60,6 +60,7 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
       res.status(200).json(emailVerification);
     } catch (error) {
       if (error instanceof TokenExpiredError) {
+        logger.warn(error, `RetrieveToken expired`);
         return res.status(403).json({
           status: emailVerificationStatus.EXPIRED,
           uuid: emailVerificationUuid,
@@ -71,6 +72,7 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
   });
   return router;
 }
+
 const extractBearerToken = (req) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
