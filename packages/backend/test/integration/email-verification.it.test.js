@@ -14,7 +14,7 @@ const userToken = fakeTokenService.createPermanentToken({
 });
 const retrieveEmailVerificationToken = fakeTokenService.createShortLivedToken({
   emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
-  scope: ["CHECK_STATUS"],
+  scope: ["RETRIEVE"],
 });
 const activateToken = fakeTokenService.createShortLivedToken({
   emailVerificationUuid: "10000000-0000-1000-8000-000000000001",

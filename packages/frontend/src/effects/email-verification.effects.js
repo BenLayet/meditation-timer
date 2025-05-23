@@ -7,14 +7,14 @@ export const createEmailVerificationEffects = (
 ) => {
   const dispatchers = rootVM.children.account.children.emailVerification.dispatchers;
   // sendVerificationMailRequested
-  const sendVerificationMailRequested = async () => {
-    const status = await emailVerificationService.verifyStoredEmail();
+  const sendVerificationMailRequested = async (email) => {
+    const {status} = await emailVerificationService.createEmailVerification(email);
     dispatchers.checkStatusCompleted({ status }, false);
   };
   // checkStatusRequested
-  const checkStatusRequested = async ({}) => {
-    const status =
-      await emailVerificationService.checkStatus();
+  const checkStatusRequested = async ({email}) => {
+    const {status} =
+        await emailVerificationService.getEmailVerification(email);
     dispatchers.checkStatusCompleted({ status }, false);
   };
   // Schedules a send verification mail task

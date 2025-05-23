@@ -43,11 +43,10 @@ export const startHttpServer = async ({
   app.use(`${basePath}/events`, eventsRouter(eventRepository, logger));
 
   // Error-handling middleware
-  app.use((err, req, res) => {
-    logger.error("Error occurred:", err.message);
+  app.use((err, req, res, next) => {
+    logger.error(err, "Error occurred:", err.message);
     res.status(500).json({ error: "Internal Server Error" });
   });
-  //app.use(bearerToken());
 
   // Start server
   const server = app.listen(port, () => {

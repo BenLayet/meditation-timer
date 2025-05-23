@@ -45,6 +45,9 @@ export const accountEvents = {
   },
   checkEmailVerificationStatusRequested: {
     eventType: "checkEmailVerificationStatusRequested",
+    payloadShape: {
+      email: ow.string.email,
+    },
     handler: (state) => ({
       ...state,
       loading: true,

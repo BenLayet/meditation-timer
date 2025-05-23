@@ -4,9 +4,15 @@ import { emailVerificationStatus } from "../../models/email-verification.model.j
 export const emailVerificationEvents = {
   sendVerificationMailRequested: {
     eventType: "sendVerificationMailRequested",
+    payloadShape: {
+      email: ow.string,
+    },
   },
   checkStatusRequested: {
     eventType: "checkStatusRequested",
+    payloadShape: {
+      email: ow.string,
+    },
     handler: (state) => ({
       ...state,
       loading: true,

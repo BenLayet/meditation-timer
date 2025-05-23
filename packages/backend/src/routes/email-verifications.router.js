@@ -14,13 +14,13 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
       logger.info(
         `Send verification email requested: ${JSON.stringify(email)}`,
       );
-      const emailVerificationResponse =
+      const emailVerification =
         await emailVerificationService.createEmailVerification(email);
       logger.info(`verification email created`);
-      res.status(201).json(emailVerificationResponse);
+      res.status(201).json(emailVerification);
     } catch (error) {
       res.status(500).json({ error: "Failed to send verification email" });
-      logger.error(`Post verification email error: ${error}`, error);
+      logger.error(error, `Post verification email error: ${error}`);
     }
   });
 
@@ -34,7 +34,7 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
       res.status(200).json({ message: "email activated successfully" });
     } catch (error) {
       res.status(403).json({ error: "Invalid or expired verification token" });
-      logger.error(`activate error: ${error}`, error);
+      logger.error(error, `activate error: ${error}`);
     }
   });
 

@@ -1,3 +1,5 @@
+import { validateEmailFormat } from "./email.validator.js";
+
 export const emailVerificationStatus = {
   NOT_REQUESTED: "NOT_REQUESTED",
   REQUESTED: "REQUESTED",
@@ -10,16 +12,17 @@ export function validateNewEmailVerification(emailVerification) {
     throw new Error("Email verification cannot be null or undefined");
   if (typeof emailVerification.email !== "string")
     throw new Error("Email verification email must be a string");
-  if (emailVerification.email.length === 0)
-    throw new Error("Email verification email cannot be empty");
-  if (!isEmailFormat(emailVerification.email))
-    throw new Error("Email verification email must be a valid email");
-  if (emailVerification.status !== statusSequence[0])
-    throw new Error(
-      `Email verification status must be ${statusSequence[0]} at creation`,
-    );
+  validateEmailFormat(emailVerification.email);
 }
-const isEmailFormat = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+export function validateEmailVerificationStatus(status) {
+  if (typeof status !== "string")
+    throw new Error("Email verification status must be a string");
+  if (status.length === 0)
+    throw new Error("Email verification status cannot be empty");
+  if (!statusSequence.includes(status))
+    throw new Error(`Email verification status ${status} is not valid`);
+}
 
 export function validateStatusTransition(fromStatus, toStatus) {
   const fromStatusIndex = statusSequence.indexOf(fromStatus);
@@ -32,4 +35,11 @@ export function validateStatusTransition(fromStatus, toStatus) {
     throw new Error(
       `Email verification status cannot be changed from ${fromStatus} to ${toStatus}`,
     );
+}
+
+export function validateEmailVerification(emailVerification) {
+  if (typeof emailVerification !== "object")
+    throw new Error("Email verification cannot be null or undefined");
+  validateEmailFormat(emailVerification.email);
+  validateEmailVerificationStatus(emailVerification.status);
 }

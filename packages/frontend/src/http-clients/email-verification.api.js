@@ -1,9 +1,9 @@
+import {validateNotEmptyString} from "domain/src/models/not-null.validator.js";
+
 const API_URL = "/api/v1/email-verifications";
 export class EmailVerificationApi {
   createEmailVerification = async (email) => {
-    if (!email) {
-      throw new Error("Email is required");
-    }
+    validateNotEmptyString({email});
     return fetch(API_URL, {
       method: "POST",
       headers: {
@@ -18,10 +18,10 @@ export class EmailVerificationApi {
     });
   };
   getEmailVerification = async (emailVerificationUuid, token) => {
-    // validate not null or undefined (lib in common package)
-    if (!token) throw new Error("token is required");
+    validateNotEmptyString({emailVerificationUuid});
+    validateNotEmptyString({token});
 
-    return fetch(`${API_URL}/check-status`, {
+    return fetch(`${API_URL}/${emailVerificationUuid}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
