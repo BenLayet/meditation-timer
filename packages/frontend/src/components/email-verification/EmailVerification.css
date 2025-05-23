@@ -1,5 +1,13 @@
 /* General container styling */
-
+.email-verification-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+  background: var(--subtle-highlighted-background);
+  border-radius: var(--border-radius);
+  min-height: 9em;
+}
 /* Account info styling */
 .account-info dl {
   display: grid;

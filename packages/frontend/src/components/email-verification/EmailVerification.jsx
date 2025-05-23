@@ -17,7 +17,7 @@ function EmailVerification({ vm }) {
   const retryRequested = vm.dispatchers.retryRequested;
 
   return (
-    <>
+    <div className="email-verification-container">
       {isLoading && (
         <FontAwesomeIcon icon={faSpinner} spin className="status-spinner" />
       )}
@@ -37,7 +37,7 @@ function EmailVerification({ vm }) {
         </button>
       )}
       {isResettable && <a onClick={resetRequested}>{t("reset")}</a>}
-    </>
+    </div>
   );
 }
 

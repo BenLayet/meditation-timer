@@ -25,7 +25,7 @@ function Account({ vm }) {
   const disconnectRequested = vm.dispatchers.disconnectRequested;
 
   return (
-    <section className="account-section flex-column">
+    <section className="account-section flex-column flex-grow">
       {isLoading && (
         <FontAwesomeIcon icon={faSpinner} spin className="status-spinner" />
       )}
@@ -50,7 +50,7 @@ function Account({ vm }) {
       )}
       {isEmailVisible && (
         <>
-          <div className="account-info flex-grow">
+          <div className="account-info">
             <dl>
               <dt>{t("emailKey")}</dt>
               <dd>{email}</dd>
