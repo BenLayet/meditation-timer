@@ -59,11 +59,11 @@ const addMockedEffects = (
   //email verification
   stateManager.addEffect(
     createEffect({
-      afterEvent: emailVerificationEvents.checkStatusRequested,
+      afterEvent: emailVerificationEvents.checkIfEmailVerifiedRequested,
       then: () =>
         stateManager
           .getRootVM()
-          .children.account.children.emailVerification.dispatchers.checkStatusCompleted(
+          .children.account.children.emailVerification.dispatchers.checkIfEmailVerifiedCompleted(
             remoteEmailVerification,
           ),
     }),
@@ -96,21 +96,27 @@ const initializeScenario = () => {
 
 class CustomWorld {
   constructor() {}
+
   get state() {
     return stateManager.state;
   }
+
   get account() {
     return mockState.account;
   }
+
   get remoteEmailVerification() {
     return mockState.remoteEmailVerification;
   }
+
   get meditationStorage() {
     return mockState.meditationStorage;
   }
+
   vm() {
     return stateManager.getRootVM();
   }
+
   //patch state
   patchState = (path, patcher) => {
     statePatcher(stateManager)(path, patcher); //

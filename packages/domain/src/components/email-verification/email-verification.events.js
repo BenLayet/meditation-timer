@@ -8,8 +8,8 @@ export const emailVerificationEvents = {
       email: ow.string.email,
     },
   },
-  checkStatusRequested: {
-    eventType: "checkStatusRequested",
+  checkIfEmailVerifiedRequested: {
+    eventType: "checkIfEmailVerifiedRequested",
     payloadShape: {
       email: ow.string.email,
     },
@@ -18,8 +18,8 @@ export const emailVerificationEvents = {
       loading: true,
     }),
   },
-  checkStatusCompleted: {
-    eventType: "checkStatusCompleted",
+  checkIfEmailVerifiedCompleted: {
+    eventType: "checkIfEmailVerifiedCompleted",
     payloadShape: {
       status: ow.string.oneOf(Object.values(emailVerificationStatus)),
     },
@@ -38,14 +38,14 @@ export const emailVerificationEvents = {
   sendVerificationMailScheduledTaskTimeUp: {
     eventType: "sendVerificationMailScheduledTaskTimeUp",
   },
-  checkStatusScheduledTaskRequested: {
-    eventType: "checkStatusScheduledTaskRequested",
+  checkIfEmailVerifiedScheduledTaskRequested: {
+    eventType: "checkIfEmailVerifiedScheduledTaskRequested",
   },
-  checkStatusScheduledTaskCancelled: {
-    eventType: "checkStatusScheduledTaskCancelled",
+  checkIfEmailVerifiedScheduledTaskCancelled: {
+    eventType: "checkIfEmailVerifiedScheduledTaskCancelled",
   },
-  checkStatusScheduledTaskTimeUp: {
-    eventType: "checkStatusScheduledTaskTimeUp",
+  checkIfEmailVerifiedScheduledTaskTimeUp: {
+    eventType: "checkIfEmailVerifiedScheduledTaskTimeUp",
     isNewCycle: true,
   },
   retryRequested: {
