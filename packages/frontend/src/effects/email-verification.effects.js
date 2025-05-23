@@ -12,13 +12,13 @@ export const createEmailVerificationEffects = (
   const createEmailVerificationRequested = async ({ email }) => {
     const { status } =
       await emailVerificationService.createEmailVerification(email);
-    dispatchers.checkIfEmailVerifiedCompleted({ status });
+    dispatchers.refreshEmailVerificationCompleted({ status });
   };
-  // checkIfEmailVerifiedRequested
-  const checkIfEmailVerifiedRequested = async ({ email }) => {
+  // refreshEmailVerificationRequested
+  const refreshEmailVerificationRequested = async () => {
     const { status } =
-      await emailVerificationService.getEmailVerification(email);
-    dispatchers.checkIfEmailVerifiedCompleted({ status });
+      await emailVerificationService.refreshEmailVerificationRequested();
+    dispatchers.refreshEmailVerificationCompleted({ status });
   };
 
   // Schedules a send verification mail task
@@ -40,24 +40,24 @@ export const createEmailVerificationEffects = (
   };
 
   // Schedules a check status task
-  let checkIfEmailVerifiedScheduledTaskId = null;
-  const checkIfEmailVerifiedScheduledTaskRequested = async ({ email }) => {
-    checkIfEmailVerifiedScheduledTaskId = setTimeout(() => {
-      dispatchers.checkIfEmailVerifiedScheduledTaskTimeUp(email);
+  let refreshEmailVerificationScheduledTaskId = null;
+  const refreshEmailVerificationScheduledTaskRequested = async ({ email }) => {
+    refreshEmailVerificationScheduledTaskId = setTimeout(() => {
+      dispatchers.refreshEmailVerificationScheduledTaskTimeUp(email);
     }, 1000 * 60); // 1 minute
   };
   // Cancels the check status task
-  const checkIfEmailVerifiedScheduledTaskCancelled = async () => {
-    if (checkIfEmailVerifiedScheduledTaskId) {
-      clearTimeout(checkIfEmailVerifiedScheduledTaskId);
-      checkIfEmailVerifiedScheduledTaskId = null;
+  const refreshEmailVerificationScheduledTaskCancelled = async () => {
+    if (refreshEmailVerificationScheduledTaskId) {
+      clearTimeout(refreshEmailVerificationScheduledTaskId);
+      refreshEmailVerificationScheduledTaskId = null;
     }
   };
 
   return [
     createEffect({
-      afterEvent: emailVerificationEvents.checkIfEmailVerifiedRequested,
-      then: checkIfEmailVerifiedRequested,
+      afterEvent: emailVerificationEvents.refreshEmailVerificationRequested,
+      then: refreshEmailVerificationRequested,
     }),
     createEffect({
       afterEvent: emailVerificationEvents.createEmailVerificationRequested,
@@ -70,8 +70,8 @@ export const createEmailVerificationEffects = (
     }),
     createEffect({
       afterEvent:
-        emailVerificationEvents.checkIfEmailVerifiedScheduledTaskRequested,
-      then: checkIfEmailVerifiedScheduledTaskRequested,
+        emailVerificationEvents.refreshEmailVerificationScheduledTaskRequested,
+      then: refreshEmailVerificationScheduledTaskRequested,
     }),
     createEffect({
       afterEvent:
@@ -80,8 +80,8 @@ export const createEmailVerificationEffects = (
     }),
     createEffect({
       afterEvent:
-        emailVerificationEvents.checkIfEmailVerifiedScheduledTaskCancelled,
-      then: checkIfEmailVerifiedScheduledTaskCancelled,
+        emailVerificationEvents.refreshEmailVerificationScheduledTaskCancelled,
+      then: refreshEmailVerificationScheduledTaskCancelled,
     }),
   ];
 };

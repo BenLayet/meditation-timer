@@ -67,11 +67,11 @@ const addMockedEffects = (
   //email verification
   stateManager.addEffect(
     createEffect({
-      afterEvent: emailVerificationEvents.checkIfEmailVerifiedRequested,
+      afterEvent: emailVerificationEvents.refreshEmailVerificationRequested,
       then: () =>
         stateManager
           .getRootVM()
-          .children.account.children.emailVerification.dispatchers.checkIfEmailVerifiedCompleted(
+          .children.account.children.emailVerification.dispatchers.refreshEmailVerificationCompleted(
             remoteEmailVerification,
           ),
     }),

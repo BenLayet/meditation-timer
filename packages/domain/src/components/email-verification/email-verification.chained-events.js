@@ -2,7 +2,7 @@ import { emailVerificationEvents } from "./email-verification.events.js";
 
 export const emailVerificationChainedEvents = [
   {
-    onEvent: emailVerificationEvents.checkIfEmailVerifiedCompleted,
+    onEvent: emailVerificationEvents.refreshEmailVerificationCompleted,
     onCondition: ({ state }) => state.ownState.status === "NOT_REQUESTED",
     thenDispatch:
       emailVerificationEvents.createEmailVerificationScheduledTaskRequested,
@@ -11,10 +11,10 @@ export const emailVerificationChainedEvents = [
     }),
   },
   {
-    onEvent: emailVerificationEvents.checkIfEmailVerifiedCompleted,
+    onEvent: emailVerificationEvents.refreshEmailVerificationCompleted,
     onCondition: ({ state }) => state.ownState.status === "REQUESTED",
     thenDispatch:
-      emailVerificationEvents.checkIfEmailVerifiedScheduledTaskRequested,
+      emailVerificationEvents.refreshEmailVerificationScheduledTaskRequested,
   },
   {
     onEvent: emailVerificationEvents.createEmailVerificationScheduledTaskTimeUp,
@@ -28,11 +28,12 @@ export const emailVerificationChainedEvents = [
   {
     onEvent: emailVerificationEvents.resetRequested,
     thenDispatch:
-      emailVerificationEvents.checkIfEmailVerifiedScheduledTaskCancelled,
+      emailVerificationEvents.refreshEmailVerificationScheduledTaskCancelled,
   },
   {
-    onEvent: emailVerificationEvents.checkIfEmailVerifiedScheduledTaskTimeUp,
-    thenDispatch: emailVerificationEvents.checkIfEmailVerifiedRequested,
+    onEvent:
+      emailVerificationEvents.refreshEmailVerificationScheduledTaskTimeUp,
+    thenDispatch: emailVerificationEvents.refreshEmailVerificationRequested,
   },
   {
     onEvent: emailVerificationEvents.retryRequested,

@@ -18,13 +18,14 @@ export class EmailVerificationService {
     return emailVerification;
   }
 
-  async getEmailVerification(email) {
-    validateNotEmptyString({ email });
-    let emailVerification = await this.loadLocalEmailVerification(email);
+  async refreshEmailVerificationRequested() {
+    let emailVerification = await this.loadLocalEmailVerification();
     switch (emailVerification.status) {
       case emailVerificationStatus.NOT_REQUESTED:
         emailVerification =
-          await this.emailVerificationApi.createEmailVerification(email);
+          await this.emailVerificationApi.createEmailVerification(
+            emailVerification.email,
+          );
         break;
       case emailVerificationStatus.REQUESTED:
         emailVerification =
@@ -72,21 +73,20 @@ export class EmailVerificationService {
 
   async storeLocalEmailVerification(emailVerification) {
     validateEmailVerification(emailVerification);
-    await this.keyValueStorageService.set(
-      "emailVerification",
-      emailVerification,
-    );
+    if (
+      emailVerification.status === emailVerificationStatus.REQUESTED ||
+      emailVerification.status === emailVerificationStatus.NOT_REQUESTED
+    ) {
+      await this.keyValueStorageService.set(
+        "emailVerification",
+        emailVerification,
+      );
+    }
   }
 
-  async loadLocalEmailVerification(email) {
-    let emailVerification =
+  async loadLocalEmailVerification() {
+    const emailVerification =
       await this.keyValueStorageService.get("emailVerification");
-    if (!emailVerification || emailVerification.email !== email) {
-      emailVerification = {
-        email,
-        status: emailVerificationStatus.NOT_REQUESTED,
-      };
-    }
     validateEmailVerification(emailVerification);
     return emailVerification;
   }

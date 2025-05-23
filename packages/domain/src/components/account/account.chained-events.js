@@ -20,13 +20,13 @@ export const accountChainedEvents = [
   {
     onEvent: accountEvents.checkEmailVerificationStatusRequested,
     thenDispatch: {
-      ...emailVerificationEvents.checkIfEmailVerifiedRequested,
+      ...emailVerificationEvents.refreshEmailVerificationRequested,
       childComponentPath: ["emailVerification"],
     },
   },
   {
     onEvent: {
-      ...emailVerificationEvents.checkIfEmailVerifiedCompleted,
+      ...emailVerificationEvents.refreshEmailVerificationCompleted,
       childComponentPath: ["emailVerification"],
     },
     thenDispatch: accountEvents.checkEmailVerificationStatusCompleted,

@@ -7,7 +7,6 @@ export const createAccountEffects = ({ keyValueStorageService }, rootVM) => {
 
   //loadAccountRequested
   const loadAccountRequested = async () => {
-    //TODO : fix architecture : email stored in effect but retrieved in service
     const email = await keyValueStorageService.get("email");
     const status =
       (await keyValueStorageService.get("accountStatus")) ??
