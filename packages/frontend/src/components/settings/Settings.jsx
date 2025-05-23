@@ -4,9 +4,10 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import "./Settings.css";
 import { useTranslation } from "react-i18next";
 import Account from "../account/Account.jsx";
+import { LanguageSelection } from '../language-selection/LanguageSelection.jsx'
 
 function Settings({ vm }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isMenuVisible, setMenuVisible] = useState(true);
 
   const toggleMenu = () => {
@@ -14,9 +15,6 @@ function Settings({ vm }) {
   };
   const hideMenu = () => {
     setMenuVisible(false);
-  };
-  const changeLanguage = (event) => {
-    i18n.changeLanguage(event.target.value);
   };
 
   return (
@@ -29,38 +27,20 @@ function Settings({ vm }) {
           icon={faGear}
           style={{ fontSize: "24px" }}
         />
-
         {isMenuVisible && (
           <div className="settings-menu">
-            <div className="settings-menu-item">
-              <label className="settings-menu-item-label">{t("account")}</label>
-              <div className="settings-menu-item-content">
-                <Account vm={vm.children.account} />
-              </div>
-            </div>
             <div className="settings-menu-item">
               <label className="settings-menu-item-label">
                 {t("language")}
               </label>
               <div className="settings-menu-item-content">
-                <input
-                  type="radio"
-                  id="language-en"
-                  name="language"
-                  value="en"
-                  checked={i18n.language === "en"}
-                  onChange={changeLanguage}
-                />
-                <label htmlFor="language-en">{t("english")}</label>
-                <input
-                  type="radio"
-                  id="language-fr"
-                  name="language"
-                  value="fr"
-                  checked={i18n.language === "fr"}
-                  onChange={changeLanguage}
-                />
-                <label htmlFor="language-fr">{t("french")}</label>
+                <LanguageSelection/>
+              </div>
+            </div>
+            <div className="settings-menu-item">
+              <label className="settings-menu-item-label">{t("account")}</label>
+              <div className="settings-menu-item-content">
+                <Account vm={vm.children.account} />
               </div>
             </div>
           </div>
