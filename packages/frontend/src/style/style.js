@@ -1,6 +1,7 @@
 
 import './edges.css';
 import './colors.css';
+import './fonts.css';
 import './typography.css';
 import './button.css';
 import './range.css';

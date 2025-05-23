@@ -1,5 +1,8 @@
 import express from "express";
 import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
+import pkg from "jsonwebtoken";
+
+const { TokenExpiredError } = pkg;
 
 export function emailVerificationsRouter(emailVerificationService, logger) {
   const router = express.Router();
@@ -40,27 +43,32 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
 
   // Route to create a user
   router.get("/:emailVerificationUuid", async (req, res) => {
+    const { emailVerificationUuid } = req.params;
+    logger.info(
+      `Check Status requested, for emailVerificationUuid: ${emailVerificationUuid}`,
+    );
+    const token = extractBearerToken(req); // Extract token from Authorization header
+    if (!token) {
+      logger.error(`token is missing`);
+      return res.status(401).json({ error: "security token is required" });
+    }
     try {
-      const { emailVerificationUuid } = req.params;
-      logger.info(
-        `Check Status requested, for emailVerificationUuid: ${emailVerificationUuid}`,
-      );
-      logger.debug(req.headers);
-      const token = extractBearerToken(req); // Extract token from Authorization header
-      if (!token) {
-        logger.error(`token is missing`);
-        return res.status(401).json({ error: "security token is required" });
-      }
       const emailVerification = await emailVerificationService.get(
         emailVerificationUuid,
         token,
       );
       res.status(200).json(emailVerification);
     } catch (error) {
-      res.status(403).json({ status: emailVerificationStatus.EXPIRED });
+      if (error instanceof TokenExpiredError) {
+        return res.status(403).json({
+          status: emailVerificationStatus.EXPIRED,
+          uuid: emailVerificationUuid,
+        });
+      }
+      logger.error(error, `Unexpected error retrieving email verification`);
+      throw error;
     }
   });
-
   return router;
 }
 const extractBearerToken = (req) => {

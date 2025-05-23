@@ -31,7 +31,16 @@ export class EmailVerificationService {
         emailVerification = await this.createEmailVerification(email);
         break;
       case emailVerificationStatus.REQUESTED:
-        emailVerification = await this.emailVerificationApi.getEmailVerification(emailVerification.uuid, emailVerification.retrieveToken);
+        try {
+          emailVerification = await this.emailVerificationApi.getEmailVerification(emailVerification.uuid, emailVerification.retrieveToken);
+        } catch (error) {
+          if (error.status === emailVerificationStatus.EXPIRED) {
+            emailVerification.status = emailVerificationStatus.EXPIRED;
+          } else {
+            console.error("Unexpected error retrieving email verification", error);
+            throw error;
+          }
+        }
         await this.keyValueStorageService.set(
             "emailVerification",
             emailVerification
