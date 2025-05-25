@@ -22,11 +22,8 @@ When(/^I create an account with my email$/, function () {
 Then(
   /^I should receive an email with a verification link in my inbox$/,
   function () {
-    expect(
-      this.eventWasSent(
-        emailVerificationEvents.createEmailVerificationRequested,
-      ),
-    ).to.be.true;
+    expect(this.eventWasSent(emailVerificationEvents.verificationRequested)).to
+      .be.true;
   },
 );
 
@@ -59,13 +56,13 @@ Then("I should be able to create an account again", function () {
 });
 
 Given(/^I have not verified my email yet$/, function () {
-  this.remoteEmailVerification.status = emailVerificationStatus.REQUESTED;
+  this.remoteEmailVerification.status =
+    emailVerificationStatus.ACTIVATION_LINK_SENT;
 });
 
 Given(/^I have just clicked the link to verify my email$/, function () {
   this.account.email = "test@example.org";
-  this.account.status = accountStatus.PENDING_VERIFICATION;
-  this.remoteEmailVerification.status = emailVerificationStatus.VERIFIED;
+  this.account.status = accountStatus.AUTHENTICATED;
 });
 
 Then(/^I should be authenticated$/, function () {

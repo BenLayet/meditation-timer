@@ -1,4 +1,7 @@
-import { statePatcher } from "domain/src/lib/state-manager/debugger.js";
+import {
+  forceState,
+  statePatcher,
+} from "domain/src/lib/state-manager/debugger.js";
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
 
 const trackSize = 1000;
@@ -27,13 +30,14 @@ const timeTravel = () => {
   }
   console.log(`TIME TRAVEL offset=${offset}`);
   console.log(events[offset]);
-  window.sm.state(states[offset]);
+
+  window.sm.replaceState(states[offset]);
 };
 //FORCE STATE DEBUG EFFECT
 const forceStateEffect = (stateManager) =>
   createEffect({
     afterEvent: { eventType: "FORCE_STATE" },
-    then: ({ payload }) => (stateManager.state = payload.newState),
+    then: (payload) => (stateManager.state = payload.newState),
   });
 
 export const addDebugger = (stateManager) => {
@@ -80,9 +84,12 @@ export const addDebugger = (stateManager) => {
       offset++;
       timeTravel();
     },
-    state: (key, value) => {
+    patchState: (key, value) => {
       const newValue = statePatcher(stateManager)(key, value);
       console.log(newValue);
+    },
+    replaceState(newState) {
+      forceState(stateManager, newState);
     },
   };
 };

@@ -9,7 +9,7 @@ import path from "path";
 
 export const startHttpServer = async ({
   eventRepository,
-  emailVerificationService,
+  emailVerificationUsecase,
   apiProperties,
   version,
   environment,
@@ -38,7 +38,7 @@ export const startHttpServer = async ({
   app.use(`${basePath}/health`, healthRouter(version, environment, logger));
   app.use(
     `${basePath}/email-verifications`,
-    emailVerificationsRouter(emailVerificationService, logger),
+    emailVerificationsRouter(emailVerificationUsecase, logger),
   );
   app.use(`${basePath}/events`, eventsRouter(eventRepository, logger));
 

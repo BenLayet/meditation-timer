@@ -4,7 +4,7 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import "./Settings.css";
 import { useTranslation } from "react-i18next";
 import Account from "../account/Account.jsx";
-import { LanguageSelection } from '../language-selection/LanguageSelection.jsx'
+import { LanguageSelection } from "../language-selection/LanguageSelection.jsx";
 
 function Settings({ vm }) {
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ function Settings({ vm }) {
                 {t("language")}
               </label>
               <div className="settings-menu-item-content">
-                <LanguageSelection/>
+                <LanguageSelection />
               </div>
             </div>
             <div className="settings-menu-item">

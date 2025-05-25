@@ -6,23 +6,23 @@ import "./EmailVerification.css";
 function EmailVerification({ vm }) {
   const { t } = useTranslation();
   const isLoading = vm.selectors.isLoading();
-  const isNotRequestedYet = vm.selectors.isNotRequestedYet();
-  const isRequested = vm.selectors.isRequested();
+  const isPendingConnection = vm.selectors.isPendingConnection();
+  const isActivationLinkSent = vm.selectors.isActivationLinkSent();
   const isExpired = vm.selectors.isExpired();
   const isRefreshable = vm.selectors.isRefreshable();
   const isResettable = vm.selectors.isResettable();
-  const isRetryable = vm.selectors.isRetryable();
   const resetRequested = vm.dispatchers.resetRequested;
   const refreshRequested = vm.dispatchers.refreshRequested;
-  const retryRequested = vm.dispatchers.retryRequested;
+  const canActivationLinkBeRequested =
+    vm.dispatchers.canActivationLinkBeRequested;
 
   return (
     <div className="email-verification-container">
       {isLoading && (
         <FontAwesomeIcon icon={faSpinner} spin className="status-spinner" />
       )}
-      {isNotRequestedYet && <p>{t("emailVerificationPending")}</p>}
-      {isRequested && <p>{t("emailVerificationSent")}</p>}
+      {isPendingConnection && <p>{t("emailVerificationPending")}</p>}
+      {isActivationLinkSent && <p>{t("emailVerificationSent")}</p>}
       {isExpired && <p>{t("emailVerificationExpired")}</p>}
       {isRefreshable && (
         <button className="main-action icon-button" onClick={refreshRequested}>
@@ -30,10 +30,13 @@ function EmailVerification({ vm }) {
           {t("refresh")}
         </button>
       )}
-      {isRetryable && (
-        <button className="main-action icon-button" onClick={retryRequested}>
+      {canActivationLinkBeRequested && (
+        <button
+          className="main-action icon-button"
+          onClick={activationLinkRequested}
+        >
           <FontAwesomeIcon icon={faSync} />
-          {t("retry")}
+          {t("activationLinkRequested")}
         </button>
       )}
       {isResettable && <a onClick={resetRequested}>{t("reset")}</a>}

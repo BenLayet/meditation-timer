@@ -21,4 +21,8 @@ export const meditationTimerAppEvents = {
     eventType: "gongStopRequested",
     isNewCycle: true,
   },
+  onlineDetected: {
+    eventType: "onlineDetected",
+    isNewCycle: true,
+  },
 };

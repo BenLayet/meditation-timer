@@ -1,5 +1,6 @@
 import ow from "ow";
 import { accountStatus } from "./account.state.js";
+import { emailRegex } from "../../models/email.validator.js";
 
 export const accountEvents = {
   createAccountRequested: {
@@ -10,9 +11,28 @@ export const accountEvents = {
     handler: (state, { email }) => ({
       ...state,
       email,
-      status: accountStatus.PENDING_VERIFICATION,
+      loading: true,
     }),
     isNewCycle: true,
+  },
+  accountCreated: {
+    eventType: "accountCreated",
+    payloadShape: {
+      email: ow.string.matches(emailRegex),
+    },
+    handler: (state) => ({
+      ...state,
+      loading: false,
+      status: accountStatus.PENDING_VERIFICATION,
+    }),
+  },
+  accountAuthenticated: {
+    eventType: "accountAuthenticated",
+    handler: (state) => ({
+      ...state,
+      loading: false,
+      status: accountStatus.AUTHENTICATED,
+    }),
   },
   createAccountCancelled: {
     eventType: "createAccountCancelled",
@@ -33,35 +53,16 @@ export const accountEvents = {
   accountLoaded: {
     eventType: "accountLoaded",
     payloadShape: {
-      email: ow.optional.string.email,
-      status: ow.string.oneOf(Object.values(accountStatus)),
+      account: ow.optional.object.exactShape({
+        email: ow.string.matches(emailRegex),
+        status: ow.string.oneOf(Object.values(accountStatus)),
+      }),
     },
-    handler: (state, { email, status }) => ({
+    handler: (state, { account }) => ({
       ...state,
       loading: false,
-      email,
-      status,
-    }),
-  },
-  checkEmailVerificationStatusRequested: {
-    eventType: "checkEmailVerificationStatusRequested",
-    payloadShape: {
-      email: ow.string.email,
-    },
-    handler: (state) => ({
-      ...state,
-      loading: true,
-    }),
-  },
-  checkEmailVerificationStatusCompleted: {
-    eventType: "checkEmailVerificationStatusCompleted",
-    payloadShape: {
-      isVerified: ow.boolean,
-    },
-    handler: (state, { isVerified }) => ({
-      ...state,
-      loading: false,
-      status: isVerified ? accountStatus.AUTHENTICATED : state.status,
+      email: account?.email,
+      status: account?.status ?? accountStatus.ANONYMOUS,
     }),
   },
   disconnectRequested: {

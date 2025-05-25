@@ -5,6 +5,7 @@ import { createWakeLockEffects } from "./wake-lock.effects.js";
 import { createGongEffects } from "./gong.effects.js";
 import { createEmailVerificationEffects } from "./email-verification.effects.js";
 import { createAccountEffects } from "./account.effects.js";
+import { createOnlineDetectionEffects } from "./online-detection.effects.js";
 
 export const createEffects = (
   rootVM,
@@ -27,4 +28,5 @@ export const createEffects = (
     { emailVerificationService, keyValueStorageService },
     rootVM,
   ),
+  ...createOnlineDetectionEffects({}, rootVM),
 ];

@@ -8,88 +8,82 @@ export const createEmailVerificationEffects = (
   const dispatchers =
     rootVM.children.account.children.emailVerification.dispatchers;
 
-  // createEmailVerificationRequested
-  const createEmailVerificationRequested = async ({ email }) => {
-    const { status } =
-      await emailVerificationService.createEmailVerification(email);
-    dispatchers.refreshEmailVerificationCompleted({ status });
+  // createRequested
+  const createRequested = async ({ email }) => {
+    await emailVerificationService.storeNewEmailVerification(email);
+    dispatchers.createSucceeded();
   };
-  // refreshEmailVerificationRequested
-  const refreshEmailVerificationRequested = async () => {
+  // loadStatusRequested
+  const loadStatusRequested = async () => {
     const { status } =
-      await emailVerificationService.refreshEmailVerificationRequested();
-    dispatchers.refreshEmailVerificationCompleted({ status });
+      await emailVerificationService.loadLocalEmailVerification();
+    dispatchers.statusLoaded({ status });
+  };
+  //activationLinkRequested
+  const activationLinkRequested = async () => {
+    try {
+      await emailVerificationService.sendActivationLink();
+      dispatchers.activationLinkSent();
+    } catch (error) {
+      console.warn(error);
+      //this is expected when offline
+      dispatchers.activationLinkFailed();
+    }
+  };
+  let scheduledRefreshTimeoutId = null;
+  // cancelScheduledRefreshRequested
+  const cancelScheduledRefreshRequested = () => {
+    if (scheduledRefreshTimeoutId) {
+      clearTimeout(scheduledRefreshTimeoutId);
+      scheduledRefreshTimeoutId = null;
+    }
+  };
+  // scheduleRefreshRequested
+  const scheduleRefreshRequested = async () => {
+    cancelScheduledRefreshRequested();
+    scheduledRefreshTimeoutId = setTimeout(
+      dispatchers.refreshTimeUp,
+      1000 * 60,
+    ); // 1 minute
   };
 
-  // Schedules a send verification mail task
-  let createEmailVerificationScheduledTaskId = null;
-  const createEmailVerificationScheduledTaskRequested = async () => {
-    if (createEmailVerificationScheduledTaskId) {
-      clearTimeout(createEmailVerificationScheduledTaskId);
-      createEmailVerificationScheduledTaskId = null;
-    }
-    createEmailVerificationScheduledTaskId = setTimeout(
-      () => {
-        dispatchers.createEmailVerificationScheduledTaskTimeUp();
-      },
-      1000 * 60 * 60,
-    ); // 1 hour
-  };
-  // Cancels the send verification mail task
-  const createEmailVerificationScheduledTaskCancelled = async () => {
-    if (createEmailVerificationScheduledTaskId) {
-      clearTimeout(createEmailVerificationScheduledTaskId);
-      createEmailVerificationScheduledTaskId = null;
-    }
-  };
-
-  // Schedules a check status task
-  let refreshEmailVerificationScheduledTaskId = null;
-  const refreshEmailVerificationScheduledTaskRequested = async ({ email }) => {
-    if (refreshEmailVerificationScheduledTaskId) {
-      clearTimeout(refreshEmailVerificationScheduledTaskId);
-      refreshEmailVerificationScheduledTaskId = null;
-    }
-    refreshEmailVerificationScheduledTaskId = setTimeout(() => {
-      dispatchers.refreshEmailVerificationScheduledTaskTimeUp(email);
-    }, 1000 * 60); // 1 minute
+  // refreshRequested
+  const refreshRequested = async () => {
+    const { status } =
+      await emailVerificationService.refreshStoredEmailVerification();
+    dispatchers.refreshCompleted({ status });
   };
   // Cancels the check status task
-  const refreshEmailVerificationScheduledTaskCancelled = async () => {
-    if (refreshEmailVerificationScheduledTaskId) {
-      clearTimeout(refreshEmailVerificationScheduledTaskId);
-      refreshEmailVerificationScheduledTaskId = null;
-    }
-  };
+  const resetRequested = emailVerificationService.deleteStoredEmailVerification;
 
   return [
     createEffect({
-      afterEvent: emailVerificationEvents.refreshEmailVerificationRequested,
-      then: refreshEmailVerificationRequested,
+      afterEvent: emailVerificationEvents.createRequested,
+      then: createRequested,
     }),
     createEffect({
-      afterEvent: emailVerificationEvents.createEmailVerificationRequested,
-      then: createEmailVerificationRequested,
+      afterEvent: emailVerificationEvents.loadStatusRequested,
+      then: loadStatusRequested,
     }),
     createEffect({
-      afterEvent:
-        emailVerificationEvents.createEmailVerificationScheduledTaskRequested,
-      then: createEmailVerificationScheduledTaskRequested,
+      afterEvent: emailVerificationEvents.activationLinkRequested,
+      then: activationLinkRequested,
     }),
     createEffect({
-      afterEvent:
-        emailVerificationEvents.refreshEmailVerificationScheduledTaskRequested,
-      then: refreshEmailVerificationScheduledTaskRequested,
+      afterEvent: emailVerificationEvents.scheduleRefreshRequested,
+      then: scheduleRefreshRequested,
     }),
     createEffect({
-      afterEvent:
-        emailVerificationEvents.createEmailVerificationScheduledTaskCancelled,
-      then: createEmailVerificationScheduledTaskCancelled,
+      afterEvent: emailVerificationEvents.cancelScheduledRefreshRequested,
+      then: cancelScheduledRefreshRequested,
     }),
     createEffect({
-      afterEvent:
-        emailVerificationEvents.refreshEmailVerificationScheduledTaskCancelled,
-      then: refreshEmailVerificationScheduledTaskCancelled,
+      afterEvent: emailVerificationEvents.refreshRequested,
+      then: refreshRequested,
+    }),
+    createEffect({
+      afterEvent: emailVerificationEvents.resetRequested,
+      then: resetRequested,
     }),
   ];
 };

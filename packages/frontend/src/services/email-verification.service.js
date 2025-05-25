@@ -9,78 +9,45 @@ export class EmailVerificationService {
     this.keyValueStorageService = keyValueStorageService;
     this.emailVerificationApi = emailVerificationApi;
   }
-
-  async createEmailVerification(email) {
+  async storeNewEmailVerification(email) {
     validateNotEmptyString({ email });
-    const emailVerification =
-      await this.emailVerificationApi.createEmailVerification(email);
+    const emailVerification = {
+      email,
+      status: emailVerificationStatus.CREATED,
+    };
     await this.storeLocalEmailVerification(emailVerification);
     return emailVerification;
   }
-
-  async refreshEmailVerificationRequested() {
+  async sendActivationLink() {
     let emailVerification = await this.loadLocalEmailVerification();
-    switch (emailVerification.status) {
-      case emailVerificationStatus.NOT_REQUESTED:
-        emailVerification =
-          await this.emailVerificationApi.createEmailVerification(
-            emailVerification.email,
-          );
-        break;
-      case emailVerificationStatus.REQUESTED:
-        emailVerification =
-          await this.retrieveEmailVerification(emailVerification);
-        break;
-      case emailVerificationStatus.VERIFIED:
-      case emailVerificationStatus.EXPIRED:
-        await this.deleteLocalEmailVerification();
-        break;
-      default:
-        console.error("Unknown email verification status", status);
-        break;
-    }
+    emailVerification =
+      await this.emailVerificationApi.sendActivationLink(emailVerification);
+    await this.storeLocalEmailVerification(emailVerification);
+  }
+
+  async refreshStoredEmailVerification() {
+    let emailVerification = await this.loadLocalEmailVerification();
+    emailVerification = await this.emailVerificationApi.refresh(emailVerification);
     await this.storeLocalEmailVerification(emailVerification);
     return emailVerification;
   }
 
-  async retrieveEmailVerification(emailVerification) {
-    try {
-      const remoteEmailVerification =
-        await this.emailVerificationApi.retrieveEmailVerification(
-          emailVerification.uuid,
-          emailVerification.retrieveToken,
-        );
-      if (remoteEmailVerification.status === emailVerificationStatus.VERIFIED) {
-        await this.deleteLocalEmailVerification();
-      }
-
-      //overwrite status and tokens with remote values
-      emailVerification = { ...emailVerification, ...remoteEmailVerification };
-    } catch (error) {
-      if (error.cause === emailVerificationStatus.EXPIRED) {
-        emailVerification.status = emailVerificationStatus.EXPIRED;
-        await this.deleteLocalEmailVerification();
-      } else {
-        throw error;
-      }
-    }
-    return emailVerification;
-  }
-
-  async deleteLocalEmailVerification() {
-    await this.keyValueStorageService.delete("emailVerification");
-  }
+  deleteStoredEmailVerification = async () =>
+    this.keyValueStorageService.delete("emailVerification");
 
   async storeLocalEmailVerification(emailVerification) {
     validateEmailVerification(emailVerification);
     if (
-      emailVerification.status === emailVerificationStatus.REQUESTED ||
-      emailVerification.status === emailVerificationStatus.NOT_REQUESTED
+      emailVerification.status ===
+        emailVerificationStatus.ACTIVATION_LINK_SENT ||
+      emailVerification.status === emailVerificationStatus.CREATED
     ) {
       await this.keyValueStorageService.set(
         "emailVerification",
         emailVerification,
       );
+    } else {
+      await this.deleteStoredEmailVerification();
     }
   }
 

@@ -6,6 +6,7 @@ import { preparationEvents } from "../preparation/preparation.events.js";
 import { meditationTimerAppSelectors } from "./meditation-timer-app.selectors.js";
 import { meditationSettingsEvents } from "../meditation-settings/meditation-settings.events.js";
 import { accountEvents } from "../account/account.events.js";
+import { emailVerificationEvents } from "../email-verification/email-verification.events.js";
 
 export const meditationTimerAppChainedEvents = [
   {
@@ -118,6 +119,13 @@ export const meditationTimerAppChainedEvents = [
     thenDispatch: {
       ...accountEvents.loadAccountRequested,
       childComponentPath: ["account"],
+    },
+  },
+  {
+    onEvent: meditationTimerAppEvents.onlineDetected,
+    thenDispatch: {
+      ...emailVerificationEvents.onlineDetected,
+      childComponentPath: ["account", "emailVerification"],
     },
   },
 ];

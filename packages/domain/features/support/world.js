@@ -48,11 +48,20 @@ const addMockedEffects = (
   //account
   stateManager.addEffect(
     createEffect({
+      afterEvent: accountEvents.createAccountRequested,
+      then: () =>
+        stateManager
+          .getRootVM()
+          .children.account.dispatchers.accountCreated({ account }),
+    }),
+  );
+  stateManager.addEffect(
+    createEffect({
       afterEvent: accountEvents.loadAccountRequested,
       then: () =>
         stateManager
           .getRootVM()
-          .children.account.dispatchers.accountLoaded(account),
+          .children.account.dispatchers.accountLoaded({ account }),
     }),
   );
   stateManager.addEffect(
@@ -67,11 +76,11 @@ const addMockedEffects = (
   //email verification
   stateManager.addEffect(
     createEffect({
-      afterEvent: emailVerificationEvents.refreshEmailVerificationRequested,
+      afterEvent: emailVerificationEvents.refreshRequested,
       then: () =>
         stateManager
           .getRootVM()
-          .children.account.children.emailVerification.dispatchers.refreshEmailVerificationCompleted(
+          .children.account.children.emailVerification.dispatchers.refreshCompleted(
             remoteEmailVerification,
           ),
     }),
@@ -94,7 +103,7 @@ const initializeScenario = () => {
     meditationStorage: { meditations: [] },
     account: { email: null, status: accountStatus.ANONYMOUS },
     remoteEmailVerification: {
-      status: emailVerificationStatus.NOT_REQUESTED,
+      status: emailVerificationStatus.CREATED,
     },
     events: [],
   };
@@ -146,8 +155,6 @@ Before(initializeScenario);
 AfterStep(function ({ result }) {
   if (result.status === "FAILED") {
     console.log();
-    console.log("------SENT EVENTS------");
-    console.log(mockState.events);
     console.log("------LAST STATE COMPARED WITH INITIAL STATE------");
     console.log(
       JSON.stringify(
@@ -158,6 +165,13 @@ AfterStep(function ({ result }) {
         null,
         2,
       ),
+    );
+    console.log("------SENT EVENTS------");
+    console.log(
+      mockState.events.map((e) => ({
+        ...e,
+        payload: e.payload ? JSON.stringify(e.payload) : null,
+      })),
     );
   }
 });

@@ -34,7 +34,7 @@ describe("activating emails", () => {
     //THEN
     expect(status, "status should be 201").toBe(201);
     expect(body).toEqual({
-      status: emailVerificationStatus.REQUESTED,
+      status: emailVerificationStatus.ACTIVATION_LINK_SENT,
       retrieveEmailVerificationToken,
     });
   });

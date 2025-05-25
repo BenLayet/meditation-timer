@@ -89,11 +89,15 @@ export const statePatcher = (stateManager) => (key, value) => {
     componentPath,
     newLocalState,
   );
+  forceState(stateManager, newState);
+  return newLocalState;
+};
+
+export const forceState = (stateManager, newState) => {
   stateManager.dispatch({
     eventType: "FORCE_STATE",
     payload: { newState },
     componentPath: [],
+    isNewCycle: true,
   });
-
-  return newLocalState;
 };

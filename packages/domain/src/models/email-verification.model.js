@@ -1,9 +1,9 @@
-import { validateEmailFormat } from "./email.validator.js";
+import { emailRegex, validateEmailFormat } from "./email.validator.js";
 import { validateNotEmptyString } from "./not-null.validator.js";
 
 export const emailVerificationStatus = {
-  NOT_REQUESTED: "NOT_REQUESTED",
-  REQUESTED: "REQUESTED",
+  CREATED: "CREATED",
+  ACTIVATION_LINK_SENT: "ACTIVATION_LINK_SENT",
   VERIFIED: "VERIFIED",
   EXPIRED: "EXPIRED",
 };
@@ -44,7 +44,9 @@ export function validateEmailVerification(emailVerification) {
     throw new Error("Email verification cannot be null or undefined");
   validateEmailFormat(emailVerification.email);
   validateEmailVerificationStatus(emailVerification.status);
-  if (emailVerification.status === emailVerificationStatus.REQUESTED) {
+  if (
+    emailVerification.status === emailVerificationStatus.ACTIVATION_LINK_SENT
+  ) {
     validateNotEmptyString({ retrieveToken: emailVerification.retrieveToken });
   }
   if (emailVerification.status === emailVerificationStatus.VERIFIED) {

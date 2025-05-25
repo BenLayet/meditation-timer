@@ -4,7 +4,7 @@ import pkg from "jsonwebtoken";
 
 const { TokenExpiredError } = pkg;
 
-export function emailVerificationsRouter(emailVerificationService, logger) {
+export function emailVerificationsRouter(emailVerificationUsecase, logger) {
   const router = express.Router();
 
   // Route to send verification email
@@ -18,7 +18,7 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
         `Send verification email requested: ${JSON.stringify(email)}`,
       );
       const emailVerification =
-        await emailVerificationService.createEmailVerification(email);
+        await emailVerificationUsecase.sendActivationLink(email);
       logger.info(`verification email created`);
       res.status(201).json(emailVerification);
     } catch (error) {
@@ -32,7 +32,7 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
     try {
       const { activateToken } = req.params;
       logger.info(`Activate email requested`);
-      await emailVerificationService.activate(activateToken);
+      await emailVerificationUsecase.activate(activateToken);
       logger.debug(`email activated successfully`);
       res.status(200).json({ message: "email activated successfully" });
     } catch (error) {
@@ -53,7 +53,7 @@ export function emailVerificationsRouter(emailVerificationService, logger) {
       return res.status(401).json({ error: "security token is required" });
     }
     try {
-      const emailVerification = await emailVerificationService.get(
+      const emailVerification = await emailVerificationUsecase.get(
         emailVerificationUuid,
         token,
       );

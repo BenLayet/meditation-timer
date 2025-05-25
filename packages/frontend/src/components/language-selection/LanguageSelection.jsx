@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
 
-export function LanguageSelection(){
+export function LanguageSelection() {
   const { t, i18n } = useTranslation();
   const changeLanguage = (event) => {
     i18n.changeLanguage(event.target.value);
   };
   return (
-    <>
+    <div className="flex-column">
       <input
         type="radio"
         id="language-en"
@@ -25,6 +25,6 @@ export function LanguageSelection(){
         onChange={changeLanguage}
       />
       <label htmlFor="language-fr">{t("french")}</label>
-    </>
+    </div>
   );
 }

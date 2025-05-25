@@ -3,28 +3,31 @@ import { map } from "../../lib/functions/object.functions.js";
 import { emailVerificationStatus } from "../../models/email-verification.model.js";
 import { or, not, and } from "../../lib/functions/predicate.functions.js";
 
-const isNotRequestedYet = (emailVerificationState) =>
-  emailVerificationState.status === emailVerificationStatus.NOT_REQUESTED;
-const isRequested = (emailVerificationState) =>
-  emailVerificationState.status === emailVerificationStatus.REQUESTED;
+const isActivationLinkSent = (emailVerificationState) =>
+  emailVerificationState.status ===
+  emailVerificationStatus.ACTIVATION_LINK_SENT;
 const isExpired = (emailVerificationState) =>
   emailVerificationState.status === emailVerificationStatus.EXPIRED;
 const isVerified = (emailVerificationState) =>
   emailVerificationState.status === emailVerificationStatus.VERIFIED;
 const isLoading = (emailVerificationState) => emailVerificationState.loading;
-const isRefreshable = and(not(isLoading), isRequested);
-const isRetryable = and(not(isLoading), isNotRequestedYet);
+const isPendingConnection = and(not(isLoading), not(isActivationLinkSent));
+const isRefreshable = and(not(isLoading), isActivationLinkSent);
+const canActivationLinkBeRequested = and(
+  not(isLoading),
+  not(isActivationLinkSent),
+);
 const isResettable = () => true;
 
 export const ownStateSelectors = {
   isLoading,
-  isNotRequestedYet,
-  isRequested,
+  isPendingConnection,
+  isActivationLinkSent,
   isVerified,
   isExpired,
-  isRefreshable,
   isResettable,
-  isRetryable,
+  isRefreshable,
+  canActivationLinkBeRequested,
 };
 
 const ownState = (compositeState) => compositeState.ownState;

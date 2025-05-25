@@ -2,7 +2,7 @@ import { createDatasource } from "../adapters/datasource.js";
 import { EventRepository } from "../repositories/event.repository.js";
 import { MailgunEmailSender } from "../adapters/email-sender.js";
 import { EmailVerificationRepository } from "../repositories/email-verification.repository.js";
-import { EmailVerificationService } from "../services/email-verification.service.js";
+import { EmailVerificationUsecase } from "../usecase/email-verification.usecase.js";
 import { JwtTokenService } from "../adapters/token.service.js";
 import { UuidGenerator } from "../adapters/uuid-generator.js";
 import { TransactionService } from "../repositories/transaction.service.js";
@@ -34,7 +34,7 @@ export const providers = {
     mailgunProperties.apiKey === "mock"
       ? { sendEmail: console.log }
       : new MailgunEmailSender(mailgunProperties, logger),
-  emailVerificationService: ({
+  emailVerificationUsecase: ({
     emailVerificationRepository,
     emailService,
     tokenService,
@@ -42,7 +42,7 @@ export const providers = {
     apiProperties,
     logger,
   }) =>
-    new EmailVerificationService(
+    new EmailVerificationUsecase(
       emailVerificationRepository,
       emailService,
       tokenService,

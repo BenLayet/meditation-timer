@@ -9,5 +9,5 @@ export function validateEmailFormat(email) {
     throw new Error("Email must be a valid email");
   }
 }
-
-const isEmailFormat = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const isEmailFormat = (email) => emailRegex.test(email);

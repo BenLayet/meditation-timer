@@ -1,7 +1,7 @@
 import { validateNotNull } from "domain/src/models/not-null.validator.js";
 import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
 
-export class EmailVerificationService {
+export class EmailVerificationUsecase {
   constructor(
     emailVerificationRepository,
     emailSender,
@@ -19,10 +19,10 @@ export class EmailVerificationService {
     this.logger = logger;
   }
 
-  async createEmailVerification(email) {
+  async sendActivationLink(email) {
     validateNotNull({ email });
     //TODO one line per action (same level of abstraction)
-    let status = emailVerificationStatus.NOT_REQUESTED;
+    let status = emailVerificationStatus.CREATED;
     let emailVerification =
       await this.emailVerificationRepository.createEmailVerification({
         email,
@@ -49,7 +49,7 @@ export class EmailVerificationService {
     await this.emailService.sendEmail({ from, to, subject, html });
 
     //update status to REQUESTED
-    status = emailVerificationStatus.REQUESTED;
+    status = emailVerificationStatus.ACTIVATION_LINK_SENT;
     emailVerification =
       await this.emailVerificationRepository.updateEmailVerificationStatus(
         emailVerification.uuid,

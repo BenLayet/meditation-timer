@@ -1,6 +1,10 @@
 import { isEqual } from "lodash-es";
 import { createEvent } from "./create-event.js";
 import { getStateAtPath } from "./state.js";
+import {
+  validateNotEmptyString,
+  validateNotNullObject,
+} from "../../models/not-null.validator.js";
 
 const createChainedEventFactory =
   (currentComponentPath) =>
@@ -22,14 +26,27 @@ const createChainedEventFactory =
       return [createEvent(thenDispatch, componentPath, payload)];
     }
   };
-
 const resolveComponentPath = (componentPath, childComponentPath) => [
   ...componentPath,
   ...(childComponentPath ?? []),
 ];
 
-const createOwnChainedEvents =
-  (component, componentPath) => (previousEvent, globalState) =>
+const createOwnChainedEvents = (component, componentPath) => {
+  component.chainedEvents.forEach(({ onEvent, thenDispatch }) => {
+    validateNotNullObject({ onEvent }, { componentPath });
+    validateNotEmptyString(
+      { "onEvent.eventType": onEvent.eventType },
+      { componentPath },
+    );
+    validateNotNullObject({ thenDispatch }, { componentPath });
+    validateNotEmptyString(
+      {
+        "thenDispatch.eventType": thenDispatch.eventType,
+      },
+      { componentPath },
+    );
+  });
+  return (previousEvent, globalState) =>
     (component.chainedEvents ?? [])
       .filter(({ onEvent }) =>
         isEqual(
@@ -42,6 +59,7 @@ const createOwnChainedEvents =
       .flatMap((newEventFactory) =>
         newEventFactory(previousEvent, globalState),
       );
+};
 
 const createChildrenChainedEvents =
   (component, componentPath) => (previousEvent, globalState) => {

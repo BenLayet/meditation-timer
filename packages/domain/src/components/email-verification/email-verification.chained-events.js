@@ -1,42 +1,57 @@
 import { emailVerificationEvents } from "./email-verification.events.js";
+import { emailVerificationStatus } from "../../models/email-verification.model.js";
 
 export const emailVerificationChainedEvents = [
   {
-    onEvent: emailVerificationEvents.refreshEmailVerificationCompleted,
-    onCondition: ({ state }) => state.ownState.status === "NOT_REQUESTED",
-    thenDispatch:
-      emailVerificationEvents.createEmailVerificationScheduledTaskRequested,
-    withPayload: ({ state }) => ({
-      email: state.ownState.email,
-    }),
+    onEvent: emailVerificationEvents.verificationRequested,
+    thenDispatch: emailVerificationEvents.createRequested,
   },
   {
-    onEvent: emailVerificationEvents.refreshEmailVerificationCompleted,
-    onCondition: ({ state }) => state.ownState.status === "REQUESTED",
-    thenDispatch:
-      emailVerificationEvents.refreshEmailVerificationScheduledTaskRequested,
+    onEvent: emailVerificationEvents.createSucceeded,
+    thenDispatch: emailVerificationEvents.activationLinkRequested,
   },
   {
-    onEvent: emailVerificationEvents.createEmailVerificationScheduledTaskTimeUp,
-    thenDispatch: emailVerificationEvents.createEmailVerificationRequested,
+    onEvent: emailVerificationEvents.onlineDetected,
+    onCondition: ({ state }) =>
+      state.ownState.status === emailVerificationStatus.CREATED,
+    thenDispatch: emailVerificationEvents.activationLinkRequested,
+  },
+  {
+    onEvent: emailVerificationEvents.statusLoaded,
+    onCondition: ({ state }) =>
+      state.ownState.status === emailVerificationStatus.CREATED,
+    thenDispatch: emailVerificationEvents.activationLinkRequested,
+  },
+  {
+    onEvent: emailVerificationEvents.statusLoaded,
+    onCondition: ({ state }) =>
+      state.ownState.status === emailVerificationStatus.ACTIVATION_LINK_SENT,
+    thenDispatch: emailVerificationEvents.refreshRequested,
+  },
+  {
+    onEvent: emailVerificationEvents.activationLinkSent,
+    thenDispatch: emailVerificationEvents.scheduleRefreshRequested,
+  },
+  {
+    onEvent: emailVerificationEvents.refreshCompleted,
+    onCondition: ({ state }) =>
+      state.ownState.status === emailVerificationStatus.ACTIVATION_LINK_SENT,
+    thenDispatch: emailVerificationEvents.scheduleRefreshRequested,
+  },
+  {
+    onEvent: emailVerificationEvents.refreshCompleted,
+    onCondition: ({ state }) =>
+      state.ownState.status === emailVerificationStatus.VERIFIED,
+    thenDispatch: emailVerificationEvents.verificationSucceeded,
+  },
+  {
+    onEvent: emailVerificationEvents.refreshCompleted,
+    onCondition: ({ state }) =>
+      state.ownState.status === emailVerificationStatus.EXPIRED,
+    thenDispatch: emailVerificationEvents.verificationFailed,
   },
   {
     onEvent: emailVerificationEvents.resetRequested,
-    thenDispatch:
-      emailVerificationEvents.createEmailVerificationScheduledTaskCancelled,
-  },
-  {
-    onEvent: emailVerificationEvents.resetRequested,
-    thenDispatch:
-      emailVerificationEvents.refreshEmailVerificationScheduledTaskCancelled,
-  },
-  {
-    onEvent:
-      emailVerificationEvents.refreshEmailVerificationScheduledTaskTimeUp,
-    thenDispatch: emailVerificationEvents.refreshEmailVerificationRequested,
-  },
-  {
-    onEvent: emailVerificationEvents.retryRequested,
-    thenDispatch: emailVerificationEvents.createEmailVerificationRequested,
+    thenDispatch: emailVerificationEvents.cancelScheduledRefreshRequested,
   },
 ];
