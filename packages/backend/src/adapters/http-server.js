@@ -14,7 +14,7 @@ export const startHttpServer = async ({
   environment,
   cleanupTasks,
   logger,
-  sendActivationLink,
+  sendVerificationLink,
   verifyEmailAddress,
   retrieveVerification,
 }) => {
@@ -41,7 +41,7 @@ export const startHttpServer = async ({
   app.use(
     `${basePath}/email-verifications`,
     emailVerificationsRouter(
-      { sendActivationLink, verifyEmailAddress, retrieveVerification },
+      { sendVerificationLink, verifyEmailAddress, retrieveVerification },
       logger,
     ),
   );

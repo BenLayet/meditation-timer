@@ -8,34 +8,34 @@ export const emailVerificationChainedEvents = [
   },
   {
     onEvent: emailVerificationEvents.createSucceeded,
-    thenDispatch: emailVerificationEvents.activationLinkRequested,
+    thenDispatch: emailVerificationEvents.verificationLinkRequested,
   },
   {
     onEvent: emailVerificationEvents.onlineDetected,
     onCondition: ({ state }) =>
       state.ownState.status === emailVerificationStatus.CREATED,
-    thenDispatch: emailVerificationEvents.activationLinkRequested,
+    thenDispatch: emailVerificationEvents.verificationLinkRequested,
   },
   {
     onEvent: emailVerificationEvents.statusLoaded,
     onCondition: ({ state }) =>
       state.ownState.status === emailVerificationStatus.CREATED,
-    thenDispatch: emailVerificationEvents.activationLinkRequested,
+    thenDispatch: emailVerificationEvents.verificationLinkRequested,
   },
   {
     onEvent: emailVerificationEvents.statusLoaded,
     onCondition: ({ state }) =>
-      state.ownState.status === emailVerificationStatus.ACTIVATION_LINK_SENT,
+      state.ownState.status === emailVerificationStatus.VERIFICATION_LINK_SENT,
     thenDispatch: emailVerificationEvents.refreshRequested,
   },
   {
-    onEvent: emailVerificationEvents.activationLinkSent,
+    onEvent: emailVerificationEvents.verificationLinkSent,
     thenDispatch: emailVerificationEvents.scheduleRefreshRequested,
   },
   {
     onEvent: emailVerificationEvents.refreshCompleted,
     onCondition: ({ state }) =>
-      state.ownState.status === emailVerificationStatus.ACTIVATION_LINK_SENT,
+      state.ownState.status === emailVerificationStatus.VERIFICATION_LINK_SENT,
     thenDispatch: emailVerificationEvents.scheduleRefreshRequested,
   },
   {

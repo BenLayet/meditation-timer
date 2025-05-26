@@ -19,13 +19,13 @@ const retrieveToken = fakeTokenService.createShortLivedToken({
   emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
   scope: ["RETRIEVE"],
 });
-const activateToken = fakeTokenService.createShortLivedToken({
+const verifyToken = fakeTokenService.createShortLivedToken({
   emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
-  scope: ["ACTIVATE"],
+  scope: ["VERIFY"],
 });
-const verificationLink = `http://localhost:18000/api/v1/email-verifications/activate/${activateToken}`;
+const verificationLink = `http://localhost:18000/api/v1/email-verifications/verify/${verifyToken}`;
 
-describe("activating emails", () => {
+describe("verifying emails", () => {
   const email = "email1@example.org";
   afterEach(clearUserData(email));
   beforeAll(resetFakeUuidSequence);
@@ -37,7 +37,7 @@ describe("activating emails", () => {
     //THEN
     expect(status, "status should be 201").toBe(201);
     expect(body).toEqual({
-      status: emailVerificationStatus.ACTIVATION_LINK_SENT,
+      status: emailVerificationStatus.VERIFICATION_LINK_SENT,
       retrieveToken,
     });
   });
@@ -51,7 +51,7 @@ describe("activating emails", () => {
     expect(lastMail).toEqual({
       from: "mailfrom@test",
       to: email,
-      subject: "Activate your account",
+      subject: "Verify your account",
       html: expect.stringMatching(
         /Click to confirm your email address to Meditation Timer: <a href='.*' target='_blank'>.*<\/a>/,
       ),
@@ -68,7 +68,7 @@ describe("activating emails", () => {
     expect(link).toBe(verificationLink);
   });
 
-  test("should activate email when link is clicked once", async () => {
+  test("should verify email when link is clicked once", async () => {
     //GIVEN
     await postEmailVerification({ email });
     //WHEN
@@ -76,7 +76,7 @@ describe("activating emails", () => {
 
     // THEN
     expect(status).toBe(200); // Check the status code
-    expect(body).toEqual({ message: "email activated successfully" }); // Check the response body content
+    expect(body).toEqual({ message: "email verifyd successfully" }); // Check the response body content
   });
   test("should return error when verification link is clicked twice", async () => {
     //GIVEN

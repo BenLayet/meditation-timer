@@ -3,7 +3,7 @@ import { validateNotEmptyString } from "./not-null.validator.js";
 
 export const emailVerificationStatus = {
   CREATED: "CREATED",
-  ACTIVATION_LINK_SENT: "ACTIVATION_LINK_SENT",
+  VERIFICATION_LINK_SENT: "VERIFICATION_LINK_SENT",
   VERIFIED: "VERIFIED",
   EXPIRED: "EXPIRED",
 };
@@ -45,7 +45,7 @@ export function validateEmailVerification(emailVerification) {
   validateEmailFormat(emailVerification.email);
   validateEmailVerificationStatus(emailVerification.status);
   if (
-    emailVerification.status === emailVerificationStatus.ACTIVATION_LINK_SENT
+    emailVerification.status === emailVerificationStatus.VERIFICATION_LINK_SENT
   ) {
     validateNotEmptyString({ retrieveToken: emailVerification.retrieveToken });
   }

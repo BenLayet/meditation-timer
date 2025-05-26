@@ -7,14 +7,14 @@ function EmailVerification({ vm }) {
   const { t } = useTranslation();
   const isLoading = vm.selectors.isLoading();
   const isPendingConnection = vm.selectors.isPendingConnection();
-  const isActivationLinkSent = vm.selectors.isActivationLinkSent();
+  const isVerificationLinkSent = vm.selectors.isVerificationLinkSent();
   const isExpired = vm.selectors.isExpired();
   const isRefreshable = vm.selectors.isRefreshable();
   const isResettable = vm.selectors.isResettable();
   const resetRequested = vm.dispatchers.resetRequested;
   const refreshRequested = vm.dispatchers.refreshRequested;
-  const canActivationLinkBeRequested =
-    vm.dispatchers.canActivationLinkBeRequested;
+  const canVerificationLinkBeRequested =
+    vm.dispatchers.canVerificationLinkBeRequested;
 
   return (
     <div className="email-verification-container">
@@ -22,7 +22,7 @@ function EmailVerification({ vm }) {
         <FontAwesomeIcon icon={faSpinner} spin className="status-spinner" />
       )}
       {isPendingConnection && <p>{t("emailVerificationPending")}</p>}
-      {isActivationLinkSent && <p>{t("emailVerificationSent")}</p>}
+      {isVerificationLinkSent && <p>{t("emailVerificationSent")}</p>}
       {isExpired && <p>{t("emailVerificationExpired")}</p>}
       {isRefreshable && (
         <button className="main-action icon-button" onClick={refreshRequested}>
@@ -30,13 +30,13 @@ function EmailVerification({ vm }) {
           {t("refresh")}
         </button>
       )}
-      {canActivationLinkBeRequested && (
+      {canVerificationLinkBeRequested && (
         <button
           className="main-action icon-button"
-          onClick={activationLinkRequested}
+          onClick={verificationLinkRequested}
         >
           <FontAwesomeIcon icon={faSync} />
-          {t("activationLinkRequested")}
+          {t("verificationLinkRequested")}
         </button>
       )}
       {isResettable && <a onClick={resetRequested}>{t("reset")}</a>}

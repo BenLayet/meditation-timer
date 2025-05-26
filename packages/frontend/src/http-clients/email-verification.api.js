@@ -1,7 +1,7 @@
 const API_URL = "/api/v1/email-verifications";
 
 export class EmailVerificationApi {
-  sendActivationLink = async (emailVerification) => {
+  sendVerificationLink = async (emailVerification) => {
     return fetch(API_URL, {
       method: "POST",
       headers: {

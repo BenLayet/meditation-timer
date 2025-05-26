@@ -3,7 +3,7 @@ import {
   validateNotNullObject,
 } from "domain/src/models/not-null.validator.js";
 import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
-import { ACTIVATE_PERMISSION } from "./permissions.constants.js";
+import { VERIFY_PERMISSION } from "./permissions.constants.js";
 
 export const verifyEmailAddress = ({
   emailVerificationRepository,
@@ -14,16 +14,16 @@ export const verifyEmailAddress = ({
   validateNotNullObject({ tokenService });
   validateNotNullObject({ logger });
 
-  return async (activateToken) => {
-    validateNotNull({ activateToken });
+  return async (verifyToken) => {
+    validateNotNull({ verifyToken });
 
-    // 1. Validate the activation token
-    const emailVerificationUuid = await validateActivationToken({
+    // 1. Validate the verification token
+    const emailVerificationUuid = await validateVerificationToken({
       tokenService,
       logger,
-    })(activateToken);
+    })(verifyToken);
     logger.info(
-      `Activation token verified for emailVerificationUuid: ${emailVerificationUuid}`,
+      `Verification token verified for emailVerificationUuid: ${emailVerificationUuid}`,
     );
 
     // 2. Update the email verification status to VERIFIED
@@ -39,15 +39,15 @@ export const verifyEmailAddress = ({
   };
 };
 
-const validateActivationToken =
+const validateVerificationToken =
   ({ tokenService, logger }) =>
-  async (activateToken) => {
+  async (verifyToken) => {
     try {
       const { emailVerificationUuid, scope } =
-        await tokenService.verify(activateToken);
+        await tokenService.verify(verifyToken);
 
-      if (!scope?.includes(ACTIVATE_PERMISSION)) {
-        throw new Error(`Missing permission in token ${ACTIVATE_PERMISSION}`);
+      if (!scope?.includes(VERIFY_PERMISSION)) {
+        throw new Error(`Missing permission in token ${VERIFY_PERMISSION}`);
       }
       return emailVerificationUuid;
     } catch (error) {

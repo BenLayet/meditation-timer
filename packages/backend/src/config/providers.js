@@ -8,7 +8,7 @@ import { TransactionService } from "../repositories/transaction.service.js";
 import { logger } from "../adapters/logger.js";
 import { MessageBuilder } from "../service/message-builder.service.js";
 import { retrieveVerification } from "../usecase/email-verification/retrieve-verification.usecase.js";
-import { sendActivationLink } from "../usecase/email-verification/send-activation-link.usecase.js";
+import { sendVerificationLink } from "../usecase/email-verification/send-verification-link.usecase.js";
 import { verifyEmailAddress } from "../usecase/email-verification/verify-email-address.usecase.js";
 
 export const providers = {
@@ -39,7 +39,7 @@ export const providers = {
       : new MailgunEmailSender(mailgunProperties, logger),
   messageBuilder: () => new MessageBuilder(),
   cleanupTasks: ({ datasource }) => [datasource.end],
-  sendActivationLink: sendActivationLink,
+  sendVerificationLink: sendVerificationLink,
   retrieveVerification: retrieveVerification,
   verifyEmailAddress: verifyEmailAddress,
 };

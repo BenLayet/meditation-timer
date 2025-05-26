@@ -51,24 +51,24 @@ export const emailVerificationEvents = {
       status: emailVerificationStatus.CREATED,
     }),
   },
-  activationLinkRequested: {
-    eventType: "activationLinkRequested",
+  verificationLinkRequested: {
+    eventType: "verificationLinkRequested",
     handler: (state) => ({
       ...state,
       loading: true,
     }),
     isNewCycle: true, // can be triggered manually or automatically
   },
-  activationLinkSent: {
-    eventType: "activationLinkSent",
+  verificationLinkSent: {
+    eventType: "verificationLinkSent",
     handler: (state) => ({
       ...state,
       loading: false,
-      status: emailVerificationStatus.ACTIVATION_LINK_SENT,
+      status: emailVerificationStatus.VERIFICATION_LINK_SENT,
     }),
   },
-  activationLinkFailed: {
-    eventType: "activationLinkFailed",
+  verificationLinkFailed: {
+    eventType: "verificationLinkFailed",
     handler: (state) => ({
       ...state,
       loading: false,

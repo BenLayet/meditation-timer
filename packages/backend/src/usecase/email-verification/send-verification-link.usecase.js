@@ -1,7 +1,7 @@
 import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
 import { validateEmailFormat } from "domain/src/models/email.validator.js";
 import {
-  ACTIVATE_PERMISSION,
+  VERIFY_PERMISSION,
   RETRIEVE_PERMISSION,
 } from "./permissions.constants.js";
 import {
@@ -9,7 +9,7 @@ import {
   validateNotNullObject,
 } from "domain/src/models/not-null.validator.js";
 
-export const sendActivationLink = ({
+export const sendVerificationLink = ({
   emailVerificationRepository,
   emailSender,
   tokenService,
@@ -43,10 +43,10 @@ export const sendActivationLink = ({
       apiProperties,
       logger,
     })(emailVerification);
-    logger.info(`Activation link sent to ${emailVerification.email}`);
+    logger.info(`Verification link sent to ${emailVerification.email}`);
 
     // 3. update status to REQUESTED
-    emailVerification = await markAsActivationLinkSent({
+    emailVerification = await markAsVerificationLinkSent({
       emailVerificationRepository,
     })(emailVerification.uuid);
 
@@ -74,22 +74,22 @@ const sendVerificationEmail =
     logger,
   }) =>
   async (emailVerification) => {
-    // 1. Generate an activate token
-    const activateToken = await createActivateToken({ tokenService })(
+    // 1. Generate an verify token
+    const verifyToken = await createVerifyToken({ tokenService })(
       emailVerification.uuid,
     );
-    logger.debug(`Activate token created: ${activateToken}`);
+    logger.debug(`Verify token created: ${verifyToken}`);
 
     // 2. Build the verification url
     const verificationUrl = buildVerificationUrl({ apiProperties })(
-      activateToken,
+      verifyToken,
     );
     logger.debug(`verificationUrl created: ${verificationUrl}`);
 
     // 3. Build the verification email
     const messageContent = await messageBuilder.buildMessage(
       "en",
-      "activateAccount",
+      "verifyAccount",
       {
         verificationUrl,
       },
@@ -105,12 +105,12 @@ const sendVerificationEmail =
     });
   };
 
-const createActivateToken =
+const createVerifyToken =
   ({ tokenService }) =>
   (emailVerificationUuid) =>
     tokenService.createShortLivedToken({
       emailVerificationUuid,
-      scope: [ACTIVATE_PERMISSION],
+      scope: [VERIFY_PERMISSION],
     });
 const createRetrieveToken =
   ({ tokenService }) =>
@@ -122,15 +122,15 @@ const createRetrieveToken =
 
 const buildVerificationUrl =
   ({ apiProperties }) =>
-  (activateToken) => {
+  (verifyToken) => {
     const { protocol, host, port, basePath } = apiProperties;
-    return `${protocol}://${host}:${port}${basePath}/email-verifications/activate/${activateToken}`;
+    return `${protocol}://${host}:${port}${basePath}/email-verifications/verify/${verifyToken}`;
   };
 
-const markAsActivationLinkSent =
+const markAsVerificationLinkSent =
   ({ emailVerificationRepository }) =>
   (emailVerificationUuid) =>
     emailVerificationRepository.updateEmailVerificationStatus(
       emailVerificationUuid,
-      emailVerificationStatus.ACTIVATION_LINK_SENT,
+      emailVerificationStatus.VERIFICATION_LINK_SENT,
     );

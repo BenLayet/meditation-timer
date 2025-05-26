@@ -27,8 +27,8 @@ export const getEventPage = async (userToken, afterId, size) =>
 const emailVerificationsUrl = `${apiBaseUrl}/email-verifications`;
 export const postEmailVerification = async (emailVerification) =>
   httpPost(emailVerificationsUrl, emailVerification);
-export const activateEmail = async (token) =>
-  httpPost(`${emailVerificationsUrl}/activate?token=${token}`);
+export const verifyEmail = async (token) =>
+  httpPost(`${emailVerificationsUrl}/verify?token=${token}`);
 export const retrieveEmailVerification = async (emailVerificationUuid, token) =>
   httpGet(`${emailVerificationsUrl}/${emailVerificationUuid}`, {
     Authorization: `Bearer ${token}`,

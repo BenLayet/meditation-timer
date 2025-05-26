@@ -12,15 +12,15 @@ sequenceDiagram
     AccountEffect -->> Account: accountCreated(email)
     Note over Account: STATUS: PENDING_VERIFICATION
     Account ->> EmailVerification: verificationRequested(email)
-    Note over EmailVerification: Activation link is sent,<br> user clicks the link in the email, <br>and the activation is detected
+    Note over EmailVerification: Verification link is sent,<br> user clicks the link in the email, <br>and the verification is detected
     EmailVerification -->> Account: verificationSucceeded(userToken)
     Note over Account: STATUS: VERIFIED
 ```
 
-The email verification process is create locally, then if online, the activation link is sent to the user.
+The email verification process is create locally, then if online, the verification link is sent to the user.
 The status of the email verification checked on a loop every 60 seconds.
 When verified, the user token is returned to the account.
-If verification expires before the user clicks the activation link, the email verification is deleted.
+If verification expires before the user clicks the verification link, the email verification is deleted.
 
 ```mermaid
 sequenceDiagram
@@ -32,35 +32,35 @@ sequenceDiagram
     EmailVerification ->> EmailVerificationEffect: createRequested(email)
     EmailVerificationEffect -->> EmailVerification: createSucceeded()
     Note over EmailVerification: STATUS: CREATED
-    EmailVerification ->> EmailVerificationEffect: activationLinkRequested(email)
+    EmailVerification ->> EmailVerificationEffect: verificationLinkRequested(email)
     alt if offline
-        EmailVerificationEffect -->> EmailVerification: activationLinkFailed()
+        EmailVerificationEffect -->> EmailVerification: verificationLinkFailed()
         Note over EmailVerificationEffect: when back online
         EmailVerificationEffect -->> EmailVerification: onlineDetected()
         Note over EmailVerification: because STATUS is CREATED
-        EmailVerification ->> EmailVerificationEffect: activationLinkRequested(email)
+        EmailVerification ->> EmailVerificationEffect: verificationLinkRequested(email)
     end
     %% Note over EmailVerificationEffect: save retrieveToken in local storage
-    EmailVerificationEffect -->> EmailVerification: activationLinkSent()
-    Note over EmailVerification: STATUS: ACTIVATION_LINK_SENT
+    EmailVerificationEffect -->> EmailVerification: verificationLinkSent()
+    Note over EmailVerification: STATUS: VERIFICATION_LINK_SENT
     EmailVerification ->> EmailVerificationEffect: scheduleRefreshRequested()
     loop every 60 seconds until user has verified the email or the verification has expired
         Note over EmailVerificationEffect: Wait 60s
         EmailVerificationEffect ->> EmailVerification: refreshTimeUp()
         EmailVerification ->> EmailVerificationEffect: refreshRequested()
         EmailVerificationEffect -->> EmailVerification: refreshCompleted()
-        Note over EmailVerification: STATUS: ACTIVATION_LINK_SENT
+        Note over EmailVerification: STATUS: VERIFICATION_LINK_SENT
         EmailVerification ->> EmailVerificationEffect: scheduleRefreshRequested()
         Note over EmailVerificationEffect: loop every 60s
 
     end
-    alt if use clicks the activation link
+    alt if use clicks the verification link
         EmailVerificationEffect ->> EmailVerification: refreshTimeUp()
         EmailVerification ->> EmailVerificationEffect: refreshRequested()
         EmailVerificationEffect -->> EmailVerification: refreshCompleted(userToken)
         Note over EmailVerification: STATUS: VERIFIED
         EmailVerification -->> Account: verificationSucceeded(userToken)
-    else if activation link has expired
+    else if verification link has expired
         EmailVerificationEffect ->> EmailVerification: refreshTimeUp()
         EmailVerification ->> EmailVerificationEffect: refreshRequested()
         EmailVerificationEffect -->> EmailVerification: refreshCompleted()
@@ -84,24 +84,24 @@ sequenceDiagram
     EmailVerificationEffect ->> EmailVerificationService: storeNewEmailVerification(email)
     Note over EmailVerificationService: status:CREATED
     EmailVerificationService ->> EmailVerificationStorage: save()
-    EmailEvents ->> EmailVerificationEffect: activationLinkRequested()
-    EmailVerificationEffect ->> EmailVerificationService: sendActivationLink()
+    EmailEvents ->> EmailVerificationEffect: verificationLinkRequested()
+    EmailVerificationEffect ->> EmailVerificationService: sendVerificationLink()
     EmailVerificationService ->> EmailVerificationStorage: load()
     Note over EmailVerificationService: status:CREATED
-    EmailVerificationService ->> EmailVerificationApi: sendActivationLink(email)
-    Note over EmailVerificationService: status:ACTIVATION_LINK_SENT + retrieveToken
+    EmailVerificationService ->> EmailVerificationApi: sendVerificationLink(email)
+    Note over EmailVerificationService: status:VERIFICATION_LINK_SENT + retrieveToken
     EmailVerificationService ->> EmailVerificationStorage: save()
     EmailEvents ->> EmailVerificationEffect: refreshRequested()
     EmailVerificationEffect ->> EmailVerificationService: refreshStoredEmailVerification()
     EmailVerificationService ->> EmailVerificationStorage: load()
-    Note over EmailVerificationService: status:ACTIVATION_LINK_SENT + retrieveToken
+    Note over EmailVerificationService: status:VERIFICATION_LINK_SENT + retrieveToken
     EmailVerificationService ->> EmailVerificationApi: retrieve(retrieveToken)
-    alt if activation link is not clicked
+    alt if verification link is not clicked
         Note over EmailVerificationService: do nothing
-    else if activation link is expired
+    else if verification link is expired
         Note over EmailVerificationService: status:EXPIRED
         EmailVerificationService ->> EmailVerificationStorage: delete()
-    else if activation link is clicked
+    else if verification link is clicked
         Note over EmailVerificationService: status:VERIFIED + userToken
         EmailVerificationService ->> EmailVerificationStorage: delete()
         EmailVerificationService -->> EmailVerificationEffect: return userToken
@@ -111,7 +111,7 @@ sequenceDiagram
     EmailVerificationService ->> EmailVerificationStorage: delete()
 ```
 
-On the backend, the email verification service handles the activation link sending and verification.
+On the backend, the email verification service handles the verification link sending and verification.
 
 ```mermaid
 sequenceDiagram
@@ -122,14 +122,14 @@ sequenceDiagram
     participant EmailService
     participant EmailVerificationRepository
 
-    App ->> EmailVerificationService: sendActivationLink(email)
-    EmailVerificationService ->> TokenService: generate retrieveToken + activateToken
-    EmailVerificationService ->> EmailService: sendActivationLink(email, activateToken)
-    Note over EmailVerificationService: status:ACTIVATION_LINK_SENT
+    App ->> EmailVerificationService: sendVerificationLink(email)
+    EmailVerificationService ->> TokenService: generate retrieveToken + verifyToken
+    EmailVerificationService ->> EmailService: sendVerificationLink(email, verifyToken)
+    Note over EmailVerificationService: status:VERIFICATION_LINK_SENT
     EmailVerificationService ->> EmailVerificationRepository: save()
     EmailVerificationService -->> App: retrieveToken
-    User ->> EmailVerificationService: activate(activateToken)
-    EmailVerificationService ->> TokenService: verify(activateToken)
+    User ->> EmailVerificationService: verify(verifyToken)
+    EmailVerificationService ->> TokenService: verify(verifyToken)
     Note over EmailVerificationService: status:VERIFIED
     EmailVerificationService ->> EmailVerificationRepository: save()
     EmailVerificationRepository ->> EmailVerificationRepository: createUserIfNecessary()

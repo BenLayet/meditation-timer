@@ -57,7 +57,7 @@ Then("I should be able to create an account again", function () {
 
 Given(/^I have not verified my email yet$/, function () {
   this.remoteEmailVerification.status =
-    emailVerificationStatus.ACTIVATION_LINK_SENT;
+    emailVerificationStatus.VERIFICATION_LINK_SENT;
 });
 
 Given(/^I have just clicked the link to verify my email$/, function () {

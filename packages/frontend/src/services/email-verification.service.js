@@ -18,16 +18,17 @@ export class EmailVerificationService {
     await this.storeLocalEmailVerification(emailVerification);
     return emailVerification;
   }
-  async sendActivationLink() {
+  async sendVerificationLink() {
     let emailVerification = await this.loadLocalEmailVerification();
     emailVerification =
-      await this.emailVerificationApi.sendActivationLink(emailVerification);
+      await this.emailVerificationApi.sendVerificationLink(emailVerification);
     await this.storeLocalEmailVerification(emailVerification);
   }
 
   async refreshStoredEmailVerification() {
     let emailVerification = await this.loadLocalEmailVerification();
-    emailVerification = await this.emailVerificationApi.refresh(emailVerification);
+    emailVerification =
+      await this.emailVerificationApi.refresh(emailVerification);
     await this.storeLocalEmailVerification(emailVerification);
     return emailVerification;
   }
@@ -39,7 +40,7 @@ export class EmailVerificationService {
     validateEmailVerification(emailVerification);
     if (
       emailVerification.status ===
-        emailVerificationStatus.ACTIVATION_LINK_SENT ||
+        emailVerificationStatus.VERIFICATION_LINK_SENT ||
       emailVerification.status === emailVerificationStatus.CREATED
     ) {
       await this.keyValueStorageService.set(

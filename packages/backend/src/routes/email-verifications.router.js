@@ -5,7 +5,7 @@ import pkg from "jsonwebtoken";
 const { TokenExpiredError } = pkg;
 
 export function emailVerificationsRouter(
-  { sendActivationLink, verifyEmailAddress, retrieveVerification },
+  { sendVerificationLink, verifyEmailAddress, retrieveVerification },
   logger,
 ) {
   const router = express.Router();
@@ -20,7 +20,7 @@ export function emailVerificationsRouter(
       logger.debug(
         `Send verification email requested: ${JSON.stringify(email)}`,
       );
-      const emailVerification = await sendActivationLink(email);
+      const emailVerification = await sendVerificationLink(email);
       logger.debug(`verification email created`);
       res.status(201).json(emailVerification);
     } catch (error) {
@@ -29,17 +29,17 @@ export function emailVerificationsRouter(
     }
   });
 
-  // Route to activate an account
-  router.get("/activate/:activateToken", async (req, res) => {
+  // Route to verify an account
+  router.get("/verify/:verifyToken", async (req, res) => {
     try {
-      const { activateToken } = req.params;
-      logger.debug(`Activate email requested`);
-      await verifyEmailAddress(activateToken);
-      logger.debug(`email activated successfully`);
-      res.status(200).json({ message: "email activated successfully" });
+      const { verifyToken } = req.params;
+      logger.debug(`Verify email requested`);
+      await verifyEmailAddress(verifyToken);
+      logger.debug(`email verifyd successfully`);
+      res.status(200).json({ message: "email verifyd successfully" });
     } catch (error) {
       res.status(403).json({ error: "Invalid or expired verification token" });
-      logger.error(error, `activate error: ${error}`);
+      logger.error(error, `verify error: ${error}`);
     }
   });
 

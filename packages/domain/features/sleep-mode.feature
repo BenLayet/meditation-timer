@@ -1,6 +1,6 @@
 Feature: Sleep mode of my phone
   As a meditation practitioner using the application on my phone
-  I want the sleep mode of my phone to be deactivated during the meditation session
+  I want the sleep mode of my phone to be deverifyd during the meditation session
   so that the screen does not become black while I am meditating,
   and so I can check the time sometimes during meditation without moving
 

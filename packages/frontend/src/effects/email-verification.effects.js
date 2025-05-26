@@ -19,15 +19,15 @@ export const createEmailVerificationEffects = (
       await emailVerificationService.loadLocalEmailVerification();
     dispatchers.statusLoaded({ status });
   };
-  //activationLinkRequested
-  const activationLinkRequested = async () => {
+  //verificationLinkRequested
+  const verificationLinkRequested = async () => {
     try {
-      await emailVerificationService.sendActivationLink();
-      dispatchers.activationLinkSent();
+      await emailVerificationService.sendVerificationLink();
+      dispatchers.verificationLinkSent();
     } catch (error) {
       console.warn(error);
       //this is expected when offline
-      dispatchers.activationLinkFailed();
+      dispatchers.verificationLinkFailed();
     }
   };
   let scheduledRefreshTimeoutId = null;
@@ -66,8 +66,8 @@ export const createEmailVerificationEffects = (
       then: loadStatusRequested,
     }),
     createEffect({
-      afterEvent: emailVerificationEvents.activationLinkRequested,
-      then: activationLinkRequested,
+      afterEvent: emailVerificationEvents.verificationLinkRequested,
+      then: verificationLinkRequested,
     }),
     createEffect({
       afterEvent: emailVerificationEvents.scheduleRefreshRequested,

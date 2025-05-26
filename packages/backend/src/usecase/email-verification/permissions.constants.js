@@ -1,2 +1,2 @@
 export const RETRIEVE_PERMISSION = "RETRIEVE";
-export const ACTIVATE_PERMISSION = "ACTIVATE";
+export const VERIFY_PERMISSION = "VERIFY";
