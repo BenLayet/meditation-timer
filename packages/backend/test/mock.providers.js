@@ -1,15 +1,15 @@
-const emailService = async (datasource, environment, logger) => {
+const emailSender = async (datasource, environment, logger) => {
   if (environment !== "test")
     throw new Error(
       `This file should only be run in test mode. environment=${environment}`,
     );
-  await datasource`DROP TABLE IF EXISTS fake_mails;`;
-  await datasource`CREATE TABLE fake_mails(id SERIAL PRIMARY KEY, mail JSON);`;
+  await datasource`DROP TABLE IF EXISTS fake_messages;`;
+  await datasource`CREATE TABLE fake_messages(id SERIAL PRIMARY KEY, message JSON);`;
 
-  const sendEmail = async (mail) => {
-    logger.debug("Fake email sent", mail);
-    await datasource`INSERT INTO fake_mails (mail)
-                     VALUES (${mail});`;
+  const sendEmail = async (message) => {
+    logger.debug("Fake message sent", message);
+    await datasource`INSERT INTO fake_messages (message)
+                     VALUES (${message});`;
   };
 
   return {
@@ -55,8 +55,8 @@ export const fakeTokenService = {
 };
 
 export const mockProviders = {
-  emailService: ({ datasource, environment, logger }) =>
-    emailService(datasource, environment, logger),
+  emailSender: ({ datasource, environment, logger }) =>
+    emailSender(datasource, environment, logger),
   tokenService: () => fakeTokenService,
   uuidGenerator: ({ datasource, environment }) =>
     uuidGenerator(datasource, environment),

@@ -1,0 +1,2 @@
+export const RETRIEVE_PERMISSION = "RETRIEVE";
+export const ACTIVATE_PERMISSION = "ACTIVATE";

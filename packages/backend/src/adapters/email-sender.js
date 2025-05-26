@@ -23,8 +23,8 @@ export class MailgunEmailSender {
       key: this.apiKey,
     });
     try {
-      const data = await mg.messages.create(this.domain, mail);
-      this.logger.debug(data, "mail queued successfully with mailgun"); // logs response data
+      const result = await mg.messages.create(this.domain, mail);
+      this.logger.debug(result, "mail queued successfully with mailgun"); // logs response result
     } catch (error) {
       this.logger.error(error, "mail not queued with mailgun"); //logs any error
       throw error;

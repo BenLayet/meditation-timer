@@ -25,6 +25,6 @@ export const clearUserData = (email) => async () => {
 
 export const getLastMailSent = async () => {
   const rows =
-    await datasource`SELECT mail FROM fake_mails ORDER BY id DESC LIMIT 1;`;
-  return rows[0]?.mail;
+    await datasource`SELECT * FROM fake_messages ORDER BY id DESC LIMIT 1;`;
+  return rows[0]?.message;
 };

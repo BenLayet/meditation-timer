@@ -4,7 +4,10 @@ import pkg from "jsonwebtoken";
 
 const { TokenExpiredError } = pkg;
 
-export function emailVerificationsRouter(emailVerificationUsecase, logger) {
+export function emailVerificationsRouter(
+  { sendActivationLink, verifyEmailAddress, retrieveVerification },
+  logger,
+) {
   const router = express.Router();
 
   // Route to send verification email
@@ -14,12 +17,11 @@ export function emailVerificationsRouter(emailVerificationUsecase, logger) {
       if (!email) {
         return res.status(400).json({ error: "Email is required" });
       }
-      logger.info(
+      logger.debug(
         `Send verification email requested: ${JSON.stringify(email)}`,
       );
-      const emailVerification =
-        await emailVerificationUsecase.sendActivationLink(email);
-      logger.info(`verification email created`);
+      const emailVerification = await sendActivationLink(email);
+      logger.debug(`verification email created`);
       res.status(201).json(emailVerification);
     } catch (error) {
       res.status(500).json({ error: "Failed to send verification email" });
@@ -31,8 +33,8 @@ export function emailVerificationsRouter(emailVerificationUsecase, logger) {
   router.get("/activate/:activateToken", async (req, res) => {
     try {
       const { activateToken } = req.params;
-      logger.info(`Activate email requested`);
-      await emailVerificationUsecase.activate(activateToken);
+      logger.debug(`Activate email requested`);
+      await verifyEmailAddress(activateToken);
       logger.debug(`email activated successfully`);
       res.status(200).json({ message: "email activated successfully" });
     } catch (error) {
@@ -44,7 +46,7 @@ export function emailVerificationsRouter(emailVerificationUsecase, logger) {
   // Route to create a user
   router.get("/:emailVerificationUuid", async (req, res) => {
     const { emailVerificationUuid } = req.params;
-    logger.info(
+    logger.debug(
       `Check Status requested, for emailVerificationUuid: ${emailVerificationUuid}`,
     );
     const token = extractBearerToken(req); // Extract token from Authorization header
@@ -53,7 +55,7 @@ export function emailVerificationsRouter(emailVerificationUsecase, logger) {
       return res.status(401).json({ error: "security token is required" });
     }
     try {
-      const emailVerification = await emailVerificationUsecase.get(
+      const emailVerification = await retrieveVerification(
         emailVerificationUuid,
         token,
       );

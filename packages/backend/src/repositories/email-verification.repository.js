@@ -8,6 +8,7 @@ import {
   validateNotEmptyString,
   validateNotNullObject,
 } from "domain/src/models/not-null.validator.js";
+import { validateEmailFormat } from "domain/src/models/email.validator.js";
 
 export class EmailVerificationRepository {
   constructor(datasource, transactionService, uuidGenerator, logger) {
@@ -16,29 +17,20 @@ export class EmailVerificationRepository {
     this.uuidGenerator = uuidGenerator;
     this.logger = logger;
   }
-  async createEmailVerification(emailVerification) {
-    validateNewEmailVerification(emailVerification);
-    const { email, status } = emailVerification;
+  async createEmailVerification(email) {
+    validateEmailFormat(email);
     const uuid = await this.uuidGenerator.createUuid();
-    this.logger.debug(
-      `Creating email verification with uuid ${uuid}, email ${email}, status ${status}`,
-    );
     const row = await insertEmailVerification(
       this.datasource,
       uuid,
       email,
-      status,
+      emailVerificationStatus.CREATED,
     );
     return fromRow(row);
   }
   async getByUuid(uuid) {
     validateNotEmptyString({ uuid });
-    const row = await getEmailVerificationByUuid(this.datasource, uuid);
-    if (!row || row.length === 0) {
-      this.logger.debug(`No email verification found with uuid ${uuid}`);
-      return null;
-    }
-    return fromRow(row);
+    return getEmailVerificationByUuid(this.datasource, uuid);
   }
   async updateEmailVerificationStatus(emailVerificationUuid, newStatus) {
     validateNotEmptyString({ emailVerificationUuid });
@@ -97,7 +89,7 @@ const selectUserUuid = async (datasource, email) =>
   await datasource`
         SELECT uuid
         FROM users
-        WHERE email = ${email}`.then((rows) => rows[0]);
+        WHERE email = ${email}`.then((rows) => rows[0]?.uuid);
 const getEmailVerificationByUuid = async (datasource, emailVerificationUuid) =>
   await datasource`
         SELECT v.uuid, email, v.status, u.uuid as user_uuid
@@ -127,9 +119,12 @@ const updateEmailVerificationStatus = async (
         SET status = ${status}
         WHERE uuid = ${emailVerificationUuid}
 `;
-const fromRow = (row) => ({
-  uuid: row.uuid,
-  email: row.email,
-  status: row.status,
-  userUuid: row.user_uuid,
-});
+const fromRow = (row) =>
+  !!row
+    ? {
+        uuid: row.uuid,
+        email: row.email,
+        status: row.status,
+        userUuid: row.user_uuid,
+      }
+    : null;

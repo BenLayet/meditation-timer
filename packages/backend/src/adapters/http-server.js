@@ -9,12 +9,14 @@ import path from "path";
 
 export const startHttpServer = async ({
   eventRepository,
-  emailVerificationUsecase,
   apiProperties,
   version,
   environment,
   cleanupTasks,
   logger,
+  sendActivationLink,
+  verifyEmailAddress,
+  retrieveVerification,
 }) => {
   // Serve static files from the React app
   const __filename = fileURLToPath(import.meta.url);
@@ -38,7 +40,10 @@ export const startHttpServer = async ({
   app.use(`${basePath}/health`, healthRouter(version, environment, logger));
   app.use(
     `${basePath}/email-verifications`,
-    emailVerificationsRouter(emailVerificationUsecase, logger),
+    emailVerificationsRouter(
+      { sendActivationLink, verifyEmailAddress, retrieveVerification },
+      logger,
+    ),
   );
   app.use(`${basePath}/events`, eventsRouter(eventRepository, logger));
 

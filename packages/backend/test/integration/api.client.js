@@ -29,7 +29,7 @@ export const postEmailVerification = async (emailVerification) =>
   httpPost(emailVerificationsUrl, emailVerification);
 export const activateEmail = async (token) =>
   httpPost(`${emailVerificationsUrl}/activate?token=${token}`);
-export const getEmailVerification = async (emailVerificationUuid, token) =>
+export const retrieveEmailVerification = async (emailVerificationUuid, token) =>
   httpGet(`${emailVerificationsUrl}/${emailVerificationUuid}`, {
     Authorization: `Bearer ${token}`,
   });

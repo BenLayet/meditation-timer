@@ -2,11 +2,14 @@ import { createDatasource } from "../adapters/datasource.js";
 import { EventRepository } from "../repositories/event.repository.js";
 import { MailgunEmailSender } from "../adapters/email-sender.js";
 import { EmailVerificationRepository } from "../repositories/email-verification.repository.js";
-import { EmailVerificationUsecase } from "../usecase/email-verification.usecase.js";
 import { JwtTokenService } from "../adapters/token.service.js";
 import { UuidGenerator } from "../adapters/uuid-generator.js";
 import { TransactionService } from "../repositories/transaction.service.js";
 import { logger } from "../adapters/logger.js";
+import { MessageBuilder } from "../service/message-builder.service.js";
+import { retrieveVerification } from "../usecase/email-verification/retrieve-verification.usecase.js";
+import { sendActivationLink } from "../usecase/email-verification/send-activation-link.usecase.js";
+import { verifyEmailAddress } from "../usecase/email-verification/verify-email-address.usecase.js";
 
 export const providers = {
   logger: ({ logLevel, environment }) => logger(logLevel, environment),
@@ -30,25 +33,13 @@ export const providers = {
     ),
   tokenService: ({ jwtSecret, logger }) =>
     new JwtTokenService(jwtSecret, logger),
-  emailService: ({ mailgunProperties, logger }) =>
+  emailSender: ({ mailgunProperties, logger }) =>
     mailgunProperties.apiKey === "mock"
       ? { sendEmail: console.log }
       : new MailgunEmailSender(mailgunProperties, logger),
-  emailVerificationUsecase: ({
-    emailVerificationRepository,
-    emailService,
-    tokenService,
-    mailFrom,
-    apiProperties,
-    logger,
-  }) =>
-    new EmailVerificationUsecase(
-      emailVerificationRepository,
-      emailService,
-      tokenService,
-      mailFrom,
-      apiProperties,
-      logger,
-    ),
+  messageBuilder: () => new MessageBuilder(),
   cleanupTasks: ({ datasource }) => [datasource.end],
+  sendActivationLink: sendActivationLink,
+  retrieveVerification: retrieveVerification,
+  verifyEmailAddress: verifyEmailAddress,
 };

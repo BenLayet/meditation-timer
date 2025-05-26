@@ -1,4 +1,7 @@
-import { postEmailVerification, getEmailVerification } from "./api.client.js";
+import {
+  postEmailVerification,
+  retrieveEmailVerification,
+} from "./api.client.js";
 import {
   clearUserData,
   resetFakeUuidSequence,
@@ -12,7 +15,7 @@ const emailVerificationUuid = "10000000-0000-1000-8000-000000000001";
 const userToken = fakeTokenService.createPermanentToken({
   userUuid: "10000000-0000-1000-8000-000000000002",
 });
-const retrieveEmailVerificationToken = fakeTokenService.createShortLivedToken({
+const retrieveToken = fakeTokenService.createShortLivedToken({
   emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
   scope: ["RETRIEVE"],
 });
@@ -27,7 +30,7 @@ describe("activating emails", () => {
   afterEach(clearUserData(email));
   beforeAll(resetFakeUuidSequence);
 
-  test("posting an email verification should return a retrieveEmailVerificationToken", async () => {
+  test("posting an email verification should return a retrieveToken", async () => {
     //WHEN
     const { body, status } = await postEmailVerification({ email });
 
@@ -35,7 +38,7 @@ describe("activating emails", () => {
     expect(status, "status should be 201").toBe(201);
     expect(body).toEqual({
       status: emailVerificationStatus.ACTIVATION_LINK_SENT,
-      retrieveEmailVerificationToken,
+      retrieveToken,
     });
   });
 
@@ -50,12 +53,12 @@ describe("activating emails", () => {
       to: email,
       subject: "Activate your account",
       html: expect.stringMatching(
-        /Click to let Meditation Timer know that this is your email adress/,
+        /Click to confirm your email address to Meditation Timer: <a href='.*' target='_blank'>.*<\/a>/,
       ),
     });
   });
 
-  test("posting an email verification should send an verification link", async () => {
+  test("posting an email verification should send a verification link", async () => {
     //WHEN
     await postEmailVerification({ email });
 
@@ -88,14 +91,12 @@ describe("activating emails", () => {
   });
   test("should return userToken when requested if email is verified", async () => {
     //GIVEN
-    const {
-      body: { retrieveEmailVerificationToken },
-    } = await postEmailVerification({ email });
+    await postEmailVerification({ email });
     await httpGet(verificationLink); // verify email
     //WHEN
-    const { body, status } = await getEmailVerification(
+    const { body, status } = await retrieveEmailVerification(
       emailVerificationUuid,
-      retrieveEmailVerificationToken,
+      retrieveToken,
     ); // Check the status of the email verification
 
     // THEN
