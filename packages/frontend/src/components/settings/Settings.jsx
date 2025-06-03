@@ -8,7 +8,7 @@ import { LanguageSelection } from "../language-selection/LanguageSelection.jsx";
 
 function Settings({ vm }) {
   const { t } = useTranslation();
-  const [isMenuVisible, setMenuVisible] = useState(true);
+  const [isMenuVisible, setMenuVisible] = useState(false);
 
   const toggleMenu = () => {
     setMenuVisible(!isMenuVisible);
