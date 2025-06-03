@@ -1,22 +1,19 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { eventsRouter } from "../routes/events.router.js";
 import { fileURLToPath } from "url";
 import path from "path";
+import { retrieveVerification } from "../usecase/email-verification/retrieve-verification.usecase.js";
+import { retrieveVerificationHandler } from "../route-handlers/email-verifications.handler.js";
 
 export const startHttpServer = async ({
   healthCheckHandler,
-
-  eventRepository,
+  sendVerificationLinkHandler,
+  verifyEmailAddressHandler,
+  retrieveVerificationHandler,
   apiProperties,
-  version,
-  environment,
   cleanupTasks,
   logger,
-  sendVerificationLink,
-  verifyEmailAddress,
-  retrieveVerification,
 }) => {
   // Serve static files from the React app
   const __filename = fileURLToPath(import.meta.url);
@@ -25,7 +22,6 @@ export const startHttpServer = async ({
     __dirname,
     "../../node_modules/frontend/dist",
   );
-  const routes = {};
   const app = express();
 
   // Middleware
@@ -36,19 +32,16 @@ export const startHttpServer = async ({
   app.use(express.static(staticFilesPath));
 
   // Routes
-  const router = express.Router();
   const { port, basePath } = apiProperties;
-  app.use(`${basePath}/health`, router.get("/", healthCheckHandler));
-  /* TODO
-  app.use(
-    `${basePath}/email-verifications`,
-    emailVerificationsRouter(
-      { sendVerificationLink, verifyEmailAddress, retrieveVerification },
-      logger,
-    ),
-  );
-  app.use(`${basePath}/events`, eventsRouter(eventRepository, logger));
-*/
+  app.get(`${basePath}/health`, healthCheckHandler);
+  const emailVerificationsRouter = express.Router();
+  emailVerificationsRouter
+    .post("/", sendVerificationLinkHandler)
+    .get("/verify/:verifyToken", verifyEmailAddressHandler)
+    .get("/:emailVerificationUuid", retrieveVerificationHandler);
+  app.use(`${basePath}/email-verifications`, emailVerificationsRouter);
+
+  //app.use(`${basePath}/events`, eventsRouter(eventRepository, logger));
   // Error-handling middleware
   app.use((err, req, res, next) => {
     logger.error(err, "Error occurred:", err.message);

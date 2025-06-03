@@ -30,3 +30,5 @@ pgMemDatasource.begin = async (transactionConsumer) => {
     throw e;
   }
 };
+
+pgMemDatasource.end = () => console.log("shutting down pg-mem db");

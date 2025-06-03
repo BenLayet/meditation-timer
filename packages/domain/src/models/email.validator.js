@@ -1,6 +1,6 @@
 export function validateEmailFormat(email) {
   if (typeof email !== "string") {
-    throw new Error("Email must be a string");
+    throw new Error(`Email must be a string but was of type ${typeof email}`);
   }
   if (email.length === 0) {
     throw new Error("Email cannot be empty");

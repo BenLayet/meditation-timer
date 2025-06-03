@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/main.js",
     "dev": "pnpm run dev:db:start && pnpm run dev:api:start",
-    "dev:api:start": "nodemon -r dotenv/config dotenv_config_path=.env.dev src/main.js --watch src",
+    "dev:api:start": "nodemon -r dotenv/config src/main.js dotenv_config_path=.env.dev --watch src",
     "dev:api:stop": "npx kill-port 8000",
     "dev:db:start": "docker-compose -p db-dev --env-file .env.dev -f database/docker-compose.yml up -d",
     "dev:db:stop": "docker-compose -p db-dev --env-file .env.dev -f database/docker-compose.yml down -v",

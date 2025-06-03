@@ -28,7 +28,7 @@ export class EmailVerificationService {
   async refreshStoredEmailVerification() {
     let emailVerification = await this.loadLocalEmailVerification();
     emailVerification =
-      await this.emailVerificationApi.refresh(emailVerification);
+      await this.emailVerificationApi.retrieveVerification(emailVerification);
     await this.storeLocalEmailVerification(emailVerification);
     return emailVerification;
   }

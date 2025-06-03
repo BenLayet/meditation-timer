@@ -1,9 +1,9 @@
-import { healthCheckHandler } from "../routes/health-check.handler.js";
+import { healthCheckHandler } from "../route-handlers/health-check.handler.js";
 import {
   retrieveVerificationHandler,
   sendVerificationLinkHandler,
   verifyEmailAddressHandler,
-} from "../routes/email-verifications.handler.js";
+} from "../route-handlers/email-verifications.handler.js";
 
 export const endpointHandlerProviders = {
   healthCheckHandler,

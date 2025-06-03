@@ -1,2 +1,4 @@
 import postgres from "postgres";
-export const createDatasource = postgres;
+export const createDatasource = (datasourceProperties) => {
+  return postgres(datasourceProperties);
+};

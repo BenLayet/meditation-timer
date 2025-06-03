@@ -15,7 +15,7 @@ export class EmailVerificationApi {
       return response.json();
     });
   };
-  refresh = async (emailVerification) => {
+  retrieveVerification = async (emailVerification) => {
     return fetch(`${API_URL}/${emailVerification.uuid}`, {
       method: "GET",
       headers: {

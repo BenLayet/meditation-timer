@@ -60,6 +60,8 @@ export const sendVerificationLink = ({
     return {
       retrieveToken: emailVerification.retrieveToken,
       status: emailVerification.status,
+      email,
+      uuid: emailVerification.uuid,
     };
   };
 };

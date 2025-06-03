@@ -33,6 +33,8 @@ describe("verifying emails", () => {
     expect(body).toEqual({
       status: emailVerificationStatus.VERIFICATION_LINK_SENT,
       retrieveToken,
+      email,
+      uuid: emailVerificationUuid,
     });
   });
 
@@ -109,6 +111,7 @@ describe("verifying emails", () => {
     expect(body).toEqual({
       status: emailVerificationStatus.VERIFIED,
       userToken,
+      uuid: emailVerificationUuid,
     });
   });
 });

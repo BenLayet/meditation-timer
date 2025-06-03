@@ -3,10 +3,7 @@ import {
   validateNotNull,
   validateNotNullObject,
 } from "domain/src/lib/assert/not-null.validator.js";
-import {
-  emailVerificationStatus,
-  validateEmailVerification,
-} from "domain/src/models/email-verification.model.js";
+import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
 import { RETRIEVE_PERMISSION } from "./permissions.constants.js";
 
 export const retrieveVerification = ({
@@ -52,11 +49,15 @@ export const retrieveVerification = ({
       );
 
       // 4. return a projection of the email verification object
-      return { status: emailVerification.status, userToken };
+      return {
+        status: emailVerification.status,
+        userToken,
+        uuid: emailVerification.uuid,
+      };
     } else {
       logger.debug(`Email not verified, status: ${emailVerification.status}`);
       // 4. return a projection of the email verification object
-      return { status: emailVerification.status };
+      return { status: emailVerification.status, uuid: emailVerification.uuid };
     }
   };
 };
