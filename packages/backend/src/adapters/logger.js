@@ -1,9 +1,7 @@
 import pino from "pino";
 
-export const logger = (logLevel, environment) =>
+export const logger = (logLevel, logPretty) =>
   pino({
     level: logLevel,
-    transport: ["dev", "test"].includes(environment)
-      ? { target: "pino-pretty" }
-      : undefined,
+    transport: logPretty ? { target: "pino-pretty" } : undefined,
   });

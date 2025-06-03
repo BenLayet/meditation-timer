@@ -1,13 +1,6 @@
-import { loadEnvironmentProperties } from "../../src/config/environment.properties.js";
-import { createDatasource } from "../../src/adapters/datasource.js";
-
-// load environment properties
-const { environment, datasourceProperties } = loadEnvironmentProperties();
-const datasource = createDatasource(datasourceProperties);
-
-export const resetFakeUuidSequence = async () => {
-  await datasource`SELECT setval('fake_uuid', 1, false) as counter;`;
-};
+import { dependencies } from "./global-setup.js";
+const environment = dependencies.environment;
+const datasource = dependencies.datasource;
 
 export const clearUserData = (email) => async () => {
   if (environment !== "test") {
@@ -21,10 +14,4 @@ export const clearUserData = (email) => async () => {
   await datasource`DELETE
                      FROM email_verifications
                      WHERE email = ${email};`;
-};
-
-export const getLastMailSent = async () => {
-  const rows =
-    await datasource`SELECT * FROM fake_messages ORDER BY id DESC LIMIT 1;`;
-  return rows[0]?.message;
 };

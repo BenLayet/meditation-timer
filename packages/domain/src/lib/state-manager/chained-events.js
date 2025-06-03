@@ -4,7 +4,7 @@ import { getStateAtPath } from "./state.js";
 import {
   validateNotEmptyString,
   validateNotNullObject,
-} from "../../models/not-null.validator.js";
+} from "../assert/not-null.validator.js";
 
 const createChainedEventFactory =
   (currentComponentPath) =>

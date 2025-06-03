@@ -1,13 +1,13 @@
 import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
 import { validateEmailFormat } from "domain/src/models/email.validator.js";
 import {
-  VERIFY_PERMISSION,
   RETRIEVE_PERMISSION,
+  VERIFY_PERMISSION,
 } from "./permissions.constants.js";
 import {
   validateNotEmptyString,
   validateNotNullObject,
-} from "domain/src/models/not-null.validator.js";
+} from "domain/src/lib/assert/not-null.validator.js";
 
 export const sendVerificationLink = ({
   emailVerificationRepository,
@@ -45,7 +45,7 @@ export const sendVerificationLink = ({
     })(emailVerification);
     logger.info(`Verification link sent to ${emailVerification.email}`);
 
-    // 3. update status to REQUESTED
+    // 3. update status to VERIFICATION_LINK_SENT
     emailVerification = await markAsVerificationLinkSent({
       emailVerificationRepository,
     })(emailVerification.uuid);
@@ -54,7 +54,7 @@ export const sendVerificationLink = ({
     emailVerification.retrieveToken = await createRetrieveToken({
       tokenService,
     })(emailVerification.uuid);
-    logger.debug(`Return retrieveToken ${emailVerification.retrieveToken}`);
+    logger.info(`retrieveToken created ${emailVerification.retrieveToken}`);
 
     // 5. Return a projection of the email verification object
     return {
@@ -129,8 +129,8 @@ const buildVerificationUrl =
 
 const markAsVerificationLinkSent =
   ({ emailVerificationRepository }) =>
-  (emailVerificationUuid) =>
-    emailVerificationRepository.updateEmailVerificationStatus(
+  async (emailVerificationUuid) =>
+    await emailVerificationRepository.updateEmailVerificationStatus(
       emailVerificationUuid,
       emailVerificationStatus.VERIFICATION_LINK_SENT,
     );

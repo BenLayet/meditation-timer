@@ -2,7 +2,7 @@ import {
   emailVerificationStatus,
   validateEmailVerification,
 } from "domain/src/models/email-verification.model.js";
-import { validateNotEmptyString } from "domain/src/models/not-null.validator.js";
+import { validateNotEmptyString } from "domain/src/lib/assert/not-null.validator.js";
 
 export class EmailVerificationService {
   constructor(keyValueStorageService, emailVerificationApi) {

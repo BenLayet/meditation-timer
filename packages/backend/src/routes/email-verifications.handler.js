@@ -1,50 +1,43 @@
-import express from "express";
 import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
 import pkg from "jsonwebtoken";
 
 const { TokenExpiredError } = pkg;
 
-export function emailVerificationsRouter(
-  { sendVerificationLink, verifyEmailAddress, retrieveVerification },
+export const sendVerificationLinkHandler = ({
   logger,
-) {
-  const router = express.Router();
-
-  // Route to send verification email
-  router.post("/", async (req, res) => {
+  sendVerificationLink,
+}) => {
+  return async (req, res) => {
     try {
       const { email } = req.body;
-      if (!email) {
-        return res.status(400).json({ error: "Email is required" });
-      }
-      logger.debug(
-        `Send verification email requested: ${JSON.stringify(email)}`,
-      );
-      const emailVerification = await sendVerificationLink(email);
-      logger.debug(`verification email created`);
-      res.status(201).json(emailVerification);
+      res.status(201).json(await sendVerificationLink(email));
     } catch (error) {
-      res.status(500).json({ error: "Failed to send verification email" });
-      logger.error(error, `Post verification email error: ${error}`);
+      logger.error(error);
+      res.status(500).json({ error });
     }
-  });
+  };
+};
 
-  // Route to verify an account
-  router.get("/verify/:verifyToken", async (req, res) => {
+export const verifyEmailAddressHandler = ({ logger, verifyEmailAddress }) => {
+  return async (req, res) => {
     try {
       const { verifyToken } = req.params;
       logger.debug(`Verify email requested`);
       await verifyEmailAddress(verifyToken);
-      logger.debug(`email verifyd successfully`);
-      res.status(200).json({ message: "email verifyd successfully" });
+      logger.debug(`email verified successfully`);
+      res.status(200).json({ message: "email verified successfully" });
     } catch (error) {
-      res.status(403).json({ error: "Invalid or expired verification token" });
       logger.error(error, `verify error: ${error}`);
+      res.status(403).json({ error: "Invalid or expired verification token" });
     }
-  });
+  };
+};
 
-  // Route to create a user
-  router.get("/:emailVerificationUuid", async (req, res) => {
+export const retrieveVerificationHandler = ({
+  logger,
+  retrieveVerification,
+}) => {
+  return async (req, res) => {
     const { emailVerificationUuid } = req.params;
     logger.debug(
       `Check Status requested, for emailVerificationUuid: ${emailVerificationUuid}`,
@@ -71,9 +64,8 @@ export function emailVerificationsRouter(
       logger.error(error, `Unexpected error retrieving email verification`);
       throw error;
     }
-  });
-  return router;
-}
+  };
+};
 
 const extractBearerToken = (req) => {
   const authHeader = req.headers.authorization;

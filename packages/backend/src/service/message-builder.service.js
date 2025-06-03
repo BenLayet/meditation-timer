@@ -1,5 +1,5 @@
 import en from "./message-templates.en.js";
-import { validateNotNull } from "domain/src/models/not-null.validator.js";
+import { validateNotNull } from "domain/src/lib/assert/not-null.validator.js";
 const templates = { en };
 export class MessageBuilder {
   async buildMessage(languageCode, templateName, values) {

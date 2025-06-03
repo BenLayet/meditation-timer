@@ -2,12 +2,12 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { eventsRouter } from "../routes/events.router.js";
-import { healthRouter } from "../routes/health.router.js";
-import { emailVerificationsRouter } from "../routes/email-verifications.router.js";
 import { fileURLToPath } from "url";
 import path from "path";
 
 export const startHttpServer = async ({
+  healthCheckHandler,
+
   eventRepository,
   apiProperties,
   version,
@@ -36,8 +36,10 @@ export const startHttpServer = async ({
   app.use(express.static(staticFilesPath));
 
   // Routes
+  const router = express.Router();
   const { port, basePath } = apiProperties;
-  app.use(`${basePath}/health`, healthRouter(version, environment, logger));
+  app.use(`${basePath}/health`, router.get("/", healthCheckHandler));
+  /* TODO
   app.use(
     `${basePath}/email-verifications`,
     emailVerificationsRouter(
@@ -46,7 +48,7 @@ export const startHttpServer = async ({
     ),
   );
   app.use(`${basePath}/events`, eventsRouter(eventRepository, logger));
-
+*/
   // Error-handling middleware
   app.use((err, req, res, next) => {
     logger.error(err, "Error occurred:", err.message);

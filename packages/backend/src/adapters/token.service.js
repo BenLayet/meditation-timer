@@ -3,7 +3,7 @@ import {
   validateNotNull,
   validateNotNullObject,
   validateNotEmptyString,
-} from "domain/src/models/not-null.validator.js";
+} from "domain/src/lib/assert/not-null.validator.js";
 
 export class JwtTokenService {
   constructor(jwtSecret, logger) {

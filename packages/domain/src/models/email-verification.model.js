@@ -1,5 +1,5 @@
 import { emailRegex, validateEmailFormat } from "./email.validator.js";
-import { validateNotEmptyString } from "./not-null.validator.js";
+import { validateNotEmptyString } from "../lib/assert/not-null.validator.js";
 
 export const emailVerificationStatus = {
   CREATED: "CREATED",

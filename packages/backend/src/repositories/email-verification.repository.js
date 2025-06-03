@@ -7,7 +7,7 @@ import {
 import {
   validateNotEmptyString,
   validateNotNullObject,
-} from "domain/src/models/not-null.validator.js";
+} from "domain/src/lib/assert/not-null.validator.js";
 import { validateEmailFormat } from "domain/src/models/email.validator.js";
 
 export class EmailVerificationRepository {
@@ -38,46 +38,44 @@ export class EmailVerificationRepository {
     this.logger.debug(
       `update status emailVerificationUuid: ${emailVerificationUuid}, newStatus: ${newStatus}`,
     );
-    return await this.transactionService.executeInTransaction(
-      async (transaction) => {
-        //TODO same level of abstraction
+    return this.transactionService.executeInTransaction(async (transaction) => {
+      //TODO same level of abstraction
+      this.logger.debug(
+        `Updating email verification with uuid ${emailVerificationUuid}, new status=${newStatus}`,
+      );
+      let emailVerification = await getEmailVerificationByUuid(
+        transaction,
+        emailVerificationUuid,
+      );
+      validateNotNullObject({ emailVerification });
+      const { status: existingStatus, email } = emailVerification;
+      this.logger.debug(
+        `Found email verification with uuid ${emailVerificationUuid}, existing status=${existingStatus}`,
+      );
+      if (!existingStatus)
+        throw new Error(
+          `Email verification with uuid ${emailVerificationUuid} not found`,
+        );
+      validateStatusTransition(existingStatus, newStatus);
+      await updateEmailVerificationStatus(
+        transaction,
+        emailVerificationUuid,
+        newStatus,
+      );
+      this.logger.debug(
+        `Email verification with uuid ${emailVerificationUuid} updated to ${newStatus}`,
+      );
+      emailVerification.status = newStatus;
+      if (newStatus === emailVerificationStatus.VERIFIED) {
+        const newUuid = await this.uuidGenerator.createUuid();
+        await insertUserIfNecessary(transaction, email, newUuid);
+        emailVerification.userUuid = await selectUserUuid(transaction, email);
         this.logger.debug(
-          `Updating email verification with uuid ${emailVerificationUuid}, new status=${newStatus}`,
+          `User created with uuid ${emailVerification.userUuid} for email ${email}`,
         );
-        let emailVerification = await getEmailVerificationByUuid(
-          transaction,
-          emailVerificationUuid,
-        );
-        validateNotNullObject({ emailVerification });
-        const { status: existingStatus, email } = emailVerification;
-        this.logger.debug(
-          `Found email verification with uuid ${emailVerificationUuid}, existing status=${existingStatus}`,
-        );
-        if (!existingStatus)
-          throw new Error(
-            `Email verification with uuid ${emailVerificationUuid} not found`,
-          );
-        validateStatusTransition(existingStatus, newStatus);
-        await updateEmailVerificationStatus(
-          transaction,
-          emailVerificationUuid,
-          newStatus,
-        );
-        this.logger.debug(
-          `Email verification with uuid ${emailVerificationUuid} updated to ${newStatus}`,
-        );
-        emailVerification.status = newStatus;
-        if (newStatus === emailVerificationStatus.VERIFIED) {
-          const newUuid = await this.uuidGenerator.createUuid();
-          await insertUserIfNecessary(transaction, email, newUuid);
-          emailVerification.userUuid = await selectUserUuid(transaction, email);
-          this.logger.debug(
-            `User created with uuid ${emailVerification.userUuid} for email ${email}`,
-          );
-        }
-        return emailVerification;
-      },
-    );
+      }
+      return emailVerification;
+    });
   }
 }
 
@@ -92,9 +90,9 @@ const selectUserUuid = async (datasource, email) =>
         WHERE email = ${email}`.then((rows) => rows[0]?.uuid);
 const getEmailVerificationByUuid = async (datasource, emailVerificationUuid) =>
   await datasource`
-        SELECT v.uuid, email, v.status, u.uuid as user_uuid
+        SELECT v.uuid, v.email, v.status, u.uuid as user_uuid
         FROM email_verifications v
-        LEFT JOIN users u USING (email)
+        LEFT JOIN users u ON u.email = v.email
         WHERE v.uuid = ${emailVerificationUuid}`
     .then((rows) => rows[0])
     .then(fromRow);

@@ -1,7 +1,7 @@
 import {
   validateNotNull,
   validateNotNullObject,
-} from "domain/src/models/not-null.validator.js";
+} from "domain/src/lib/assert/not-null.validator.js";
 import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
 import { VERIFY_PERMISSION } from "./permissions.constants.js";
 

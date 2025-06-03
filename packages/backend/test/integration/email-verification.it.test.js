@@ -1,19 +1,11 @@
-import {
-  postEmailVerification,
-  retrieveEmailVerification,
-} from "./api.client.js";
-import {
-  clearUserData,
-  resetFakeUuidSequence,
-  getLastMailSent,
-} from "./database.admin.js";
-import { fakeTokenService } from "../mock.providers.js";
-import { httpGet } from "./http.client.js";
+import { apiClient } from "./api.client.js";
+import { clearUserData } from "./database.admin.js";
 import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
+import { fakeEmailSender, fakeTokenService } from "./test-providers.js";
 
 const emailVerificationUuid = "10000000-0000-1000-8000-000000000001";
 const userToken = fakeTokenService.createPermanentToken({
-  userUuid: "10000000-0000-1000-8000-000000000002",
+  userUuid: "10000000-0000-1000-8000-000000000001",
 });
 const retrieveToken = fakeTokenService.createShortLivedToken({
   emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
@@ -28,11 +20,13 @@ const verificationLink = `http://localhost:18000/api/v1/email-verifications/veri
 describe("verifying emails", () => {
   const email = "email1@example.org";
   afterEach(clearUserData(email));
-  beforeAll(resetFakeUuidSequence);
 
   test("posting an email verification should return a retrieveToken", async () => {
     //WHEN
-    const { body, status } = await postEmailVerification({ email });
+    const { body, status } = await apiClient.sendVerificationLink(
+      {},
+      { email },
+    );
 
     //THEN
     expect(status, "status should be 201").toBe(201);
@@ -44,11 +38,10 @@ describe("verifying emails", () => {
 
   test("posting an email verification should send an email", async () => {
     //WHEN
-    await postEmailVerification({ email });
+    await apiClient.sendVerificationLink({}, { email });
 
     //THEN
-    const lastMail = await getLastMailSent();
-    expect(lastMail).toEqual({
+    expect(fakeEmailSender.lastMail).toEqual({
       from: "mailfrom@test",
       to: email,
       subject: "Verify your account",
@@ -60,30 +53,37 @@ describe("verifying emails", () => {
 
   test("posting an email verification should send a verification link", async () => {
     //WHEN
-    await postEmailVerification({ email });
+    await apiClient.sendVerificationLink({}, { email });
 
     //THEN
-    const { html } = await getLastMailSent();
+    const { html } = fakeEmailSender.lastMail;
     const link = extractFirstLink(html);
     expect(link).toBe(verificationLink);
   });
 
   test("should verify email when link is clicked once", async () => {
     //GIVEN
-    await postEmailVerification({ email });
+    await apiClient.sendVerificationLink({}, { email });
     //WHEN
-    const { body, status } = await httpGet(verificationLink); // Fetch returns a Response object
+    const { body, status } = await apiClient.verifyEmailAddress({
+      verifyToken,
+    });
 
     // THEN
     expect(status).toBe(200); // Check the status code
-    expect(body).toEqual({ message: "email verifyd successfully" }); // Check the response body content
+    expect(body).toEqual({ message: "email verified successfully" }); // Check the response body content
   });
   test("should return error when verification link is clicked twice", async () => {
     //GIVEN
-    await postEmailVerification({ email });
-    await httpGet(verificationLink); // Click once
+    await apiClient.sendVerificationLink({}, { email });
+    await apiClient.verifyEmailAddress({
+      verifyToken,
+    }); // click once
+
     //WHEN
-    const { body, status } = await httpGet(verificationLink); // Click again
+    const { body, status } = await apiClient.verifyEmailAddress({
+      verifyToken,
+    }); // Click again
 
     // THEN
     expect(status).toBe(403); // Check the status code
@@ -91,13 +91,18 @@ describe("verifying emails", () => {
   });
   test("should return userToken when requested if email is verified", async () => {
     //GIVEN
-    await postEmailVerification({ email });
-    await httpGet(verificationLink); // verify email
+    await apiClient.sendVerificationLink({}, { email });
+    await apiClient.verifyEmailAddress({
+      verifyToken,
+    });
     //WHEN
-    const { body, status } = await retrieveEmailVerification(
-      emailVerificationUuid,
-      retrieveToken,
-    ); // Check the status of the email verification
+    const { body, status } = await apiClient.retrieveVerification(
+      {
+        emailVerificationUuid,
+      },
+      {},
+      { authorization: `Bearer ${retrieveToken}` },
+    );
 
     // THEN
     expect(status).toBe(200);
