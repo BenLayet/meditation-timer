@@ -13,10 +13,10 @@ class ServerSideResponse {
 }
 export const createFakeEndPoint =
   (handler) =>
-  async (params = {}, body = {}, headers = {}) => {
+  async ({ params = {}, query = {}, headers = {}, body = {} }) => {
     const clientSideResponse = {};
     await handler(
-      { body, headers, params },
+      { params, query, headers, body },
       new ServerSideResponse(clientSideResponse),
     );
     return clientSideResponse;

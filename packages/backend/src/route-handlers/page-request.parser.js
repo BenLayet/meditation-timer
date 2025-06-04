@@ -16,8 +16,8 @@ const validatePageRequest = (pageRequest) => {
 };
 export const parsePageRequest = (req) => {
   const pageRequest = {
-    afterId: parseInt(req.query.afterId, 10),
-    size: parseInt(req.query.size, 10),
+    afterId: parseInt(req.query.afterId ?? "0", 10),
+    size: parseInt(req.query.size ?? `${MAX_PAGE_SIZE}`, 10),
   };
   validatePageRequest(pageRequest);
   return pageRequest;

@@ -3,14 +3,14 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { fileURLToPath } from "url";
 import path from "path";
-import { retrieveVerification } from "../usecase/email-verification/retrieve-verification.usecase.js";
-import { retrieveVerificationHandler } from "../route-handlers/email-verifications.handler.js";
 
 export const startHttpServer = async ({
   healthCheckHandler,
   sendVerificationLinkHandler,
   verifyEmailAddressHandler,
   retrieveVerificationHandler,
+  postEventHandler,
+  getEventPageHandler,
   apiProperties,
   cleanupTasks,
   logger,
@@ -34,6 +34,7 @@ export const startHttpServer = async ({
   // Routes
   const { port, basePath } = apiProperties;
   app.get(`${basePath}/health`, healthCheckHandler);
+
   const emailVerificationsRouter = express.Router();
   emailVerificationsRouter
     .post("/", sendVerificationLinkHandler)
@@ -41,7 +42,10 @@ export const startHttpServer = async ({
     .get("/:emailVerificationUuid", retrieveVerificationHandler);
   app.use(`${basePath}/email-verifications`, emailVerificationsRouter);
 
-  //app.use(`${basePath}/events`, eventsRouter(eventRepository, logger));
+  const eventsRouter = express.Router();
+  eventsRouter.post("/", postEventHandler).get("/", getEventPageHandler);
+  app.use(`${basePath}/events`, eventsRouter);
+
   // Error-handling middleware
   app.use((err, req, res, next) => {
     logger.error(err, "Error occurred:", err.message);

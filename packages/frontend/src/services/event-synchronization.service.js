@@ -47,10 +47,10 @@ export class EventSynchronizationService {
 
   processRemoteEventsPage = async () => {
     // Get lastProcessedId
-    const lastProcessedId = await this.transactionService.runReadTransaction(
+    const lastProcessedId = (await this.transactionService.runReadTransaction(
       [keyValueStoreName],
-      this.keyValueStore.get(lastProcessedIdKey, 0),
-    );
+      this.keyValueStore.get(lastProcessedIdKey),
+    ))??0;
 
     const page = await this.eventApi.getEventPage(lastProcessedId, PAGE_SIZE);
     for (const event of page.entities) {

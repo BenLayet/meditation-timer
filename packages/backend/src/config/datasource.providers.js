@@ -1,4 +1,7 @@
-import { createDatasource } from "../adapters/postgres.datasource.js";
+import {
+  createDatasource,
+  datasourceErrorCodes,
+} from "../adapters/postgres.datasource.js";
 import { TransactionService } from "../repositories/transaction.service.js";
 
 export const datasourceProviders = {
@@ -12,5 +15,6 @@ export const datasourceProviders = {
   }),
   datasource: ({ datasourceProperties }) =>
     createDatasource(datasourceProperties),
+  datasourceErrorCodes: () => datasourceErrorCodes,
   transactionService: ({ datasource }) => new TransactionService(datasource),
 };

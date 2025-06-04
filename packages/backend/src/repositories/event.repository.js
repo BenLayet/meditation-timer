@@ -1,27 +1,39 @@
 import { validateNewEvent } from "domain/src/models/event.model.js";
 import { validateUserUuid } from "domain/src/models/user.model.js";
 import { toPage } from "./pagination.js";
+import { errorCodes } from "domain/src/errors/error-codes.js";
+import { FunctionalError } from "../errors/functional-error.js";
 
 export class EventRepository {
-  constructor(datasource, logger) {
+  constructor(datasource, datasourceErrorCodes, logger) {
     this.datasource = datasource;
+    this.datasourceErrorCode = datasourceErrorCodes;
     this.logger = logger;
   }
 
-  async saveEvent(userUuid, event) {
-    validateUserUuid(userUuid);
+  async saveEvent(event) {
     validateNewEvent(event);
-
-    const row = await this.datasource`
+    try {
+      const row = await this.datasource`
       INSERT INTO events (user_uuid, uuid, type, payload)
-            VALUES (${userUuid}, ${event.uuid}, ${event.type}, ${event.payload})
+            VALUES (${event.userUuid}, ${event.uuid}, ${event.type}, ${event.payload})
       ON CONFLICT (uuid)
         DO UPDATE SET type    = EXCLUDED.type,
                       payload = EXCLUDED.payload
       RETURNING *;
-
     `;
-    return toEvent(row[0]);
+      return toEvent(row[0]);
+    } catch (error) {
+      this.logger.error(error, `error while inserting event`);
+      if (error.code === this.datasourceErrorCode.FOREIGN_KEY_VIOLATION) {
+        throw new FunctionalError(
+          `user ${event.userUuid} does not exist`,
+          errorCodes.USER_DOES_NOT_EXIST,
+        );
+      } else {
+        throw error;
+      }
+    }
   }
 
   async getEventPage(userUuid, pageRequest) {

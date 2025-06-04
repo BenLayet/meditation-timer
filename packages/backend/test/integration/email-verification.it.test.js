@@ -23,10 +23,9 @@ describe("verifying emails", () => {
 
   test("posting an email verification should return a retrieveToken", async () => {
     //WHEN
-    const { body, status } = await apiClient.sendVerificationLink(
-      {},
-      { email },
-    );
+    const { body, status } = await apiClient.sendVerificationLink({
+      body: { email },
+    });
 
     //THEN
     expect(status, "status should be 201").toBe(201);
@@ -40,7 +39,9 @@ describe("verifying emails", () => {
 
   test("posting an email verification should send an email", async () => {
     //WHEN
-    await apiClient.sendVerificationLink({}, { email });
+    await apiClient.sendVerificationLink({
+      body: { email },
+    });
 
     //THEN
     expect(fakeEmailSender.lastMail).toEqual({
@@ -55,7 +56,9 @@ describe("verifying emails", () => {
 
   test("posting an email verification should send a verification link", async () => {
     //WHEN
-    await apiClient.sendVerificationLink({}, { email });
+    await apiClient.sendVerificationLink({
+      body: { email },
+    });
 
     //THEN
     const { html } = fakeEmailSender.lastMail;
@@ -65,10 +68,12 @@ describe("verifying emails", () => {
 
   test("should verify email when link is clicked once", async () => {
     //GIVEN
-    await apiClient.sendVerificationLink({}, { email });
+    await apiClient.sendVerificationLink({
+      body: { email },
+    });
     //WHEN
     const { body, status } = await apiClient.verifyEmailAddress({
-      verifyToken,
+      params: { verifyToken },
     });
 
     // THEN
@@ -77,14 +82,16 @@ describe("verifying emails", () => {
   });
   test("should return error when verification link is clicked twice", async () => {
     //GIVEN
-    await apiClient.sendVerificationLink({}, { email });
+    await apiClient.sendVerificationLink({
+      body: { email },
+    });
     await apiClient.verifyEmailAddress({
-      verifyToken,
+      params: { verifyToken },
     }); // click once
 
     //WHEN
     const { body, status } = await apiClient.verifyEmailAddress({
-      verifyToken,
+      params: { verifyToken },
     }); // Click again
 
     // THEN
@@ -93,18 +100,19 @@ describe("verifying emails", () => {
   });
   test("should return userToken when requested if email is verified", async () => {
     //GIVEN
-    await apiClient.sendVerificationLink({}, { email });
+    await apiClient.sendVerificationLink({
+      body: { email },
+    });
     await apiClient.verifyEmailAddress({
-      verifyToken,
+      params: { verifyToken },
     });
     //WHEN
-    const { body, status } = await apiClient.retrieveVerification(
-      {
+    const { body, status } = await apiClient.retrieveVerification({
+      params: {
         emailVerificationUuid,
       },
-      {},
-      { authorization: `Bearer ${retrieveToken}` },
-    );
+      headers: { authorization: `Bearer ${retrieveToken}` },
+    });
 
     // THEN
     expect(status).toBe(200);

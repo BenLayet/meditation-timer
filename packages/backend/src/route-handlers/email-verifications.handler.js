@@ -1,5 +1,6 @@
 import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
 import pkg from "jsonwebtoken";
+import { extractBearerToken } from "./bearer-token.js";
 
 const { TokenExpiredError } = pkg;
 
@@ -42,9 +43,11 @@ export const retrieveVerificationHandler = ({
     logger.debug(
       `Check Status requested, for emailVerificationUuid: ${emailVerificationUuid}`,
     );
-    const token = extractBearerToken(req); // Extract token from Authorization header
-    if (!token) {
-      logger.error(`token is missing`);
+    let token;
+    try {
+      token = extractBearerToken(req); // Extract token from Authorization header
+    } catch (error) {
+      logger.error(error, `token is missing`);
       return res.status(401).json({ error: "security token is required" });
     }
     try {
@@ -65,12 +68,4 @@ export const retrieveVerificationHandler = ({
       throw error;
     }
   };
-};
-
-const extractBearerToken = (req) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new Error("Authorization header is missing or invalid");
-  }
-  return authHeader.split(" ")[1]; // Extract the token after "Bearer"
 };

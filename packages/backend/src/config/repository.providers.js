@@ -3,8 +3,8 @@ import { EmailVerificationRepository } from "../repositories/email-verification.
 
 export const repositoryProviders = {
   //REPOSITORIES
-  eventRepository: ({ datasource, logger }) =>
-    new EventRepository(datasource, logger),
+  eventRepository: ({ datasource, datasourceErrorCodes, logger }) =>
+    new EventRepository(datasource, datasourceErrorCodes, logger),
   emailVerificationRepository: ({
     datasource,
     transactionService,

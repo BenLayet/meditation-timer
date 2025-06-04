@@ -1,27 +1,36 @@
 import { validate } from "uuid";
+import {
+  validateNotEmptyString,
+  validateNotNullObject,
+} from "../lib/assert/not-null.validator.js";
+import { validateNewMeditation } from "./meditation.model.js";
 
-const EVENT_TYPES = ["ADD_MEDITATION"];
-const validateEventType = (eventType) => {
-  if (!eventType || typeof eventType !== "string")
-    throw new Error("Event type must be a string");
-  if (!EVENT_TYPES.includes(eventType))
-    throw new Error(`Event type must be one of ${EVENT_TYPES.join(", ")}`);
+export const eventTypes = {
+  ADD_MEDITATION: "ADD_MEDITATION",
 };
-const validateEventPayload = (payload) => {
-  if (!payload || typeof payload !== "object")
-    throw new Error("Event payload must be an object");
-  if (Array.isArray(payload))
-    throw new Error("Event payload cannot be an array");
-  if (Object.keys(payload).length === 0)
-    throw new Error("Event payload cannot be an empty object");
+const validateEventType = (eventType) => {
+  validateNotEmptyString({ eventType });
+  if (!eventTypes[eventType])
+    throw new Error(
+      `Event type must be one of ${Object.values(eventTypes).join(", ")}`,
+    );
+};
+const payloadValidators = {
+  [eventTypes.ADD_MEDITATION]: validateNewMeditation,
+};
+const validateEventPayload = (eventType, payload) => {
+  validateNotNullObject({ payload });
+  payloadValidators[eventType](payload);
 };
 
 export const validateNewEvent = (event) => {
-  if (!event) throw new Error("Event cannot be null or undefined");
+  validateNotNullObject({ event });
   if (typeof event.id !== "undefined")
     throw new Error("Event ID must not be set");
   if (!validate(event.uuid))
-    throw new Error("event UUID must be a valid UUID but was: " + userUuid);
+    throw new Error("event UUID must be a valid UUID but was: " + event.uuid);
+  if (!validate(event.userUuid))
+    throw new Error("userUuid must be a valid UUID but was: " + event.userUuid);
   validateEventType(event.type);
-  validateEventPayload(event.payload);
+  validateEventPayload(event.type, event.payload);
 };

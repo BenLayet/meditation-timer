@@ -1,0 +1,4 @@
+export const errorCodes = {
+  INVALID_USER_TOKEN: "INVALID_USER_TOKEN",
+  USER_DOES_NOT_EXIST: "USER_DOES_NOT_EXIST",
+};

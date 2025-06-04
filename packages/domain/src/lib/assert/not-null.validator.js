@@ -42,12 +42,43 @@ export const validateNotEmptyString = (holder, context = null) => {
   }
 };
 
-export const validateFunction = (holder) => {
+export const validateFunction = (holder, context = null) => {
   const [key] = Object.keys(holder);
   const value = holder[key];
   if (typeof value !== "function") {
+    if (context) console.error(context);
     throw new Error(
       `Value of ${key} should be a function, but was of type: ${typeof value}`,
+    );
+  }
+};
+
+export const validateInteger = (holder, context = null) => {
+  const [key] = Object.keys(holder);
+  const value = holder[key];
+  if (!Number.isInteger(value)) {
+    if (context) console.error(context);
+    throw new Error(`Value of ${key} should be an integer, but was : ${value}`);
+  }
+};
+
+export const validatePositiveInteger = (holder, context = null) => {
+  validateInteger(holder, context);
+  const [key] = Object.keys(holder);
+  const value = holder[key];
+  if (value < 0) {
+    if (context) console.error(context);
+    throw new Error(`Value of ${key} should be positive, but was: ${value}`);
+  }
+};
+export const validateStrictlyPositiveInteger = (holder, context = null) => {
+  validateInteger(holder, context);
+  const [key] = Object.keys(holder);
+  const value = holder[key];
+  if (value < 1) {
+    if (context) console.error(context);
+    throw new Error(
+      `Value of ${key} should be strictly positive, but was: ${value}`,
     );
   }
 };
