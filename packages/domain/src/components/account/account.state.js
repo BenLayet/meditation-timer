@@ -1,8 +1,4 @@
-export const accountStatus = {
-  ANONYMOUS: "ANONYMOUS",
-  PENDING_VERIFICATION: "PENDING_VERIFICATION",
-  AUTHENTICATED: "AUTHENTICATED",
-};
+import { accountStatus } from "../../models/account.model.js";
 
 export const ACCOUNT_INITIAL_STATE = {
   email: null,

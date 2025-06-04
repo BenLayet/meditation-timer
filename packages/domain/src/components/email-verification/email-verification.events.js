@@ -11,6 +11,9 @@ export const emailVerificationEvents = {
   },
   verificationSucceeded: {
     eventType: "verificationSucceeded",
+    payloadShape: {
+      userToken: ow.string,
+    },
   },
   verificationFailed: {
     eventType: "verificationFailed",

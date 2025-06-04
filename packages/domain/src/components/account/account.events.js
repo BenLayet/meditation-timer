@@ -1,5 +1,5 @@
 import ow from "ow";
-import { accountStatus } from "./account.state.js";
+import { accountStatus } from "../../models/account.model.js";
 import { emailRegex } from "../../models/email.validator.js";
 
 export const accountEvents = {
@@ -28,6 +28,9 @@ export const accountEvents = {
   },
   accountAuthenticated: {
     eventType: "accountAuthenticated",
+    payloadShape: {
+      userToken: ow.string,
+    },
     handler: (state) => ({
       ...state,
       loading: false,
@@ -56,6 +59,7 @@ export const accountEvents = {
       account: ow.optional.object.exactShape({
         email: ow.string.matches(emailRegex),
         status: ow.string.oneOf(Object.values(accountStatus)),
+        userToken: ow.optional.string,
       }),
     },
     handler: (state, { account }) => ({

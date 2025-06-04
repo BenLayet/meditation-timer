@@ -1,7 +1,7 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import { expect } from "chai";
 import { emailVerificationEvents } from "../../src/components/email-verification/email-verification.events.js";
-import { accountStatus } from "../../src/components/account/account.state.js";
+import { accountStatus } from "../../src/models/account.model.js";
 import { emailVerificationStatus } from "../../src/models/email-verification.model.js";
 
 Given(/^I have not created an account yet$/, function () {

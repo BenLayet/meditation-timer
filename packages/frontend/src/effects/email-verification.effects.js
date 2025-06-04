@@ -49,9 +49,9 @@ export const createEmailVerificationEffects = (
 
   // refreshRequested
   const refreshRequested = async () => {
-    const { status } =
+    const { status, userToken } =
       await emailVerificationService.refreshStoredEmailVerification();
-    dispatchers.refreshCompleted({ status });
+    dispatchers.refreshCompleted({ status, userToken });
   };
   // Cancels the check status task
   const resetRequested = emailVerificationService.deleteStoredEmailVerification;

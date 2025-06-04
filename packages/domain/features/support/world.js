@@ -10,7 +10,7 @@ import { accountEvents } from "../../src/components/account/account.events.js";
 import { emailVerificationEvents } from "../../src/components/email-verification/email-verification.events.js";
 import { Before, AfterStep, setWorldConstructor } from "@cucumber/cucumber";
 import { compareObjects } from "../../src/lib/logger/compare-objects.js";
-import { accountStatus } from "../../src/components/account/account.state.js";
+import { accountStatus } from "../../src/models/account.model.js";
 import { emailVerificationStatus } from "../../src/models/email-verification.model.js";
 
 let stateManager;

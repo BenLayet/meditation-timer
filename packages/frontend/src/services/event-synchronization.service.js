@@ -3,6 +3,7 @@ import {
   meditationStoreName,
   pendingEventStoreName,
 } from "../storage/store-names.constants";
+import { validateNotEmptyString } from "domain/src/lib/assert/not-null.validator.js";
 
 const PAGE_SIZE = 100;
 export const lastProcessedIdKey = "lastProcessedId";
@@ -14,12 +15,14 @@ export class EventSynchronizationService {
     keyValueStore,
     eventProcessor,
     eventApi,
+    accountService,
   ) {
     this.transactionService = transactionService;
     this.pendingEventStore = pendingEventStore;
     this.keyValueStore = keyValueStore;
     this.eventApi = eventApi;
     this.eventProcessor = eventProcessor;
+    this.accountService = accountService;
   }
   async synchronizeEvents() {
     await this.postAllPendingEvents();
@@ -27,13 +30,16 @@ export class EventSynchronizationService {
   }
 
   postAllPendingEvents = async () => {
+    // Get user token
+    const userToken = await this.accountService.getUserToken();
+
     // Get all pending events
     const pendingEvents = await this.transactionService.runReadTransaction(
       [pendingEventStoreName],
       this.pendingEventStore.getAll,
     );
     // Map each event to a promise
-    const promises = pendingEvents.map(this.eventApi.postEvent);
+    const promises = pendingEvents.map(this.eventApi.postEvent(userToken));
     // Wait for all promises to resolve
     await Promise.all(promises);
   };
@@ -46,13 +52,20 @@ export class EventSynchronizationService {
   };
 
   processRemoteEventsPage = async () => {
-    // Get lastProcessedId
-    const lastProcessedId = (await this.transactionService.runReadTransaction(
-      [keyValueStoreName],
-      this.keyValueStore.get(lastProcessedIdKey),
-    ))??0;
+    // Get user token
+    const userToken = await this.accountService.getUserToken();
 
-    const page = await this.eventApi.getEventPage(lastProcessedId, PAGE_SIZE);
+    // Get lastProcessedId
+    const lastProcessedId =
+      (await this.transactionService.runReadTransaction(
+        [keyValueStoreName],
+        this.keyValueStore.get(lastProcessedIdKey),
+      )) ?? 0;
+
+    const page = await this.eventApi.getEventPage(userToken)(
+      lastProcessedId,
+      PAGE_SIZE,
+    );
     for (const event of page.entities) {
       await this.processRemoteEvent(event);
     }

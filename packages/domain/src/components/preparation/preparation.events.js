@@ -51,6 +51,7 @@ export const preparationEvents = {
       ...state,
       remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
     }),
+    isNewCycle: true,
   },
   moreTimeRequested: {
     eventType: "moreTimeRequested",

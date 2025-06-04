@@ -11,6 +11,8 @@ import { TransactionService } from "./storage/transaction.service.js";
 import { EventApi } from "./http-clients/event.api.js";
 import { EventSynchronizationService } from "./services/event-synchronization.service.js";
 import { KeyValueStore } from "./storage/key-value.store.js";
+import { AccountService } from "./services/account.service.js";
+import { KeyValueStorageService } from './services/key-value-storage.service.js'
 
 export const resolveServiceWorkerDependencies = async () => {
   const indexedDb = await createIndexedDb(meditationsIndexedDbSchema);
@@ -20,14 +22,18 @@ export const resolveServiceWorkerDependencies = async () => {
   const pendingEventStore = new CollectionStore(pendingEventStoreName);
   const keyValueStore = new KeyValueStore(keyValueStoreName);
   const eventProcessor = new EventProcessor(meditationStore);
+  const keyValueStorageService = new KeyValueStorageService(keyValueStore, transactionService)
+  const accountService = new AccountService(keyValueStorageService);
   const eventSynchronizationService = new EventSynchronizationService(
     transactionService,
     pendingEventStore,
     keyValueStore,
     eventProcessor,
     eventApi,
+    accountService,
   );
   return {
+    accountService,
     eventSynchronizationService,
     indexedDb,
   };

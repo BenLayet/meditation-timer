@@ -1,6 +1,6 @@
 import { emailVerificationEvents } from "../email-verification/email-verification.events.js";
 import { accountEvents } from "./account.events.js";
-import { accountStatus } from "./account.state.js";
+import { accountStatus } from "../../models/account.model.js";
 
 export const accountChainedEvents = [
   {

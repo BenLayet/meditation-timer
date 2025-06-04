@@ -1,6 +1,6 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
 import { accountEvents } from "domain/src/components/account/account.events.js";
-import { accountStatus } from "domain/src/components/account/account.state.js";
+import { accountStatus } from "domain/src/models/account.model.js";
 
 export const createAccountEffects = ({ keyValueStorageService }, rootVM) => {
   const dispatchers = rootVM.children.account.dispatchers;
@@ -21,10 +21,11 @@ export const createAccountEffects = ({ keyValueStorageService }, rootVM) => {
   };
 
   //accountAuthenticated
-  const accountAuthenticated = async () => {
+  const accountAuthenticated = async ({ userToken }) => {
     const account = await keyValueStorageService.get("account");
     if (account) {
       account.status = accountStatus.AUTHENTICATED;
+      account.userToken = userToken;
       await keyValueStorageService.set("account", account);
     } else {
       console.warn("No account found during authentication.");

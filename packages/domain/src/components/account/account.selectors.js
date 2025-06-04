@@ -1,6 +1,6 @@
 import { flow } from "lodash-es";
 import { map } from "../../lib/functions/object.functions.js";
-import { accountStatus } from "./account.state.js";
+import { accountStatus } from "../../models/account.model.js";
 import { and, not } from "../../lib/functions/predicate.functions.js";
 
 const email = (accountState) => accountState.email;
