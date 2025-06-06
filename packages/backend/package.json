@@ -10,10 +10,6 @@
     "dev:api:stop": "npx kill-port 8000",
     "dev:db:start": "docker-compose -p db-dev --env-file .env.dev -f database/docker-compose.yml up -d",
     "dev:db:stop": "docker-compose -p db-dev --env-file .env.dev -f database/docker-compose.yml down -v",
-    "test:db:start": "docker-compose -p db-test --env-file .env.test -f database/docker-compose.yml up -d",
-    "test:db:stop": "docker-compose -p db-test --env-file .env.test -f database/docker-compose.yml down -v",
-    "test:api:start": "nodemon test/main.test-env.js --watch src --watch ../domain/src --watch test/\\*",
-    "test:api:stop": "npx kill-port 18000",
     "test:integration": "vitest --config vitest.integration.config.js"
   },
   "devDependencies": {

@@ -32,7 +32,8 @@ const resolveComponentPath = (componentPath, childComponentPath) => [
 ];
 
 const createOwnChainedEvents = (component, componentPath) => {
-  component.chainedEvents.forEach(({ onEvent, thenDispatch }) => {
+  const chainedEvents = component.chainedEvents ?? [];
+  chainedEvents.forEach(({ onEvent, thenDispatch }) => {
     validateNotNullObject({ onEvent }, { componentPath });
     validateNotEmptyString(
       { "onEvent.eventType": onEvent.eventType },

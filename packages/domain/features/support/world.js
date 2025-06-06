@@ -8,17 +8,21 @@ import { createEffect } from "../../src/lib/state-manager/create-effect.js";
 import { CURRENT_EPOCH_DAY } from "./test-constants.js";
 import { accountEvents } from "../../src/components/account/account.events.js";
 import { emailVerificationEvents } from "../../src/components/email-verification/email-verification.events.js";
-import { Before, AfterStep, setWorldConstructor } from "@cucumber/cucumber";
+import { AfterStep, Before, setWorldConstructor } from "@cucumber/cucumber";
 import { compareObjects } from "../../src/lib/logger/compare-objects.js";
 import { accountStatus } from "../../src/models/account.model.js";
 import { emailVerificationStatus } from "../../src/models/email-verification.model.js";
 
 let stateManager;
-let mockState;
+let mockLocalDatabase = {};
+let mockRemoteDatabase = {};
+let events = [];
 
 const addMockedEffects = (
   stateManager,
-  { meditationStorage, account, remoteEmailVerification, events },
+  mockLocalDatabase,
+  mockRemoteDatabase,
+  events,
 ) => {
   //EFFECTS
   //statistics
@@ -30,7 +34,7 @@ const addMockedEffects = (
         stateManager
           .getRootVM()
           .children.statistics.dispatchers.meditationHistoryRetrieved({
-            ...meditationStorage,
+            ...mockLocalDatabase.meditationStorage,
             currentEpochDay: CURRENT_EPOCH_DAY,
           }),
     }),
@@ -49,19 +53,24 @@ const addMockedEffects = (
   stateManager.addEffect(
     createEffect({
       afterEvent: accountEvents.createAccountRequested,
-      then: () =>
-        stateManager
-          .getRootVM()
-          .children.account.dispatchers.accountCreated({ account }),
+      then: (previousPayload) => {
+        mockLocalDatabase.account = {
+          email: previousPayload.email,
+          status: accountStatus.PENDING_VERIFICATION,
+        };
+        stateManager.getRootVM().children.account.dispatchers.accountCreated({
+          email: previousPayload.email,
+        });
+      },
     }),
   );
   stateManager.addEffect(
     createEffect({
       afterEvent: accountEvents.loadAccountRequested,
       then: () =>
-        stateManager
-          .getRootVM()
-          .children.account.dispatchers.accountLoaded({ account }),
+        stateManager.getRootVM().children.account.dispatchers.accountLoaded({
+          account: mockLocalDatabase.account,
+        }),
     }),
   );
   stateManager.addEffect(
@@ -81,7 +90,7 @@ const addMockedEffects = (
         stateManager
           .getRootVM()
           .children.account.children.emailVerification.dispatchers.refreshCompleted(
-            remoteEmailVerification,
+            mockRemoteDatabase.emailVerification,
           ),
     }),
   );
@@ -99,16 +108,17 @@ const addMockedEffects = (
 };
 
 const initializeScenario = () => {
-  mockState = {
+  stateManager = new StateManager(meditationTimerAppComponent);
+  mockLocalDatabase = {
     meditationStorage: { meditations: [] },
-    account: { email: null, status: accountStatus.ANONYMOUS },
-    remoteEmailVerification: {
+  };
+  mockRemoteDatabase = {
+    emailVerification: {
       status: emailVerificationStatus.CREATED,
     },
-    events: [],
   };
-  stateManager = new StateManager(meditationTimerAppComponent);
-  addMockedEffects(stateManager, mockState);
+  events = [];
+  addMockedEffects(stateManager, mockLocalDatabase, mockRemoteDatabase, events);
 };
 
 class CustomWorld {
@@ -119,15 +129,18 @@ class CustomWorld {
   }
 
   get account() {
-    return mockState.account;
+    return mockLocalDatabase.account;
+  }
+  set account(account) {
+    mockLocalDatabase.account = account;
   }
 
   get remoteEmailVerification() {
-    return mockState.remoteEmailVerification;
+    return mockRemoteDatabase.emailVerification;
   }
 
   get meditationStorage() {
-    return mockState.meditationStorage;
+    return mockLocalDatabase.meditationStorage;
   }
 
   vm() {
@@ -141,7 +154,7 @@ class CustomWorld {
   };
 
   eventWasSent = ({ eventType, componentPath, payload }) =>
-    mockState.events.some(
+    events.some(
       (evt) =>
         evt.eventType === eventType &&
         (!componentPath || isEqual(evt.componentPath, componentPath)) &&
@@ -168,7 +181,7 @@ AfterStep(function ({ result }) {
     );
     console.log("------SENT EVENTS------");
     console.log(
-      mockState.events.map((e) => ({
+      mockLocalDatabase.events.map((e) => ({
         ...e,
         payload: e.payload ? JSON.stringify(e.payload) : null,
       })),

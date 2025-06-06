@@ -5,12 +5,13 @@ import { accountStatus } from "../../src/models/account.model.js";
 import { emailVerificationStatus } from "../../src/models/email-verification.model.js";
 
 Given(/^I have not created an account yet$/, function () {
-  this.account.email = null;
-  this.account.status = accountStatus.ANONYMOUS;
+  this.account = null;
 });
 Given("I have just created an account", function () {
-  this.account.email = "test@example.org";
-  this.account.status = accountStatus.PENDING_VERIFICATION;
+  this.account = {
+    email: "test@example.org",
+    status: accountStatus.PENDING_VERIFICATION,
+  };
 });
 
 When(/^I create an account with my email$/, function () {
@@ -61,8 +62,10 @@ Given(/^I have not verified my email yet$/, function () {
 });
 
 Given(/^I have just clicked the link to verify my email$/, function () {
-  this.account.email = "test@example.org";
-  this.account.status = accountStatus.AUTHENTICATED;
+  this.account = {
+    email: "test@example.org",
+    status: accountStatus.AUTHENTICATED,
+  };
 });
 
 Then(/^I should be authenticated$/, function () {
@@ -94,8 +97,10 @@ Then(/^the new meditation should appear on all devices$/, function () {
 });
 
 Given("I am authenticated", function () {
-  this.account.email = "test@example.org";
-  this.account.status = accountStatus.AUTHENTICATED;
+  this.account = {
+    email: "test@example.org",
+    status: accountStatus.AUTHENTICATED,
+  };
 });
 
 When("I disconnect", function () {

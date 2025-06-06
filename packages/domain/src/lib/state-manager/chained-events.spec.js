@@ -3,65 +3,65 @@ import { eventChainFactory } from "./chained-events.js";
 import ow from "ow";
 
 const events = {
-  eventOneOccurred: {
-    eventType: "eventOneOccurred",
+  event1Occurred: {
+    eventType: "event1Occurred",
     payloadShape: { key1: ow.string },
   },
-  eventTwoOccurred: {
-    eventType: "eventTwoOccurred",
+  event2Occurred: {
+    eventType: "event2Occurred",
     payloadShape: { key1: ow.string },
   },
-  eventThreeOccurred: {
-    eventType: "eventThreeOccurred",
+  event3Occurred: {
+    eventType: "event3Occurred",
     payloadShape: { key1: ow.string, key2: ow.string, key3: ow.string },
   },
 };
 
 const simpleEventChain = {
-  onEvent: events.eventOneOccurred,
-  thenDispatch: events.eventTwoOccurred,
+  onEvent: events.event1Occurred,
+  thenDispatch: events.event2Occurred,
 };
-const eventChainWithPayload = {
-  onEvent: events.eventOneOccurred,
-  thenDispatch: events.eventThreeOccurred,
+const eventChainEvent1To3WithPayload = {
+  onEvent: events.event1Occurred,
+  thenDispatch: events.event3Occurred,
   withPayload: ({ previousPayload, state }) => ({
     ...previousPayload,
     key2: "constructed",
     key3: state.ownState.property1,
   }),
 };
-const eventChainToChild = {
-  onEvent: events.eventOneOccurred,
+const eventChainEvent1To2OfChild1 = {
+  onEvent: events.event1Occurred,
   thenDispatch: {
-    ...events.eventTwoOccurred,
+    ...events.event2Occurred,
     childComponentPath: ["child1"],
   },
 };
-const eventChainFromChild = {
+const eventChain1FromChildTo2 = {
   onEvent: {
-    ...events.eventOneOccurred,
+    ...events.event1Occurred,
     childComponentPath: ["child1"],
   },
-  thenDispatch: events.eventTwoOccurred,
+  thenDispatch: events.event2Occurred,
 };
-const eventChainFromChild1ToChild2 = {
+const eventChainEvent1FromChild1To2OfChild2 = {
   onEvent: {
-    ...events.eventOneOccurred,
+    ...events.event1Occurred,
     childComponentPath: ["child1"],
   },
   thenDispatch: {
-    ...events.eventTwoOccurred,
+    ...events.event2Occurred,
     childComponentPath: ["child2"],
   },
 };
 
 describe("createAllComponentEvents", () => {
-  test("simple event chain: when event one occurs, event two with same payload should be created", () => {
+  test("simple event chain: when event one occurs, event two with same payload should be dispatched", () => {
     //given
     const component = { chainedEvents: [simpleEventChain] };
     const previousEvent = {
       componentPath: [],
-      eventType: "eventOneOccurred",
+      eventType: "event1Occurred",
       payload: { key1: "value1" },
     };
     const state = {};
@@ -73,7 +73,7 @@ describe("createAllComponentEvents", () => {
     //then
     expect(chainedEvents).toEqual([
       {
-        eventType: "eventTwoOccurred",
+        eventType: "event2Occurred",
         payload: { key1: "value1" },
         componentPath: [],
         isNewCycle: false,
@@ -82,10 +82,10 @@ describe("createAllComponentEvents", () => {
   });
   test("event chain with payload: when event one occurs, event three with constructed payload should be created", () => {
     //given
-    const component = { chainedEvents: [eventChainWithPayload] };
+    const component = { chainedEvents: [eventChainEvent1To3WithPayload] };
     const previousEvent = {
       componentPath: [],
-      eventType: "eventOneOccurred",
+      eventType: "event1Occurred",
       payload: { key1: "value1" },
     };
     const state = { ownState: { property1: "stateProperty1" } };
@@ -96,7 +96,7 @@ describe("createAllComponentEvents", () => {
     //then
     expect(newEvents).toEqual([
       {
-        eventType: "eventThreeOccurred",
+        eventType: "event3Occurred",
         payload: {
           key1: "value1",
           key2: "constructed",
@@ -107,13 +107,13 @@ describe("createAllComponentEvents", () => {
       },
     ]);
   });
-  test("child-component with chain with payload: when event one occurs, sub-components should dispatch event three with constructed payload based on sub state", () => {
+  test("child-component with chain with payload: when event1Occurred on child1, child1 should dispatch event three with constructed payload based on child1 state", () => {
     //given
-    const child1 = { chainedEvents: [eventChainWithPayload] };
+    const child1 = { chainedEvents: [eventChainEvent1To3WithPayload] };
     const component = { children: { child1 } };
     const previousEvent = {
       componentPath: ["child1"],
-      eventType: "eventOneOccurred",
+      eventType: "event1Occurred",
       payload: { key1: "value1" },
     };
     const child1State = { ownState: { property1: "stateProperty1" } };
@@ -126,7 +126,7 @@ describe("createAllComponentEvents", () => {
     //then
     expect(newEvents).toEqual([
       {
-        eventType: "eventThreeOccurred",
+        eventType: "event3Occurred",
         payload: {
           key1: "value1",
           key2: "constructed",
@@ -140,12 +140,12 @@ describe("createAllComponentEvents", () => {
 
   test("grand-child-component: when event one occurs, grand-child-components should dispatch event three with constructed payload based on child state", () => {
     //given
-    const child2 = { chainedEvents: [eventChainWithPayload] };
+    const child2 = { chainedEvents: [eventChainEvent1To3WithPayload] };
     const child1 = { children: { child2 } };
     const component = { children: { child1 } };
     const previousEvent = {
       componentPath: ["child1", "child2"],
-      eventType: "eventOneOccurred",
+      eventType: "event1Occurred",
       payload: { key1: "value1" },
     };
     const child2State = { ownState: { property1: "stateProperty1" } };
@@ -159,7 +159,7 @@ describe("createAllComponentEvents", () => {
     //then
     expect(newEvents).toEqual([
       {
-        eventType: "eventThreeOccurred",
+        eventType: "event3Occurred",
         payload: {
           key1: "value1",
           key2: "constructed",
@@ -173,10 +173,10 @@ describe("createAllComponentEvents", () => {
 
   test("dispatch to child", () => {
     //given
-    const component = { chainedEvents: [eventChainToChild] };
+    const component = { chainedEvents: [eventChainEvent1To2OfChild1] };
     const previousEvent = {
       componentPath: [],
-      eventType: "eventOneOccurred",
+      eventType: "event1Occurred",
       payload: { key1: "value1" },
     };
     const state = {};
@@ -188,7 +188,7 @@ describe("createAllComponentEvents", () => {
     //then
     expect(newEvents).toEqual([
       {
-        eventType: "eventTwoOccurred",
+        eventType: "event2Occurred",
         payload: { key1: "value1" },
         componentPath: ["child1"],
         isNewCycle: false,
@@ -198,10 +198,10 @@ describe("createAllComponentEvents", () => {
 
   test("dispatch from child", () => {
     //given
-    const component = { chainedEvents: [eventChainFromChild] };
+    const component = { chainedEvents: [eventChain1FromChildTo2] };
     const previousEvent = {
       componentPath: ["child1"],
-      eventType: "eventOneOccurred",
+      eventType: "event1Occurred",
       payload: { key1: "value1" },
     };
     const state = {};
@@ -213,7 +213,7 @@ describe("createAllComponentEvents", () => {
     //then
     expect(newEvents).toEqual([
       {
-        eventType: "eventTwoOccurred",
+        eventType: "event2Occurred",
         payload: { key1: "value1" },
         componentPath: [],
         isNewCycle: false,
@@ -222,10 +222,12 @@ describe("createAllComponentEvents", () => {
   });
   test("dispatch from child1 to child2", () => {
     //given
-    const component = { chainedEvents: [eventChainFromChild1ToChild2] };
+    const component = {
+      chainedEvents: [eventChainEvent1FromChild1To2OfChild2],
+    };
     const previousEvent = {
       componentPath: ["child1"],
-      eventType: "eventOneOccurred",
+      eventType: "event1Occurred",
       payload: { key1: "value1" },
     };
     const state = {};
@@ -237,7 +239,7 @@ describe("createAllComponentEvents", () => {
     //then
     expect(newEvents).toEqual([
       {
-        eventType: "eventTwoOccurred",
+        eventType: "event2Occurred",
         payload: { key1: "value1" },
         componentPath: ["child2"],
         isNewCycle: false,
