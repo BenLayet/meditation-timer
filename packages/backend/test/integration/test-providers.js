@@ -10,6 +10,7 @@ import { apiPropertiesProviders } from "../../src/config/api-properties.provider
 import { messageBuilderProviders } from "../../src/config/message-builder.providers.js";
 import { cleanUpTaskProviders } from "../../src/config/clean-up-task.providers.js";
 import { datasourceProviders } from "../../src/config/datasource.providers.js";
+import { mailContextProviders } from "../../src/config/mail-context.providers.js";
 
 export const fakeUuidGenerator = {
   nextUuid: "10000000-0000-1000-8000-000000000001",
@@ -55,6 +56,7 @@ export const testProviders = {
   logger: () => console,
   ...testDatasourceProviders,
   ...apiPropertiesProviders,
+  ...mailContextProviders,
   uuidGenerator: () => fakeUuidGenerator,
   tokenService: () => fakeTokenService,
   emailSender: () => fakeEmailSender,

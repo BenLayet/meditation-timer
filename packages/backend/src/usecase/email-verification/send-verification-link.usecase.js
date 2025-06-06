@@ -14,18 +14,18 @@ export const sendVerificationLink = ({
   emailSender,
   tokenService,
   messageBuilder,
-  mailFrom,
-  apiProperties,
+  mailContext,
   logger,
+  apiProperties,
 }) => {
   validateNotNullObject({ emailVerificationRepository });
   validateNotNullObject({ emailSender });
   validateNotNullObject({ tokenService });
   validateNotNullObject({ messageBuilder });
-  validateNotNullObject({ apiProperties });
   validateNotNullObject({ logger });
+  validateNotNullObject({ mailContext });
+  validateNotNullObject({ apiProperties });
 
-  validateNotEmptyString({ mailFrom });
   return async (email) => {
     validateEmailFormat(email);
 
@@ -39,8 +39,8 @@ export const sendVerificationLink = ({
       emailSender,
       tokenService,
       messageBuilder,
-      mailFrom,
-      apiProperties,
+      mailContext,
+      basePath: apiProperties.basePath,
       logger,
     })(emailVerification);
     logger.info(`Verification link sent to ${emailVerification.email}`);
@@ -69,9 +69,9 @@ export const sendVerificationLink = ({
 const sendVerificationEmail =
   ({
     tokenService,
-    apiProperties,
+    basePath,
     messageBuilder,
-    mailFrom,
+    mailContext,
     emailSender,
     logger,
   }) =>
@@ -83,9 +83,10 @@ const sendVerificationEmail =
     logger.debug(`Verify token created: ${verifyToken}`);
 
     // 2. Build the verification url
-    const verificationUrl = buildVerificationUrl({ apiProperties })(
-      verifyToken,
-    );
+    const verificationUrl = buildVerificationUrl({
+      basePath,
+      publicUrl: mailContext.publicUrl,
+    })(verifyToken);
     logger.debug(`verificationUrl created: ${verificationUrl}`);
 
     // 3. Build the verification email
@@ -100,7 +101,7 @@ const sendVerificationEmail =
 
     // 4. Send the email
     await emailSender.sendEmail({
-      from: mailFrom,
+      from: mailContext.from,
       to: emailVerification.email,
       subject: messageContent.subject,
       html: messageContent.body,
@@ -123,10 +124,9 @@ const createRetrieveToken =
     });
 
 const buildVerificationUrl =
-  ({ apiProperties }) =>
+  ({ basePath, publicUrl }) =>
   (verifyToken) => {
-    const { protocol, host, port, basePath } = apiProperties;
-    return `${protocol}://${host}:${port}${basePath}/email-verifications/verify/${verifyToken}`;
+    return `${publicUrl}${basePath}/email-verifications/verify/${verifyToken}`;
   };
 
 const markAsVerificationLinkSent =

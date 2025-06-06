@@ -15,7 +15,7 @@ const verifyToken = fakeTokenService.createShortLivedToken({
   emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
   scope: ["VERIFY"],
 });
-const verificationLink = `http://localhost:18000/api/v1/email-verifications/verify/${verifyToken}`;
+const verificationLink = `http://localhost:8000/api/v1/email-verifications/verify/${verifyToken}`;
 
 describe("verifying emails", () => {
   const email = "email1@example.org";
