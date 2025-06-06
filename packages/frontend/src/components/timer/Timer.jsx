@@ -1,9 +1,6 @@
-import "./Timer.css";
-
-function Timer({displayedTime}) {
-    return <div className="timer">
-        <div className='timer-display'>{displayedTime}</div>
-    </div>
-}
-
+const Timer = ({ displayedTime }) => (
+  <div className="time-display">
+    <span className="bigger">{displayedTime}</span>
+  </div>
+);
 export default Timer;

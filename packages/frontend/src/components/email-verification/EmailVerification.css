@@ -1,0 +1,29 @@
+/* General container styling */
+.email-verification-container {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+  background: var(--subtle-highlighted-background);
+  border-radius: var(--border-radius);
+  min-height: 9em;
+}
+/* Account info styling */
+.account-info dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+
+.account-info dt {
+  text-align: left;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.account-info dd {
+  text-align: left;
+  margin: 0;
+}

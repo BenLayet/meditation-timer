@@ -1,24 +1,25 @@
-import {isEqual} from "lodash-es";
+import { isEqual } from "lodash-es";
+import {
+  validateFunction,
+  validateNotEmptyString,
+  validateNotNullObject,
+} from "../assert/not-null.validator.js";
 
-export const createEffect = ({afterEvent, onComponent, then}) =>
-    (event) => {
-        const triggeringEvent = afterEvent;
-        const componentPath = onComponent;
-        const effectFunction = then;
-        if (event.eventType === triggeringEvent.eventType
-            && (!componentPath || isEqual(componentPath, event.componentPath))) {
-            effectFunction(event);
-        }
-    }
+export const createEffect = ({ afterEvent, onComponent, then }) => {
+  validateNotNullObject({ afterEvent });
+  validateNotEmptyString({ triggeringEventType: afterEvent.eventType });
+  validateFunction({ then });
+  const triggeringEventType = afterEvent.eventType;
+  const effectFunction = then;
+  const componentPath = onComponent;
+  return (event) =>
+    isMatch(event, { triggeringEventType, componentPath }) &&
+    effectFunction(event.payload);
+};
 
-export class Effects {
-    effects = [];
-
-    add({afterEvent, onComponent, then}) {
-        this.effects.push(createEffect({afterEvent, onComponent, then}));
-    }
-
-    get() {
-        return this.effects;
-    }
-}
+const isMatch = (event, { triggeringEventType, componentPath }) => {
+  return (
+    event.eventType === triggeringEventType &&
+    (!componentPath || isEqual(componentPath, event.componentPath))
+  );
+};

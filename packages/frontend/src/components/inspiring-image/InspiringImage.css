@@ -1,18 +1,18 @@
-.inspiring-image{
-    position: relative;
+.inspiring-image {
+  position: relative;
 }
 .inspiring-image::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-image: url('/suzuki-roshi.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    border: var(--accent-color) 1px solid;
-    border-radius: var(--border-radius);
-    z-index: -1;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-image: url("/suzuki-roshi.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: var(--accent-color) 1px solid;
+  border-radius: var(--border-radius);
+  z-index: -1;
 }

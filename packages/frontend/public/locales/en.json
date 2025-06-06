@@ -15,5 +15,17 @@
   "english": "English",
   "continue": "Continue",
   "sessionCompleted": "Session completed",
-  "skip": "skip"
+  "skip": "skip",
+  "account": "Account",
+  "linkEmailDescription": "Secure your stats and use multiple devices:",
+  "createAccount": "Create an account",
+  "disconnect": "Disconnect",
+  "emailPlaceholder": "Enter email",
+  "emailKey": "Email:",
+  "emailVerificationPending": "Waiting for connection to send verification email",
+  "emailVerificationSent": "Email sent, check your inbox",
+  "emailVerificationExpired": "Verification email expired, please try again",
+  "reset": "Reset",
+  "retry": "Rééssayer",
+  "refresh": "Rafraichir"
 }

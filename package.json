@@ -11,7 +11,12 @@
     "start:backend": "cd packages/backend && pnpm run start && cd ../..",
     "dev": "pnpm run dev:backend & pnpm run dev:frontend",
     "dev:backend": "cd packages/backend && pnpm run dev && cd ../..",
-    "dev:frontend": "cd packages/frontend && pnpm run dev && cd ../.."
+    "dev:frontend": "cd packages/frontend && pnpm run dev && cd ../..",
+    "test:domain": "cd packages/domain && pnpm run test && cd ../..",
+    "test:frontend": "cd packages/frontend && pnpm run test && cd ../..",
+    "test:backend": "cd packages/backend && pnpm run test && cd ../..",
+    "test": "pnpm run test:domain && pnpm run test:frontend && pnpm run test:backend",
+    "prettier": "prettier -w ."
   },
   "packageManager": "pnpm@9.15.0"
 }

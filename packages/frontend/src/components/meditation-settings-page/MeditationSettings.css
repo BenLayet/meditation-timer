@@ -1,28 +1,29 @@
 .meditation-settings {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .meditation-setting:first-child {
-    font-size:1.2em;
+  font-size: 1.2em;
 }
-.meditation-setting{
-    padding:1em;
+.meditation-setting {
+  padding: 1em;
 }
 .meditation-setting:not(:last-child) {
-    border-bottom: 1px  var(--accent-color) solid;
+  border-bottom: 1px var(--accent-color) solid;
 }
 
 .meditation-setting > label {
-    display: flex;
-    font-size:0.8em;
-    padding-bottom:0.5em;
+  display: flex;
+  font-size: 0.8em;
+  padding-bottom: 0.5em;
 }
 
 .meditation-setting > .meditation-setting-control {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5em;
 }

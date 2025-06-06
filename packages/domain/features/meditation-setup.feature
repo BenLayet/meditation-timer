@@ -24,3 +24,13 @@ Feature: Meditation session setup
     Given the next preparation duration is 00:20
     When I request less time for the preparation
     Then the next preparation duration should be 00:10
+
+  Scenario: Setting gong off
+    When I open the app
+    And I toggle the gong off
+    Then the gong should be off
+
+  Scenario: Setting gong on
+    Given the gong is off
+    And I toggle the gong on
+    Then the gong should be on

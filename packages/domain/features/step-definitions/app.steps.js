@@ -1,9 +1,5 @@
-import {Before, When} from "@cucumber/cucumber";
-import {reset} from "./state-manager/test-state-manager.js";
-
-Before(function () {
-    reset();
-});
+import { When } from "@cucumber/cucumber";
 
 When(/^I open the app$/, function () {
+  this.vm().dispatchers.appOpened();
 });

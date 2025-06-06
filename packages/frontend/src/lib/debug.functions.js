@@ -1,95 +1,103 @@
-import {statePatcher} from "domain/src/lib/state-manager/debugger.js";
-import {stateManager} from "domain/features/step-definitions/state-manager/test-state-manager.js";
-import {createEffect} from "domain/src/lib/state-manager/create-effect.js";
+import {
+  forceState,
+  statePatcher,
+} from "domain/src/lib/state-manager/debugger.js";
+import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
 
 const trackSize = 1000;
 const states = [];
 const events = [];
 const trackStateAndEvent = (event, state) => {
-    states.unshift(state);
-    events.unshift(event);
-    states.splice(trackSize);
-    events.splice(trackSize);
-}
-
+  states.unshift(state);
+  events.unshift(event);
+  states.splice(trackSize);
+  events.splice(trackSize);
+};
 
 let offset = 0;
 const timeTravel = () => {
-    if (offset < 0) {
-        console.warn('offset is 0');
-        offset = 0;
-    }
-    if (offset >= trackSize) {
-        console.warn(`offset trackSize is reached ${trackSize}`);
-        offset = trackSize - 1;
-    }
-    if (offset >= states.length) {
-        console.warn(`first state reached ${states.length}`);
-        offset = states.length - 1;
-    }
-    console.log(`TIME TRAVEL offset=${offset}`);
-    console.log(events[offset]);
-    window.sm.state(states[offset]);
-}
-//FORCE STATE DEBUG EFFECT
-const forceStateEffect = createEffect({
-    afterEvent: {eventType: 'FORCE_STATE'},
-    then: ({payload}) => stateManager.state = payload.newState
-});
+  if (offset < 0) {
+    console.warn("offset is 0");
+    offset = 0;
+  }
+  if (offset >= trackSize) {
+    console.warn(`offset trackSize is reached ${trackSize}`);
+    offset = trackSize - 1;
+  }
+  if (offset >= states.length) {
+    console.warn(`first state reached ${states.length}`);
+    offset = states.length - 1;
+  }
+  console.log(`TIME TRAVEL offset=${offset}`);
+  console.log(events[offset]);
 
+  window.sm.replaceState(states[offset]);
+};
+//FORCE STATE DEBUG EFFECT
+const forceStateEffect = (stateManager) =>
+  createEffect({
+    afterEvent: { eventType: "FORCE_STATE" },
+    then: (payload) => (stateManager.state = payload.newState),
+  });
 
 export const addDebugger = (stateManager) => {
-    stateManager.addEventListener(trackStateAndEvent);
-    stateManager.addEventListener(forceStateEffect);
+  stateManager.addEventListener(trackStateAndEvent);
+  stateManager.addEventListener(forceStateEffect(stateManager));
+  trackStateAndEvent({ eventType: "INITIAL_STATE" }, stateManager.state);
 
-    trackStateAndEvent(stateManager.state, {eventType: "INITIAL_STATE"});
-    window.sm = {
-        getRootVM: () => stateManager.getRootVM(),
-        lastEvents: (start = 0, end) => {
-            if (typeof end === "undefined") {
-                end = start || 1;
-                start = 0;
-            }
-            return events.slice(start, end);
-        },
-        lastStates: (start = 0, end) => {
-            if (typeof end === "undefined") {
-                end = start || 1;
-                start = 0;
-            }
-            return states.slice(start, end);
-        },
-        history: (target) => {
-            if (typeof target === "number") {
-                offset = target;
-                timeTravel();
-            } else {
-                console.log(states.length);
-            }
-        },
-        present: () => {
-            offset = 0;
-            timeTravel();
-        },
-        fw: () => {
-            offset--;
-            timeTravel();
-        },
-        rw: () => {
-            offset++;
-            timeTravel();
-        },
-        state: (key, value) => {
-            const newValue = statePatcher(stateManager)(key, value);
-            console.log(newValue);
-        }
-    };
+  window.sm = {
+    states,
+    events,
+    stateManager,
+    getRootVM: () => stateManager.getRootVM(),
+    lastEvents: (start = 0, end) => {
+      if (typeof end === "undefined") {
+        end = start || 1;
+        start = 0;
+      }
+      return events.slice(start, end);
+    },
+    lastStates: (start = 0, end) => {
+      if (typeof end === "undefined") {
+        end = start || 1;
+        start = 0;
+      }
+      return states.slice(start, end);
+    },
+    history: (target) => {
+      if (typeof target === "number") {
+        offset = target;
+        timeTravel();
+      } else {
+        console.log(states.length);
+      }
+    },
+    present: () => {
+      offset = 0;
+      timeTravel();
+    },
+    fw: () => {
+      offset--;
+      timeTravel();
+    },
+    rw: () => {
+      offset++;
+      timeTravel();
+    },
+    patchState: (key, value) => {
+      const newValue = statePatcher(stateManager)(key, value);
+      console.log(newValue);
+    },
+    replaceState(newState) {
+      forceState(stateManager, newState);
+    },
+  };
 };
 
-export const removeDebugger = stateManager => () => {
-    events.length = 0;
-    states.length = 0;
-    stateManager.removeEventListener(trackStateAndEvent);
-    stateManager.removeEventListener(forceStateEffect);
-    delete window.sm;
+export const removeDebugger = (stateManager) => () => {
+  events.length = 0;
+  states.length = 0;
+  stateManager.removeEventListener(trackStateAndEvent);
+  stateManager.removeEventListener(forceStateEffect);
+  delete window.sm;
 };

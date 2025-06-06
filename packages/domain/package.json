@@ -4,21 +4,22 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "test": "pnpm unit-test && pnpm bdd-test",
-    "unit-test": "vitest run",
-    "unit-test:watch": "vitest",
-    "bdd-test": "cucumber-js --fail-fast",
-    "bdd-test:watch": "nodemon --ext js,feature --exec 'cucumber-js --fail-fast'"
+    "test": "pnpm test:unit && pnpm test:behavior",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:behavior": "cucumber-js --fail-fast",
+    "test:behavior:watch": "nodemon --ext js,feature --exec 'cucumber-js --fail-fast'"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.2.0",
     "chai": "^5.1.2",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
-    "vitest": "^3.0.7"
+    "vitest": "^3.1.1"
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
-    "ow": "^2.0.0"
+    "ow": "^2.0.0",
+    "uuid": "^11.1.0"
   }
 }

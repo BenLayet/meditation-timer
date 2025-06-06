@@ -1,9 +1,11 @@
-import {MEDITATION_SETTINGS_INITIAL_STATE} from "./meditation-settings.state.js";
-import {meditationSettingsSelectors} from "./meditation-settings.selectors.js";
-import {meditationSettingsEvents} from "./meditation-settings.events.js";
+import { MEDITATION_SETTINGS_INITIAL_STATE } from "./meditation-settings.state.js";
+import { meditationSettingsSelectors } from "./meditation-settings.selectors.js";
+import { meditationSettingsEvents } from "./meditation-settings.events.js";
+import { meditationSettingsChainedEvents } from "./meditation-settings.chained-events.js";
 
 export const meditationSettingsComponent = {
-    initialState: MEDITATION_SETTINGS_INITIAL_STATE,
-    selectors: meditationSettingsSelectors,
-    events: meditationSettingsEvents,
+  initialState: MEDITATION_SETTINGS_INITIAL_STATE,
+  selectors: meditationSettingsSelectors,
+  events: meditationSettingsEvents,
+  chainedEvents: meditationSettingsChainedEvents,
 };

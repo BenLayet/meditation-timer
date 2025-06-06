@@ -25,3 +25,10 @@ Feature: Preparation
     And the preparation has started
     When I request more time during the preparation
     Then the preparation timer should display 00:40
+
+  Scenario: Stopping the preparation
+    Given I have started a meditation session
+    And the preparation has started
+    When I stop the meditation session
+    Then the preparation timer should stop running
+    And the meditation timer should not be running

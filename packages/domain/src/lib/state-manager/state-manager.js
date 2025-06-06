@@ -1,63 +1,121 @@
 import ow from "ow";
-import {componentReducer} from "./create-reducers.js";
-import {createChainedEventFactories} from "./chained-events.js";
-import {getInitialState} from "./initial-state.js";
-import {getVM} from "./view-model.js";
+import { componentReducer } from "./create-reducers.js";
+import { eventChainFactory } from "./chained-events.js";
+import { getInitialState } from "./initial-state.js";
+import { getVM } from "./view-model.js";
 
 export class StateManager {
-    constructor(rootComponent) {
-        this.rootComponent = rootComponent;
-        this.state = getInitialState(rootComponent);
-        this.eventListeners = [];
-        this.rootComponentListeners = [];
+  notifying = false;
+  cycleEvents = [];
+
+  constructor(rootComponent) {
+    this.rootComponent = rootComponent;
+    this.state = getInitialState(rootComponent);
+    this.eventListeners = [];
+    this.effects = [];
+    this.rootComponentListeners = [];
+  }
+
+  getRootVM() {
+    return getVM(this.rootComponent, this.state, this.dispatch);
+  }
+
+  addRootVMChangedListener(onRootVMChanged) {
+    ow(onRootVMChanged, ow.function);
+    this.rootComponentListeners.push(onRootVMChanged);
+  }
+
+  removeRootVMChangedListener(onRootVMChanged) {
+    this.rootComponentListeners = [
+      ...this.rootComponentListeners.filter((l) => !l === onRootVMChanged),
+    ];
+  }
+
+  //effects
+  addEffect = (effect) => {
+    ow(effect, ow.function);
+    this.effects.push(effect);
+  };
+
+  removeEffect = (effect) => {
+    this.effects = [...this.effects.filter((l) => !l === effect)];
+  };
+
+  processEffects(event, previousState) {
+    this.effects.forEach((effect) => effect(event, this.state, previousState));
+  }
+
+  //event listeners
+  addEventListener = (onEventOccurred) => {
+    ow(onEventOccurred, ow.function);
+    this.eventListeners.push(onEventOccurred);
+  };
+
+  removeEventListener = (onEventOccurred) => {
+    this.eventListeners = [
+      ...this.eventListeners.filter((listener) => listener !== onEventOccurred),
+    ];
+  };
+
+  notifyEventOccurred(event, previousState) {
+    this.eventListeners.forEach((onEventOccurred) => {
+      try {
+        onEventOccurred(event, this.state, previousState);
+      } catch (e) {
+        console.error(`Error in event listener: ${e.message}`);
+        console.error(e);
+      }
+    });
+
+    this.rootComponentListeners.forEach((onRootVMChanged) =>
+      onRootVMChanged(this.getRootVM()),
+    );
+  }
+
+  detectCycle(event) {
+    if (event.isNewCycle) {
+      this.cycleEvents = [];
     }
-
-    getRootVM() {
-        return getVM(this.rootComponent, this.state, this.dispatch);
+    const eventIdentifier =
+      event.componentPath.join(".") + "#" + event.eventType;
+    if (this.cycleEvents.includes(eventIdentifier)) {
+      console.error(
+        `Cycle detected with new event ${eventIdentifier}:`,
+        this.cycleEvents,
+      );
+      throw Error(`event in cycle: eventIdentifier=${eventIdentifier}`);
     }
+    this.cycleEvents = [...this.cycleEvents, eventIdentifier];
+  }
 
-    addRootVMChangedListener(onRootVMChanged) {
-        ow(onRootVMChanged, ow.function);
-        this.rootComponentListeners.push(onRootVMChanged);
-    }
+  dispatch = (event) => {
+    //assert not notifying
+    if (this.notifying)
+      throw Error(
+        `event dispatched by event listener: eventType=${event.eventType}`,
+      );
 
-    removeRootVMChangedListener(onRootVMChanged) {
-        this.rootComponentListeners = [...this.rootComponentListeners.filter(l => !l === onRootVMChanged)];
-    }
+    //cycle detection
+    this.detectCycle(event);
 
-    addEventListener = (onEventOccurred) => {
-        ow(onEventOccurred, ow.function);
-        this.eventListeners.push(onEventOccurred);
-    }
+    // reducers
+    const previousState = this.state;
+    this.state = componentReducer(this.rootComponent)(previousState, event);
 
-    removeEventListener = (onEventOccurred) => {
-        this.eventListeners = [...this.eventListeners.filter(l => !l === onEventOccurred)];
-    }
+    // notify state change
+    this.notifying = true;
+    this.notifyEventOccurred(event, previousState);
+    this.notifying = false;
 
-    notifyEventOccurred(event, oldState) {
-        this.eventListeners.forEach(onEventOccurred => onEventOccurred(event, this.state, oldState));
-        this.rootComponentListeners.forEach(onRootVMChanged => onRootVMChanged(this.getRootVM()));
-    }
+    //forward event
+    this.forwardEvent(event);
 
-    dispatch = (event) => {
-        // reducers
-        const previousState = this.state;
-        this.state = componentReducer(this.rootComponent)(previousState, event);
+    //process effects
+    this.processEffects(event, previousState);
+  };
 
-        // notify state change
-        this.notifyEventOccurred(event, previousState);
-
-        //forward event
-        this.forwardEvent(event);
-
-    }
-
-    forwardEvent(event) {
-        const chainedEventFactories = createChainedEventFactories(this.rootComponent);
-        chainedEventFactories(event, this.state).forEach(this.dispatch);
-    }
-
-
+  forwardEvent(event) {
+    const eventChain = eventChainFactory(this.rootComponent);
+    eventChain(event, this.state).forEach(this.dispatch);
+  }
 }
-
-

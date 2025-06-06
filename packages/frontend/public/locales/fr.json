@@ -15,5 +15,17 @@
   "english": "English",
   "continue": "Continuer",
   "sessionCompleted": "Session terminée",
-  "skip": "passer"
+  "skip": "passer",
+  "account": "Compte",
+  "linkEmailDescription": "Sécurisez vos stats et utilisez plusieurs appareils :",
+  "createAccount": "Créer un compte",
+  "disconnect": "Déconnecter",
+  "emailPlaceholder": "Entrez votre email",
+  "emailKey": "Email :",
+  "reset": "Réinitialiser",
+  "emailVerificationPending": "Attente de connexion pour envoyer l'email de vérification",
+  "emailVerificationSent": "Mail de vérification envoyé, vérifiez votre boîte de réception",
+  "emailVerificationExpired": "Mail de vérification expiré, veuillez réessayer",
+  "retry": "Rééssayer",
+  "refresh": "Rafraichir"
 }

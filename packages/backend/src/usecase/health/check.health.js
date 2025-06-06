@@ -1,0 +1,18 @@
+import {
+  validateNotEmptyString,
+  validateNotNullObject,
+} from "domain/src/lib/assert/not-null.validator.js";
+
+export const healthCheck = ({ version, environment, logger }) => {
+  validateNotEmptyString({ version });
+  validateNotEmptyString({ environment });
+  validateNotNullObject({ logger });
+  return () => {
+    logger.info("Check health");
+    return {
+      status: "UP",
+      version,
+      environment,
+    };
+  };
+};

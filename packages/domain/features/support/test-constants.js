@@ -1,0 +1,5 @@
+export const CURRENT_TIME_IN_SECONDS = 1800000;
+export const PREPARATION_DURATION_IN_SECONDS = 20;
+export const CURRENT_EPOCH_DAY = Math.floor(
+  CURRENT_TIME_IN_SECONDS / (24 * 3600),
+);
