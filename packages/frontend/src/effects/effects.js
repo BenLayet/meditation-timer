@@ -6,6 +6,7 @@ import { createGongEffects } from "./gong.effects.js";
 import { createEmailVerificationEffects } from "./email-verification.effects.js";
 import { createAccountEffects } from "./account.effects.js";
 import { createOnlineDetectionEffects } from "./online-detection.effects.js";
+import { synchronizationEffects } from "./synchronization.effects.js";
 
 export const createEffects = (
   rootVM,
@@ -16,6 +17,7 @@ export const createEffects = (
     tickingService,
     emailVerificationService,
     keyValueStorageService,
+    synchronizationTaskService,
   },
 ) => [
   ...createGongEffects({ gongService }),
@@ -29,4 +31,5 @@ export const createEffects = (
     rootVM,
   ),
   ...createOnlineDetectionEffects({}, rootVM),
+  ...synchronizationEffects({ synchronizationTaskService }),
 ];

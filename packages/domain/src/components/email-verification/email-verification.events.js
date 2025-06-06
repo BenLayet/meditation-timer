@@ -77,8 +77,8 @@ export const emailVerificationEvents = {
       loading: false,
     }),
   },
-  onlineDetected: {
-    eventType: "onlineDetected",
+  verificationAvailableDetected: {
+    eventType: "verificationAvailableDetected",
   },
   scheduleRefreshRequested: {
     eventType: "scheduleRefreshRequested",

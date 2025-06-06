@@ -36,7 +36,6 @@ export const resolveEffectsDependencies = async () => {
     transactionService,
     pendingEventStore,
     eventProcessor,
-    synchronizationTaskService,
   );
 
   const meditationService = new MeditationService(
@@ -44,7 +43,7 @@ export const resolveEffectsDependencies = async () => {
     pendingEventService,
     meditationStore,
   );
-  const emailVerificationApi = new EmailVerificationApi(meditationStore);
+  const emailVerificationApi = new EmailVerificationApi();
   const emailVerificationService = new EmailVerificationService(
     keyValueStorageService,
     emailVerificationApi,
@@ -56,5 +55,6 @@ export const resolveEffectsDependencies = async () => {
     tickingService,
     emailVerificationService,
     keyValueStorageService,
+    synchronizationTaskService,
   };
 };

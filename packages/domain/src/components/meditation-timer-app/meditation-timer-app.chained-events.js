@@ -124,7 +124,7 @@ export const meditationTimerAppChainedEvents = [
   {
     onEvent: meditationTimerAppEvents.onlineDetected,
     thenDispatch: {
-      ...emailVerificationEvents.onlineDetected,
+      ...emailVerificationEvents.verificationAvailableDetected,
       childComponentPath: ["account", "emailVerification"],
     },
   },

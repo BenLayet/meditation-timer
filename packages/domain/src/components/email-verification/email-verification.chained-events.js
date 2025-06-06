@@ -11,7 +11,7 @@ export const emailVerificationChainedEvents = [
     thenDispatch: emailVerificationEvents.verificationLinkRequested,
   },
   {
-    onEvent: emailVerificationEvents.onlineDetected,
+    onEvent: emailVerificationEvents.verificationAvailableDetected,
     onCondition: ({ state }) =>
       state.ownState.status === emailVerificationStatus.CREATED,
     thenDispatch: emailVerificationEvents.verificationLinkRequested,
@@ -53,5 +53,9 @@ export const emailVerificationChainedEvents = [
   {
     onEvent: emailVerificationEvents.resetRequested,
     thenDispatch: emailVerificationEvents.cancelScheduledRefreshRequested,
+  },
+  {
+    onEvent: emailVerificationEvents.refreshTimeUp,
+    thenDispatch: emailVerificationEvents.refreshRequested,
   },
 ];

@@ -8,12 +8,6 @@ import { addDebugger } from "./lib/debug.functions.js";
 import { createEffects } from "./effects/effects.js";
 import { resolveEffectsDependencies } from "./main.dependencies.js";
 
-//CHECK SUPPORTED FEATURES
-console.log("Service Worker supported:", "serviceWorker" in navigator);
-console.log("Background Sync supported:", "SyncManager" in window);
-console.log("Wake Lock API supported:", "wakeLock" in navigator);
-console.log("IndexedDB supported:", "indexedDB" in window);
-
 //STATE MANAGER
 const stateManager = new StateManager(meditationTimerAppComponent);
 const rootVM = stateManager.getRootVM();

@@ -8,10 +8,10 @@ export const createSaveMeditationEffects = ({ meditationService }, rootVM) => {
       rootVM.children.meditationSession.children.actualMeditation.dispatchers;
     try {
       await meditationService.saveMeditation(payload);
-      dispatchers.saveSucceeded({}, false);
+      dispatchers.saveSucceeded({});
     } catch (error) {
       console.error(error);
-      dispatchers.saveFailed({ error }, false);
+      dispatchers.saveFailed({ error });
     }
   };
 

@@ -16,6 +16,9 @@ export default defineConfig(({ mode }) => {
       react(),
       VitePWA({
         registerType: "autoUpdate",
+        workbox: {
+          globPatterns: ["**/*.{js,css,html,png,ogg}"], // Cache assets with these extensions
+        },
         devOptions: {
           enabled: true,
           type: "module",
