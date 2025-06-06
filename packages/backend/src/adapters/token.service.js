@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import {
+  validateNotEmptyString,
   validateNotNull,
   validateNotNullObject,
-  validateNotEmptyString,
 } from "domain/src/lib/assert/not-null.validator.js";
 
 export class JwtTokenService {

@@ -4,10 +4,7 @@ import {
   RETRIEVE_PERMISSION,
   VERIFY_PERMISSION,
 } from "./permissions.constants.js";
-import {
-  validateNotEmptyString,
-  validateNotNullObject,
-} from "domain/src/lib/assert/not-null.validator.js";
+import { validateNotNullObject } from "domain/src/lib/assert/not-null.validator.js";
 
 export const sendVerificationLink = ({
   emailVerificationRepository,

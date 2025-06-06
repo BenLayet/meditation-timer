@@ -1,15 +1,11 @@
 import { repositoryProviders } from "../../src/config/repository.providers.js";
 import { usecaseProviders } from "../../src/config/usecase.providers.js";
 import { endpointHandlerProviders } from "../../src/config/endpoint-handler.providers.js";
-import {
-  pgMemDatasource,
-  testDatasourceProviders,
-} from "./pgmem.datasource.js";
+import { testDatasourceProviders } from "./pgmem.datasource.js";
 import { environmentProviders } from "../../src/config/environment.providers.js";
 import { apiPropertiesProviders } from "../../src/config/api-properties.providers.js";
 import { messageBuilderProviders } from "../../src/config/message-builder.providers.js";
 import { cleanUpTaskProviders } from "../../src/config/clean-up-task.providers.js";
-import { datasourceProviders } from "../../src/config/datasource.providers.js";
 import { mailContextProviders } from "../../src/config/mail-context.providers.js";
 
 export const fakeUuidGenerator = {

@@ -1,8 +1,7 @@
 import {
-  validateNewEmailVerification,
-  validateStatusTransition,
   emailVerificationStatus,
   validateEmailVerificationStatus,
+  validateStatusTransition,
 } from "domain/src/models/email-verification.model.js";
 import {
   validateNotEmptyString,
