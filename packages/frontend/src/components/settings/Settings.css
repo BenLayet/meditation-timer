@@ -26,7 +26,9 @@
 }
 .settings-menu {
   position: absolute;
-  min-width: 6em;
+  width: 80vw;
+  max-width: 20em;
+  min-width: 14em;
   top: 2em;
   right: 0.1em;
   background-color: var(--secondary-color);
@@ -40,7 +42,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: start;
+  align-items: stretch;
   padding: 0.5em;
   border-bottom: 1px solid var(--subtle-border);
 }
@@ -51,12 +53,12 @@
 .settings-menu-item-label {
   margin-bottom: 0.5em;
   font-size: 1.5em;
+  text-align: start;
 }
 .settings-menu-item-content {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  min-width: 25em;
+  align-items: center;
   margin-bottom: 0.2em;
   gap: 0.2em;
 }

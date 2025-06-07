@@ -21,3 +21,6 @@ form:invalid button[type="submit"] {
   text-align: left;
   margin-bottom: 0.5em;
 }
+.form-explanation>ul {
+  padding-inline-start: 0;
+}
