@@ -22,6 +22,7 @@ export class StateManager {
 
   addRootVMChangedListener(onRootVMChanged) {
     ow(onRootVMChanged, ow.function);
+    onRootVMChanged(this.getRootVM());
     this.rootComponentListeners.push(onRootVMChanged);
   }
 
@@ -66,7 +67,6 @@ export class StateManager {
         console.error(e);
       }
     });
-
     this.rootComponentListeners.forEach((onRootVMChanged) =>
       onRootVMChanged(this.getRootVM()),
     );
