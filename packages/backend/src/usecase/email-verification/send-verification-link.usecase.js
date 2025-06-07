@@ -13,7 +13,7 @@ export const sendVerificationLink = ({
   messageBuilder,
   mailContext,
   logger,
-  apiProperties,
+  publicUrlBuilders,
 }) => {
   validateNotNullObject({ emailVerificationRepository });
   validateNotNullObject({ emailSender });
@@ -21,7 +21,7 @@ export const sendVerificationLink = ({
   validateNotNullObject({ messageBuilder });
   validateNotNullObject({ logger });
   validateNotNullObject({ mailContext });
-  validateNotNullObject({ apiProperties });
+  validateNotNullObject({ publicUrlBuilders });
 
   return async (email) => {
     validateEmailFormat(email);
@@ -37,7 +37,7 @@ export const sendVerificationLink = ({
       tokenService,
       messageBuilder,
       mailContext,
-      basePath: apiProperties.basePath,
+      publicUrlBuilders,
       logger,
     })(emailVerification);
     logger.info(`Verification link sent to ${emailVerification.email}`);
@@ -66,9 +66,9 @@ export const sendVerificationLink = ({
 const sendVerificationEmail =
   ({
     tokenService,
-    basePath,
     messageBuilder,
     mailContext,
+    publicUrlBuilders,
     emailSender,
     logger,
   }) =>
@@ -80,10 +80,7 @@ const sendVerificationEmail =
     logger.debug(`Verify token created: ${verifyToken}`);
 
     // 2. Build the verification url
-    const verificationUrl = buildVerificationUrl({
-      basePath,
-      publicUrl: mailContext.publicUrl,
-    })(verifyToken);
+    const verificationUrl = publicUrlBuilders.verifyEmailAddress(verifyToken);
     logger.debug(`verificationUrl created: ${verificationUrl}`);
 
     // 3. Build the verification email

@@ -19,10 +19,15 @@ export const sendVerificationLinkHandler = ({
   };
 };
 
-export const verifyEmailAddressHandler = ({ logger, verifyEmailAddress }) => {
+export const verifyEmailAddressHandler = ({
+  logger,
+  verifyEmailAddress,
+  paramProperties,
+}) => {
   return async (req, res) => {
     try {
-      const { verifyToken } = req.params;
+      const verifyToken =
+        req.params[paramProperties.emailVerifications.verifyToken];
       logger.debug(`Verify email requested`);
       await verifyEmailAddress(verifyToken);
       logger.debug(`email verified successfully`);
@@ -37,9 +42,11 @@ export const verifyEmailAddressHandler = ({ logger, verifyEmailAddress }) => {
 export const retrieveVerificationHandler = ({
   logger,
   retrieveVerification,
+  paramProperties,
 }) => {
   return async (req, res) => {
-    const { emailVerificationUuid } = req.params;
+    const emailVerificationUuid =
+      req.params[paramProperties.emailVerifications.emailVerificationUuid];
     logger.debug(
       `Check Status requested, for emailVerificationUuid: ${emailVerificationUuid}`,
     );

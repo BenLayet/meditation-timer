@@ -11,12 +11,14 @@ import { tokenServiceProviders } from "./token-service.providers.js";
 import { emailSenderProviders } from "./email-sender.providers.js";
 import { messageBuilderProviders } from "./message-builder.providers.js";
 import { mailContextProviders } from "./mail-context.providers.js";
+import { routeProviders } from "./route.providers.js";
 
 export const providers = {
   ...environmentProviders,
   ...loggerProviders,
   ...datasourceProviders,
   ...apiPropertiesProviders,
+  ...routeProviders,
   ...mailContextProviders,
   ...uuidGeneratorProviders,
   ...tokenServiceProviders,
