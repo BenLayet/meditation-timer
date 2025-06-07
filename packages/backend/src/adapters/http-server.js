@@ -12,6 +12,7 @@ export const startHttpServer = async ({
   postEventHandler,
   getEventPageHandler,
   apiProperties,
+  routeProperties,
   cleanupTasks,
   logger,
 }) => {
@@ -32,19 +33,25 @@ export const startHttpServer = async ({
   app.use(express.static(staticFilesPath));
 
   // Routes
-  const { port, basePath } = apiProperties;
-  app.get(`${basePath}/health`, healthCheckHandler);
+  const { port } = apiProperties;
+  app.get(routeProperties.healthPath, healthCheckHandler);
 
   const emailVerificationsRouter = express.Router();
   emailVerificationsRouter
     .post("/", sendVerificationLinkHandler)
-    .get("/verify/:verifyToken", verifyEmailAddressHandler)
-    .get("/:emailVerificationUuid", retrieveVerificationHandler);
-  app.use(`${basePath}/email-verifications`, emailVerificationsRouter);
+    .get(
+      routeProperties.emailVerifications.verifyEmailAddressPath,
+      verifyEmailAddressHandler,
+    )
+    .get(
+      routeProperties.emailVerifications.retrieveVerificationPath,
+      retrieveVerificationHandler,
+    );
+  app.use(routeProperties.emailVerificationsPath, emailVerificationsRouter);
 
   const eventsRouter = express.Router();
   eventsRouter.post("/", postEventHandler).get("/", getEventPageHandler);
-  app.use(`${basePath}/events`, eventsRouter);
+  app.use(routeProperties.eventsPath, eventsRouter);
 
   // Error-handling middleware
   app.use((err, req, res, next) => {
