@@ -9,7 +9,7 @@ import "./Account.css";
 import EmailVerification from "../email-verification/EmailVerification";
 
 function Account({ vm }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isLoading = vm.selectors.isLoading();
   const canCreateAccount = vm.selectors.canCreateAccount();
   const isPendingVerification = vm.selectors.isPendingVerification();
@@ -49,7 +49,9 @@ function Account({ vm }) {
             <ul>
               <li>{t("secureStats")}</li>
               <li>{t("useMultipleDevices")}</li>
-            </ul></div>
+            </ul>
+          <p className="subtle">{t("agreement")}</p>
+          </div>
         </>
       )}
       {isEmailVisible && (
@@ -71,6 +73,9 @@ function Account({ vm }) {
           )}
         </>
       )}
+      <p className="subtle">
+        <a target="_blank" href={`privacy-policy.${i18n.language}.html`}>{t("privacyPolicy")}</a>
+      </p>
     </section>
   );
 }
