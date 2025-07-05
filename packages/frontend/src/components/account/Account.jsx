@@ -31,6 +31,13 @@ function Account({ vm }) {
       )}
       {canCreateAccount && (
         <>
+          <div className="form-explanation">
+            <ul>
+              <li>{t("secureStats")}</li>
+              <li>{t("useMultipleDevices")}</li>
+            </ul>
+            <p className="subtle">{t("agreement")}</p>
+          </div>
           <form onSubmit={createAccountRequested} className="compact">
             <input
               type="email"
@@ -45,13 +52,6 @@ function Account({ vm }) {
               {t("createAccount")}
             </button>
           </form>
-          <div className="form-explanation">
-            <ul>
-              <li>{t("secureStats")}</li>
-              <li>{t("useMultipleDevices")}</li>
-            </ul>
-          <p className="subtle">{t("agreement")}</p>
-          </div>
         </>
       )}
       {isEmailVisible && (
