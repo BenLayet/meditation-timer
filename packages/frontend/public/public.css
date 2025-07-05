@@ -3,7 +3,7 @@
     --text-color: #e0e0e0;
     --primary-color: #e0e0e0;
     --secondary-color: #3a3d41;
-    --accent-color: #b8860b;
+    --accent-color: #ffffff;
     --button-background: #3a3d41;
     --button-hover-background: #505357;
     --disabled-text-color: #9a9a9a;
@@ -19,9 +19,10 @@
     --monospace-font: Lekton, "Courier New", Courier, monospace;
 }
 body {
+    max-width: 800px;
+    margin: 0 auto;
     background-color: var(--background-color);
     font-family: var(--primary-font), sans-serif;
-    font-weight: var(--primary-font-weight);
     color: var(--text-color);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -38,8 +39,7 @@ li {
 }
 h1 {
     color: var(--accent-color);
-    font-weight: lighter; /* Adjusted font-weight */
-    font-size: 2.5em;
+    font-size: 2em;
     line-height: 1.2;
     margin-bottom: 1em;
 }
