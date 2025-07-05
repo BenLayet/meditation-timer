@@ -5,6 +5,7 @@ export function LanguageSelection() {
   const changeLanguage = (event) => {
     i18n.changeLanguage(event.target.value);
   };
+
   return (
     <div className="flex-column">
       <input

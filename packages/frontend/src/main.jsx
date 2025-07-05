@@ -7,6 +7,7 @@ import { meditationTimerAppComponent } from "domain/src/components/meditation-ti
 import { addDebugger } from "./lib/debug.functions.js";
 import { createEffects } from "./effects/effects.js";
 import { resolveEffectsDependencies } from "./main.dependencies.js";
+import "./config/i18n.js";
 
 //STATE MANAGER
 const stateManager = new StateManager(meditationTimerAppComponent);
