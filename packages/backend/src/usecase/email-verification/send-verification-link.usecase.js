@@ -1,5 +1,6 @@
 import { emailVerificationStatus } from "domain/src/models/email-verification.model.js";
 import { validateEmailFormat } from "domain/src/models/email.validator.js";
+import { validateLanguageCode } from "domain/src/models/language.validator.js";
 import {
   RETRIEVE_PERMISSION,
   VERIFY_PERMISSION,
@@ -23,8 +24,9 @@ export const sendVerificationLink = ({
   validateNotNullObject({ mailContext });
   validateNotNullObject({ publicUrlBuilders });
 
-  return async (email) => {
+  return async (email, languageCode) => {
     validateEmailFormat(email);
+    validateLanguageCode(languageCode);
 
     // 1. save new email verification
     let emailVerification =
@@ -38,6 +40,7 @@ export const sendVerificationLink = ({
       messageBuilder,
       mailContext,
       publicUrlBuilders,
+      languageCode,
       logger,
     })(emailVerification);
     logger.info(`Verification link sent to ${emailVerification.email}`);
@@ -70,6 +73,7 @@ const sendVerificationEmail =
     mailContext,
     publicUrlBuilders,
     emailSender,
+    languageCode,
     logger,
   }) =>
   async (emailVerification) => {
@@ -80,12 +84,15 @@ const sendVerificationEmail =
     logger.debug(`Verify token created: ${verifyToken}`);
 
     // 2. Build the verification url
-    const verificationUrl = publicUrlBuilders.verifyEmailAddress(verifyToken);
+    const verificationUrl = publicUrlBuilders.verifyEmailAddress({
+      verifyToken,
+      languageCode,
+    });
     logger.debug(`verificationUrl created: ${verificationUrl}`);
 
     // 3. Build the verification email
     const messageContent = await messageBuilder.buildMessage(
-      "en",
+      languageCode,
       "verifyAccount",
       {
         verificationUrl,

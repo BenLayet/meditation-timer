@@ -11,10 +11,11 @@ export const sendVerificationLinkHandler = ({
   return async (req, res) => {
     try {
       const { email } = req.body;
-      res.status(201).json(await sendVerificationLink(email));
+      const languageCode = req.headers["accept-language"];
+      res.status(201).json(await sendVerificationLink(email, languageCode));
     } catch (error) {
       logger.error(error);
-      res.status(500).json({ error });
+      res.status(500).json({ errorMessage: error?.message });
     }
   };
 };
@@ -25,16 +26,27 @@ export const verifyEmailAddressHandler = ({
   paramProperties,
 }) => {
   return async (req, res) => {
+    logger.debug(`Verify email requested`);
+    const verifyToken =
+      req.params[paramProperties.emailVerifications.verifyToken];
+    const languageCode =
+      req.query[paramProperties.emailVerifications.languageCode] ?? "en";
+    logger.debug(`Verify email languageCode: ${languageCode}`);
     try {
-      const verifyToken =
-        req.params[paramProperties.emailVerifications.verifyToken];
-      logger.debug(`Verify email requested`);
       await verifyEmailAddress(verifyToken);
       logger.debug(`email verified successfully`);
-      res.status(200).json({ message: "email verified successfully" });
+      await res.status(302);
+      await res.setHeader(
+        "Location",
+        `/email-verification-succeeded.${languageCode}.html`,
+      );
     } catch (error) {
-      logger.error(error, `verify error: ${error}`);
-      res.status(403).json({ error: "Invalid or expired verification token" });
+      logger.error(error, `verify error : ${error}`);
+      res.status(302);
+      res.setHeader(
+        "Location",
+        `/email-verification-failed.${languageCode}.html`,
+      );
     }
   };
 };

@@ -1,11 +1,17 @@
+import i18n from "../config/i18n.js";
+import { validateLanguageCode } from "domain/src/models/language.validator.js";
+
 const API_URL = "/api/v1/email-verifications";
 
 export class EmailVerificationApi {
   sendVerificationLink = async (emailVerification) => {
+    const languageCode = i18n.language;
+    validateLanguageCode(languageCode);
     return fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Accept-Language": languageCode,
       },
       body: JSON.stringify(emailVerification),
     }).then((response) => {

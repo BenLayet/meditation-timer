@@ -15,7 +15,7 @@ const verifyToken = fakeTokenService.createShortLivedToken({
   emailVerificationUuid: "10000000-0000-1000-8000-000000000001",
   scope: ["VERIFY"],
 });
-const verificationLink = `http://localhost:8000/api/v1/email-verifications/verify/${verifyToken}`;
+const verificationLink = `http://localhost:8000/api/v1/email-verifications/verify/${verifyToken}?languageCode=en`;
 
 describe("verifying emails", () => {
   const email = "email1@example.org";
@@ -25,6 +25,7 @@ describe("verifying emails", () => {
     //WHEN
     const { body, status } = await apiClient.sendVerificationLink({
       body: { email },
+      headers: { "accept-language": "en" },
     });
 
     //THEN
@@ -41,6 +42,7 @@ describe("verifying emails", () => {
     //WHEN
     await apiClient.sendVerificationLink({
       body: { email },
+      headers: { "accept-language": "en" },
     });
 
     //THEN
@@ -54,10 +56,28 @@ describe("verifying emails", () => {
     });
   });
 
+  test("posting an email verification with French language code should send an email in French", async () => {
+    //WHEN
+    await apiClient.sendVerificationLink({
+      body: { email },
+      headers: { "accept-language": "fr" },
+    });
+
+    //THEN
+    expect(fakeEmailSender.lastMail).toEqual({
+      from: "mailfrom@test",
+      to: email,
+      subject: "Vérifier votre compte",
+      html: expect.stringMatching(
+        /Cliquez pour confirmer votre adresse email pour Meditation Timer : <a href='.*' target='_blank'>.*<\/a>/,
+      ),
+    });
+  });
   test("posting an email verification should send a verification link", async () => {
     //WHEN
     await apiClient.sendVerificationLink({
       body: { email },
+      headers: { "accept-language": "en" },
     });
 
     //THEN
@@ -70,38 +90,43 @@ describe("verifying emails", () => {
     //GIVEN
     await apiClient.sendVerificationLink({
       body: { email },
+      headers: { "accept-language": "en" },
     });
     //WHEN
-    const { body, status } = await apiClient.verifyEmailAddress({
+    const { headers, status } = await apiClient.verifyEmailAddress({
       params: { verifyToken },
     });
 
     // THEN
-    expect(status).toBe(200); // Check the status code
-    expect(body).toEqual({ message: "email verified successfully" }); // Check the response body content
+    expect(status).toBe(302); // Check the status code
+    expect(headers).toEqual({
+      Location: "/email-verification-succeeded.en.html",
+    });
   });
   test("should return error when verification link is clicked twice", async () => {
     //GIVEN
     await apiClient.sendVerificationLink({
       body: { email },
+      headers: { "accept-language": "en" },
     });
     await apiClient.verifyEmailAddress({
       params: { verifyToken },
     }); // click once
 
     //WHEN
-    const { body, status } = await apiClient.verifyEmailAddress({
+    const { headers, status } = await apiClient.verifyEmailAddress({
       params: { verifyToken },
     }); // Click again
 
     // THEN
-    expect(status).toBe(403); // Check the status code
-    expect(body).toEqual({ error: "Invalid or expired verification token" }); // Check the response body content
+    expect(status).toBe(302); // Check the status code
+    expect(headers).toEqual({ Location: "/email-verification-failed.en.html" });
   });
   test("should return userToken when requested if email is verified", async () => {
     //GIVEN
     await apiClient.sendVerificationLink({
       body: { email },
+      headers: { "accept-language": "en" },
     });
     await apiClient.verifyEmailAddress({
       params: { verifyToken },
@@ -125,7 +150,7 @@ describe("verifying emails", () => {
 });
 
 function extractFirstLink(text) {
-  const regex = /(https?:\/\/[\w\/:\-=]+)/;
+  const regex = /(https?:\/\/[\w\/:\-=?&]+)/;
   const match = text.match(regex);
   return match ? match[1] : null;
 }

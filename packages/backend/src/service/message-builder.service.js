@@ -1,7 +1,8 @@
-import en from "./message-templates.en.js";
+import en from "../locales/en.js";
+import fr from "../locales/fr.js";
 import { validateNotNull } from "domain/src/lib/assert/not-null.validator.js";
 
-const templates = { en };
+const templates = { en, fr };
 export class MessageBuilder {
   async buildMessage(languageCode, templateName, values) {
     const template = await loadTemplate(languageCode, templateName);
