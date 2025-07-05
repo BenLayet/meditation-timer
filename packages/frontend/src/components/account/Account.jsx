@@ -74,7 +74,9 @@ function Account({ vm }) {
         </>
       )}
       <p className="subtle">
-        <a target="_blank" href={`privacy-policy.${i18n.language}.html`}>{t("privacyPolicy")}</a>
+        <a target="_blank" href={`privacy-policy.${i18n.language}.html`}>
+          {t("privacyPolicy")}
+        </a>
       </p>
     </section>
   );

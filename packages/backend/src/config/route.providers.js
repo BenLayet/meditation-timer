@@ -1,5 +1,3 @@
-import { verifyEmailAddress } from "../usecase/email-verification/verify-email-address.usecase.js";
-
 const routeConstants = {
   api: "/api/v1",
   resources: {
@@ -9,7 +7,12 @@ const routeConstants = {
       endpoints: {
         verify: {
           path: "/verify",
-          pathParams: { verifyToken: "verifyToken" },
+          pathParams: {
+            verifyToken: "verifyToken",
+          },
+          queryParams: {
+            languageCode: "languageCode",
+          },
         },
         retrieve: {
           pathParams: { emailVerificationUuid: "emailVerificationUuid" },
@@ -37,13 +40,18 @@ export const routeProviders = {
       verifyToken:
         routeConstants.resources.emailVerifications.endpoints.verify.pathParams
           .verifyToken,
+      languageCode:
+        routeConstants.resources.emailVerifications.endpoints.verify.queryParams
+          .languageCode,
       emailVerificationUuid:
         routeConstants.resources.emailVerifications.endpoints.retrieve
           .pathParams.emailVerificationUuid,
     },
   }),
   publicUrlBuilders: ({ publicUrl }) => ({
-    verifyEmailAddress: (verifyToken) =>
-      `${publicUrl}${routeConstants.api}${routeConstants.resources.emailVerifications.base}${routeConstants.resources.emailVerifications.endpoints.verify.path}/${verifyToken}`,
+    verifyEmailAddress: ({ verifyToken, languageCode }) =>
+      `${publicUrl}${routeConstants.api}${routeConstants.resources.emailVerifications.base}` +
+      `${routeConstants.resources.emailVerifications.endpoints.verify.path}/${verifyToken}` +
+      `?${routeConstants.resources.emailVerifications.endpoints.verify.queryParams.languageCode}=${languageCode}`,
   }),
 };
