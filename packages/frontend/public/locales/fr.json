@@ -19,6 +19,7 @@
   "account": "Compte",
   "secureStats": "sécuriser vos statistiques",
   "useMultipleDevices": "utiliser plusieurs appareils",
+  "agreement": "En créant un compte vous acceptez la politique de confidentialité",
   "createAccount": "Créer un compte",
   "disconnect": "Déconnecter",
   "emailPlaceholder": "Entrez votre email",
@@ -28,5 +29,6 @@
   "emailVerificationSent": "Mail de vérification envoyé, vérifiez votre boîte de réception",
   "emailVerificationExpired": "Mail de vérification expiré, veuillez réessayer",
   "retry": "Rééssayer",
-  "refresh": "Rafraichir"
+  "refresh": "Rafraichir",
+  "privacyPolicy" : "politique de confidentialité"
 }
