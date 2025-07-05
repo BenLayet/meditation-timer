@@ -36,7 +36,6 @@ function Account({ vm }) {
               <li>{t("secureStats")}</li>
               <li>{t("useMultipleDevices")}</li>
             </ul>
-            <p className="subtle">{t("agreement")}</p>
           </div>
           <form onSubmit={createAccountRequested} className="compact">
             <input
@@ -52,6 +51,7 @@ function Account({ vm }) {
               {t("createAccount")}
             </button>
           </form>
+          <p className="subtle">{t("agreement")}</p>
         </>
       )}
       {isEmailVisible && (
