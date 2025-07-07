@@ -30,5 +30,9 @@
   "emailVerificationExpired": "Verification email expired, please try again",
   "reset": "Reset",
   "retry": "Retry",
-  "refresh": "Refresh"
+  "refresh": "Refresh",
+  "installApp": "Install Application",
+  "closeBanner": "Close",
+  "installAppIos": "To install this app, tap the Share button and select 'Add to Home Screen'."
+
 }
