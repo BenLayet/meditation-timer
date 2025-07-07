@@ -4,6 +4,7 @@ import "../../config/i18n";
 import AppHeader from "./AppHeader.jsx";
 import AppBody from "./AppBody.jsx";
 import { useEffect, useState } from "react";
+import InstallButton from '../install-button/InstallButton.jsx'
 
 const App = ({ stateManager }) => {
   const [vm, setVM] = useState(stateManager.getRootVM());
@@ -14,6 +15,7 @@ const App = ({ stateManager }) => {
 
   return (
     <>
+      <InstallButton />
       <AppHeader vm={vm} />
       <AppBody vm={vm} />
     </>
