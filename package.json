@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "prepare": "husky install",
     "build": "pnpm run build:root && pnpm run build:frontend && pnpm run build:backend",
     "build:root": "pnpm install",
     "build:frontend": "cd packages/frontend && pnpm install && pnpm run build && cd ../..",
@@ -16,7 +17,18 @@
     "test:frontend": "cd packages/frontend && pnpm run test && cd ../..",
     "test:backend": "cd packages/backend && pnpm run test && cd ../..",
     "test": "pnpm run test:domain && pnpm run test:frontend && pnpm run test:backend",
-    "prettier": "prettier -w ."
+    "format": "prettier -w .",
+    "format-check": "prettier --check ."
   },
-  "packageManager": "pnpm@9.15.0"
+  "packageManager": "pnpm@9.15.0",
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.4.2"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,json,css,md}": [
+      "prettier --write"
+    ]
+  }
 }

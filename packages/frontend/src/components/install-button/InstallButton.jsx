@@ -34,7 +34,10 @@ const InstallButton = () => {
     window.addEventListener("appinstalled", handleAppInstalled);
 
     return () => {
-      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt,
+      );
       window.removeEventListener("appinstalled", handleAppInstalled);
     };
   }, []);
@@ -64,9 +67,7 @@ const InstallButton = () => {
     <div className="install-banner">
       {isIos ? (
         <>
-          <p className="install-banner-text">
-            {t("installAppIos")}
-          </p>
+          <p className="install-banner-text">{t("installAppIos")}</p>
           <button
             className="close-button"
             onClick={handleCloseBanner}
