@@ -9,6 +9,7 @@ COPY ./pnpm-lock.yaml .
 RUN pnpm fetch
 
 COPY . .
+RUN pnpm run format-check
 RUN pnpm run build
 
 EXPOSE 8000
