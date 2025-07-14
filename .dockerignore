@@ -18,5 +18,6 @@
 !packages/backend/pnpm-lock.yaml
 
 !package.json
+!.prettierignore
 !pnpm-lock.yaml
 !pnpm-workspace.yaml
