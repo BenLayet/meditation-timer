@@ -1,4 +1,4 @@
-import { MessageBuilder } from "../service/message-builder.service.js";
+import { MessageBuilder } from "../services/message-builder.service.js";
 
 export const messageBuilderProviders = {
   //MESSAGE BUILDER
