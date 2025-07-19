@@ -12,7 +12,7 @@
   padding: 1em;
 }
 .meditation-setting:not(:last-child) {
-  border-bottom: 1px var(--accent-color) solid;
+  border-bottom: 1px var(--primary-color) solid;
 }
 
 .meditation-setting > label {

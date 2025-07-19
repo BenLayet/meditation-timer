@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 const InstallButton = () => {
   const [t] = useTranslation();
   const [installPrompt, setInstallPrompt] = useState(null); // Save the install prompt event
-  const [isVisible, setIsVisible] = useState(false); // Controls banner visibility
+  const [isVisible, setIsVisible] = useState(true); // Controls banner visibility
   const [isIos, setIsIos] = useState(false); // Check if the browser is Safari on iOS
 
   useEffect(() => {
@@ -19,6 +19,7 @@ const InstallButton = () => {
 
     // Listen for `beforeinstallprompt` on non-iOS platforms
     const handleBeforeInstallPrompt = (e) => {
+      console.log("beforeinstallprompt");
       e.preventDefault(); // Prevent automatic prompt display
       setInstallPrompt(e); // Save the prompt event
       setIsVisible(true); // Show banner for supported platforms
