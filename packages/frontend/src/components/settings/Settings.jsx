@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import "./Settings.css";
 import { useTranslation } from "react-i18next";
 import Account from "../account/Account.jsx";
@@ -24,7 +24,7 @@ function Settings({ vm }) {
         <FontAwesomeIcon
           onClick={toggleMenu}
           className="settings-button"
-          icon={faGear}
+          icon={faBars}
           style={{ fontSize: "24px" }}
         />
         {isMenuVisible && (
