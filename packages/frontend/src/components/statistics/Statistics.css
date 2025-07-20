@@ -8,7 +8,6 @@ li.statistics-item {
   display: flex;
   align-items: center;
   text-align: left;
-  font-size: 0.7em;
   margin-bottom: 1em;
   opacity: 0; /* Initially hidden */
   animation: fadeIn 1s ease forwards; /* 1s fade-in animation */
@@ -17,7 +16,6 @@ li.statistics-item {
 li.statistics-item::before {
   content: "★"; /* Star emoji */
   opacity: 0.5;
-  font-size: 0.7em;
   margin-right: 1em;
 }
 

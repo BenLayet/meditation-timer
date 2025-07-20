@@ -6,13 +6,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 .flex-row {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+.breathing-space {
+  gap: 1em;
+}
+
 .justify-end {
   justify-content: flex-end;
 }

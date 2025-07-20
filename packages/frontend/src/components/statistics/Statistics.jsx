@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import "./Statistics.css";
+import Account from "../account/Account.jsx";
 
 export function Statistics({ vm }) {
   const { t } = useTranslation();
@@ -13,17 +14,21 @@ export function Statistics({ vm }) {
     vm.selectors.shouldDailyStreakBeDisplayed();
 
   return (
-    <ul className="statistics">
-      {shouldTotalMinutesThisWeekBeDisplayed && (
-        <li className="statistics-item">
-          {t("hourCount", hourCount)}
-          {t("minuteCount", minuteCount)}
-          {t("thisWeek")}
-        </li>
-      )}
-      {shouldDailyStreakBeDisplayed && (
-        <li className="statistics-item">{t("dailyStreak", { dailyStreak })}</li>
-      )}
-    </ul>
+    <div>
+      <ul className="statistics">
+        {shouldTotalMinutesThisWeekBeDisplayed && (
+          <li className="statistics-item">
+            {t("hourCount", hourCount)}
+            {t("minuteCount", minuteCount)}
+            {t("thisWeek")}
+          </li>
+        )}
+        {shouldDailyStreakBeDisplayed && (
+          <li className="statistics-item">
+            {t("dailyStreak", { dailyStreak })}
+          </li>
+        )}
+      </ul>
+    </div>
   );
 }

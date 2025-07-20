@@ -39,6 +39,7 @@ button.main-action {
 .round-rectangle-button {
   border-radius: 0.5em;
   cursor: pointer;
+  min-width: 6em;
 }
 /* ICON BUTTONS */
 .icon-button {
