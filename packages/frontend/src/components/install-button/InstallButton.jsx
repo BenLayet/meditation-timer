@@ -62,7 +62,7 @@ const InstallButton = () => {
   };
 
   // Render the banner based on visibility and platform-specific behavior
-  if (!isVisible && !isIos) return null;
+  if (!isVisible) return null;
 
   return (
     <div className="install-banner">

@@ -17,7 +17,6 @@ function MeditationSettings({ vm }) {
     vm.dispatchers.lessMeditationTimeRequested();
   //selectors
   const meditationDuration = vm.selectors.meditationDuration();
-  const preparationDuration = vm.selectors.preparationDuration();
 
   return (
     <div className="flex-grow flex-column">
@@ -35,24 +34,6 @@ function MeditationSettings({ vm }) {
               <FontAwesomeIcon
                 icon={faPlus}
                 onClick={meditationAddTimeClicked}
-                className="round-button"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="meditation-setting flex-column">
-          <label>{t("preparation")}</label>
-          <div className="meditation-setting-control flex-column">
-            <span className="time-display">{preparationDuration}</span>
-            <div className="round-button-group">
-              <FontAwesomeIcon
-                icon={faMinus}
-                onClick={preparationRemoveTimeClicked}
-                className="round-button"
-              />
-              <FontAwesomeIcon
-                icon={faPlus}
-                onClick={preparationAddTimeClicked}
                 className="round-button"
               />
             </div>
