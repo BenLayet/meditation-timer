@@ -1,16 +1,11 @@
-import "./MeditationSettings.css";
+import "./NewMeditation.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
-import GongControl from "../gong-control/GongControl.jsx";
 
-function MeditationSettings({ vm }) {
+function NewMeditation({ vm }) {
   const { t } = useTranslation();
   //actions
-  const preparationAddTimeClicked = () =>
-    vm.dispatchers.morePreparationTimeRequested();
-  const preparationRemoveTimeClicked = () =>
-    vm.dispatchers.lessPreparationTimeRequested();
   const meditationAddTimeClicked = () =>
     vm.dispatchers.moreMeditationTimeRequested();
   const meditationRemoveTimeClicked = () =>
@@ -19,11 +14,11 @@ function MeditationSettings({ vm }) {
   const meditationDuration = vm.selectors.meditationDuration();
 
   return (
-    <div className="flex-grow flex-column">
-      <div className="meditation-settings flex-column">
-        <div className="meditation-setting flex-column">
+    <div className="flex-fill d-flex align-items-center justify-content-center">
+      <div className="new-meditation-settings flex-column">
+        <div className="new-meditation-setting flex-column">
           <label>{t("duration")}</label>
-          <div className="meditation-setting-control flex-column">
+          <div className="new-meditation-setting-control flex-column">
             <span className="time-display">{meditationDuration}</span>
             <div className="round-button-group">
               <FontAwesomeIcon
@@ -39,15 +34,9 @@ function MeditationSettings({ vm }) {
             </div>
           </div>
         </div>
-        <div className="meditation-setting flex-column">
-          <label>{t("gong")}</label>
-          <div className="meditation-setting-control flex-column bigger">
-            <GongControl vm={vm} />
-          </div>
-        </div>
       </div>
     </div>
   );
 }
 
-export default MeditationSettings;
+export default NewMeditation;

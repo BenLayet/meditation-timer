@@ -2,7 +2,8 @@
   "meditation": "Meditation",
   "statistics": "Statistics",
   "settings": "Settings",
-  "duration": "Meditation duration:",
+  "meditationSettings": "Meditation default settings",
+  "duration": "Duration:",
   "preparation": "Preparation:",
   "gong": "Gong:",
   "createAccountToSecureStats_1": "You can",
@@ -39,5 +40,8 @@
   "refresh": "Refresh",
   "installApp": "Install Application",
   "closeBanner": "Close",
-  "installAppIos": "To install this app, tap the Share button and select 'Add to Home Screen'."
+  "installAppIos": "To install this app, tap the Share button and select 'Add to Home Screen'.",
+  "on": "On",
+  "off": "Off",
+  "test": "Test:"
 }

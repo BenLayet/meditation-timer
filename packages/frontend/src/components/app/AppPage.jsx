@@ -1,4 +1,4 @@
-import MeditationSettingsPage from "../meditation-settings-page/MeditationSettingsPage.jsx";
+import NewMeditationPage from "../new-meditation-page/NewMeditationPage.jsx";
 import MeditationSessionPage from "../meditation-session-page/MeditationSessionPage.jsx";
 import StatisticsPage from "../statistics-page/StatisticsPage.jsx";
 import Account from "../account/Account.jsx";
@@ -20,7 +20,7 @@ export default ({ vm }) => {
       )}
       <div className="app-body">
         {page === "HOME" && (
-          <MeditationSettingsPage vm={vm.children.meditationSettings} />
+          <NewMeditationPage vm={vm.children.newMeditation} />
         )}
         {page === "MEDITATION_SESSION" && (
           <MeditationSessionPage vm={vm.children.meditationSession} />

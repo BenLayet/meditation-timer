@@ -1,16 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { currentTimeInSeconds } from "../../lib/time.functions.js";
-import MeditationSettings from "./MeditationSettings.jsx";
+import NewMeditation from "./NewMeditation.jsx";
 
-function MeditationSettingsPage({ vm }) {
+function NewMeditationPage({ vm }) {
   const playClicked = () =>
     vm.dispatchers.startSessionRequested({
       currentTimeInSeconds: currentTimeInSeconds(),
     });
   return (
     <>
-      <MeditationSettings vm={vm} />
+      <NewMeditation vm={vm} />
       <button className="main-action" onClick={playClicked}>
         <FontAwesomeIcon icon={faPlay} />
       </button>
@@ -18,4 +18,4 @@ function MeditationSettingsPage({ vm }) {
   );
 }
 
-export default MeditationSettingsPage;
+export default NewMeditationPage;

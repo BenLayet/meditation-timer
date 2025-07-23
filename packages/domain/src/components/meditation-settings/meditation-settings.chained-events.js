@@ -12,4 +12,38 @@ export const meditationSettingsChainedEvents = [
     onCondition: ({ state }) => meditationSettingsSelectors.isGongOn(state),
     thenDispatch: meditationSettingsEvents.gongOnToggled,
   },
+  {
+    onEvent: meditationSettingsEvents.moreMeditationTimeRequested,
+    thenDispatch: meditationSettingsEvents.settingsChanged,
+    withPayload: ({ state }) => state.ownState,
+  },
+  {
+    onEvent: meditationSettingsEvents.lessMeditationTimeRequested,
+    thenDispatch: meditationSettingsEvents.settingsChanged,
+    withPayload: ({ state }) => state.ownState,
+  },
+  {
+    onEvent: meditationSettingsEvents.morePreparationTimeRequested,
+    thenDispatch: meditationSettingsEvents.settingsChanged,
+    withPayload: ({ state }) => state.ownState,
+  },
+  {
+    onEvent: meditationSettingsEvents.lessPreparationTimeRequested,
+    thenDispatch: meditationSettingsEvents.settingsChanged,
+    withPayload: ({ state }) => state.ownState,
+  },
+  {
+    onEvent: meditationSettingsEvents.gongOffToggled,
+    thenDispatch: meditationSettingsEvents.settingsChanged,
+    withPayload: ({ state }) => state.ownState,
+  },
+  {
+    onEvent: meditationSettingsEvents.gongOnToggled,
+    thenDispatch: meditationSettingsEvents.settingsChanged,
+    withPayload: ({ state }) => state.ownState,
+  },
+  {
+    onEvent: meditationSettingsEvents.settingsLoaded,
+    thenDispatch: meditationSettingsEvents.settingsChanged,
+  },
 ];

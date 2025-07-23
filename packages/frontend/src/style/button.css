@@ -12,6 +12,10 @@ button {
   background-color: var(--button-background);
   color: var(--text-color);
 }
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
 button:hover {
   border-color: var(--primary-color);
 }
@@ -26,8 +30,10 @@ button.main-action {
   background-color: var(--button-background);
   font-size: 0.5em;
   padding: 0.5em;
+  vertical-align: middle;
   border-radius: 50%;
   cursor: pointer;
+  color: var(--primary-color);
 }
 .round-button-group {
   display: flex;
