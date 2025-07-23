@@ -14,7 +14,7 @@ function NewMeditation({ vm }) {
   const meditationDuration = vm.selectors.meditationDuration();
 
   return (
-    <div className="flex-fill d-flex align-items-center justify-content-center">
+    <div className="d-flex flex-fill align-items-center justify-content-center">
       <div className="new-meditation-settings flex-column">
         <div className="new-meditation-setting flex-column">
           <label>{t("duration")}</label>

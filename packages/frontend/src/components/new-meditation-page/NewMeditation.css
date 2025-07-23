@@ -7,7 +7,6 @@
 .new-meditation-setting {
   font-size: 1.2em;
   padding: 1em;
-  border-bottom: 1px var(--primary-color) solid;
 }
 .new-meditation-setting > label {
   display: flex;

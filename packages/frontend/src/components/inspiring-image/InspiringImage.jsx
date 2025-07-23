@@ -9,8 +9,8 @@ export const InspiringImage = () => {
   return (
     <div
       className={
-        "inspiring-image" +
-        " flex-grow " +
+        "inspiring-image w-100" +
+        " flex-fill " +
         "dignified-fade-in " +
         (isVisible ? "visible" : "hidden")
       }
