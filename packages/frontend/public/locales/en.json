@@ -2,7 +2,7 @@
   "meditation": "Meditation",
   "statistics": "Statistics",
   "settings": "Settings",
-  "meditationSettings": "Meditation default settings",
+  "meditationSettings": "Me defaultidtaion",
   "duration": "Duration:",
   "preparation": "Preparation:",
   "gong": "Gong:",
@@ -47,5 +47,6 @@
   "installAppIos": "To install this app, tap the Share button and select 'Add to Home Screen'.",
   "on": "On",
   "off": "Off",
-  "test": "Test:"
+  "test": "Test:",
+  "with_gratitude_to": "with heartfelt gratitude to"
 }

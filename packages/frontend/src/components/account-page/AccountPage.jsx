@@ -1,6 +1,6 @@
-import { Account } from "../account/Account.jsx";
 import { Statistics } from "../statistics/Statistics.jsx";
 import { useTranslation } from "react-i18next";
+import { Account } from "../account/Account.jsx";
 export const AccountPage = ({ vm }) => {
   const { t } = useTranslation();
   return (

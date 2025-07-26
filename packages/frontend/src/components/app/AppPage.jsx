@@ -1,7 +1,6 @@
 import NewMeditationPage from "../new-meditation-page/NewMeditationPage.jsx";
 import MeditationSessionPage from "../meditation-session-page/MeditationSessionPage.jsx";
 import StatisticsPage from "../statistics-page/StatisticsPage.jsx";
-import Account from "../account/Account.jsx";
 import React from "react";
 import Settings from "../settings/Settings.jsx";
 import NavBar from "../nav-bar/NavBar.jsx";
