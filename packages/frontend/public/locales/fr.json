@@ -9,7 +9,7 @@
   "createAccountToSecureStats_1": "Vous pouvez",
   "createAccountToSecureStats_2": "créer un compte",
   "createAccountToSecureStats_3": "si vous souhaitez sécuriser vos statistiques",
-  "meditationCount_zero": "L'application affichera vos statistiques de méditation, afin de fournir un moyen habile pour vous motiver à pratiquer un petit peu tous les jours.",
+  "meditationCount_zero": "L'application affichera vos statistiques de méditation, moyen habile pour pratiquer un petit peu tous les jours.",
   "meditationCount_one": "Une pratique déjà effectuée. L'application affichera vos statistiques de méditation, afin de fournir un moyen habile pour vous motiver à pratiquer un petit peu tous les jours.",
   "meditationCount_other": "{{count}} sessions de méditation effectuées",
   "dailyStreak": "{{dailyStreak}} jours de suite",
