@@ -44,7 +44,7 @@ export const statisticsEvents = {
     eventType: "meditationHistoryRetrieved",
     payloadShape: {
       currentEpochDay: ow.number.positive,
-      meditations: ow.array.ofType(
+      meditationHistory: ow.array.ofType(
         ow.object.partialShape({
           startedTimeInSeconds: ow.number.positive,
           durationInMinutes: ow.number.greaterThanOrEqual(0),

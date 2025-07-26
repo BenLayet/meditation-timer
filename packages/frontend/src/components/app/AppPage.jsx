@@ -5,6 +5,7 @@ import Account from "../account/Account.jsx";
 import React from "react";
 import Settings from "../settings/Settings.jsx";
 import NavBar from "../nav-bar/NavBar.jsx";
+import { AccountPage } from "../account-page/AccountPage.jsx";
 
 const FULL_SCREEN_PAGES = ["MEDITATION_SESSION", "STATISTICS"];
 
@@ -26,7 +27,7 @@ export default ({ vm }) => {
           <MeditationSessionPage vm={vm.children.meditationSession} />
         )}
         {page === "STATISTICS" && <StatisticsPage vm={vm} />}
-        {page === "ACCOUNT" && <Account vm={vm.children.account} />}
+        {page === "ACCOUNT" && <AccountPage vm={vm} />}
         {page === "SETTINGS" && <Settings vm={vm} />}
       </div>
     </>

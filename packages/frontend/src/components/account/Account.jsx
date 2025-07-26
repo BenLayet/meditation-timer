@@ -8,7 +8,7 @@ import {
 import "./Account.css";
 import EmailVerification from "../email-verification/EmailVerification";
 
-function Account({ vm }) {
+export const Account = ({ vm }) => {
   const { t, i18n } = useTranslation();
   const isLoading = vm.selectors.isLoading();
   const canCreateAccount = vm.selectors.canCreateAccount();
@@ -25,8 +25,7 @@ function Account({ vm }) {
   const disconnectRequested = vm.dispatchers.disconnectRequested;
 
   return (
-    <div className="flex-grow flex-column">
-      <h1>{t("account")}</h1>
+    <>
       {isLoading && <FontAwesomeIcon icon={faSpinner} spin />}
       {canCreateAccount && (
         <div className="flex-column breathing-space">
@@ -78,8 +77,6 @@ function Account({ vm }) {
           {t("privacyPolicy")}
         </a>
       </p>
-    </div>
+    </>
   );
-}
-
-export default Account;
+};

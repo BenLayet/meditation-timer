@@ -139,4 +139,11 @@ export const meditationTimerAppChainedEvents = [
       childComponentPath: ["newMeditation"],
     },
   },
+  {
+    onEvent: meditationTimerAppEvents.appOpened,
+    thenDispatch: {
+      ...statisticsEvents.statisticsRequested,
+      childComponentPath: ["statistics"],
+    },
+  },
 ];
