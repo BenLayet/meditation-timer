@@ -15,20 +15,20 @@ function NewMeditationPage({ vm }) {
     <div className="d-flex flex-column flex-fill w-100">
       <div className="opacity-75 flex-fill w-100 d-flex flex-column text-muted fs-5">
         <InspiringImage />
+        <figcaption>Suzuki Roshi*</figcaption>
       </div>
-      <figcaption>Suzuki Roshi*</figcaption>
       <div>
         <NewMeditation vm={vm} />
       </div>
-      <button className="main-action" onClick={playClicked}>
+      <button className="main-action mb-3" onClick={playClicked}>
         <FontAwesomeIcon icon={faPlay} />
       </button>
-      <p className="position-absolute bottom-0 text-muted  fs-6 opacity-75 text-center py-2">
+      <div className="position-absolute bottom-0 text-muted fs-6 opacity-50">
         * {t("with_gratitude_to")}{" "}
         <a target="_blank" href="https://kannondo.org">
           kannondo.org
         </a>
-      </p>
+      </div>
     </div>
   );
 }

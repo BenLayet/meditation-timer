@@ -18,7 +18,7 @@ export default ({ vm }) => {
           <NavBar vm={vm} />
         </div>
       )}
-      <div className="app-body">
+      <div className="app-body ">
         {page === "HOME" && (
           <NewMeditationPage vm={vm.children.newMeditation} />
         )}
