@@ -1,0 +1,18 @@
+/* General container for settings */
+.settings-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.setting {
+  align-items: center;
+}
+.setting label {
+  text-align: start;
+}
+.setting * {
+  align-items: center;
+  justify-content: start;
+}

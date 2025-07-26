@@ -28,13 +28,6 @@ When(/^I request (more|less) time for the meditation$/, function (moreOrLess) {
     this.vm().children.meditationSettings.dispatchers.lessMeditationTimeRequested();
   }
 });
-When(/^I request (more|less) time for the preparation$/, function (moreOrLess) {
-  if (moreOrLess === "more") {
-    this.vm().children.meditationSettings.dispatchers.morePreparationTimeRequested();
-  } else {
-    this.vm().children.meditationSettings.dispatchers.lessPreparationTimeRequested();
-  }
-});
 When("I toggle the gong on/off", function () {
   this.vm().children.meditationSettings.dispatchers.gongToggled();
 });

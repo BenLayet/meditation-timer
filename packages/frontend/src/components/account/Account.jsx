@@ -8,7 +8,7 @@ import {
 import "./Account.css";
 import EmailVerification from "../email-verification/EmailVerification";
 
-function Account({ vm }) {
+export const Account = ({ vm }) => {
   const { t, i18n } = useTranslation();
   const isLoading = vm.selectors.isLoading();
   const canCreateAccount = vm.selectors.canCreateAccount();
@@ -25,13 +25,12 @@ function Account({ vm }) {
   const disconnectRequested = vm.dispatchers.disconnectRequested;
 
   return (
-    <section className="account-section flex-column flex-grow">
-      {isLoading && (
-        <FontAwesomeIcon icon={faSpinner} spin className="status-spinner" />
-      )}
+    <>
+      {isLoading && <FontAwesomeIcon icon={faSpinner} spin />}
       {canCreateAccount && (
-        <>
+        <div className="flex-column breathing-space">
           <div className="form-explanation">
+            <p>{t("createAccountFor")}</p>
             <ul>
               <li>{t("secureStats")}</li>
               <li>{t("useMultipleDevices")}</li>
@@ -52,7 +51,7 @@ function Account({ vm }) {
             </button>
           </form>
           <p className="subtle">{t("agreement")}</p>
-        </>
+        </div>
       )}
       {isEmailVisible && (
         <>
@@ -78,8 +77,6 @@ function Account({ vm }) {
           {t("privacyPolicy")}
         </a>
       </p>
-    </section>
+    </>
   );
-}
-
-export default Account;
+};

@@ -8,7 +8,6 @@ li.statistics-item {
   display: flex;
   align-items: center;
   text-align: left;
-  font-size: 0.7em;
   margin-bottom: 1em;
   opacity: 0; /* Initially hidden */
   animation: fadeIn 1s ease forwards; /* 1s fade-in animation */
@@ -17,8 +16,13 @@ li.statistics-item {
 li.statistics-item::before {
   content: "★"; /* Star emoji */
   opacity: 0.5;
-  font-size: 0.7em;
   margin-right: 1em;
+}
+
+li.statistics-item::after {
+  content: "★"; /* Star emoji */
+  opacity: 0.5;
+  margin-left: 1em;
 }
 
 /* Keyframes for the fade-in effect */
@@ -35,21 +39,21 @@ li.statistics-item::before {
 
 /* Stagger the animation with delay */
 li:nth-child(1) {
-  animation-delay: 1s;
+  animation-delay: 0s;
 }
 
 li:nth-child(2) {
-  animation-delay: 3s;
+  animation-delay: 2s;
 }
 
 li:nth-child(3) {
-  animation-delay: 5s;
+  animation-delay: 4s;
 }
 
 li:nth-child(4) {
-  animation-delay: 7s;
+  animation-delay: 6s;
 }
 
 li:nth-child(5) {
-  animation-delay: 9s;
+  animation-delay: 8s;
 }

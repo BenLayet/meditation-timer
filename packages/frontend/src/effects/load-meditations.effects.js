@@ -6,11 +6,11 @@ export const createLoadMeditationsEffects = ({ meditationService }, rootVM) => {
     // Statistics dispatchers
     const dispatchers = rootVM.children.statistics.dispatchers;
     try {
-      const meditations = await meditationService.getAllMeditations();
+      const meditationHistory = await meditationService.getAllMeditations();
       const currentEpochDay = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
       dispatchers.meditationHistoryRetrieved(
         {
-          meditations,
+          meditationHistory,
           currentEpochDay,
         },
         false,

@@ -1,19 +1,13 @@
 h1 {
-  color: var(--primary-color);
   font-weight: lighter; /* Adjusted font-weight */
-  font-size: 2.5em;
+  font-size: 2em;
   line-height: 1.2;
   margin-bottom: 1em;
 }
 
 a {
-  color: var(--accent-color);
-  text-decoration: none;
+  color: var(--primary-color);
   cursor: pointer;
-}
-
-a:hover {
-  text-decoration: underline;
 }
 
 .subtle {
@@ -22,9 +16,7 @@ a:hover {
 }
 .clickable {
   cursor: pointer;
-}
-.clickable:hover {
-  color: var(--accent-color);
+  color: var(--primary-color);
 }
 
 .bigger {

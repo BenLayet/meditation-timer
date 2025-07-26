@@ -60,6 +60,7 @@ export const preparationEvents = {
       durationInSeconds: state.durationInSeconds + state.timeIncrementInSeconds,
       remainingSeconds: state.remainingSeconds + state.timeIncrementInSeconds,
     }),
+    isNewCycle: true,
   },
   completed: {
     eventType: "completed",

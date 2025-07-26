@@ -4,25 +4,20 @@
   left: 0;
   width: 100%;
   padding: 10px 20px;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--reverse-background-color);
+  color: var(--reverse-text-color);
+  box-sizing: border-box;
+  border: 2px solid var(--primary-color);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   z-index: 1000;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.install-banner-text {
-  font-size: 16px;
-  margin: 0;
-}
-
 .install-button {
-  margin-left: auto;
   padding: 8px 16px;
   background-color: var(--button-background);
-  color: var(--accent-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -35,12 +30,16 @@
 }
 
 .close-button {
-  background: none;
-  border: none;
-  color: #fff;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: var(--hightlighed-background);
+  color: #000;
+  border: 1px solid #000;
   font-size: 16px;
   cursor: pointer;
-  margin-left: 10px;
+  width: 2em;
+  border-radius: 50%;
 }
 
 .close-button:hover {

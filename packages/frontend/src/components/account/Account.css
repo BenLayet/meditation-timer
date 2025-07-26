@@ -1,5 +1,7 @@
-/* General container styling */
-
+.create-account {
+  display: flex;
+  gap: 16px;
+}
 /* Account info styling */
 .account-info dl {
   display: grid;

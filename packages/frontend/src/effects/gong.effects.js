@@ -20,5 +20,13 @@ export const createGongEffects = ({ gongService }) => {
       afterEvent: meditationSettingsEvents.gongOnToggled,
       then: gongService.volumeOn,
     }),
+    createEffect({
+      afterEvent: meditationSettingsEvents.gongPlayRequested,
+      then: gongService.play,
+    }),
+    createEffect({
+      afterEvent: meditationSettingsEvents.gongStopRequested,
+      then: gongService.stop,
+    }),
   ];
 };

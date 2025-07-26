@@ -1,7 +1,17 @@
 {
+  "meditation": "Meditation",
+  "statistics": "Statistics",
+  "settings": "Settings",
+  "meditationSettings": "Me defaultidtaion",
   "duration": "Duration:",
   "preparation": "Preparation:",
   "gong": "Gong:",
+  "createAccountToSecureStats_1": "You can",
+  "createAccountToSecureStats_2": "create an account",
+  "createAccountToSecureStats_3": "if you wish to secure your statistics",
+  "meditationCount_zero": "The app will keep track of your meditation sessions as a skillful mean to keep you motivated and meditate a little every day.",
+  "meditationCount_one": "One meditation so far: the app will keep track of your meditation sessions as a skillful mean to keep you motivated and meditate a little every day.",
+  "meditationCount_other": "{{count}} completed meditations sessions",
   "dailyStreak": "{{dailyStreak}} days in a row",
   "hourCount_zero": "",
   "hourCount_one": "1 h ",
@@ -22,6 +32,7 @@
   "agreement": "By creating an account you agree to the privacy policy",
   "privacyPolicy": "privacy policy",
   "createAccount": "Create an account",
+  "createAccountFor": "Create an account in order to:",
   "disconnect": "Disconnect",
   "emailPlaceholder": "Enter email",
   "emailKey": "Email:",
@@ -33,5 +44,9 @@
   "refresh": "Refresh",
   "installApp": "Install Application",
   "closeBanner": "Close",
-  "installAppIos": "To install this app, tap the Share button and select 'Add to Home Screen'."
+  "installAppIos": "To install this app, tap the Share button and select 'Add to Home Screen'.",
+  "on": "On",
+  "off": "Off",
+  "test": "Test:",
+  "with_gratitude_to": "with heartfelt gratitude to"
 }

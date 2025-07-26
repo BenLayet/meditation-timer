@@ -1,6 +1,8 @@
 import "./edges.css";
 import "./colors.css";
 import "./fonts.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import "./typography.css";
 import "./button.css";
 import "./range.css";

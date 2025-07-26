@@ -74,11 +74,35 @@ export const meditationSettingsEvents = {
   gongOnToggled: {
     eventType: "gongOnToggled",
   },
-  startSessionRequested: {
-    eventType: "startSessionRequested",
-    payloadShape: {
-      currentTimeInSeconds: ow.number.positive,
-    },
+  gongPlayRequested: {
+    eventType: "gongPlayRequested",
     isNewCycle: true,
+  },
+  gongStopRequested: {
+    eventType: "gongStopRequested",
+    isNewCycle: true,
+  },
+  settingsChanged: {
+    eventType: "settingsChanged",
+    payloadShape: {
+      meditationDurationInMinutes: ow.number.integer.positive,
+      meditationIncrementInMinutes: ow.number.integer.positive,
+      preparationDurationInSeconds: ow.number.integer.positive,
+      preparationIncrementInSeconds: ow.number.integer.positive,
+      gongOff: ow.boolean,
+    },
+  },
+  settingsLoaded: {
+    eventType: "settingsLoaded",
+    payloadShape: {
+      meditationDurationInMinutes: ow.number.integer.positive,
+      meditationIncrementInMinutes: ow.number.integer.positive,
+      preparationDurationInSeconds: ow.number.integer.positive,
+      preparationIncrementInSeconds: ow.number.integer.positive,
+      gongOff: ow.boolean,
+    },
+    handler: (state, payload) => ({
+      ...payload,
+    }),
   },
 };

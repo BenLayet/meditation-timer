@@ -1,6 +1,5 @@
 import ow from "ow";
-
-const VALID_PAGES = ["HOME", "MEDITATION_SESSION", "STATISTICS"];
+import { VALID_PAGES } from "./meditation-timer-app.state.js";
 
 export const meditationTimerAppEvents = {
   appOpened: {

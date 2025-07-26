@@ -14,10 +14,17 @@
   flex-direction: column;
   align-items: center;
   padding: 0.5em;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 
 .app-header {
   display: flex;
   justify-content: flex-end;
+  font-size: 1.5em;
+}
+@media (max-width: 768px) and (display-mode: browser) {
+  /* Styles for devices with a screen width of 768px or less (common for mobile), not in PWA mode */
+  .app-body {
+    margin-bottom: 2em; /* space for browser toolbar */
+  }
 }

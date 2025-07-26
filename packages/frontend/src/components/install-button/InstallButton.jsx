@@ -19,6 +19,7 @@ const InstallButton = () => {
 
     // Listen for `beforeinstallprompt` on non-iOS platforms
     const handleBeforeInstallPrompt = (e) => {
+      console.log("beforeinstallprompt");
       e.preventDefault(); // Prevent automatic prompt display
       setInstallPrompt(e); // Save the prompt event
       setIsVisible(true); // Show banner for supported platforms
@@ -61,7 +62,7 @@ const InstallButton = () => {
   };
 
   // Render the banner based on visibility and platform-specific behavior
-  if (!isVisible && !isIos) return null;
+  if (!isVisible) return null;
 
   return (
     <div className="install-banner">

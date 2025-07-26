@@ -16,11 +16,16 @@ async function synchronizeEvents() {
 
   const { accountService, eventSynchronizationService, indexedDb } =
     await resolveServiceWorkerDependencies();
-  if (await accountService.isAuthenticated()) {
-    await eventSynchronizationService.synchronizeEvents();
-    console.log("Events synchronized");
-  } else {
-    console.log("User not authenticated, no synchronization attempted");
+  try {
+    if (await accountService.isAuthenticated()) {
+      await eventSynchronizationService.synchronizeEvents();
+      console.log("Events synchronized");
+    } else {
+      console.log("User not authenticated, no synchronization attempted");
+    }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    indexedDb.close();
   }
-  indexedDb.close();
 }
