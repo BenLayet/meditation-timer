@@ -1,6 +1,5 @@
-import build from "../../../../build.json";
+import build from "../../../../build.json" with { type: "json" };
 export const environmentProviders = {
-  //Generic
   environment: () => process.env["NODE_ENV"],
   build: () => build,
 };
