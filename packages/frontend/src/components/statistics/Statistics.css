@@ -29,7 +29,7 @@ li.statistics-item::after {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px); /* Optional: Add subtle movement */
+    transform: translateY(5px); /* Optional: Add subtle movement */
   }
   to {
     opacity: 1;

@@ -31,7 +31,3 @@ input[type="radio"]:checked + label {
   background-color: var(--reverse-background-color);
   color: var(--reverse-text-color);
 }
-
-input[type="email"] {
-  font-size: 1.2em;
-}

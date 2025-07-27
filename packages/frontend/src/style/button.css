@@ -1,7 +1,6 @@
 /* ALL BUTTONS */
 button {
   justify-content: center;
-  font-size: 1.2em;
   box-sizing: border-box;
   padding: 0.2em;
   margin: 0.5em;
@@ -23,6 +22,7 @@ button:hover {
 button.main-action {
   border-color: var(--primary-color);
   min-width: 6em;
+  font-size: 1.2em;
 }
 
 /* ROUND BUTTONS */

@@ -14,8 +14,7 @@ function NewMeditationPage({ vm }) {
   return (
     <div className="d-flex flex-column flex-fill w-100">
       <div className="opacity-75 flex-fill w-100 d-flex flex-column text-muted fs-5">
-        <InspiringImage />
-        <figcaption>Suzuki Roshi*</figcaption>
+        <InspiringImage caption="Suzuki Roshi*" />
       </div>
       <div>
         <NewMeditation vm={vm} />
