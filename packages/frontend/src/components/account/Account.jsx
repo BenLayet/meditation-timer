@@ -54,25 +54,23 @@ export const Account = ({ vm }) => {
         </div>
       )}
       {isEmailVisible && (
-        <>
-          <div className="account-info">
-            <dl>
-              <dt>{t("emailKey")}</dt>
-              <dd>{email}</dd>
-            </dl>
-          </div>
+        <div className="flex-column breathing-space">
+          <div>{email}</div>
           {isPendingVerification && (
             <EmailVerification vm={vm.children.emailVerification} />
           )}
           {canDisconnect && (
-            <a onClick={disconnectRequested} className="icon-button">
+            <button
+              onClick={disconnectRequested}
+              className="icon-button fs-5 opacity-75"
+            >
               <FontAwesomeIcon icon={faUnlock} />
               {t("disconnect")}
-            </a>
+            </button>
           )}
-        </>
+        </div>
       )}
-      <p className="subtle">
+      <p className="text-muted fs-5 opacity-50 mb-0">
         <a target="_blank" href={`privacy-policy.${i18n.language}.html`}>
           {t("privacyPolicy")}
         </a>

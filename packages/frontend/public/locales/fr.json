@@ -11,7 +11,7 @@
   "createAccountToSecureStats_3": "si vous souhaitez sécuriser vos statistiques",
   "meditationCount_zero": "L'application affichera vos statistiques de méditation, moyen habile pour pratiquer un petit peu tous les jours.",
   "meditationCount_one": "Une pratique déjà effectuée. L'application affichera vos statistiques de méditation, afin de fournir un moyen habile pour vous motiver à pratiquer un petit peu tous les jours.",
-  "meditationCount_other": "{{count}} sessions de méditation effectuées",
+  "meditationCount_other": "{{count}} sessions",
   "dailyStreak": "{{dailyStreak}} jours de suite",
   "hourCount_zero": "",
   "hourCount_one": "1 h ",

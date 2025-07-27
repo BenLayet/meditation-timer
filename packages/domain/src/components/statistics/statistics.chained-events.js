@@ -11,7 +11,7 @@ export const statisticsChainedEvents = [
     thenDispatch: statisticsEvents.statisticsRetrieved,
     withPayload: ({ previousPayload }) => ({
       statistics: calculateStatistics(
-        previousPayload.meditations,
+        previousPayload.meditationHistory,
         previousPayload.currentEpochDay,
       ),
     }),
