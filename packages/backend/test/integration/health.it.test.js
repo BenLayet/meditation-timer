@@ -6,6 +6,6 @@ describe("Health Check Integration Tests", () => {
     expect(status).toBe(200);
     expect(body).toHaveProperty("status", "UP");
     expect(body).toHaveProperty("environment", "test");
-    expect(body).toHaveProperty("version");
+    expect(body).toHaveProperty("build");
   });
 });

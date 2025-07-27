@@ -1,6 +1,8 @@
 import { resolveServiceWorkerDependencies } from "./service-worker.dependencies.js";
 import { precacheAndRoute } from "workbox-precaching";
+import build from "../../../build.json";
 
+console.debug(`Service Worker Loaded. Build : ${JSON.stringify(build)}`);
 // Automatically precache all files referenced in __WB_MANIFEST
 precacheAndRoute(self.__WB_MANIFEST);
 
@@ -12,16 +14,16 @@ self.addEventListener("message", (event) => {
 });
 
 async function synchronizeEvents() {
-  console.log("synchronizeEvents called");
+  console.debug("synchronizeEvents called");
 
   const { accountService, eventSynchronizationService, indexedDb } =
     await resolveServiceWorkerDependencies();
   try {
     if (await accountService.isAuthenticated()) {
       await eventSynchronizationService.synchronizeEvents();
-      console.log("Events synchronized");
+      console.debug("Events synchronized");
     } else {
-      console.log("User not authenticated, no synchronization attempted");
+      console.debug("User not authenticated, no synchronization attempted");
     }
   } catch (e) {
     console.error(e);
