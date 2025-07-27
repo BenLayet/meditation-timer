@@ -12,7 +12,57 @@ export default defineConfig(({ mode }) => {
     build: {
       target: "esnext",
     },
-    plugins: [react()],
+    plugins: [
+      react(),
+      VitePWA({
+        registerType: "autoUpdate",
+        workbox: {
+          globPatterns: ["**/*.{js,css,html,png,ogg,json}"], // Cache assets with these extensions
+        },
+        devOptions: {
+          enabled: true,
+          type: "module",
+        },
+        strategies: "injectManifest",
+        srcDir: "src",
+        filename: "service-worker.js",
+        manifest: {
+          name: "Meditation Timer",
+          short_name: "Meditation Timer",
+          start_url: "/",
+          display: "standalone",
+          background_color: "#000000",
+          theme_color: "#000000",
+          screenshots: [
+            {
+              src: "/screenshot.png",
+              sizes: "321x643",
+              type: "image/png",
+              description: "Main meditation timer screen",
+            },
+            {
+              src: "/screenshot-wide.png",
+              sizes: "747x645",
+              type: "image/png",
+              form_factor: "wide",
+              description: "Main meditation timer screen",
+            },
+          ],
+          icons: [
+            {
+              src: "/android-chrome-192x192.png",
+              sizes: "192x192",
+              type: "image/png",
+            },
+            {
+              src: "/android-chrome-512x512.png",
+              sizes: "512x512",
+              type: "image/png",
+            },
+          ],
+        },
+      }),
+    ],
     server: {
       proxy: {
         "/api": {
