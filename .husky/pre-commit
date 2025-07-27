@@ -3,21 +3,14 @@
 # Define the JSON file to store the build version
 json_file="build.json"
 
-# Get the current date in YYYY-MM-DD format
-current_date=$(date +"%Y-%m-%d")
+# Get current date and time in YYYY-MM-DD HH:MM:SS format
+current_date=$(date +"%Y-%m-%d %H:%M:%S")
 
 # Check if the JSON file exists
 if [[ -f $json_file ]]; then
     # Extract the date and version from the JSON file
-    last_date=$(grep "date" $json_file | awk -F'"' '{print $4}')
     last_version=$(grep "version" $json_file | awk -F'[ :]' '{print $NF}' | tr -d ',')
-
-    # Increment the version if the date is the same; otherwise reset to 1
-    if [[ "$current_date" == "$last_date" ]]; then
-        new_version=$((last_version + 1))
-    else
-        new_version=1
-    fi
+    new_version=$((last_version + 1))
 else
     # Initialize with version 1 if the file doesn't exist
     new_version=1
