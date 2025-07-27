@@ -17,6 +17,9 @@ export const emailVerificationEvents = {
   },
   verificationFailed: {
     eventType: "verificationFailed",
+    payloadShape: {
+      error: ow.any,
+    },
   },
   loadStatusRequested: {
     eventType: "loadStatusRequested",
@@ -72,6 +75,9 @@ export const emailVerificationEvents = {
   },
   verificationLinkFailed: {
     eventType: "verificationLinkFailed",
+    payloadShape: {
+      error: ow.any,
+    },
     handler: (state) => ({
       ...state,
       loading: false,

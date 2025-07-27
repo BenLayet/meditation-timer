@@ -17,7 +17,7 @@ export const createLoadMeditationsEffects = ({ meditationService }, rootVM) => {
       );
     } catch (error) {
       console.error(error);
-      dispatchers.meditationHistoryFailed({ error }, false);
+      dispatchers.meditationHistoryFailed({ error });
     }
   };
 

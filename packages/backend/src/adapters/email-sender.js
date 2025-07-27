@@ -6,14 +6,15 @@ import {
 } from "domain/src/lib/assert/not-null.validator.js";
 
 export class MailgunEmailSender {
-  constructor({ apiKey, domain }, logger) {
+  constructor({ apiKey, domain, url }, logger) {
     validateNotNullObject({ logger });
     validateNotEmptyString({ domain });
     validateNotEmptyString({ apiKey });
+    validateNotEmptyString({ url });
     this.logger = logger;
     this.apiKey = apiKey;
     this.domain = domain;
-    this.logger.debug("MailgunEmailSender initialized");
+    this.url = url;
   }
   async sendEmail(mail) {
     this.logger.debug(mail, "Sending email");
@@ -21,6 +22,7 @@ export class MailgunEmailSender {
     const mg = mailgun.client({
       username: "api",
       key: this.apiKey,
+      url: this.url,
     });
     try {
       const result = await mg.messages.create(this.domain, mail);

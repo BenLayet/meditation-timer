@@ -4,9 +4,11 @@ export const emailSenderProviders = {
   //EMAIL SENDER
   mailGunApiKey: () => process.env["MAILGUN_API_KEY"],
   mailGunDomain: () => process.env["MAILGUN_DOMAIN"],
-  mailgunProperties: ({ mailGunApiKey, mailGunDomain }) => ({
+  mailGunUrl: () => process.env["MAILGUN_URL"],
+  mailgunProperties: ({ mailGunApiKey, mailGunDomain, mailGunUrl }) => ({
     apiKey: mailGunApiKey,
     domain: mailGunDomain,
+    url: mailGunUrl,
   }),
   emailSender: ({ mailgunProperties, logger }) =>
     mailgunProperties.apiKey === "mock"

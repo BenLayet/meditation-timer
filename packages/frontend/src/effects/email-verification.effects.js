@@ -27,7 +27,7 @@ export const createEmailVerificationEffects = (
     } catch (error) {
       console.warn(error);
       //this is expected when offline
-      dispatchers.verificationLinkFailed();
+      dispatchers.verificationLinkFailed({ error });
     }
   };
   let scheduledRefreshTimeoutId = null;
