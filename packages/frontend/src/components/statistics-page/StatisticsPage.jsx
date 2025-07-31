@@ -10,18 +10,23 @@ function StatisticsPage({ vm }) {
 
   const navigateToAccountClicked = () =>
     vm.dispatchers.navigationRequested({ page: "ACCOUNT" });
+
+  const canCreateAccount = vm.children.account.selectors.canCreateAccount();
   return (
     <>
+      <h1>{t("sessionCompleted")}</h1>
       <div className="flex-grow">
         <Statistics vm={vm.children.statistics} />
-        <p className="subtle">
+      </div>
+      {canCreateAccount && (
+        <p className="subtle mt-6">
           {t("createAccountToSecureStats_1")}{" "}
           <a href="#" onClick={navigateToAccountClicked}>
             {t("createAccountToSecureStats_2")}
           </a>{" "}
           {t("createAccountToSecureStats_3")}
         </p>
-      </div>
+      )}
       <div>
         <a href="#" onClick={goBackHomeClicked}>
           {t("continue")}

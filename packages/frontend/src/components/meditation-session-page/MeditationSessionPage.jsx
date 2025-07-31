@@ -1,4 +1,3 @@
-import "./MeditationSessionPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStop } from "@fortawesome/free-solid-svg-icons";
 import Preparation from "../preparation/Preparation.jsx";
@@ -16,7 +15,7 @@ function MeditationSessionPage({ vm }) {
   return (
     <>
       <InspiringImage />
-      <div className="stack-layout timer-zone flex-column">
+      <div className="stack-layout fs-1 flex-column">
         <div
           className={
             "stack-layout-tallest-child fade-in " +
@@ -26,7 +25,9 @@ function MeditationSessionPage({ vm }) {
           <Preparation vm={vm.children.preparation} />
         </div>
         <div
-          className={"fade-in  " + (meditationIsRunning ? "visible" : "hidden")}
+          className={
+            "fade-in fs-1 " + (meditationIsRunning ? "visible" : "hidden")
+          }
         >
           <Timer displayedTime={meditationRemainingTime} />
         </div>

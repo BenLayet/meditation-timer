@@ -11,6 +11,7 @@ li.statistics-item {
   margin-bottom: 1em;
   opacity: 0; /* Initially hidden */
   animation: fadeIn 1s ease forwards; /* 1s fade-in animation */
+  justify-content: center;
 }
 
 li.statistics-item::before {
