@@ -12,17 +12,17 @@ function Settings({ vm }) {
     <div className="flex-column flex-fill">
       <div className="settings-menu flex-fill">
         <div className="settings-menu-item">
-          <label className="settings-menu-item-label">{t("language")}</label>
-          <div className="settings-menu-item-content">
-            <LanguageSelection />
-          </div>
-        </div>
-        <div className="settings-menu-item">
           <label className="settings-menu-item-label">
             {t("meditationSettings")}
           </label>
           <div className="settings-menu-item-content">
             <MeditationSettings vm={vm.children.meditationSettings} />
+          </div>
+        </div>
+        <div className="settings-menu-item">
+          <label className="settings-menu-item-label">{t("language")}</label>
+          <div className="settings-menu-item-content">
+            <LanguageSelection />
           </div>
         </div>
       </div>

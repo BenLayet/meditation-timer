@@ -14,7 +14,17 @@ function NewMeditationPage({ vm }) {
   return (
     <div className="d-flex flex-column flex-fill w-100">
       <div className="opacity-75 flex-fill w-100 d-flex flex-column text-muted fs-5">
-        <InspiringImage caption="Suzuki Roshi*" />
+        <InspiringImage>
+          <figcaption className="text-muted fs-4">
+            {t("suzuki_roshi_meditating")}{" "}
+            <p className="fs-6  opacity-75">
+              {t("with_gratitude_to")}{" "}
+              <a target="_blank" href="https://kannondo.org">
+                kannondo.org
+              </a>
+            </p>
+          </figcaption>
+        </InspiringImage>
       </div>
       <div>
         <NewMeditation vm={vm} />
@@ -22,12 +32,6 @@ function NewMeditationPage({ vm }) {
       <button className="main-action mb-3" onClick={playClicked}>
         <FontAwesomeIcon icon={faPlay} />
       </button>
-      <div className="position-absolute bottom-0 text-muted fs-6 opacity-50">
-        * {t("with_gratitude_to")}{" "}
-        <a target="_blank" href="https://kannondo.org">
-          kannondo.org
-        </a>
-      </div>
     </div>
   );
 }

@@ -27,8 +27,8 @@ function MeditationSettings({ vm }) {
   return (
     <div className="settings-table gap-3 gap-sm-0">
       <div className="row setting">
-        <label className="col-sm-4">{t("duration")}</label>
-        <div className="col-sm-8 row">
+        <label className="col-sm-5">{t("duration")}</label>
+        <div className="col-sm-7 row">
           <div className="col-4 ">
             <PlusMinusControl
               minusClicked={meditationRemoveTimeClicked}
@@ -39,8 +39,8 @@ function MeditationSettings({ vm }) {
         </div>
       </div>
       <div className="row setting">
-        <label className="col-sm-4">{t("preparation")}</label>
-        <div className="col-sm-8 row">
+        <label className="col-sm-5">{t("preparation")}</label>
+        <div className="col-sm-7 row">
           <div className="col-4">
             <PlusMinusControl
               minusClicked={preparationRemoveTimeClicked}
@@ -51,8 +51,8 @@ function MeditationSettings({ vm }) {
         </div>
       </div>
       <div className="row setting">
-        <label className="col-sm-4">{t("gong")}</label>
-        <div className="col-sm-8 row">
+        <label className="col-sm-5">{t("gong")}</label>
+        <div className="col-sm-7 row">
           <div className="col-4 d-flex">
             <GongControl vm={vm} />
           </div>

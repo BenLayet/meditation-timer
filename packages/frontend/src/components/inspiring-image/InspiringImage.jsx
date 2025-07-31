@@ -1,7 +1,7 @@
 import "./InspiringImage.css";
 import { useEffect, useState } from "react";
 
-export const InspiringImage = ({ caption }) => {
+export const InspiringImage = ({ children }) => {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     setTimeout(() => setIsVisible(true));
@@ -15,7 +15,7 @@ export const InspiringImage = ({ caption }) => {
       }
     >
       <div className="inspiring-image w-100 flex-fill "> </div>
-      {caption && <figcaption>{caption}</figcaption>}
+      {children}
     </div>
   );
 };
