@@ -19,12 +19,6 @@ function Settings({ vm }) {
             <MeditationSettings vm={vm.children.meditationSettings} />
           </div>
         </div>
-        <div className="settings-menu-item">
-          <label className="settings-menu-item-label">{t("language")}</label>
-          <div className="settings-menu-item-content">
-            <LanguageSelection />
-          </div>
-        </div>
       </div>
       <div className="fs-6 text-muted opacity-25">
         build #{build.version} {build.date}

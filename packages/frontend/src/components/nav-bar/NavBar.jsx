@@ -1,11 +1,16 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { faGear, faHome, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGear,
+  faGlobe,
+  faHome,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LanguageSelection } from "../language-selection/LanguageSelection.jsx";
 
 export default ({ vm }) => {
-  const { t, i18n } = useTranslation();
   const page = vm.selectors.currentPage();
+
   const navItemClicked = (page) => () =>
     vm.dispatchers.navigationRequested({ page });
   return (
@@ -21,7 +26,22 @@ export default ({ vm }) => {
               <FontAwesomeIcon icon={faHome} />
             </a>
           </li>
-          <li className="nav-item ms-auto">
+
+          <li className="nav-item ms-auto dropdown">
+            <a
+              className={`nav-link dropdown-toggle `}
+              role="button"
+              data-bs-toggle="dropdown"
+            >
+              <FontAwesomeIcon icon={faGlobe} className="me-1" />
+            </a>
+            <div className={`dropdown-menu dropdown-menu-end `}>
+              <div className="px-3 py-2">
+                <LanguageSelection />
+              </div>
+            </div>
+          </li>
+          <li className="nav-item">
             <a
               className={`nav-link ` + (page === "ACCOUNT" && "active")}
               aria-current="page"
@@ -30,7 +50,7 @@ export default ({ vm }) => {
               <FontAwesomeIcon icon={faUser} />
             </a>
           </li>
-          <li className="nav-item ">
+          <li className="nav-item">
             <a
               className={`nav-link ` + (page === "SETTINGS" && "active")}
               aria-current="page"

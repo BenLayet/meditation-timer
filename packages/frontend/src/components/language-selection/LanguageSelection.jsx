@@ -7,7 +7,7 @@ export function LanguageSelection() {
   };
 
   return (
-    <div className="d-flex fs-5 gap-3">
+    <div className="d-flex flex-column fs-5 gap-3">
       <input
         type="radio"
         id="language-en"

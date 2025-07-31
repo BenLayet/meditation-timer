@@ -8,6 +8,7 @@ import { addDebugger } from "./lib/debug.functions.js";
 import { createEffects } from "./effects/effects.js";
 import { resolveEffectsDependencies } from "./main.dependencies.js";
 import "./config/i18n.js";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 //STATE MANAGER
 const stateManager = new StateManager(meditationTimerAppComponent);
