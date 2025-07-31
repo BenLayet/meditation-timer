@@ -3,7 +3,7 @@ import "./Statistics.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-export function Statistics({ vm }) {
+export function Statistics({ vm, animated = false }) {
   const { t } = useTranslation();
   //selectors
   const dailyStreak = vm.selectors.dailyStreak();
@@ -26,7 +26,7 @@ export function Statistics({ vm }) {
             {t("meditationCount", { count: meditationCount })}
           </li>
           {shouldTotalMinutesThisWeekBeDisplayed && (
-            <li className="statistics-item">
+            <li className={"statistics-item " + (animated && "animated")}>
               {t("hourCount", hourCount)}
               {t("minuteCount", minuteCount)}
               {t("thisWeek")}

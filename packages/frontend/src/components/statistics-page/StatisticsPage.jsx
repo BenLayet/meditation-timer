@@ -16,7 +16,7 @@ function StatisticsPage({ vm }) {
     <>
       <h1>{t("sessionCompleted")}</h1>
       <div className="flex-grow">
-        <Statistics vm={vm.children.statistics} />
+        <Statistics vm={vm.children.statistics} animated={true} />
       </div>
       {canCreateAccount && (
         <p className="subtle mt-6">

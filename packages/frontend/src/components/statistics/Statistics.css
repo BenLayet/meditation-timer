@@ -9,10 +9,14 @@ li.statistics-item {
   align-items: center;
   text-align: left;
   margin-bottom: 1em;
-  opacity: 0; /* Initially hidden */
-  animation: fadeIn 1s ease forwards; /* 1s fade-in animation */
   justify-content: center;
 }
+
+li.statistics-item.animated{
+  opacity: 0; /* Initially hidden */
+  animation: fadeIn 1s ease forwards; /* 1s fade-in animation */
+}
+
 
 li.statistics-item::before {
   content: "★"; /* Star emoji */
@@ -39,22 +43,22 @@ li.statistics-item::after {
 }
 
 /* Stagger the animation with delay */
-li:nth-child(1) {
+li.animated:nth-child(1) {
   animation-delay: 0s;
 }
 
-li:nth-child(2) {
+li.animated:nth-child(2) {
   animation-delay: 2s;
 }
 
-li:nth-child(3) {
+li.animated:nth-child(3) {
   animation-delay: 4s;
 }
 
-li:nth-child(4) {
+li.animated:nth-child(4) {
   animation-delay: 6s;
 }
 
-li:nth-child(5) {
+li.animated:nth-child(5) {
   animation-delay: 8s;
 }
