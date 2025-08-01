@@ -12,11 +12,10 @@ li.statistics-item {
   justify-content: center;
 }
 
-li.statistics-item.animated{
+li.statistics-item.animated {
   opacity: 0; /* Initially hidden */
   animation: fadeIn 1s ease forwards; /* 1s fade-in animation */
 }
-
 
 li.statistics-item::before {
   content: "★"; /* Star emoji */
