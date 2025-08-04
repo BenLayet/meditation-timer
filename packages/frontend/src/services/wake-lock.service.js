@@ -1,8 +1,4 @@
-class WakeLockService {
-  constructor() {
-    this.wakeLockSentinelPromise = null;
-  }
-
+export class WakeLockService {
   requestWakeLock = () => this._requestWakeLock().then();
   releaseWakeLock = () => this._releaseWakeLock().then();
 
@@ -19,5 +15,3 @@ class WakeLockService {
     }
   }
 }
-
-export const wakeLockService = new WakeLockService();

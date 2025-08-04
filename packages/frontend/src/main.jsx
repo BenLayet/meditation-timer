@@ -6,16 +6,17 @@ import { StateManager } from "domain/src/lib/state-manager/state-manager.js";
 import { meditationTimerAppComponent } from "domain/src/components/meditation-timer-app/meditation-timer-app.component.js";
 import { addDebugger } from "./lib/debug.functions.js";
 import { createEffects } from "./effects/effects.js";
-import { resolveEffectsDependencies } from "./main.dependencies.js";
 import "./config/i18n.js";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { resolveDependencies } from "domain/src/lib/config/resolveDependencies.js";
+import { mainProviders } from "./main.providers.js";
 
 //STATE MANAGER
 const stateManager = new StateManager(meditationTimerAppComponent);
 const rootVM = stateManager.getRootVM();
 
 //DEPENDENCIES
-const dependencies = await resolveEffectsDependencies();
+const dependencies = await resolveDependencies(mainProviders);
 
 //EFFECTS
 createEffects(rootVM, dependencies).forEach(stateManager.addEffect);
