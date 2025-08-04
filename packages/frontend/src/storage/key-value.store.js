@@ -10,7 +10,6 @@ export class KeyValueStore {
 
   set = (key, value) => {
     validateNotEmptyString({ key });
-    validateNotNullObject({ value });
     return async (transaction) => {
       const store = transaction.objectStore(this.storeName);
       await store.put(value, key);
