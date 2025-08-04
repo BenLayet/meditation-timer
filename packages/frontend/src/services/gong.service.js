@@ -1,16 +1,16 @@
-class GongService {
+export class GongService {
   constructor(audioFilePath) {
     this.audio = new Audio(audioFilePath);
   }
 
-  play = () => {
-    this.stop();
+  play = async () => {
+    await this.stop();
     this.audio.currentTime = 0;
-    this.audio.play().then();
+    await this.audio.play();
   };
 
-  stop = () => {
-    this.audio.pause();
+  stop = async () => {
+    await this.audio.pause();
     this.audio.currentTime = 0;
   };
 
@@ -21,5 +21,3 @@ class GongService {
     this.audio.volume = 1;
   };
 }
-
-export const gongService = new GongService("/bowl.ogg");

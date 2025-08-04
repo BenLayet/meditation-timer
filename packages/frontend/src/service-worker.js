@@ -1,6 +1,7 @@
-import { resolveServiceWorkerDependencies } from "./service-worker.dependencies.js";
 import { precacheAndRoute } from "workbox-precaching";
 import build from "../../../build.json";
+import { resolveDependencies } from "domain/src/lib/config/resolveDependencies.js";
+import { serviceWorkerProviders } from "./service-worker.providers.js";
 
 console.debug(`Service Worker Loaded. Build : ${JSON.stringify(build)}`);
 // Automatically precache all files referenced in __WB_MANIFEST
@@ -17,7 +18,7 @@ async function synchronizeEvents() {
   console.debug("synchronizeEvents called");
 
   const { accountService, eventSynchronizationService, indexedDb } =
-    await resolveServiceWorkerDependencies();
+    await resolveDependencies(serviceWorkerProviders);
   try {
     if (await accountService.isAuthenticated()) {
       await eventSynchronizationService.synchronizeEvents();

@@ -1,6 +1,6 @@
 import { currentTimeInSeconds } from "../lib/time.functions.js";
 
-class TickingService {
+export class TickingService {
   intervalIds = {};
   startTicking = (timerName, callback) => {
     if (this.intervalIds[timerName]) {
@@ -16,5 +16,3 @@ class TickingService {
     delete this.intervalIds[timerName];
   };
 }
-
-export const tickingService = new TickingService();

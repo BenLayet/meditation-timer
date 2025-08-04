@@ -1,8 +1,7 @@
 import { MeditationService } from "./services/meditation.service.js";
 import { CollectionStore } from "./storage/collection.store.js";
-import { wakeLockService } from "./services/wake-lock.service.js";
-import { gongService } from "./services/gong.service.js";
-import { tickingService } from "./services/ticking.service.js";
+import { WakeLockService } from "./services/wake-lock.service.js";
+import { GongService } from "./services/gong.service.js";
 import { createIndexedDb } from "./storage/indexed-db.js";
 import { meditationsIndexedDbSchema } from "./storage/meditations.indexed-db.schema.js";
 import {
@@ -18,8 +17,9 @@ import { EmailVerificationApi } from "./http-clients/email-verification.api.js";
 import { KeyValueStore } from "./storage/key-value.store.js";
 import { KeyValueStorageService } from "./services/key-value-storage.service.js";
 import { EmailVerificationService } from "./services/email-verification.service.js";
+import { TickingService } from "./services/ticking.service.js";
 
-export const providers = {
+export const mainProviders = {
   indexedDb: async ({ schema = meditationsIndexedDbSchema }) =>
     createIndexedDb(schema),
   transactionService: ({ indexedDb }) => new TransactionService(indexedDb),
@@ -37,23 +37,29 @@ export const providers = {
     transactionService,
     pendingEventStore,
     eventProcessor,
-    synchronizationTaskService,
   }) =>
     new PendingEventService(
       transactionService,
       pendingEventStore,
       eventProcessor,
-      synchronizationTaskService,
     ),
-  meditationService: ({ indexedDb, meditationStore }) =>
-    new MeditationService(indexedDb, meditationStore),
+  meditationService: ({
+    transactionService,
+    pendingEventService,
+    meditationStore,
+  }) =>
+    new MeditationService(
+      transactionService,
+      pendingEventService,
+      meditationStore,
+    ),
   emailVerificationApi: () => new EmailVerificationApi(),
   emailVerificationService: async ({
     keyValueStorageService,
     emailVerificationApi,
   }) =>
     new EmailVerificationService(keyValueStorageService, emailVerificationApi),
-  wakeLockService: () => wakeLockService,
-  gongService: () => gongService,
-  tickingService: () => tickingService,
+  wakeLockService: () => new WakeLockService(),
+  gongService: () => new GongService("/bowl.ogg"),
+  tickingService: () => new TickingService(),
 };
