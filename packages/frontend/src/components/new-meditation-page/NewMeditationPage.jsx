@@ -18,7 +18,7 @@ function NewMeditationPage({ vm }) {
           <figcaption className="text-muted fs-4">
             {t("suzuki_roshi_meditating")}{" "}
             <p className="fs-6  opacity-75">
-              {t("with_gratitude_to")}{" "}
+              {t("source")}{" "}
               <a target="_blank" href="https://kannondo.org">
                 kannondo.org
               </a>
