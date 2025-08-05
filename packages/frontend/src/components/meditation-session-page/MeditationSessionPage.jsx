@@ -32,7 +32,7 @@ function MeditationSessionPage({ vm }) {
           <Timer displayedTime={meditationRemainingTime} />
         </div>
       </div>
-      <button className="main-action" onClick={stopClicked}>
+      <button className="mt-btn main-action" onClick={stopClicked}>
         <FontAwesomeIcon icon={faStop} />
       </button>
     </>

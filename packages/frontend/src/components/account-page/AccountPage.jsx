@@ -4,8 +4,8 @@ import { Account } from "../account/Account.jsx";
 export const AccountPage = ({ vm }) => {
   const { t } = useTranslation();
   return (
-    <div className="d-flex flex-fill flex-column ">
-      <div className="flex-grow flex-column justify-content-start">
+    <div className="d-flex flex-column ">
+      <div className="flex-column">
         <h1>{t("statistics")}</h1>
         <Statistics vm={vm.children.statistics} />
       </div>

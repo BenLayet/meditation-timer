@@ -1,80 +1,96 @@
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserLock,
-  faUnlock,
-  faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
-import "./Account.css";
-import EmailVerification from "../email-verification/EmailVerification";
+import { faSpinner, faUnlock } from "@fortawesome/free-solid-svg-icons";
+import { CreateAccountForm } from "../create-account-form/CreateAccountForm.jsx";
+import { LoginForm } from "../login-form/LoginForm.jsx";
 
 export const Account = ({ vm }) => {
   const { t, i18n } = useTranslation();
   const isLoading = vm.selectors.isLoading();
-  const canCreateAccount = vm.selectors.canCreateAccount();
-  const isPendingVerification = vm.selectors.isPendingVerification();
-  const email = vm.selectors.email();
-  const isEmailVisible = vm.selectors.isEmailVisible();
+  const isConnectionRequired = vm.selectors.isConnectionRequired();
+  const isAuthenticationPossible = vm.selectors.isAuthenticationPossible();
+  const isCreateAccountFormVisible = vm.selectors.isCreateAccountFormVisible();
+  const isLoginFormVisible = vm.selectors.isLoginFormVisible();
+  const isPseudoVisible = vm.selectors.isPseudoVisible();
+  const login = vm.selectors.login();
   const canDisconnect = vm.selectors.canDisconnect();
-  const createAccountRequested = (e) => {
-    e.preventDefault();
-    vm.dispatchers.createAccountRequested({
-      email: e.target.elements.email.value,
-    });
-  };
-  const disconnectRequested = vm.dispatchers.disconnectRequested;
 
   return (
     <>
       {isLoading && <FontAwesomeIcon icon={faSpinner} spin />}
-      {canCreateAccount && (
+      {isConnectionRequired && (
+        <p className="text-muted opacity-75 fs-5">{t("connectionRequired")}</p>
+      )}
+      {isAuthenticationPossible && (
         <div className="flex-column breathing-space">
-          <div className="form-explanation">
-            <p>{t("createAccountFor")}</p>
-            <ul>
-              <li>{t("secureStats")}</li>
-              <li>{t("useMultipleDevices")}</li>
-            </ul>
+          {isCreateAccountFormVisible && (
+            <>
+              <CreateAccountForm vm={vm.children.createAccountForm} />
+              <p className="text-info-subtle fs-6 m-0">
+                {t("alreadyHaveAccount")}{" "}
+                <a
+                  onClick={vm.dispatchers.loginFormRequested}
+                  className="clickable"
+                >
+                  {t("thenLogin")}
+                </a>
+              </p>
+              <div className="fs-5">
+                <p>{t("createAccountFor")}</p>
+                <ul className="align-items-start d-flex flex-column">
+                  <li>{t("secureStats")}</li>
+                  <li>{t("useMultipleDevices")}</li>
+                </ul>
+              </div>
+              <p className="fs-5 m-0">
+                {t("agreement")}{" "}
+                <a
+                  target="_blank"
+                  href={`privacy-policy.${i18n.language}.html`}
+                >
+                  {t("privacyPolicy")}
+                </a>
+              </p>
+            </>
+          )}
+          {isLoginFormVisible && (
+            <>
+              <LoginForm vm={vm.children.loginForm} />
+
+              <p className="text-info-subtle fs-6 m-0">
+                {t("noAccountYet")}{" "}
+                <a
+                  onClick={vm.dispatchers.createAccountFormRequested}
+                  className="clickable"
+                >
+                  {t("thenCreateOne")}
+                </a>
+              </p>
+            </>
+          )}
+        </div>
+      )}
+      {isPseudoVisible && (
+        <>
+          <div className="flex-column breathing-space">
+            <div>{login}</div>
+            {canDisconnect && (
+              <button
+                onClick={disconnectRequested}
+                className="icon-button fs-5 opacity-75"
+              >
+                <FontAwesomeIcon icon={faUnlock} />
+                {t("disconnect")}
+              </button>
+            )}
           </div>
-          <form onSubmit={createAccountRequested} className="compact">
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder={t("emailPlaceholder")}
-              required
-              className="form-input"
-            />
-            <button type="submit" className="icon-button">
-              <FontAwesomeIcon icon={faUserLock} />
-              {t("createAccount")}
-            </button>
-          </form>
-          <p className="subtle">{t("agreement")}</p>
-        </div>
+          <p className="text-muted fs-5 opacity-50 mb-0">
+            <a target="_blank" href={`privacy-policy.${i18n.language}.html`}>
+              {t("privacyPolicy")}
+            </a>
+          </p>
+        </>
       )}
-      {isEmailVisible && (
-        <div className="flex-column breathing-space">
-          <div>{email}</div>
-          {isPendingVerification && (
-            <EmailVerification vm={vm.children.emailVerification} />
-          )}
-          {canDisconnect && (
-            <button
-              onClick={disconnectRequested}
-              className="icon-button fs-5 opacity-75"
-            >
-              <FontAwesomeIcon icon={faUnlock} />
-              {t("disconnect")}
-            </button>
-          )}
-        </div>
-      )}
-      <p className="text-muted fs-5 opacity-50 mb-0">
-        <a target="_blank" href={`privacy-policy.${i18n.language}.html`}>
-          {t("privacyPolicy")}
-        </a>
-      </p>
     </>
   );
 };

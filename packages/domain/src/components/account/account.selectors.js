@@ -3,29 +3,34 @@ import { map } from "../../lib/functions/object.functions.js";
 import { accountStatus } from "../../models/account.model.js";
 import { and, not } from "../../lib/functions/predicate.functions.js";
 
-const email = (accountState) => accountState.email;
-const isPendingVerification = (accountState) =>
-  accountState.status === accountStatus.PENDING_VERIFICATION;
-const canAccountCreationBeCancelled = isPendingVerification;
+const login = (accountState) => accountState.login;
 const isAnonymous = (accountState) =>
   accountState.status === accountStatus.ANONYMOUS;
 const isAuthenticated = (accountState) =>
   accountState.status === accountStatus.AUTHENTICATED;
 const isLoading = (accountState) => accountState.loading;
-const canCreateAccount = and(not(isLoading), isAnonymous);
+const isOnline = (accountState) => accountState.isOnline;
+const isAuthenticationPossible = and(not(isLoading), isAnonymous, isOnline);
+const isLoginFormRequested = (accountState) => accountState.loginFormRequested;
+const isCreateAccountFormVisible = and(
+  isAuthenticationPossible,
+  not(isLoginFormRequested),
+);
+const isLoginFormVisible = and(isAuthenticationPossible, isLoginFormRequested);
 const canDisconnect = isAuthenticated;
-const isEmailVisible = and(not(isAnonymous), not(isLoading));
-
+const isPseudoVisible = and(not(isAnonymous), not(isLoading));
+const isConnectionRequired = and(not(isLoading), isAnonymous, not(isOnline));
 export const ownStateSelectors = {
-  isAnonymous,
-  isPendingVerification,
-  isAuthenticated,
-  email,
   isLoading,
-  canAccountCreationBeCancelled,
-  canCreateAccount,
+  isAnonymous,
+  isConnectionRequired,
+  isAuthenticationPossible,
+  isLoginFormVisible,
+  isCreateAccountFormVisible,
+  isAuthenticated,
+  isPseudoVisible,
+  login,
   canDisconnect,
-  isEmailVisible,
 };
 
 const ownState = (compositeState) => compositeState.ownState;

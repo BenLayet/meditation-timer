@@ -5,7 +5,6 @@ import { meditationTimerAppEvents } from "./meditation-timer-app.events.js";
 import { preparationEvents } from "../preparation/preparation.events.js";
 import { meditationTimerAppSelectors } from "./meditation-timer-app.selectors.js";
 import { accountEvents } from "../account/account.events.js";
-import { emailVerificationEvents } from "../email-verification/email-verification.events.js";
 import { newMeditationEvents } from "../new-meditation/new-meditation.events.js";
 import { meditationSettingsEvents } from "../meditation-settings/meditation-settings.events.js";
 
@@ -123,11 +122,16 @@ export const meditationTimerAppChainedEvents = [
     },
   },
   {
-    onEvent: meditationTimerAppEvents.onlineDetected,
+    onEvent: meditationTimerAppEvents.onlineStatusChanged,
     thenDispatch: {
-      ...emailVerificationEvents.verificationAvailableDetected,
-      childComponentPath: ["account", "emailVerification"],
+      ...accountEvents.onlineStatusChanged,
+      childComponentPath: ["account"],
     },
+  },
+  {
+    onEvent: meditationTimerAppEvents.onlineStatusChanged,
+    onCondition: ({ previousPayload }) => previousPayload.isOnline,
+    thenDispatch: meditationTimerAppEvents.onlineDetected,
   },
   {
     onEvent: {

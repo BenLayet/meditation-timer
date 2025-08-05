@@ -11,15 +11,10 @@ import {
 } from "./storage/store-names.constants.js";
 import { EventProcessor } from "./services/event-processor.service.js";
 import { TransactionService } from "./storage/transaction.service.js";
-import { PendingEventService } from "./services/pending-event.service.js";
-import { SynchronizationTaskService } from "./services/synchronization-task.service.js";
-import { EmailVerificationApi } from "./http-clients/email-verification.api.js";
 import { KeyValueStore } from "./storage/key-value.store.js";
 import { KeyValueStorageService } from "./services/key-value-storage.service.js";
-import { EmailVerificationService } from "./services/email-verification.service.js";
-import { TickingService } from "./services/ticking.service.js";
 import { EventApi } from "./http-clients/event.api.js";
-import { AccountService } from "./services/account.service.js";
+import { LocalAccountService } from "./services/local-account.service.js";
 import { EventSynchronizationService } from "./services/event-synchronization.service.js";
 
 export const serviceWorkerProviders = {
@@ -37,7 +32,7 @@ export const serviceWorkerProviders = {
     new CollectionStore(storeName),
   eventProcessor: ({ meditationStore }) => new EventProcessor(meditationStore),
   accountService: ({ keyValueStorageService }) =>
-    new AccountService(keyValueStorageService),
+    new LocalAccountService(keyValueStorageService),
   eventSynchronizationService: ({
     transactionService,
     pendingEventStore,

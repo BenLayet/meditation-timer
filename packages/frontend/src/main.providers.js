@@ -13,10 +13,8 @@ import { EventProcessor } from "./services/event-processor.service.js";
 import { TransactionService } from "./storage/transaction.service.js";
 import { PendingEventService } from "./services/pending-event.service.js";
 import { SynchronizationTaskService } from "./services/synchronization-task.service.js";
-import { EmailVerificationApi } from "./http-clients/email-verification.api.js";
 import { KeyValueStore } from "./storage/key-value.store.js";
 import { KeyValueStorageService } from "./services/key-value-storage.service.js";
-import { EmailVerificationService } from "./services/email-verification.service.js";
 import { TickingService } from "./services/ticking.service.js";
 
 export const mainProviders = {
@@ -53,12 +51,6 @@ export const mainProviders = {
       pendingEventService,
       meditationStore,
     ),
-  emailVerificationApi: () => new EmailVerificationApi(),
-  emailVerificationService: async ({
-    keyValueStorageService,
-    emailVerificationApi,
-  }) =>
-    new EmailVerificationService(keyValueStorageService, emailVerificationApi),
   wakeLockService: () => new WakeLockService(),
   gongService: () => new GongService("/bowl.ogg"),
   tickingService: () => new TickingService(),

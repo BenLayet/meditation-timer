@@ -36,6 +36,7 @@ export const validateNotEmptyString = (holder, context = null) => {
     );
   }
   if (value.trim() === "") {
+    if (context) console.error(context);
     throw new Error(
       `Value of ${key} should be a non empty string, but was: '${value}'`,
     );

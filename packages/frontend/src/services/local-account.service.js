@@ -6,7 +6,7 @@ import {
 } from "domain/src/lib/assert/not-null.validator.js";
 import { accountStatus as statusCodes } from "domain/src/models/account.model.js";
 
-export class AccountService {
+export class LocalAccountService {
   constructor(keyValueStorageService) {
     this.keyValueStorageService = keyValueStorageService;
   }
