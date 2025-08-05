@@ -1,50 +1,23 @@
 import ow from "ow";
-import { accountStatus } from "../../models/account.model.js";
-import { emailRegex } from "../../models/email.validator.js";
+import { accountStatus, loginRegex } from "../../models/account.model.js";
 
 export const accountEvents = {
-  createAccountRequested: {
-    eventType: "createAccountRequested",
-    payloadShape: {
-      email: ow.string.email,
-    },
-    handler: (state, { email }) => ({
-      ...state,
-      email,
-      loading: true,
-    }),
-    isNewCycle: true,
-  },
-  accountCreated: {
-    eventType: "accountCreated",
-    payloadShape: {
-      email: ow.string.matches(emailRegex),
-    },
-    handler: (state) => ({
-      ...state,
-      loading: false,
-      status: accountStatus.PENDING_VERIFICATION,
-    }),
+  onlineStatusChanged: {
+    eventType: "onlineStatusChanged",
+    payloadShape: { isOnline: ow.boolean },
+    handler: (state, { isOnline }) => ({ ...state, isOnline }),
   },
   accountAuthenticated: {
     eventType: "accountAuthenticated",
     payloadShape: {
       userToken: ow.string,
     },
-    handler: (state) => ({
+    handler: (state, { login }) => ({
       ...state,
       loading: false,
       status: accountStatus.AUTHENTICATED,
+      login,
     }),
-  },
-  createAccountCancelled: {
-    eventType: "createAccountCancelled",
-    handler: (state) => ({
-      ...state,
-      status: accountStatus.ANONYMOUS,
-      email: null,
-    }),
-    isNewCycle: true,
   },
   loadAccountRequested: {
     eventType: "loadAccountRequested",
@@ -57,7 +30,7 @@ export const accountEvents = {
     eventType: "accountLoaded",
     payloadShape: {
       account: ow.optional.object.exactShape({
-        email: ow.string.matches(emailRegex),
+        login: ow.string.matches(loginRegex),
         status: ow.string.oneOf(Object.values(accountStatus)),
         userToken: ow.optional.string,
       }),
@@ -65,7 +38,7 @@ export const accountEvents = {
     handler: (state, { account }) => ({
       ...state,
       loading: false,
-      email: account?.email,
+      login: account?.login,
       status: account?.status ?? accountStatus.ANONYMOUS,
     }),
   },
@@ -84,5 +57,21 @@ export const accountEvents = {
       status: accountStatus.ANONYMOUS,
       email: null,
     }),
+  },
+  loginFormRequested: {
+    eventType: "loginFormRequested",
+    handler: (state) => ({
+      ...state,
+      loginFormRequested: true,
+    }),
+    isNewCycle: true,
+  },
+  createAccountFormRequested: {
+    eventType: "createAccountFormRequested",
+    handler: (state) => ({
+      ...state,
+      loginFormRequested: false,
+    }),
+    isNewCycle: true,
   },
 };

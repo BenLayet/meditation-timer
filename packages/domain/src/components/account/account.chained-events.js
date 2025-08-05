@@ -1,36 +1,20 @@
-import { emailVerificationEvents } from "../email-verification/email-verification.events.js";
 import { accountEvents } from "./account.events.js";
-import { accountStatus } from "../../models/account.model.js";
+import { loginFormEvents } from "../login-form/login-form.events.js";
+import { createAccountFormEvents } from "../create-account-form/create-account-form.events.js";
 
 export const accountChainedEvents = [
   {
-    onEvent: accountEvents.accountCreated,
-    thenDispatch: {
-      ...emailVerificationEvents.verificationRequested,
-      childComponentPath: ["emailVerification"],
-    },
-  },
-  {
-    onEvent: accountEvents.accountLoaded,
-    onCondition: ({ state }) =>
-      state.ownState.status === accountStatus.PENDING_VERIFICATION,
-    thenDispatch: {
-      ...emailVerificationEvents.loadStatusRequested,
-      childComponentPath: ["emailVerification"],
-    },
-  },
-  {
     onEvent: {
-      ...emailVerificationEvents.verificationSucceeded,
-      childComponentPath: ["emailVerification"],
+      ...createAccountFormEvents.createAccountSucceeded,
+      childComponentPath: ["createAccountForm"],
     },
     thenDispatch: accountEvents.accountAuthenticated,
   },
   {
     onEvent: {
-      ...emailVerificationEvents.resetRequested,
-      childComponentPath: ["emailVerification"],
+      ...loginFormEvents.loginSucceeded,
+      childComponentPath: ["loginForm"],
     },
-    thenDispatch: accountEvents.disconnectRequested,
+    thenDispatch: accountEvents.accountAuthenticated,
   },
 ];

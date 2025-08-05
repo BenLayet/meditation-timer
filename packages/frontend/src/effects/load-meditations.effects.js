@@ -1,7 +1,7 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
 import { statisticsEvents } from "domain/src/components/statistics/statistics.events.js";
 
-export const createLoadMeditationsEffects = ({ meditationService }, rootVM) => {
+export const loadMeditationsEffects = ({ meditationService }, rootVM) => {
   const loadMeditations = async () => {
     // Statistics dispatchers
     const dispatchers = rootVM.children.statistics.dispatchers;

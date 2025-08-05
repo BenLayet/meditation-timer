@@ -2,7 +2,7 @@ import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
 import { meditationSettingsEvents } from "domain/src/components/meditation-settings/meditation-settings.events.js";
 import { meditationTimerAppEvents } from "domain/src/components/meditation-timer-app/meditation-timer-app.events.js";
 
-export const createMeditationSettingsEffects = (
+export const meditationSettingsEffects = (
   { keyValueStorageService },
   rootVM,
 ) => {

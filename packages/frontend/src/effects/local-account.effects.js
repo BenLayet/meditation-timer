@@ -2,18 +2,8 @@ import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
 import { accountEvents } from "domain/src/components/account/account.events.js";
 import { accountStatus } from "domain/src/models/account.model.js";
 
-export const createAccountEffects = ({ keyValueStorageService }, rootVM) => {
+export const localAccountEffects = ({ keyValueStorageService }, rootVM) => {
   const dispatchers = rootVM.children.account.dispatchers;
-
-  //createAccountRequested
-  const createAccountRequested = async ({ email }) => {
-    await keyValueStorageService.set("account", {
-      email,
-      status: accountStatus.PENDING_VERIFICATION,
-    });
-    dispatchers.accountCreated({ email });
-  };
-
   //loadAccountRequested
   const loadAccountRequested = async () => {
     const account = await keyValueStorageService.get("account");
@@ -39,10 +29,6 @@ export const createAccountEffects = ({ keyValueStorageService }, rootVM) => {
   };
 
   return [
-    createEffect({
-      afterEvent: accountEvents.createAccountRequested,
-      then: createAccountRequested,
-    }),
     createEffect({
       afterEvent: accountEvents.loadAccountRequested,
       then: loadAccountRequested,

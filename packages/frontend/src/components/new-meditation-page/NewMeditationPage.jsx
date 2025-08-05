@@ -29,7 +29,7 @@ function NewMeditationPage({ vm }) {
       <div>
         <NewMeditation vm={vm} />
       </div>
-      <button className="main-action mb-3" onClick={playClicked}>
+      <button className="mt-btn mb-3 px-5" onClick={playClicked}>
         <FontAwesomeIcon icon={faPlay} />
       </button>
     </div>

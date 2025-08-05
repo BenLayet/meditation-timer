@@ -1,5 +1,5 @@
 /* ALL BUTTONS */
-button {
+.mt-btn {
   justify-content: center;
   box-sizing: border-box;
   padding: 0.2em;
@@ -15,11 +15,11 @@ button {
   pointer-events: none;
   opacity: 0.5;
 }
-button:hover {
+.mt-btn:hover {
   border-color: var(--primary-color);
 }
 /* MAIN ACTION BUTTON */
-button.main-action {
+.mt-btn.main-action {
   border-color: var(--primary-color);
   min-width: 6em;
   font-size: 1.2em;

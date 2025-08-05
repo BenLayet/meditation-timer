@@ -9,7 +9,9 @@ const states = [];
 const events = [];
 const trackStateAndEvent = (event, state) => {
   states.unshift(state);
-  events.unshift(event);
+  const e = { ...event, stateAfterEvent: flattenState(state) };
+  console.log(e);
+  events.unshift(e);
   states.splice(trackSize);
   events.splice(trackSize);
 };
@@ -101,3 +103,22 @@ export const removeDebugger = (stateManager) => () => {
   stateManager.removeEventListener(forceStateEffect);
   delete window.sm;
 };
+function flattenState(obj, parentKey = "root") {
+  const result = {};
+
+  // If the object has ownState, keep it as is under the current path
+  if (obj.ownState) {
+    result[parentKey] = obj.ownState;
+  }
+
+  // Recursively process children
+  if (obj.children) {
+    Object.entries(obj.children).forEach(([key, value]) => {
+      const childKey = `${parentKey}.${key}`;
+      const flattened = flattenState(value, childKey);
+      Object.assign(result, flattened);
+    });
+  }
+
+  return result;
+}
