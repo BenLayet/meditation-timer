@@ -1,7 +1,7 @@
 import { flow, isEmpty } from "lodash-es";
 import { map } from "../../lib/functions/object.functions.js";
 import { and, or } from "../../lib/functions/predicate.functions.js";
-import { loginFormErrorCode } from "../../models/account.model.js";
+import { loginErrorCode } from "../../models/account.model.js";
 
 const isLoading = (state) => state.loading;
 const loginInputValue = (state) => (state.loginInputValue ?? "").trim();
@@ -11,11 +11,11 @@ const containsErrorCode = (errorCode) => (errorCodes) =>
   errorCodes.includes(errorCode);
 const hasLoginNotFoundError = flow(
   errorCodes,
-  containsErrorCode(loginFormErrorCode.LOGIN_NOT_FOUND),
+  containsErrorCode(loginErrorCode.LOGIN_NOT_FOUND),
 );
 const hasLoginFormatError = flow(
   errorCodes,
-  containsErrorCode(loginFormErrorCode.INVALID_LOGIN_FORMAT),
+  containsErrorCode(loginErrorCode.INVALID_LOGIN_FORMAT),
 );
 const hasAnyLoginInputError = or(
   hasLoginNotFoundError,

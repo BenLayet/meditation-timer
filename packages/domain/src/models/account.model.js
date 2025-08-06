@@ -2,13 +2,13 @@ export const accountStatus = {
   AUTHENTICATED: "AUTHENTICATED",
   ANONYMOUS: "ANONYMOUS",
 };
-export const createAccountFormErrorCode = {
+export const createAccountErrorCode = {
   LOGIN_MISSING: "LOGIN_MISSING",
   LOGIN_ALREADY_EXISTS: "LOGIN_ALREADY_EXISTS",
   INVALID_LOGIN_FORMAT: "INVALID_LOGIN_FORMAT",
   UNKNOWN_ERROR: "UNKNOWN_ERROR",
 };
-export const loginFormErrorCode = {
+export const loginErrorCode = {
   LOGIN_MISSING: "LOGIN_MISSING",
   INVALID_LOGIN_FORMAT: "INVALID_LOGIN_FORMAT",
   LOGIN_NOT_FOUND: "LOGIN_NOT_FOUND",
@@ -32,8 +32,8 @@ export const isValidLoginFormat = (login) => loginRegex.test(login);
 
 export const getErrorCodes = (login) =>
   !login
-    ? [loginFormErrorCode.LOGIN_MISSING]
+    ? [loginErrorCode.LOGIN_MISSING]
     : !isValidLoginFormat(login)
-      ? [loginFormErrorCode.INVALID_LOGIN_FORMAT]
+      ? [loginErrorCode.INVALID_LOGIN_FORMAT]
       : [];
 export const hasError = (login) => getErrorCodes(login).length > 0;

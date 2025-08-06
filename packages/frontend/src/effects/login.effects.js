@@ -1,5 +1,5 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { loginFormErrorCode } from "domain/src/models/account.model.js";
+import { loginErrorCode } from "domain/src/models/account.model.js";
 import { loginFormEvents } from "domain/src/components/login-form/login-form.events.js";
 
 export const loginEffects = ({ accountApi }, rootVM) => {
@@ -17,7 +17,7 @@ export const loginEffects = ({ accountApi }, rootVM) => {
       console.error(error);
       dispatchers.loginFailed({
         error,
-        errorCodes: [loginFormErrorCode.UNKNOWN_ERROR],
+        errorCodes: [loginErrorCode.UNKNOWN_ERROR],
       });
     }
   };
