@@ -12,13 +12,6 @@ export class JwtTokenService {
     this.jwtSecret = jwtSecret;
     this.logger = logger;
   }
-
-  createShortLivedToken(payload) {
-    validateNotNullObject({ payload });
-    this.logger.debug(`createShortLivedToken ${JSON.stringify(payload)}`);
-    return jwt.sign(payload, this.jwtSecret, { expiresIn: "1h" });
-  }
-
   createPermanentToken(payload) {
     validateNotNullObject({ payload });
     this.logger.debug(`createPermanentToken ${JSON.stringify(payload)}`);

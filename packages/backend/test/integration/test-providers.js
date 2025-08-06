@@ -4,9 +4,7 @@ import { endpointHandlerProviders } from "../../src/config/endpoint-handler.prov
 import { testDatasourceProviders } from "./pgmem.datasource.js";
 import { environmentProviders } from "../../src/config/environment.providers.js";
 import { apiPropertiesProviders } from "../../src/config/api-properties.providers.js";
-import { messageBuilderProviders } from "../../src/config/message-builder.providers.js";
 import { cleanUpTaskProviders } from "../../src/config/clean-up-task.providers.js";
-import { mailContextProviders } from "../../src/config/mail-context.providers.js";
 import { routeProviders } from "../../src/config/route.providers.js";
 
 export const fakeUuidGenerator = {
@@ -15,13 +13,6 @@ export const fakeUuidGenerator = {
 };
 
 export const fakeTokenService = {
-  createShortLivedToken: (payload) =>
-    btoa(
-      JSON.stringify({
-        life: "short",
-        payload,
-      }),
-    ),
   createPermanentToken: (payload) =>
     btoa(
       JSON.stringify({
@@ -36,17 +27,9 @@ export const fakeTokenService = {
   },
 };
 
-export const fakeEmailSender = {
-  sendEmail: (mail) => {
-    fakeEmailSender.lastMail = mail;
-    console.log(mail);
-  },
-};
-
 const testServiceProviders = { ...repositoryProviders };
 testServiceProviders.uuidGenerator = () => fakeUuidGenerator;
 testServiceProviders.tokenService = () => fakeTokenService;
-testServiceProviders.emailSender = () => fakeEmailSender;
 
 export const testProviders = {
   ...environmentProviders,
@@ -54,11 +37,8 @@ export const testProviders = {
   ...testDatasourceProviders,
   ...apiPropertiesProviders,
   ...routeProviders,
-  ...mailContextProviders,
   uuidGenerator: () => fakeUuidGenerator,
   tokenService: () => fakeTokenService,
-  emailSender: () => fakeEmailSender,
-  ...messageBuilderProviders,
   ...repositoryProviders,
   ...usecaseProviders,
   ...endpointHandlerProviders,
