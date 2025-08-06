@@ -12,10 +12,15 @@ function NewMeditationPage({ vm }) {
       currentTimeInSeconds: currentTimeInSeconds(),
     });
   return (
-    <div className="d-flex flex-column flex-fill w-100">
-      <div className="opacity-75 flex-fill w-100 d-flex flex-column text-muted fs-5">
+    <div className="d-flex flex-column flex-fill align-items-center">
+      <div
+        className="
+          flex-fill align-self-stretch
+          d-flex flex-column align-items-stretch
+          text-muted opacity-75"
+      >
         <InspiringImage>
-          <figcaption className="text-muted fs-4">
+          <figcaption className="text-muted fs-5 text-center">
             {t("suzuki_roshi_meditating")}{" "}
             <p className="fs-6  opacity-75">
               {t("source")}{" "}
@@ -26,9 +31,7 @@ function NewMeditationPage({ vm }) {
           </figcaption>
         </InspiringImage>
       </div>
-      <div>
-        <NewMeditation vm={vm} />
-      </div>
+      <NewMeditation vm={vm} />
       <button className="mt-btn mb-3 px-5" onClick={playClicked}>
         <FontAwesomeIcon icon={faPlay} />
       </button>

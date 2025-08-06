@@ -1,6 +1,7 @@
 export const loginFormInitialState = {
   loading: false,
-  isValidationRequested: false,
   loginInputValue: "",
   errorCodes: [],
+  isValidationRequested: false,
+  hasLoginInputChanged: false,
 };

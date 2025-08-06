@@ -1,24 +1,6 @@
-.flex-grow {
-  flex-grow: 1;
-  align-self: stretch;
-}
-.flex-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-}
-.flex-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.breathing-space {
-  gap: 1em;
-}
 
-.justify-end {
-  justify-content: flex-end;
+.h-100 {
+  height: 100dvh; /* Override for modern browsers */
 }
 
 .stack-layout {

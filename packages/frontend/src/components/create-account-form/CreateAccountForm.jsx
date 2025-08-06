@@ -35,10 +35,10 @@ export const CreateAccountForm = ({ vm }) => {
         placeholder={t("newLoginPlaceholder")}
         onChange={loginInputChanged}
         minLength="3"
-        pattern="[a-zA-Z0-9]+"
+        pattern="/^\S{3,}$/"
         required
         className={`form-control ${isLoginInputMarkedAsError ? "is-invalid" : ""}`}
-        onBlur={vm.dispatchers.validationRequested}
+        onBlur={vm.dispatchers.loginInputCompleted}
         disabled={isLoginInputDisabled}
       />
       <button
@@ -50,7 +50,7 @@ export const CreateAccountForm = ({ vm }) => {
         &nbsp;{t("createAccount")}
       </button>
       {areErrorsVisible && (
-        <ul className="form-error fs-5 mb-0 text-danger-emphasis">
+        <ul className="form-error fs-6 mb-0 text-danger-emphasis">
           {hasLoginFormatError && <li>{t("loginFormatError")}</li>}
           {hasLoginAlreadyExistsError && <li>{t("loginAlreadyExists")}</li>}
         </ul>

@@ -14,11 +14,11 @@ export default ({ vm }) => {
   return (
     <>
       {!FULL_SCREEN_PAGES.includes(page) && (
-        <div className="app-header">
+        <div className="d-flex justify-content-end fs-4">
           <NavBar vm={vm} />
         </div>
       )}
-      <div className="app-body ">
+      <div className="d-flex flex-column flex-fill align-items-stretch fs-2 p-2">
         {page === "HOME" && (
           <NewMeditationPage vm={vm.children.newMeditation} />
         )}

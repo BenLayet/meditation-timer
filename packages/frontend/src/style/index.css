@@ -11,3 +11,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
+@media (max-width: 768px) and (display-mode: browser) {
+  /* Styles for devices with a screen width of 768px or less (common for mobile), not in PWA mode */
+  body {
+    padding-bottom: 40px; /* space for browser toolbar */
+  }
+}

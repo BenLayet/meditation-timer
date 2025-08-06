@@ -1,5 +1,6 @@
 import ow from "ow";
-import { getErrorCodes } from "../../models/account.model.js";
+import { getErrorCodes, hasError } from "../../models/account.model.js";
+import { loginFormInitialState } from "./login-form.state.js";
 
 export const loginFormEvents = {
   formSubmitted: {
@@ -36,9 +37,15 @@ export const loginFormEvents = {
     handler: (state, { loginInputValue }) => ({
       ...state,
       loginInputValue,
-      isValidationRequested: false,
+      isValidationRequested:
+        state.isValidationRequested && hasError(loginInputValue),
+      hasLoginInputChanged: true,
       errorCodes: getErrorCodes(loginInputValue),
     }),
+    isNewCycle: true,
+  },
+  loginInputCompleted: {
+    eventType: "loginInputCompleted",
     isNewCycle: true,
   },
   validationRequested: {
@@ -46,7 +53,11 @@ export const loginFormEvents = {
     handler: (state) => ({
       ...state,
       isValidationRequested: true,
+      hasLoginInputChanged: false,
     }),
-    isNewCycle: true,
+  },
+  resetRequested: {
+    eventType: "resetRequested",
+    handler: () => loginFormInitialState,
   },
 };

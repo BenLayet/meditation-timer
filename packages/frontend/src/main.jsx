@@ -1,7 +1,7 @@
 import "./style/style.js";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./components/app/App.jsx";
+import AppShell from "./components/app/AppShell.jsx";
 import { StateManager } from "domain/src/lib/state-manager/state-manager.js";
 import { meditationTimerAppComponent } from "domain/src/components/meditation-timer-app/meditation-timer-app.component.js";
 import { addDebugger } from "./lib/debug.functions.js";
@@ -27,7 +27,7 @@ addDebugger(stateManager);
 //REACT APP
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App stateManager={stateManager} />
+    <AppShell stateManager={stateManager} />
   </StrictMode>,
 );
 
