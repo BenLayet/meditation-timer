@@ -11,15 +11,15 @@ function StatisticsPage({ vm }) {
   const navigateToAccountClicked = () =>
     vm.dispatchers.navigationRequested({ page: "ACCOUNT" });
 
-  const canCreateAccount = vm.children.account.selectors.canCreateAccount();
+  const isAnonymous = vm.children.account.selectors.isAnonymous();
   return (
     <>
       <h1>{t("sessionCompleted")}</h1>
       <div className="flex-fill">
         <Statistics vm={vm.children.statistics} animated={true} />
       </div>
-      {canCreateAccount && (
-        <p className="subtle mt-6">
+      {isAnonymous && (
+        <p className="opacity-75 fs-5 mt-6">
           {t("createAccountToSecureStats_1")}{" "}
           <a href="#" onClick={navigateToAccountClicked}>
             {t("createAccountToSecureStats_2")}

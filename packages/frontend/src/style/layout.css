@@ -1,5 +1,4 @@
-
-.h-100 {
+.fill-browser-height {
   height: 100dvh; /* Override for modern browsers */
 }
 

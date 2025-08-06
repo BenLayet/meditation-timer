@@ -11,16 +11,18 @@ function Preparation({ vm }) {
   const preparationRemainingTime = vm.selectors.remainingTime();
   const timeIncrementInSeconds = vm.selectors.timeIncrementInSeconds();
   return (
-    <div className="subtle">
-      <p>{t("preparation")}</p>
+    <>
+      <label>{t("preparation")}</label>
       <Timer displayedTime={preparationRemainingTime} />
-      <div className="flex-column">
+      <div className="d-flex flex-column fs-4">
         <button className="round-rectangle-button" onClick={addTimeClicked}>
           +{timeIncrementInSeconds}s
         </button>
-        <a onClick={skipClicked}>{t("skip")}</a>
+        <a onClick={skipClicked} className="clickable">
+          {t("skip")}
+        </a>
       </div>
-    </div>
+    </>
   );
 }
 
