@@ -9,8 +9,13 @@ const states = [];
 const events = [];
 const trackStateAndEvent = (event, state) => {
   states.unshift(state);
-  const e = { ...event, stateAfterEvent: flattenState(state) };
-  console.log(e);
+  const stateAfterEvent = flattenState(state);
+  const componentPath = ["root", ...(event.componentPath ?? [])].join(".");
+  const ownState = stateAfterEvent[componentPath];
+  const e = { ...event, ownState, componentPath, stateAfterEvent };
+  if (window.sm.logEvents) {
+    console.log(e);
+  }
   events.unshift(e);
   states.splice(trackSize);
   events.splice(trackSize);
@@ -43,11 +48,8 @@ const forceStateEffect = (stateManager) =>
   });
 
 export const addDebugger = (stateManager) => {
-  stateManager.addEventListener(trackStateAndEvent);
-  stateManager.addEventListener(forceStateEffect(stateManager));
-  trackStateAndEvent({ eventType: "INITIAL_STATE" }, stateManager.state);
-
   window.sm = {
+    logEvents: false,
     states,
     events,
     stateManager,
@@ -94,6 +96,10 @@ export const addDebugger = (stateManager) => {
       forceState(stateManager, newState);
     },
   };
+
+  stateManager.addEventListener(trackStateAndEvent);
+  stateManager.addEventListener(forceStateEffect(stateManager));
+  trackStateAndEvent({ eventType: "INITIAL_STATE" }, stateManager.state);
 };
 
 export const removeDebugger = (stateManager) => () => {

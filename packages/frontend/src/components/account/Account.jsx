@@ -22,24 +22,29 @@ export const Account = ({ vm }) => {
         <p className="text-muted opacity-75 fs-5">{t("connectionRequired")}</p>
       )}
       {isAuthenticationPossible && (
-        <div className="flex-column breathing-space">
+        <div className="flex-column align-items-stretch gap-1">
           {isCreateAccountFormVisible && (
             <>
-              <CreateAccountForm vm={vm.children.createAccountForm} />
-              <p className="text-info-subtle fs-6 m-0">
-                {t("alreadyHaveAccount")}{" "}
-                <a
-                  onClick={vm.dispatchers.loginFormRequested}
-                  className="clickable"
-                >
-                  {t("thenLogin")}
-                </a>
-              </p>
-              <div className="fs-5">
+              <div className="row justify-content-center mb-3">
+                <div className="col-10 col-sm-8">
+                  <CreateAccountForm vm={vm.children.createAccountForm} />
+                </div>
+                <p className="text-info-subtle fs-6 m-0">
+                  {t("alreadyHaveAccount")}{" "}
+                  <a
+                    onClick={vm.dispatchers.loginFormRequested}
+                    className="clickable"
+                  >
+                    {t("thenLogin")}
+                  </a>
+                </p>
+              </div>
+              <div className="fs-5 d-flex flex-column">
                 <p>{t("createAccountFor")}</p>
-                <ul className="align-items-start d-flex flex-column">
+                <ul className="align-items-start d-flex flex-column text-start">
                   <li>{t("secureStats")}</li>
                   <li>{t("useMultipleDevices")}</li>
+                  <li>{t("noEmailOrPasswordRequired")}</li>
                 </ul>
               </div>
               <p className="fs-5 m-0">
@@ -55,17 +60,20 @@ export const Account = ({ vm }) => {
           )}
           {isLoginFormVisible && (
             <>
-              <LoginForm vm={vm.children.loginForm} />
-
-              <p className="text-info-subtle fs-6 m-0">
-                {t("noAccountYet")}{" "}
-                <a
-                  onClick={vm.dispatchers.createAccountFormRequested}
-                  className="clickable"
-                >
-                  {t("thenCreateOne")}
-                </a>
-              </p>
+              <div className="row justify-content-center mb-3">
+                <div className="col-10 col-sm-8">
+                  <LoginForm vm={vm.children.loginForm} />
+                </div>
+                <p className="text-info-subtle fs-6 m-0 text-center">
+                  {t("noAccountYet")}{" "}
+                  <a
+                    onClick={vm.dispatchers.createAccountFormRequested}
+                    className="clickable"
+                  >
+                    {t("thenCreateOne")}
+                  </a>
+                </p>
+              </div>
             </>
           )}
         </div>

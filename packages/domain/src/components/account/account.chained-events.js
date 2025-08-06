@@ -17,4 +17,18 @@ export const accountChainedEvents = [
     },
     thenDispatch: accountEvents.accountAuthenticated,
   },
+  {
+    onEvent: accountEvents.createAccountFormRequested,
+    thenDispatch: {
+      ...createAccountFormEvents.resetRequested,
+      childComponentPath: ["createAccountForm"],
+    },
+  },
+  {
+    onEvent: accountEvents.loginFormRequested,
+    thenDispatch: {
+      ...loginFormEvents.resetRequested,
+      childComponentPath: ["loginForm"],
+    },
+  },
 ];

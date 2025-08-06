@@ -15,7 +15,7 @@ function StatisticsPage({ vm }) {
   return (
     <>
       <h1>{t("sessionCompleted")}</h1>
-      <div className="flex-grow">
+      <div className="flex-fill">
         <Statistics vm={vm.children.statistics} animated={true} />
       </div>
       {canCreateAccount && (

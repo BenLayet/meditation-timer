@@ -38,7 +38,7 @@ export const LoginForm = ({ vm }) => {
         pattern="[a-zA-Z0-9]+"
         required
         className={`form-control ${isLoginInputMarkedAsError ? "is-invalid" : ""}`}
-        onBlur={vm.dispatchers.validationRequested}
+        onBlur={vm.dispatchers.loginInputCompleted}
         disabled={isLoginInputDisabled}
       />
       <button

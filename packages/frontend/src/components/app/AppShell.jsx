@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-const App = ({ stateManager }) => {
+const AppShell = ({ stateManager }) => {
   const { i18n } = useTranslation();
   const [vm, setVM] = useState(stateManager.getRootVM());
   useEffect(() => {
@@ -25,4 +25,4 @@ const App = ({ stateManager }) => {
     <FontAwesomeIcon icon={faSpinner} spin />
   );
 };
-export default App;
+export default AppShell;

@@ -23,16 +23,17 @@ export function validateLoginFormat(login) {
   }
   if (!isValidLoginFormat(login)) {
     throw new Error(
-      `Login must be 3+ alphanumeric characters but was: ${login}`,
+      `Login must be 3+ characters, excluding space character, but was: ${login}`,
     );
   }
 }
-export const loginRegex = /^\w{3,}$/;
+export const loginRegex = /^\S{3,}$/;
 export const isValidLoginFormat = (login) => loginRegex.test(login);
 
-export const getErrorCodes = (login) => [
-  ...(isValidLoginFormat(login)
-    ? []
-    : [loginFormErrorCode.INVALID_LOGIN_FORMAT]),
-  ...(!!login ? [] : [loginFormErrorCode.LOGIN_MISSING]),
-];
+export const getErrorCodes = (login) =>
+  !login
+    ? [loginFormErrorCode.LOGIN_MISSING]
+    : !isValidLoginFormat(login)
+      ? [loginFormErrorCode.INVALID_LOGIN_FORMAT]
+      : [];
+export const hasError = (login) => getErrorCodes(login).length > 0;
