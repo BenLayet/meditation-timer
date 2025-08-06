@@ -18,7 +18,7 @@ export default ({ vm }) => {
           <NavBar vm={vm} />
         </div>
       )}
-      <div className="d-flex flex-column flex-fill align-items-stretch fs-2 p-2">
+      <div className="d-flex flex-column flex-fill align-items-stretch fs-2 p-2 text-center">
         {page === "HOME" && (
           <NewMeditationPage vm={vm.children.newMeditation} />
         )}

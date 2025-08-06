@@ -56,7 +56,11 @@ function MeditationSettings({ vm }) {
           <div className="col-4 d-flex">
             <GongControl vm={vm} />
           </div>
-          <div className={"col-8 subtle d-flex " + (isGongOff && "disabled")}>
+          <div
+            className={
+              "col-8 opacity-75 fs-4 d-flex " + (isGongOff && "disabled")
+            }
+          >
             {t("test")}&nbsp;
             <FontAwesomeIcon
               icon={faPlay}

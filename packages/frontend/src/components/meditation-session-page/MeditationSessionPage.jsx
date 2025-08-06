@@ -15,10 +15,10 @@ function MeditationSessionPage({ vm }) {
   return (
     <>
       <InspiringImage />
-      <div className="stack-layout fs-1 flex-column">
+      <div className="stack-layout fs-1 mb-4 flex-column text-center">
         <div
           className={
-            "stack-layout-tallest-child fade-in " +
+            "stack-layout-tallest-child fade-in d-flex flex-column align-items-center " +
             (preparationIsRunning ? "visible" : "hidden")
           }
         >
@@ -32,7 +32,10 @@ function MeditationSessionPage({ vm }) {
           <Timer displayedTime={meditationRemainingTime} />
         </div>
       </div>
-      <button className="mt-btn main-action" onClick={stopClicked}>
+      <button
+        className="mt-btn main-action align-self-center mb-3 px-5"
+        onClick={stopClicked}
+      >
         <FontAwesomeIcon icon={faStop} />
       </button>
     </>

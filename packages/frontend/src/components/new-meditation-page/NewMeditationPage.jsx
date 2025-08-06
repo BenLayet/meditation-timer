@@ -32,7 +32,7 @@ function NewMeditationPage({ vm }) {
         </InspiringImage>
       </div>
       <NewMeditation vm={vm} />
-      <button className="mt-btn mb-3 px-5" onClick={playClicked}>
+      <button className="mt-btn main-action mb-3 px-5" onClick={playClicked}>
         <FontAwesomeIcon icon={faPlay} />
       </button>
     </div>
