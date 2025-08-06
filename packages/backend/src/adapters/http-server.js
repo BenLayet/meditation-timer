@@ -6,9 +6,6 @@ import path from "path";
 
 export const startHttpServer = async ({
   healthCheckHandler,
-  sendVerificationLinkHandler,
-  verifyEmailAddressHandler,
-  retrieveVerificationHandler,
   postEventHandler,
   getEventPageHandler,
   apiProperties,
@@ -35,19 +32,6 @@ export const startHttpServer = async ({
   // Routes
   const { port } = apiProperties;
   app.get(routeProperties.healthPath, healthCheckHandler);
-
-  const emailVerificationsRouter = express.Router();
-  emailVerificationsRouter
-    .post("/", sendVerificationLinkHandler)
-    .get(
-      routeProperties.emailVerifications.verifyEmailAddressPath,
-      verifyEmailAddressHandler,
-    )
-    .get(
-      routeProperties.emailVerifications.retrieveVerificationPath,
-      retrieveVerificationHandler,
-    );
-  app.use(routeProperties.emailVerificationsPath, emailVerificationsRouter);
 
   const eventsRouter = express.Router();
   eventsRouter.post("/", postEventHandler).get("/", getEventPageHandler);

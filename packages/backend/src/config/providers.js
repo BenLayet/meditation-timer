@@ -8,9 +8,6 @@ import { apiPropertiesProviders } from "./api-properties.providers.js";
 import { loggerProviders } from "./logger.providers.js";
 import { uuidGeneratorProviders } from "./uuid-generator.providers.js";
 import { tokenServiceProviders } from "./token-service.providers.js";
-import { emailSenderProviders } from "./email-sender.providers.js";
-import { messageBuilderProviders } from "./message-builder.providers.js";
-import { mailContextProviders } from "./mail-context.providers.js";
 import { routeProviders } from "./route.providers.js";
 
 export const providers = {
@@ -19,11 +16,8 @@ export const providers = {
   ...datasourceProviders,
   ...apiPropertiesProviders,
   ...routeProviders,
-  ...mailContextProviders,
   ...uuidGeneratorProviders,
   ...tokenServiceProviders,
-  ...emailSenderProviders,
-  ...messageBuilderProviders,
   ...repositoryProviders,
   ...usecaseProviders,
   ...endpointHandlerProviders,
