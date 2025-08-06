@@ -1,5 +1,5 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { createAccountFormErrorCode } from "domain/src/models/account.model.js";
+import { createAccountErrorCode } from "domain/src/models/account.model.js";
 import { createAccountFormEvents } from "domain/src/components/create-account-form/create-account-form.events.js";
 
 export const createAccountEffects = ({ accountApi }, rootVM) => {
@@ -18,7 +18,7 @@ export const createAccountEffects = ({ accountApi }, rootVM) => {
       console.error(error);
       dispatchers.createAccountFailed({
         error,
-        errorCodes: [createAccountFormErrorCode.UNKNOWN_ERROR],
+        errorCodes: [createAccountErrorCode.UNKNOWN_ERROR],
       });
     }
   };

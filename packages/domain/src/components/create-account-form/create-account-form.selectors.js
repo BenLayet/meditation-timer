@@ -2,8 +2,8 @@ import { flow, isEmpty } from "lodash-es";
 import { map } from "../../lib/functions/object.functions.js";
 import { and, or } from "../../lib/functions/predicate.functions.js";
 import {
-  createAccountFormErrorCode,
-  loginFormErrorCode,
+  createAccountErrorCode,
+  loginErrorCode,
 } from "../../models/account.model.js";
 
 const isLoading = (state) => state.loading;
@@ -14,11 +14,11 @@ const containsErrorCode = (errorCode) => (errorCodes) =>
   errorCodes.includes(errorCode);
 const hasLoginAlreadyExistsError = flow(
   errorCodes,
-  containsErrorCode(createAccountFormErrorCode.LOGIN_ALREADY_EXISTS),
+  containsErrorCode(createAccountErrorCode.LOGIN_ALREADY_EXISTS),
 );
 const hasLoginFormatError = flow(
   errorCodes,
-  containsErrorCode(createAccountFormErrorCode.INVALID_LOGIN_FORMAT),
+  containsErrorCode(createAccountErrorCode.INVALID_LOGIN_FORMAT),
 );
 const hasAnyLoginInputError = or(
   hasLoginAlreadyExistsError,
