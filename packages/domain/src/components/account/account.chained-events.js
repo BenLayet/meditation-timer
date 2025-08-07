@@ -8,14 +8,14 @@ export const accountChainedEvents = [
       ...createAccountFormEvents.createAccountSucceeded,
       childComponentPath: ["createAccountForm"],
     },
-    thenDispatch: accountEvents.accountAuthenticated,
+    thenDispatch: accountEvents.accountNewlyAuthenticated,
   },
   {
     onEvent: {
       ...loginFormEvents.loginSucceeded,
       childComponentPath: ["loginForm"],
     },
-    thenDispatch: accountEvents.accountAuthenticated,
+    thenDispatch: accountEvents.accountNewlyAuthenticated,
   },
   {
     onEvent: accountEvents.createAccountFormRequested,
@@ -30,5 +30,9 @@ export const accountChainedEvents = [
       ...loginFormEvents.resetRequested,
       childComponentPath: ["loginForm"],
     },
+  },
+  {
+    onEvent: accountEvents.disconnectSucceeded,
+    thenDispatch: accountEvents.createAccountFormRequested,
   },
 ];

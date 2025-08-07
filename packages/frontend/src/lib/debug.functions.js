@@ -12,7 +12,16 @@ const trackStateAndEvent = (event, state) => {
   const stateAfterEvent = flattenState(state);
   const componentPath = ["root", ...(event.componentPath ?? [])].join(".");
   const ownState = stateAfterEvent[componentPath];
-  const e = { ...event, ownState, componentPath, stateAfterEvent };
+  const date = new Date();
+  const sinceLastEventMs = events.length > 0 ? date - events[0].date : 0;
+  const e = {
+    ...event,
+    date,
+    sinceLastEventMs,
+    ownState,
+    componentPath,
+    stateAfterEvent,
+  };
   if (window.sm.logEvents) {
     console.log(e);
   }

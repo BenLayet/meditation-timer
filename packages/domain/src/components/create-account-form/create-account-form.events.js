@@ -1,5 +1,9 @@
 import ow from "ow";
-import { getErrorCodes, hasError } from "../../models/account.model.js";
+import {
+  getErrorCodes,
+  hasError,
+  loginRegex,
+} from "../../models/account.model.js";
 import { createAccountFormInitialState } from "./create-account-form.state.js";
 
 export const createAccountFormEvents = {
@@ -12,10 +16,17 @@ export const createAccountFormEvents = {
     }),
     isNewCycle: true,
   },
+  createAccountRequested: {
+    eventType: "createAccountRequested",
+    payloadShape: {
+      login: ow.string.matches(loginRegex),
+    },
+  },
   createAccountSucceeded: {
     eventType: "createAccountSucceeded",
     payloadShape: {
       userToken: ow.string,
+      login: ow.string.matches(loginRegex),
     },
     handler: (state) => ({
       ...state,
