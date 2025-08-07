@@ -22,6 +22,6 @@
   --subtle-border: rgba(255, 255, 255, 0.13);
   --subtle-highlighted-background: rgba(255, 255, 255, 0.05);
 
-    --bs-primary: var(--primary-color) !important;
-    --bs-secondary: var(--secondary-color) !important;
+  --bs-primary: var(--primary-color) !important;
+  --bs-secondary: var(--secondary-color) !important;
 }
