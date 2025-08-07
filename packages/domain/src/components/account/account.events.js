@@ -56,7 +56,7 @@ export const accountEvents = {
       ...state,
       loading: false,
       status: accountStatus.ANONYMOUS,
-      email: null,
+      login: null,
     }),
   },
   loginFormRequested: {
