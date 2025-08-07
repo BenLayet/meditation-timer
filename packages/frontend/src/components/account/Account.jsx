@@ -26,7 +26,7 @@ export const Account = ({ vm }) => {
           {isCreateAccountFormVisible && (
             <>
               <div className="row justify-content-center mb-3">
-                <div className="col-10 col-sm-8">
+                <div className="col-10 col-sm-6 col-lg-4 col-xl-3">
                   <CreateAccountForm vm={vm.children.createAccountForm} />
                 </div>
                 <p className="text-info-subtle fs-6 m-0">
