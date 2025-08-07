@@ -5,32 +5,18 @@ import {
 
 export const errorHandler =
   ({ logger }) =>
-  (req, res, next, err) => {
-    if (err instanceof SyntaxError && err.status === 400) {
-      return res.status(400).json({
-        error: "Bad request",
-        details: "Invalid JSON",
-      });
-    }
-
-    if (err.name === "ValidationError") {
-      return res.status(422).json({
-        error: "Validation Error",
-        details: err.message,
-      });
-    }
-
-    if (err.name === "FunctionalError") {
-      return res.status(httpStatusMap[err.code] || 400).json({
-        error: err.message,
-        errorCodes: [err.code],
+  (request, response, next, error) => {
+    if (error?.name === "FunctionalError") {
+      return response.status(httpStatusMap[error.code] || 400).json({
+        error: error.message,
+        errorCodes: [error.code],
       });
     }
 
     // Default error
-    logger.error(err);
-    res.status(500).json({
-      error: `Internal Server Error : ${err.message} `,
+    logger.error(error);
+    response.status(500).json({
+      error: `Internal Server Error : ${error.message} `,
     });
   };
 const httpStatusMap = {

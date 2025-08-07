@@ -11,7 +11,8 @@
     "dev:api:stop": "npx kill-port 8000",
     "dev:db:start": "docker-compose -p db-dev --env-file .env.dev -f database/docker-compose.yml up -d",
     "dev:db:stop": "docker-compose -p db-dev --env-file .env.dev -f database/docker-compose.yml down -v",
-    "test": "export $(cat .env.test | xargs) && pnpx vitest"
+    "test:watch": "export $(cat .env.test | xargs) && pnpx vitest",
+    "test": "export $(cat .env.test | xargs) && pnpx vitest run"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

@@ -30,13 +30,13 @@ export const createFakeEndPoint =
   (handler, errorHandler) =>
   async ({ params = {}, query = {}, headers = {}, body = {} }) => {
     const clientSideResponse = { headers: {} };
-    const req = new ServerSideRequest({ params, query, headers, body });
-    const res = new ServerSideResponse(clientSideResponse);
+    const request = new ServerSideRequest({ params, query, headers, body });
+    const response = new ServerSideResponse(clientSideResponse);
 
     try {
-      await handler(req, res);
+      await handler(request, response);
     } catch (error) {
-      await errorHandler(error, req, res);
+      await errorHandler(request, response, null, error);
     }
     return clientSideResponse;
   };
