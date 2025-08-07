@@ -15,29 +15,36 @@ export function Statistics({ vm, animated = false }) {
     vm.selectors.shouldDailyStreakBeDisplayed();
   const meditationCount = vm.selectors.meditationCount();
   const isLoading = vm.selectors.isLoading();
+  const isStatisticsPresentationVisible =
+    vm.selectors.isStatisticsPresentationVisible();
 
   return (
     <div>
       {isLoading ? (
         <FontAwesomeIcon icon={faSpinner} spin />
       ) : (
-        <ul className={"statistics " + (animated && "animated")}>
-          <li className="statistics-item">
-            {t("meditationCount", { count: meditationCount })}
-          </li>
-          {shouldTotalMinutesThisWeekBeDisplayed && (
-            <li className={"statistics-item"}>
-              {t("hourCount", hourCount)}
-              {t("minuteCount", minuteCount)}
-              {t("thisWeek")}
-            </li>
+        <>
+          {isStatisticsPresentationVisible && (
+            <p className="fs-5 text-muted">{t("statisticsPresentation")}</p>
           )}
-          {shouldDailyStreakBeDisplayed && (
+          <ul className={"statistics " + (animated && "animated")}>
             <li className="statistics-item">
-              {t("dailyStreak", { dailyStreak })}
+              {t("meditationCount", { count: meditationCount })}
             </li>
-          )}
-        </ul>
+            {shouldTotalMinutesThisWeekBeDisplayed && (
+              <li className={"statistics-item"}>
+                {t("hourCount", hourCount)}
+                {t("minuteCount", minuteCount)}
+                {t("thisWeek")}
+              </li>
+            )}
+            {shouldDailyStreakBeDisplayed && (
+              <li className="statistics-item">
+                {t("dailyStreak", { dailyStreak })}
+              </li>
+            )}
+          </ul>
+        </>
       )}
     </div>
   );

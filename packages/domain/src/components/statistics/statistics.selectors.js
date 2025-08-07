@@ -13,6 +13,10 @@ const shouldDailyStreakBeDisplayed = (state) => state.dailyStreak > 1;
 const shouldTotalMinutesThisWeekBeDisplayed = (state) =>
   state.totalMinutesThisWeek > 0;
 const meditationCount = (state) => state.meditationHistory?.length || 0;
+const isStatisticsPresentationVisible = flow(
+  meditationCount,
+  (count) => count < 2,
+);
 
 export const ownStateSelectors = {
   isLoading,
@@ -23,6 +27,7 @@ export const ownStateSelectors = {
   shouldTotalMinutesThisWeekBeDisplayed,
   shouldDailyStreakBeDisplayed,
   meditationCount,
+  isStatisticsPresentationVisible,
 };
 const ownState = (compositeState) => compositeState.ownState;
 export const statisticsSelectors = map(ownStateSelectors, (selector) =>

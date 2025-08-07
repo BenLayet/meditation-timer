@@ -26,7 +26,7 @@ export const Account = ({ vm }) => {
           {isCreateAccountFormVisible && (
             <>
               <div className="row justify-content-center mb-3">
-                <div className="col-10 col-sm-6 col-lg-4 col-xl-3">
+                <div className="col-10 col-sm-6">
                   <CreateAccountForm vm={vm.children.createAccountForm} />
                 </div>
                 <p className="text-info-subtle fs-6 m-0">
@@ -61,7 +61,7 @@ export const Account = ({ vm }) => {
           {isLoginFormVisible && (
             <>
               <div className="row justify-content-center mb-3">
-                <div className="col-10 col-sm-8">
+                <div className="col-10 col-sm-6">
                   <LoginForm vm={vm.children.loginForm} />
                 </div>
                 <p className="text-info-subtle fs-6 m-0 text-center">
@@ -81,7 +81,7 @@ export const Account = ({ vm }) => {
       {isLoginVisible && (
         <>
           <div className="flex-column breathing-space">
-            <p>
+            <p className="fs-2">
               {t("connectedAs")} '{login}'
             </p>
             {canDisconnect && (
