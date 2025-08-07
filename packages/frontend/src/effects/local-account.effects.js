@@ -10,16 +10,10 @@ export const localAccountEffects = ({ keyValueStorageService }, rootVM) => {
     dispatchers.accountLoaded({ account });
   };
 
-  //accountAuthenticated
-  const accountAuthenticated = async ({ userToken }) => {
-    const account = await keyValueStorageService.get("account");
-    if (account) {
-      account.status = accountStatus.AUTHENTICATED;
-      account.userToken = userToken;
-      await keyValueStorageService.set("account", account);
-    } else {
-      console.warn("No account found during authentication.");
-    }
+  //accountNewlyAuthenticated
+  const accountNewlyAuthenticated = async ({ userToken, login }) => {
+    const account = { status: accountStatus.AUTHENTICATED, userToken, login };
+    await keyValueStorageService.set("account", account);
   };
 
   //disconnectRequested
@@ -34,8 +28,8 @@ export const localAccountEffects = ({ keyValueStorageService }, rootVM) => {
       then: loadAccountRequested,
     }),
     createEffect({
-      afterEvent: accountEvents.accountAuthenticated,
-      then: accountAuthenticated,
+      afterEvent: accountEvents.accountNewlyAuthenticated,
+      then: accountNewlyAuthenticated,
     }),
     createEffect({
       afterEvent: accountEvents.disconnectRequested,

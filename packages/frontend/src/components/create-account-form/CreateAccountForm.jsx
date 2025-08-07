@@ -35,7 +35,6 @@ export const CreateAccountForm = ({ vm }) => {
         placeholder={t("newLoginPlaceholder")}
         onChange={loginInputChanged}
         minLength="3"
-        pattern="/^\S{3,}$/"
         required
         className={`form-control ${isLoginInputMarkedAsError ? "is-invalid" : ""}`}
         onBlur={vm.dispatchers.loginInputCompleted}

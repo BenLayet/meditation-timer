@@ -7,10 +7,11 @@ export const accountEvents = {
     payloadShape: { isOnline: ow.boolean },
     handler: (state, { isOnline }) => ({ ...state, isOnline }),
   },
-  accountAuthenticated: {
-    eventType: "accountAuthenticated",
+  accountNewlyAuthenticated: {
+    eventType: "accountNewlyAuthenticated",
     payloadShape: {
       userToken: ow.string,
+      login: ow.string.matches(loginRegex),
     },
     handler: (state, { login }) => ({
       ...state,

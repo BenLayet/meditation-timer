@@ -11,7 +11,7 @@ export const Account = ({ vm }) => {
   const isAuthenticationPossible = vm.selectors.isAuthenticationPossible();
   const isCreateAccountFormVisible = vm.selectors.isCreateAccountFormVisible();
   const isLoginFormVisible = vm.selectors.isLoginFormVisible();
-  const isPseudoVisible = vm.selectors.isPseudoVisible();
+  const isLoginVisible = vm.selectors.isLoginVisible();
   const login = vm.selectors.login();
   const canDisconnect = vm.selectors.canDisconnect();
 
@@ -78,16 +78,19 @@ export const Account = ({ vm }) => {
           )}
         </div>
       )}
-      {isPseudoVisible && (
+      {isLoginVisible && (
         <>
           <div className="flex-column breathing-space">
-            <div>{login}</div>
+            <p>
+              {t("connectedAs")} '{login}'
+            </p>
             {canDisconnect && (
               <button
-                onClick={disconnectRequested}
-                className="icon-button fs-5 opacity-75"
+                onClick={vm.dispatchers.disconnectRequested}
+                className="btn btn-secondary"
               >
                 <FontAwesomeIcon icon={faUnlock} />
+                &nbsp;
                 {t("disconnect")}
               </button>
             )}

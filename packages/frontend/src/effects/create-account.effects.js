@@ -7,25 +7,34 @@ export const createAccountEffects = ({ accountApi }, rootVM) => {
     rootVM.children.account.children.createAccountForm.dispatchers;
 
   const createAccountRequested = async ({ login }) => {
+    let account;
     try {
-      const account = await accountApi.createAccount({ login });
-      if (account.errorCodes?.length === 0) {
-        dispatchers.createAccountSucceeded({ account });
-      } else {
-        dispatchers.createAccountFailed({ errorCodes: account.errorCodes });
-      }
+      account = await accountApi.createAccount({ login });
     } catch (error) {
       console.error(error);
       dispatchers.createAccountFailed({
         error,
         errorCodes: [createAccountErrorCode.UNKNOWN_ERROR],
       });
+      return;
+    }
+    if (
+      typeof account.errorCodes === "undefined" ||
+      account.errorCodes.length === 0
+    ) {
+      dispatchers.createAccountSucceeded({
+        userToken: account.userToken,
+        login,
+      });
+    } else {
+      dispatchers.createAccountFailed({ errorCodes: account.errorCodes });
     }
   };
 
   return [
     createEffect({
-      afterEvent: createAccountFormEvents.formSubmitted,
+      afterEvent: createAccountFormEvents.createAccountRequested,
+      onComponent: ["account", "createAccountForm"],
       then: createAccountRequested,
     }),
   ];

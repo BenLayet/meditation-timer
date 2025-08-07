@@ -7,6 +7,8 @@ import { localAccountEffects } from "./local-account.effects.js";
 import { onlineDetectionEffects } from "./online-detection.effects.js";
 import { synchronizationEffects } from "./synchronization.effects.js";
 import { meditationSettingsEffects } from "./meditation-settings.effects.js";
+import { createAccountEffects } from "./create-account.effects.js";
+import { loginEffects } from "./login.effects.js";
 
 export const createEffects = (
   rootVM,
@@ -17,6 +19,7 @@ export const createEffects = (
     tickingService,
     keyValueStorageService,
     synchronizationTaskService,
+    accountApi,
   },
 ) => [
   ...onlineDetectionEffects({}, rootVM),
@@ -28,4 +31,6 @@ export const createEffects = (
   ...saveMeditationEffects({ meditationService }, rootVM),
   ...loadMeditationsEffects({ meditationService }, rootVM),
   ...localAccountEffects({ keyValueStorageService }, rootVM),
+  ...createAccountEffects({ accountApi }, rootVM),
+  ...loginEffects({ accountApi }, rootVM),
 ];

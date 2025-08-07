@@ -18,7 +18,7 @@ const isCreateAccountFormVisible = and(
 );
 const isLoginFormVisible = and(isAuthenticationPossible, isLoginFormRequested);
 const canDisconnect = isAuthenticated;
-const isPseudoVisible = and(not(isAnonymous), not(isLoading));
+const isLoginVisible = and(not(isAnonymous), not(isLoading));
 const isConnectionRequired = and(not(isLoading), isAnonymous, not(isOnline));
 export const ownStateSelectors = {
   isLoading,
@@ -28,7 +28,7 @@ export const ownStateSelectors = {
   isLoginFormVisible,
   isCreateAccountFormVisible,
   isAuthenticated,
-  isPseudoVisible,
+  isLoginVisible,
   login,
   canDisconnect,
 };

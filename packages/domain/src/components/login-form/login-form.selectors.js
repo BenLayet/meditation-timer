@@ -39,6 +39,7 @@ export const ownStateSelectors = {
   areErrorsVisible,
   isLoginInputMarkedAsError,
   isSubmitDisabled,
+  loginInputValue,
 };
 
 const ownState = (compositeState) => compositeState.ownState;

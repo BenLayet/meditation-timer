@@ -11,11 +11,8 @@ export class AccountApi {
     }).then((response) => response.json());
   };
   login = async (credentials) => {
-    return fetch(`${API_URL}/`, {
+    return fetch(`${API_URL}/?login=${credentials.login}`, {
       method: "GET",
-      queryParams: {
-        login: credentials.login,
-      },
     }).then((response) => response.json());
   };
 }
