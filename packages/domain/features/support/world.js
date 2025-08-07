@@ -7,11 +7,12 @@ import { actualMeditationEvents } from "../../src/components/actual-meditation/a
 import { createEffect } from "../../src/lib/state-manager/create-effect.js";
 import { CURRENT_EPOCH_DAY } from "./test-constants.js";
 import { accountEvents } from "../../src/components/account/account.events.js";
-import { emailVerificationEvents } from "../../src/components/email-verification/email-verification.events.js";
 import { AfterStep, Before, setWorldConstructor } from "@cucumber/cucumber";
 import { compareObjects } from "../../src/lib/logger/compare-objects.js";
 import { accountStatus } from "../../src/models/account.model.js";
-import { emailVerificationStatus } from "../../src/models/email-verification.model.js";
+import { createAccountFormEvents } from "../../src/components/create-account-form/create-account-form.events.js";
+import { loginFormEvents } from "../../src/components/login-form/login-form.events.js";
+import { meditationTimerAppEvents } from "../../src/components/meditation-timer-app/meditation-timer-app.events.js";
 
 let stateManager;
 let mockLocalDatabase = {};
@@ -25,6 +26,16 @@ const addMockedEffects = (
   events,
 ) => {
   //EFFECTS
+  //isOnline
+  stateManager.addEffect(
+    createEffect({
+      afterEvent: { ...meditationTimerAppEvents.appOpened },
+      then: () =>
+        stateManager
+          .getRootVM()
+          .dispatchers.onlineStatusChanged({ isOnline: true }),
+    }),
+  );
   //statistics
   stateManager.addEffect(
     createEffect({
@@ -52,15 +63,40 @@ const addMockedEffects = (
   //account
   stateManager.addEffect(
     createEffect({
-      afterEvent: accountEvents.createAccountRequested,
+      afterEvent: createAccountFormEvents.createAccountRequested,
+      then: (previousPayload) => {
+        stateManager
+          .getRootVM()
+          .children.account.children.createAccountForm.dispatchers.createAccountSucceeded(
+            {
+              login: previousPayload.login,
+              userToken: "USER_TOKEN",
+            },
+          );
+      },
+    }),
+  );
+  stateManager.addEffect(
+    createEffect({
+      afterEvent: loginFormEvents.loginRequested,
+      then: (previousPayload) => {
+        stateManager
+          .getRootVM()
+          .children.account.children.loginForm.dispatchers.loginSucceeded({
+            login: previousPayload.login,
+            userToken: "USER_TOKEN",
+          });
+      },
+    }),
+  );
+  stateManager.addEffect(
+    createEffect({
+      afterEvent: accountEvents.accountNewlyAuthenticated,
       then: (previousPayload) => {
         mockLocalDatabase.account = {
-          email: previousPayload.email,
-          status: accountStatus.PENDING_VERIFICATION,
+          login: previousPayload.login,
+          status: accountStatus.AUTHENTICATED,
         };
-        stateManager.getRootVM().children.account.dispatchers.accountCreated({
-          email: previousPayload.email,
-        });
       },
     }),
   );
@@ -82,18 +118,6 @@ const addMockedEffects = (
           .children.account.dispatchers.disconnectSucceeded(),
     }),
   );
-  //email verification
-  stateManager.addEffect(
-    createEffect({
-      afterEvent: emailVerificationEvents.refreshRequested,
-      then: () =>
-        stateManager
-          .getRootVM()
-          .children.account.children.emailVerification.dispatchers.refreshCompleted(
-            mockRemoteDatabase.emailVerification,
-          ),
-    }),
-  );
 
   //FORCE STATE DEBUG EFFECT
   stateManager.addEffect(
@@ -110,15 +134,13 @@ const addMockedEffects = (
 const initializeScenario = () => {
   stateManager = new StateManager(meditationTimerAppComponent);
   mockLocalDatabase = {
-    meditationStorage: { meditations: [] },
+    meditationStorage: { meditationHistory: [] },
   };
-  mockRemoteDatabase = {
-    emailVerification: {
-      status: emailVerificationStatus.CREATED,
-    },
-  };
+  mockRemoteDatabase = {};
   events = [];
   addMockedEffects(stateManager, mockLocalDatabase, mockRemoteDatabase, events);
+
+  stateManager.getRootVM().dispatchers.appOpened();
 };
 
 class CustomWorld {
@@ -133,10 +155,6 @@ class CustomWorld {
   }
   set account(account) {
     mockLocalDatabase.account = account;
-  }
-
-  get remoteEmailVerification() {
-    return mockRemoteDatabase.emailVerification;
   }
 
   get meditationStorage() {
@@ -181,7 +199,7 @@ AfterStep(function ({ result }) {
     );
     console.log("------SENT EVENTS------");
     console.log(
-      mockLocalDatabase.events.map((e) => ({
+      events.map((e) => ({
         ...e,
         payload: e.payload ? JSON.stringify(e.payload) : null,
       })),
