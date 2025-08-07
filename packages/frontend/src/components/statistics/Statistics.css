@@ -12,7 +12,7 @@ li.statistics-item {
   justify-content: center;
 }
 
-li.statistics-item.animated {
+ul.statistics.animated li.statistics-item{
   opacity: 0; /* Initially hidden */
   animation: fadeIn 1s ease forwards; /* 1s fade-in animation */
 }
@@ -42,22 +42,22 @@ li.statistics-item::after {
 }
 
 /* Stagger the animation with delay */
-li.animated:nth-child(1) {
+ul.statistics.animated li.statistics-item:nth-child(1) {
   animation-delay: 0s;
 }
 
-li.animated:nth-child(2) {
+ul.statistics.animated li.statistics-item:nth-child(2) {
+  animation-delay: 1s;
+}
+
+ul.statistics.animated li.statistics-item:nth-child(3) {
   animation-delay: 2s;
 }
 
-li.animated:nth-child(3) {
+ul.statistics.animated li.statistics-item:nth-child(4) {
+  animation-delay: 3s;
+}
+
+ul.statistics.animated li.statistics-item:nth-child(5) {
   animation-delay: 4s;
-}
-
-li.animated:nth-child(4) {
-  animation-delay: 6s;
-}
-
-li.animated:nth-child(5) {
-  animation-delay: 8s;
 }

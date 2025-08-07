@@ -21,12 +21,12 @@ export function Statistics({ vm, animated = false }) {
       {isLoading ? (
         <FontAwesomeIcon icon={faSpinner} spin />
       ) : (
-        <ul className="statistics">
+        <ul className={"statistics " + (animated && "animated")}>
           <li className="statistics-item">
             {t("meditationCount", { count: meditationCount })}
           </li>
           {shouldTotalMinutesThisWeekBeDisplayed && (
-            <li className={"statistics-item " + (animated && "animated")}>
+            <li className={"statistics-item"}>
               {t("hourCount", hourCount)}
               {t("minuteCount", minuteCount)}
               {t("thisWeek")}
