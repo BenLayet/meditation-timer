@@ -6,9 +6,12 @@ import {
 } from "../assert/not-null.validator.js";
 
 export const createEffect = ({ afterEvent, onComponent, then }) => {
-  validateNotNullObject({ afterEvent });
-  validateNotEmptyString({ triggeringEventType: afterEvent.eventType });
-  validateFunction({ then });
+  validateNotNullObject({ afterEvent }, { afterEvent, onComponent, then });
+  validateNotEmptyString(
+    { triggeringEventType: afterEvent.eventType },
+    { afterEvent, onComponent, then },
+  );
+  validateFunction({ then }, { afterEvent, onComponent, then });
   const triggeringEventType = afterEvent.eventType;
   const effectFunction = then;
   const componentPath = onComponent;
