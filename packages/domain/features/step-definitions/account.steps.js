@@ -1,79 +1,41 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import { expect } from "chai";
-import { emailVerificationEvents } from "../../src/components/email-verification/email-verification.events.js";
 import { accountStatus } from "../../src/models/account.model.js";
-import { emailVerificationStatus } from "../../src/models/email-verification.model.js";
 
 Given(/^I have not created an account yet$/, function () {
   this.account = null;
 });
 Given("I have just created an account", function () {
   this.account = {
-    email: "test@example.org",
-    status: accountStatus.PENDING_VERIFICATION,
-  };
-});
-
-When(/^I create an account with my email$/, function () {
-  this.vm().children.account.dispatchers.createAccountRequested({
-    email: "test@example.org",
-  });
-});
-
-Then(
-  /^I should receive an email with a verification link in my inbox$/,
-  function () {
-    expect(this.eventWasSent(emailVerificationEvents.verificationRequested)).to
-      .be.true;
-  },
-);
-
-Then(/^I can see that my email is pending verification$/, function () {
-  const email = this.vm().children.account.selectors.email();
-  expect(email).to.equal("test@example.org");
-  const isPendingVerification =
-    this.vm().children.account.selectors.isPendingVerification();
-  expect(isPendingVerification).to.be.true;
-});
-
-Then(/^I can cancel the account creation$/, function () {
-  const canAccountCreationBeCancelled =
-    this.vm().children.account.selectors.canAccountCreationBeCancelled();
-  expect(canAccountCreationBeCancelled).to.be.true;
-});
-
-When(/^I cancel the account creation$/, function () {
-  this.vm().children.account.dispatchers.createAccountCancelled();
-});
-
-Then("my email should not be visible anymore", function () {
-  const isAnonymous = this.vm().children.account.selectors.isAnonymous();
-  expect(isAnonymous).to.be.true;
-});
-Then("I should be able to create an account again", function () {
-  const canCreateAccount =
-    this.vm().children.account.selectors.canCreateAccount();
-  expect(canCreateAccount).to.be.true;
-});
-
-Given(/^I have not verified my email yet$/, function () {
-  this.remoteEmailVerification.status =
-    emailVerificationStatus.VERIFICATION_LINK_SENT;
-});
-
-Given(/^I have just clicked the link to verify my email$/, function () {
-  this.account = {
-    email: "test@example.org",
+    login: "login1",
     status: accountStatus.AUTHENTICATED,
   };
+});
+
+When(/^I create an account with my login$/, function () {
+  this.vm().children.account.children.createAccountForm.dispatchers.createAccountRequested(
+    {
+      login: "login1",
+    },
+  );
+});
+
+Then("my login should not be visible anymore", function () {
+  const isLoginVisible = this.vm().children.account.selectors.isLoginVisible();
+  expect(isLoginVisible).to.be.false;
+});
+Then("I should be able to create an account again", function () {
+  const isCreateAccountFormVisible =
+    this.vm().children.account.selectors.isCreateAccountFormVisible();
+  expect(isCreateAccountFormVisible).to.be.true;
 });
 
 Then(/^I should be authenticated$/, function () {
   const isAuthenticated =
     this.vm().children.account.selectors.isAuthenticated();
   expect(isAuthenticated).to.be.true;
-  const email = this.vm().children.account.selectors.email();
-  expect(email).to.equal("test@example.org");
+  const login = this.vm().children.account.selectors.login();
+  expect(login).to.equal("login1");
 });
 
 Then(/^I should be able to disconnect$/, function () {
@@ -82,7 +44,7 @@ Then(/^I should be able to disconnect$/, function () {
 });
 
 Given(
-  /^I have connected on multiple devices using the same email address$/,
+  /^I have connected on multiple devices using the same login$/,
   function () {
     //TODO
   },
@@ -98,7 +60,7 @@ Then(/^the new meditation should appear on all devices$/, function () {
 
 Given("I am authenticated", function () {
   this.account = {
-    email: "test@example.org",
+    login: "login1",
     status: accountStatus.AUTHENTICATED,
   };
 });

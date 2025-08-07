@@ -3,7 +3,7 @@ import { clearUserData, createUser } from "./database.admin.js";
 import { fakeTokenService } from "./test-providers.js";
 import { eventTypes } from "domain/src/models/event.model.js";
 
-const email = "events@it.test";
+const userLogin = "login2";
 
 const userUuid = "df32a25b-9c21-4ab7-a41b-b0a1214da304";
 const userToken = fakeTokenService.createPermanentToken({ userUuid });
@@ -15,8 +15,8 @@ const unknownUserToken = fakeTokenService.createPermanentToken({
 });
 const unknownUserHeaders = { authorization: `Bearer ${unknownUserToken}` };
 describe("posting and retrieving events", () => {
-  beforeEach(createUser(userUuid, email));
-  afterEach(clearUserData(email));
+  beforeEach(createUser(userUuid, userLogin));
+  afterEach(clearUserData(userLogin));
 
   test("should get empty list of events when retrieving first time", async () => {
     //WHEN

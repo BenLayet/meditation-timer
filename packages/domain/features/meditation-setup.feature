@@ -4,7 +4,6 @@ Feature: Meditation session setup
   so that I can meditate in the way I want
 
   Scenario: Opening the meditation timer app for the first time
-    When I open the app
     Then the next meditation duration should be 20:00
     And the next preparation duration should be 00:20
 
@@ -14,7 +13,6 @@ Feature: Meditation session setup
     Then the next meditation duration should be 15:00
 
   Scenario: Setting gong off
-    When I open the app
     And I toggle the gong off
     Then the gong should be off
 
