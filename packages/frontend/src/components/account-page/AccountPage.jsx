@@ -5,11 +5,15 @@ import { Account } from "../account/Account.jsx";
 export const AccountPage = ({ vm }) => {
   const { t } = useTranslation();
   return (
-    <div className="text-center">
-      <h1 className="mb-3">{t("statistics")}</h1>
-      <Statistics vm={vm.children.statistics} />
-      <h1 className="mb-3">{t("account")}</h1>
-      <Account vm={vm.children.account} />
+    <div className="text-center d-flex flex-column flex-lg-row justify-content-around">
+      <div>
+        <h1 className="mb-3">{t("statistics")}</h1>
+        <Statistics vm={vm.children.statistics} />
+      </div>
+      <div>
+        <h1 className="mb-3">{t("account")}</h1>
+        <Account vm={vm.children.account} />
+      </div>
     </div>
   );
 };

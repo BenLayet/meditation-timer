@@ -12,7 +12,7 @@ function NewMeditationPage({ vm }) {
       currentTimeInSeconds: currentTimeInSeconds(),
     });
   return (
-    <div className="d-flex flex-column flex-fill align-items-center">
+    <div className="d-flex flex-column flex-lg-row flex-fill align-items-center">
       <div
         className="
           flex-fill align-self-stretch
@@ -31,10 +31,12 @@ function NewMeditationPage({ vm }) {
           </figcaption>
         </InspiringImage>
       </div>
-      <NewMeditation vm={vm} />
-      <button className="mt-btn main-action mb-3 px-5" onClick={playClicked}>
-        <FontAwesomeIcon icon={faPlay} />
-      </button>
+      <div>
+        <NewMeditation vm={vm} />
+        <button className="mt-btn main-action mb-3 px-5" onClick={playClicked}>
+          <FontAwesomeIcon icon={faPlay} />
+        </button>
+      </div>
     </div>
   );
 }
