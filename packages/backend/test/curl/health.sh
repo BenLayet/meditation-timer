@@ -1,1 +1,1 @@
-curl -X GET --location "http://localhost:18000/api/v1/health"
+curl -X GET --location "http://localhost:8000/api/v1/health"

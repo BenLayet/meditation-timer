@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS users (
                                      uuid UUID NOT NULL CONSTRAINT users_pkey PRIMARY KEY,
-                                     email TEXT NOT NULL UNIQUE,
+                                     login TEXT NOT NULL UNIQUE,
                                      created_at TIMESTAMP DEFAULT NOW()
 );
 CREATE TABLE IF NOT EXISTS events (
@@ -14,10 +14,3 @@ CREATE TABLE IF NOT EXISTS events (
 );
 CREATE INDEX events_user_uuid_idx ON events (user_uuid);
 CREATE INDEX events_type_idx ON events (type);
-
-CREATE TABLE IF NOT EXISTS email_verifications (
-                                                   uuid UUID NOT NULL CONSTRAINT email_verifications_pkey PRIMARY KEY,
-                                                   email TEXT NOT NULL,
-                                                   created_at TIMESTAMP DEFAULT NOW(),
-                                                   status TEXT NOT NULL
-);

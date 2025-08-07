@@ -3,7 +3,7 @@ import {
   validateNotNullObject,
 } from "domain/src/lib/assert/not-null.validator.js";
 
-export const healthCheck = ({ build, environment, logger }) => {
+export const healthCheckUsecase = ({ build, environment, logger }) => {
   validateNotNullObject({ build });
   validateNotEmptyString({ environment });
   validateNotNullObject({ logger });

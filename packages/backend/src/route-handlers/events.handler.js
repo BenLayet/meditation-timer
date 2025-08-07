@@ -3,8 +3,9 @@ import { extractBearerToken } from "./bearer-token.js";
 import { FunctionalError } from "../errors/functional-error.js";
 import { errorCodes } from "domain/src/errors/error-codes.js";
 
-export const postEventHandler = ({ logger, postEvent }) => {
-  return async (req, res) => {
+export const postEventHandler =
+  ({ logger, postEvent }) =>
+  async (req, res) => {
     const event = req.body;
     let token;
     try {
@@ -31,10 +32,10 @@ export const postEventHandler = ({ logger, postEvent }) => {
       logger.error(error, event);
     }
   };
-};
 
-export const getEventPageHandler = ({ logger, getEventPage }) => {
-  return async (req, res) => {
+export const getEventPageHandler =
+  ({ logger, getEventPage }) =>
+  async (req, res) => {
     const pageRequest = parsePageRequest(req);
     let token;
     try {
@@ -51,4 +52,3 @@ export const getEventPageHandler = ({ logger, getEventPage }) => {
       logger.error(error);
     }
   };
-};

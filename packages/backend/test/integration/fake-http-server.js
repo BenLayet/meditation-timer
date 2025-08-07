@@ -27,12 +27,16 @@ class ServerSideRequest {
   };
 }
 export const createFakeEndPoint =
-  (handler) =>
+  (handler, errorHandler) =>
   async ({ params = {}, query = {}, headers = {}, body = {} }) => {
     const clientSideResponse = { headers: {} };
-    await handler(
-      new ServerSideRequest({ params, query, headers, body }),
-      new ServerSideResponse(clientSideResponse),
-    );
+    const req = new ServerSideRequest({ params, query, headers, body });
+    const res = new ServerSideResponse(clientSideResponse);
+
+    try {
+      await handler(req, res);
+    } catch (error) {
+      await errorHandler(error, req, res);
+    }
     return clientSideResponse;
   };

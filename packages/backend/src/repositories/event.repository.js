@@ -7,7 +7,7 @@ import { FunctionalError } from "../errors/functional-error.js";
 export class EventRepository {
   constructor(datasource, datasourceErrorCodes, logger) {
     this.datasource = datasource;
-    this.datasourceErrorCode = datasourceErrorCodes;
+    this.datasourceErrorCodes = datasourceErrorCodes;
     this.logger = logger;
   }
 
@@ -25,7 +25,7 @@ export class EventRepository {
       return toEvent(row[0]);
     } catch (error) {
       this.logger.error(error, `error while inserting event`);
-      if (error.code === this.datasourceErrorCode.FOREIGN_KEY_VIOLATION) {
+      if (error.code === this.datasourceErrorCodes.FOREIGN_KEY_VIOLATION) {
         throw new FunctionalError(
           `user ${event.userUuid} does not exist`,
           errorCodes.USER_DOES_NOT_EXIST,
