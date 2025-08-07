@@ -3,7 +3,7 @@ import { dependencies } from "./global-setup.js";
 const environment = dependencies.environment;
 const datasource = dependencies.datasource;
 
-export const clearUserData = (email) => async () => {
+export const clearUserData = (login) => async () => {
   if (environment !== "test") {
     throw new Error(
       `This file should only be run in test mode, environment=${environment}`,
@@ -11,16 +11,13 @@ export const clearUserData = (email) => async () => {
   }
   await datasource`DELETE
                    FROM users
-                   WHERE email = ${email};`;
-  await datasource`DELETE
-                   FROM email_verifications
-                   WHERE email = ${email};`;
+                   WHERE login = ${login};`;
 };
-export const createUser = (userUuid, email) => async () => {
+export const createUser = (userUuid, login) => async () => {
   if (environment !== "test") {
     throw new Error(
       `This file should only be run in test mode, environment=${environment}`,
     );
   }
-  await datasource`INSERT INTO users (uuid, email) VALUES (${userUuid}, ${email});`;
+  await datasource`INSERT INTO users (uuid, login) VALUES (${userUuid}, ${login});`;
 };

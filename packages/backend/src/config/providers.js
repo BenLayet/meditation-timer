@@ -9,6 +9,7 @@ import { loggerProviders } from "./logger.providers.js";
 import { uuidGeneratorProviders } from "./uuid-generator.providers.js";
 import { tokenServiceProviders } from "./token-service.providers.js";
 import { routeProviders } from "./route.providers.js";
+import { errorHandlerProviders } from "./error-handler.providers.js";
 
 export const providers = {
   ...environmentProviders,
@@ -22,4 +23,5 @@ export const providers = {
   ...usecaseProviders,
   ...endpointHandlerProviders,
   ...cleanUpTaskProviders,
+  ...errorHandlerProviders,
 };

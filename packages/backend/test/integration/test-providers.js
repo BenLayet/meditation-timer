@@ -6,6 +6,7 @@ import { environmentProviders } from "../../src/config/environment.providers.js"
 import { apiPropertiesProviders } from "../../src/config/api-properties.providers.js";
 import { cleanUpTaskProviders } from "../../src/config/clean-up-task.providers.js";
 import { routeProviders } from "../../src/config/route.providers.js";
+import { errorHandlerProviders } from "../../src/config/error-handler.providers.js";
 
 export const fakeUuidGenerator = {
   nextUuid: "10000000-0000-1000-8000-000000000001",
@@ -45,4 +46,5 @@ export const testProviders = {
   ...cleanUpTaskProviders,
   ...usecaseProviders,
   ...endpointHandlerProviders,
+  ...errorHandlerProviders,
 };

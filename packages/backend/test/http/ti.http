@@ -1,0 +1,79 @@
+
+###
+POST http://localhost:8000/api/v1/accounts
+Content-Type: application/json
+
+{
+    "login":"login1"
+}
+
+> {%
+  client.test("Status should be 201", () => {
+    client.assert(response.status === 201, "Response status is not 201");
+  });
+%}
+
+
+
+###
+GET http://localhost:8000/api/v1/accounts?login=login1
+Content-Type: application/json
+
+> {%
+  client.test("Status should be 200", () => {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+  client.test("Response should have userToken", () => {
+    client.assert(response.body.hasOwnProperty('userToken'), "Missing userToken");
+    client.global.set("userToken", response.body.userToken);
+  });
+%}
+
+###
+POST http://localhost:8000/api/v1/events
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+    "uuid": "11111111-0000-1000-8000-000000120003",
+    "type": "ADD_MEDITATION",
+    "payload": {
+        "uuid": "11111111-0000-1000-8000-000000000003",
+        "durationInMinutes": 20,
+        "startedTimeInSeconds": 1699999999999
+    }
+}
+
+###
+GET http://localhost:8000/api/v1/events
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+
+> {%
+  client.test("Status should be 200", () => {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+
+  client.test("Response should have pagination info", () => {
+    client.assert(response.body.hasOwnProperty('hasNextPage'), "Missing totalCount");
+    client.assert(response.body.hasOwnProperty('entities'), "Missing pageSize");
+    client.assert(response.body.hasOwnProperty('lastId'), "Missing pageNumber");
+  });
+
+  client.test("Response should be an array", () => {
+    client.assert(Array.isArray(response.body.entities), "Response entities is not an array");
+  });
+
+  // Test structure of items if array is not empty
+  if (response.body.entities.length > 0) {
+    client.test("Event items should have correct structure", () => {
+      const item = response.body.entities[0];
+      client.assert(item.hasOwnProperty('uuid'), "Missing uuid");
+      client.assert(item.hasOwnProperty('type'), "Missing type");
+      client.assert(item.hasOwnProperty('payload'), "Missing payload");
+    });
+  }
+%}
+
+

@@ -3,9 +3,28 @@ import { dependencies } from "./global-setup.js";
 
 export const apiClient = {
   //health
-  healthCheck: createFakeEndPoint(dependencies.healthCheckHandler),
+  healthCheck: createFakeEndPoint(
+    dependencies.healthCheckHandler,
+    dependencies.errorHandler,
+  ),
+
+  //account
+  createAccount: createFakeEndPoint(
+    dependencies.createAccountHandler,
+    dependencies.errorHandler,
+  ),
+  login: createFakeEndPoint(
+    dependencies.loginHandler,
+    dependencies.errorHandler,
+  ),
 
   //events
-  postEvent: createFakeEndPoint(dependencies.postEventHandler),
-  getEventPage: createFakeEndPoint(dependencies.getEventPageHandler),
+  postEvent: createFakeEndPoint(
+    dependencies.postEventHandler,
+    dependencies.errorHandler,
+  ),
+  getEventPage: createFakeEndPoint(
+    dependencies.getEventPageHandler,
+    dependencies.errorHandler,
+  ),
 };

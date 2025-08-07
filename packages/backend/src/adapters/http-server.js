@@ -8,6 +8,9 @@ export const startHttpServer = async ({
   healthCheckHandler,
   postEventHandler,
   getEventPageHandler,
+  createAccountHandler,
+  loginHandler,
+  errorHandler,
   apiProperties,
   routeProperties,
   cleanupTasks,
@@ -33,15 +36,16 @@ export const startHttpServer = async ({
   const { port } = apiProperties;
   app.get(routeProperties.healthPath, healthCheckHandler);
 
+  const accountsRouter = express.Router();
+  accountsRouter.post("/", createAccountHandler).get("/", loginHandler);
+  app.use(routeProperties.accountsPath, accountsRouter);
+
   const eventsRouter = express.Router();
   eventsRouter.post("/", postEventHandler).get("/", getEventPageHandler);
   app.use(routeProperties.eventsPath, eventsRouter);
 
   // Error-handling middleware
-  app.use((err, req, res, next) => {
-    logger.error(err, "Error occurred:", err.message);
-    res.status(500).json({ error: "Internal Server Error" });
-  });
+  app.use(errorHandler);
 
   // Start server
   const server = app.listen(port, () => {
