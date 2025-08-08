@@ -1,7 +1,7 @@
 import { flow } from "lodash-es";
 import { map } from "../../lib/functions/object.functions.js";
 import { and, or } from "../../lib/functions/predicate.functions.js";
-import { loginErrorCode } from "../../models/account.model.js";
+import { loginErrorCodes } from "../../models/account.model.js";
 
 //utility
 const getInputErrorCodes = (input) => input.errorCodes ?? [];
@@ -19,57 +19,74 @@ const postProcessingErrorCodes = (state) => state.postProcessingErrorCodes;
 
 const hasLoginNotFoundError = flow(
   postProcessingErrorCodes,
-  containsErrorCode(loginErrorCode.LOGIN_NOT_FOUND),
+  containsErrorCode(loginErrorCodes.LOGIN_NOT_FOUND),
+);
+const hasIncorrectPasswordError = flow(
+  postProcessingErrorCodes,
+  containsErrorCode(loginErrorCodes.INCORRECT_PASSWORD),
 );
 //login
 const loginInput = (state) => state.controls.login;
 const loginInputValue = flow(loginInput, getInputValue);
-const loginErrorCodes = flow(loginInput, getInputErrorCodes);
+const loginInputErrorCodes = flow(loginInput, getInputErrorCodes);
 const isLoginInputMarkedAsError = or(
-  flow(loginInput, (input) => input.areErrorsMarked && hasInputAnyError(input)),
+  flow(
+    loginInputErrorCodes,
+    (input) => input.areErrorsMarked && hasInputAnyError(input),
+  ),
   flow(
     postProcessingErrorCodes,
-    containsErrorCode(loginErrorCode.LOGIN_NOT_FOUND),
+    containsErrorCode(loginErrorCodes.LOGIN_NOT_FOUND),
   ),
 );
 const isLoginInputDisabled = isProcessing;
 const hasLoginFormatError = and(
   isLoginInputMarkedAsError,
-  flow(loginErrorCodes, containsErrorCode(loginErrorCode.INVALID_LOGIN_FORMAT)),
+  flow(
+    loginInputErrorCodes,
+    containsErrorCode(loginErrorCodes.INVALID_LOGIN_FORMAT),
+  ),
 );
 
 //password
 const passwordInput = (state) => state.controls.password;
 const passwordInputValue = flow(passwordInput, getInputValue);
-const passwordErrorCodes = flow(passwordInput, getInputErrorCodes);
-const isPasswordInputMarkedAsError = flow(
-  passwordInput,
-  (input) => input.areErrorsMarked && hasInputAnyError(input),
+const passwordInputErrorCodes = flow(passwordInput, getInputErrorCodes);
+const isPasswordInputMarkedAsError = or(
+  flow(
+    passwordInput,
+    (input) => input.areErrorsMarked && hasInputAnyError(input),
+  ),
+  flow(
+    postProcessingErrorCodes,
+    containsErrorCode(loginErrorCodes.INCORRECT_PASSWORD),
+  ),
 );
+
 const isPasswordInputDisabled = isProcessing;
 const hasPasswordFormatError = and(
   isPasswordInputMarkedAsError,
   flow(
-    passwordErrorCodes,
-    containsErrorCode(loginErrorCode.INVALID_PASSWORD_FORMAT),
+    passwordInputErrorCodes,
+    containsErrorCode(loginErrorCodes.INVALID_PASSWORD_FORMAT),
   ),
 );
 
 //form
 const errorCodes = (state) => [
-  ...loginErrorCodes(state),
-  ...passwordErrorCodes(state),
+  ...loginInputErrorCodes(state),
+  ...passwordInputErrorCodes(state),
   ...postProcessingErrorCodes(state),
 ];
 const hasServerUnreachableError = flow(
   postProcessingErrorCodes,
-  containsErrorCode(loginErrorCode.SERVER_UNREACHABLE),
+  containsErrorCode(loginErrorCodes.SERVER_UNREACHABLE),
 );
 const visibleErrorCodes = [
-  loginErrorCode.INVALID_LOGIN_FORMAT,
-  loginErrorCode.LOGIN_NOT_FOUND,
-  loginErrorCode.INVALID_PASSWORD_FORMAT,
-  loginErrorCode.SERVER_UNREACHABLE,
+  loginErrorCodes.INVALID_LOGIN_FORMAT,
+  loginErrorCodes.LOGIN_NOT_FOUND,
+  loginErrorCodes.INVALID_PASSWORD_FORMAT,
+  loginErrorCodes.SERVER_UNREACHABLE,
 ];
 const areErrorsVisible = flow(errorCodes, (errorCodes) =>
   errorCodes.some((errorCode) => visibleErrorCodes.includes(errorCode)),
@@ -84,6 +101,7 @@ export const ownStateSelectors = {
   hasLoginFormatError,
   hasPasswordFormatError,
   hasLoginNotFoundError,
+  hasIncorrectPasswordError,
   hasServerUnreachableError,
   areErrorsVisible,
   isLoginInputMarkedAsError,

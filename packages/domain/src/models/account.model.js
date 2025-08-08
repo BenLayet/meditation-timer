@@ -9,11 +9,11 @@ const staticErrorCode = {
   INVALID_PASSWORD_FORMAT: "INVALID_PASSWORD_FORMAT",
   SERVER_UNREACHABLE: "SERVER_UNREACHABLE",
 };
-export const createAccountErrorCode = {
+export const createAccountErrorCodes = {
   ...staticErrorCode,
   LOGIN_ALREADY_EXISTS: "LOGIN_ALREADY_EXISTS",
 };
-export const loginErrorCode = {
+export const loginErrorCodes = {
   ...staticErrorCode,
   LOGIN_NOT_FOUND: "LOGIN_NOT_FOUND",
   INCORRECT_PASSWORD: "INCORRECT_PASSWORD",
@@ -28,6 +28,21 @@ export function validateLoginFormat(login) {
   if (!isValidLoginFormat(login)) {
     throw new Error(
       `Login must be 3+ characters, excluding space character, but was: ${login}`,
+    );
+  }
+}
+export function validatePasswordFormat(password) {
+  if (typeof password !== "string") {
+    throw new Error(
+      `Password must be a string but was of type ${typeof password}`,
+    );
+  }
+  if (password.length === 0) {
+    throw new Error(`Password cannot be empty`);
+  }
+  if (!isValidPasswordFormat(password)) {
+    throw new Error(
+      `Password must be 5+ characters, excluding space character, but was: ${password}`,
     );
   }
 }
@@ -56,7 +71,7 @@ export const isPasswordInputInvalid = (passwordInputValue) =>
 
 export const getFormErrorCodes = (login) =>
   !login
-    ? [loginErrorCode.LOGIN_MISSING]
+    ? [loginErrorCodes.LOGIN_MISSING]
     : !isValidLoginFormat(login)
-      ? [loginErrorCode.INVALID_LOGIN_FORMAT]
+      ? [loginErrorCodes.INVALID_LOGIN_FORMAT]
       : [];

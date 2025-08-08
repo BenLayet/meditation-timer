@@ -1,6 +1,6 @@
 export const errorHandler =
   ({ logger }) =>
-  (request, response, next, error) => {
+  (error, request, response) => {
     // Default error
     logger.error(error);
     response.status(500).json({

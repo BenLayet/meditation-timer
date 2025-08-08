@@ -10,6 +10,7 @@ import { uuidGeneratorProviders } from "./uuid-generator.providers.js";
 import { tokenServiceProviders } from "./token-service.providers.js";
 import { routeProviders } from "./route.providers.js";
 import { errorHandlerProviders } from "./error-handler.providers.js";
+import { passwordHasherProviders } from "./password-hasher.providers.js";
 
 export const providers = {
   ...environmentProviders,
@@ -19,6 +20,7 @@ export const providers = {
   ...routeProviders,
   ...uuidGeneratorProviders,
   ...tokenServiceProviders,
+  ...passwordHasherProviders,
   ...repositoryProviders,
   ...usecaseProviders,
   ...endpointHandlerProviders,

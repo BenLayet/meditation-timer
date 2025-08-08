@@ -6,6 +6,7 @@ export const LoginForm = ({ vm }) => {
   const { t, i18n } = useTranslation();
 
   const hasLoginNotFoundError = vm.selectors.hasLoginNotFoundError();
+  const hasIncorrectPasswordError = vm.selectors.hasIncorrectPasswordError();
 
   const isProcessing = vm.selectors.isProcessing();
   const hasLoginFormatError = vm.selectors.hasLoginFormatError();
@@ -77,6 +78,7 @@ export const LoginForm = ({ vm }) => {
         {hasLoginFormatError && <li>{t("loginFormatError")}</li>}
         {hasPasswordFormatError && <li>{t("passwordFormatError")}</li>}
         {hasLoginNotFoundError && <li>{t("loginNotFoundError")}</li>}
+        {hasIncorrectPasswordError && <li>{t("incorrectPasswordError")}</li>}
         {hasServerUnreachableError && <li>{t("serverUnreachableError")}</li>}
       </ul>
       {isProcessing && <FontAwesomeIcon icon={faSpinner} spin />}

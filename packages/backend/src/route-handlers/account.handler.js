@@ -1,11 +1,11 @@
 import {
-  createAccountErrorCode,
-  loginErrorCode,
+  createAccountErrorCodes,
+  loginErrorCodes,
 } from "domain/src/models/account.model.js";
 
 export const createAccountHandler =
   ({ createAccountUsecase }) =>
-  async (request, response, next) => {
+  async (request, response) => {
     try {
       const account = await createAccountUsecase(request.body);
       response.status(201).json(account);
@@ -13,19 +13,19 @@ export const createAccountHandler =
       if (error?.name === "FunctionalError") {
         const json = functionalError(error);
         switch (error.code) {
-          case createAccountErrorCode.LOGIN_ALREADY_EXISTS:
+          case createAccountErrorCodes.LOGIN_ALREADY_EXISTS:
             return response.status(409).json(json);
-          case createAccountErrorCode.INVALID_LOGIN_FORMAT:
+          case createAccountErrorCodes.INVALID_LOGIN_FORMAT:
             return response.status(405).json(json);
         }
       }
-      next(error);
+      throw error;
     }
   };
 
 export const loginHandler =
   ({ loginUsecase }) =>
-  async (request, response, next) => {
+  async (request, response) => {
     try {
       const account = await loginUsecase(request.body);
       response.status(200).json(account);
@@ -33,13 +33,15 @@ export const loginHandler =
       if (error?.name === "FunctionalError") {
         const json = functionalError(error);
         switch (error.code) {
-          case loginErrorCode.LOGIN_NOT_FOUND:
+          case loginErrorCodes.LOGIN_NOT_FOUND:
             return response.status(401).json(json);
-          case createAccountErrorCode.INVALID_LOGIN_FORMAT:
+          case loginErrorCodes.INVALID_LOGIN_FORMAT:
             return response.status(405).json(json);
+          case loginErrorCodes.INCORRECT_PASSWORD:
+            return response.status(401).json(json);
         }
       }
-      next(error);
+      throw error;
     }
   };
 

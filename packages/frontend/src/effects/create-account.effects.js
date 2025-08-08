@@ -1,5 +1,5 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { createAccountErrorCode } from "domain/src/models/account.model.js";
+import { createAccountErrorCodes } from "domain/src/models/account.model.js";
 import { createAccountFormEvents } from "domain/src/components/create-account-form/create-account-form.events.js";
 
 export const createAccountEffects = ({ accountApi }, rootVM) => {
@@ -14,7 +14,7 @@ export const createAccountEffects = ({ accountApi }, rootVM) => {
       console.error(error);
       dispatchers.createAccountFailed({
         error,
-        errorCodes: [createAccountErrorCode.SERVER_UNREACHABLE],
+        errorCodes: [createAccountErrorCodes.SERVER_UNREACHABLE],
       });
       return;
     }

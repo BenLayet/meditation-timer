@@ -19,5 +19,5 @@ export const createUser = (userUuid, login) => async () => {
       `This file should only be run in test mode, environment=${environment}`,
     );
   }
-  await datasource`INSERT INTO users (uuid, login) VALUES (${userUuid}, ${login});`;
+  await datasource`INSERT INTO users (uuid, login, password_hash) VALUES (${userUuid}, ${login}, '$HASH');`;
 };
