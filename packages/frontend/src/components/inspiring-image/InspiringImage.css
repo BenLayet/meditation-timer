@@ -1,5 +1,6 @@
 .inspiring-image {
   position: relative;
+  min-height: 150px;
 }
 .inspiring-image::before {
   content: "";
