@@ -56,20 +56,16 @@ export const Account = ({ vm }) => {
           )}
           {isLoginFormVisible && (
             <>
-              <div className="row justify-content-center mb-3">
-                <div className="col-10 col-sm-6">
-                  <LoginForm vm={vm.children.loginForm} />
-                </div>
-                <p className="text-info-subtle fs-6 m-0 text-center">
-                  {t("noAccountYet")}{" "}
-                  <a
-                    onClick={vm.dispatchers.createAccountFormRequested}
-                    className="clickable"
-                  >
-                    {t("thenCreateOne")}
-                  </a>
-                </p>
-              </div>
+              <p className="text-info-subtle fs-6 text-center">
+                {t("noAccountYet")}{" "}
+                <a
+                  onClick={vm.dispatchers.createAccountFormRequested}
+                  className="clickable"
+                >
+                  {t("thenCreateOne")}
+                </a>
+              </p>
+              <LoginForm vm={vm.children.loginForm} />
             </>
           )}
         </div>

@@ -1,7 +1,18 @@
+import { loginErrorCode } from "../../models/account.model.js";
+
 export const loginFormInitialState = {
-  loading: false,
-  loginInputValue: "",
-  errorCodes: [],
-  isValidationRequested: false,
-  hasLoginInputChanged: false,
+  controls: {
+    login: {
+      value: "",
+      areErrorsMarked: false,
+      errorCodes: [loginErrorCode.LOGIN_MISSING],
+    },
+    password: {
+      value: "",
+      areErrorsMarked: false,
+      errorCodes: [loginErrorCode.PASSWORD_MISSING],
+    },
+  },
+  postProcessingErrorCodes: [],
+  isSubmitted: false,
 };

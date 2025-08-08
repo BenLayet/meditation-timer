@@ -4,12 +4,13 @@ import { faSpinner, faUserLock } from "@fortawesome/free-solid-svg-icons";
 
 export const CreateAccountForm = ({ vm }) => {
   const { t, i18n } = useTranslation();
-  const isProcessing = vm.selectors.isProcessing();
+
   const hasLoginAlreadyExistsError = vm.selectors.hasLoginAlreadyExistsError();
+
+  const isProcessing = vm.selectors.isProcessing();
   const hasLoginFormatError = vm.selectors.hasLoginFormatError();
   const hasPasswordFormatError = vm.selectors.hasPasswordFormatError();
   const hasServerUnreachableError = vm.selectors.hasServerUnreachableError();
-  const areErrorsVisible = vm.selectors.areErrorsVisible();
   const isLoginInputMarkedAsError = vm.selectors.isLoginInputMarkedAsError();
   const isPasswordInputMarkedAsError =
     vm.selectors.isPasswordInputMarkedAsError();
