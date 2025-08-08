@@ -1,6 +1,5 @@
 import ow from "ow";
 import {
-  getFormErrorCodes,
   getLoginInputStaticErrorCodes,
   getPasswordInputStaticErrorCodes,
   isLoginInputInvalid,
@@ -29,7 +28,7 @@ export const createAccountFormEvents = {
   createAccountSucceeded: {
     eventType: "createAccountSucceeded",
     payloadShape: {
-      userToken: ow.string,
+      userToken: ow.string.not.empty,
       login: ow.string.matches(loginRegex),
     },
   },

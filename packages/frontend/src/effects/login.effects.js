@@ -5,10 +5,10 @@ import { loginFormEvents } from "domain/src/components/login-form/login-form.eve
 export const loginEffects = ({ accountApi }, rootVM) => {
   const dispatchers = rootVM.children.account.children.loginForm.dispatchers;
 
-  const loginRequested = async ({ login }) => {
+  const loginRequested = async ({ login, password }) => {
     let account;
     try {
-      account = await accountApi.login({ login });
+      account = await accountApi.login({ login, password });
     } catch (error) {
       console.error(error);
       dispatchers.loginFailed({

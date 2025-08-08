@@ -6,10 +6,10 @@ export const createAccountEffects = ({ accountApi }, rootVM) => {
   const dispatchers =
     rootVM.children.account.children.createAccountForm.dispatchers;
 
-  const createAccountRequested = async ({ login }) => {
+  const createAccountRequested = async ({ login, password }) => {
     let account;
     try {
-      account = await accountApi.createAccount({ login });
+      account = await accountApi.createAccount({ login, password });
     } catch (error) {
       console.error(error);
       dispatchers.createAccountFailed({

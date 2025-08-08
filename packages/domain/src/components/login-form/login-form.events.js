@@ -1,8 +1,11 @@
 import ow from "ow";
 import {
-  getFormErrorCodes,
+  getLoginInputStaticErrorCodes,
+  getPasswordInputStaticErrorCodes,
   isLoginInputInvalid,
+  isPasswordInputInvalid,
   loginRegex,
+  passwordRegex,
 } from "../../models/account.model.js";
 import { loginFormInitialState } from "./login-form.state.js";
 
@@ -11,7 +14,7 @@ export const loginFormEvents = {
     eventType: "formSubmitted",
     handler: (state) => ({
       ...state,
-      loading: true,
+      isSubmitted: true,
     }),
     isNewCycle: true,
   },
@@ -19,6 +22,7 @@ export const loginFormEvents = {
     eventType: "loginRequested",
     payloadShape: {
       login: ow.string.matches(loginRegex),
+      password: ow.string.matches(passwordRegex),
     },
   },
   loginSucceeded: {
@@ -27,10 +31,6 @@ export const loginFormEvents = {
       userToken: ow.string.not.empty,
       login: ow.string.matches(loginRegex),
     },
-    handler: (state) => ({
-      ...state,
-      loading: false,
-    }),
   },
   loginFailed: {
     eventType: "loginFailed",
@@ -40,8 +40,8 @@ export const loginFormEvents = {
     },
     handler: (state, { errorCodes }) => ({
       ...state,
-      loading: false,
-      errorCodes,
+      isSubmitted: false,
+      postProcessingErrorCodes: errorCodes,
     }),
   },
   loginInputChanged: {
@@ -51,25 +51,68 @@ export const loginFormEvents = {
     },
     handler: (state, { loginInputValue }) => ({
       ...state,
-      loginInputValue,
-      isValidationRequested:
-        state.isValidationRequested && isLoginInputInvalid(loginInputValue),
-      hasLoginInputChanged: true,
-      errorCodes: getFormErrorCodes(loginInputValue),
+      controls: {
+        ...state.controls,
+        login: {
+          value: loginInputValue,
+          areErrorsMarked:
+            state.controls.login.areErrorsMarked &&
+            isLoginInputInvalid(loginInputValue),
+          errorCodes: getLoginInputStaticErrorCodes(loginInputValue),
+        },
+      },
+      postProcessingErrorCodes: [],
+    }),
+    isNewCycle: true,
+  },
+  passwordInputChanged: {
+    eventType: "passwordInputChanged",
+    payloadShape: {
+      passwordInputValue: ow.string,
+    },
+    handler: (state, { passwordInputValue }) => ({
+      ...state,
+      controls: {
+        ...state.controls,
+        password: {
+          value: passwordInputValue,
+          areErrorsMarked:
+            state.controls.password.areErrorsMarked &&
+            isPasswordInputInvalid(passwordInputValue),
+          errorCodes: getPasswordInputStaticErrorCodes(passwordInputValue),
+        },
+      },
+      postProcessingErrorCodes: [],
     }),
     isNewCycle: true,
   },
   loginInputCompleted: {
     eventType: "loginInputCompleted",
-    isNewCycle: true,
-  },
-  validationRequested: {
-    eventType: "validationRequested",
     handler: (state) => ({
       ...state,
-      isValidationRequested: true,
-      hasLoginInputChanged: false,
+      controls: {
+        ...state.controls,
+        login: {
+          ...state.controls.login,
+          areErrorsMarked: true,
+        },
+      },
     }),
+    isNewCycle: true,
+  },
+  passwordInputCompleted: {
+    eventType: "passwordInputCompleted",
+    handler: (state) => ({
+      ...state,
+      controls: {
+        ...state.controls,
+        password: {
+          ...state.controls.password,
+          areErrorsMarked: true,
+        },
+      },
+    }),
+    isNewCycle: true,
   },
   resetRequested: {
     eventType: "resetRequested",

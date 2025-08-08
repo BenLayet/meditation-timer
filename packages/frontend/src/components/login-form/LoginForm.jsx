@@ -4,13 +4,19 @@ import { faSpinner, faUserLock } from "@fortawesome/free-solid-svg-icons";
 
 export const LoginForm = ({ vm }) => {
   const { t, i18n } = useTranslation();
-  const isLoading = vm.selectors.isLoading();
+
   const hasLoginNotFoundError = vm.selectors.hasLoginNotFoundError();
+
+  const isProcessing = vm.selectors.isProcessing();
   const hasLoginFormatError = vm.selectors.hasLoginFormatError();
-  const areErrorsVisible = vm.selectors.areErrorsVisible();
+  const hasPasswordFormatError = vm.selectors.hasPasswordFormatError();
+  const hasServerUnreachableError = vm.selectors.hasServerUnreachableError();
   const isLoginInputMarkedAsError = vm.selectors.isLoginInputMarkedAsError();
+  const isPasswordInputMarkedAsError =
+    vm.selectors.isPasswordInputMarkedAsError();
   const isSubmitDisabled = vm.selectors.isSubmitDisabled();
   const isLoginInputDisabled = vm.selectors.isLoginInputDisabled();
+  const isPasswordInputDisabled = vm.selectors.isPasswordInputDisabled();
 
   const formSubmitted = (e) => {
     e.preventDefault();
@@ -22,40 +28,58 @@ export const LoginForm = ({ vm }) => {
       loginInputValue: e.target.value,
     });
   };
+  const passwordInputChanged = (e) => {
+    vm.dispatchers.passwordInputChanged({
+      passwordInputValue: e.target.value,
+    });
+  };
 
   return (
-    <form
-      onSubmit={formSubmitted}
-      className="d-flex flex-column align-items-stretch gap-2"
-    >
-      <input
-        type="text"
-        id="login"
-        name="login"
-        placeholder={t("yourLoginPlaceholder")}
-        onChange={loginInputChanged}
-        minLength="3"
-        pattern="[a-zA-Z0-9]+"
-        required
-        className={`form-control ${isLoginInputMarkedAsError ? "is-invalid" : ""}`}
-        onBlur={vm.dispatchers.loginInputCompleted}
-        disabled={isLoginInputDisabled}
-      />
-      <button
-        type="submit"
-        className="btn btn-secondary"
-        disabled={isSubmitDisabled}
+    <form onSubmit={formSubmitted}>
+      <div className="row justify-content-center mb-3">
+        <div className="col-10 col-sm-6 d-flex flex-column align-items-stretch gap-2">
+          <input
+            type="text"
+            id="login"
+            name="login"
+            placeholder={t("yourLoginPlaceholder")}
+            onChange={loginInputChanged}
+            required
+            className={`form-control ${isLoginInputMarkedAsError ? "is-invalid" : ""}`}
+            onBlur={vm.dispatchers.loginInputCompleted}
+            disabled={isLoginInputDisabled}
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder={t("passwordPlaceholder")}
+            onChange={passwordInputChanged}
+            required
+            className={`form-control ${isPasswordInputMarkedAsError ? "is-invalid" : ""}`}
+            onBlur={vm.dispatchers.passwordInputCompleted}
+            disabled={isPasswordInputDisabled}
+          />
+          <button
+            type="submit"
+            className="btn btn-secondary"
+            disabled={isSubmitDisabled}
+          >
+            <FontAwesomeIcon icon={faUserLock} />
+            &nbsp;{t("login")}
+          </button>
+        </div>
+      </div>
+      <ul
+        className="form-error fs-6 mb-0 text-danger-emphasis list-unstyled"
+        style={{ minHeight: "2rem" }}
       >
-        <FontAwesomeIcon icon={faUserLock} />
-        &nbsp;{t("login")}
-      </button>
-      {areErrorsVisible && (
-        <ul className="form-error fs-5 mb-0 text-danger-emphasis">
-          {hasLoginFormatError && <li>{t("loginFormatError")}</li>}
-          {hasLoginNotFoundError && <li>{t("loginNotFoundError")}</li>}
-        </ul>
-      )}
-      {isLoading && <FontAwesomeIcon icon={faSpinner} spin />}
+        {hasLoginFormatError && <li>{t("loginFormatError")}</li>}
+        {hasPasswordFormatError && <li>{t("passwordFormatError")}</li>}
+        {hasLoginNotFoundError && <li>{t("hasLoginNotFoundError")}</li>}
+        {hasServerUnreachableError && <li>{t("serverUnreachableError")}</li>}
+      </ul>
+      {isProcessing && <FontAwesomeIcon icon={faSpinner} spin />}
     </form>
   );
 };
