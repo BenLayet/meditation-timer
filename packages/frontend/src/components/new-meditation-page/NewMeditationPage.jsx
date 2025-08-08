@@ -12,7 +12,7 @@ function NewMeditationPage({ vm }) {
       currentTimeInSeconds: currentTimeInSeconds(),
     });
   return (
-    <div className="d-flex flex-column flex-lg-row flex-fill align-items-center">
+    <div className="d-flex flex-column flex-sm-row flex-fill align-items-center">
       <div
         className="
           flex-fill align-self-stretch
