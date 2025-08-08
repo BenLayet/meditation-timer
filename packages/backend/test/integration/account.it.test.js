@@ -2,8 +2,8 @@ import { apiClient } from "./api.client.js";
 import { clearUserData } from "./database.admin.js";
 import { fakeTokenService, fakeUuidGenerator } from "./test-providers.js";
 import {
-  createAccountErrorCode,
-  loginErrorCode,
+  createAccountErrorCodes,
+  loginErrorCodes,
 } from "domain/src/models/account.model.js";
 
 const userToken = fakeTokenService.createPermanentToken({
@@ -45,6 +45,24 @@ describe("account", () => {
     });
   });
 
+  test("login with incorrect password should return error", async () => {
+    //GIVEN
+    await apiClient.createAccount({
+      body: { login, password },
+    });
+    //WHEN
+    const { body, status } = await apiClient.login({
+      body: { login, password: "INCORRECT" },
+    });
+
+    //THEN
+    expect(status, "status should be 401").toBe(401);
+    expect(body).toEqual({
+      error: "Incorrect password",
+      errorCodes: [loginErrorCodes.INCORRECT_PASSWORD],
+    });
+  });
+
   test("creating an account with invalid format should return error", async () => {
     //WHEN
     const { body, status } = await apiClient.createAccount({
@@ -56,7 +74,7 @@ describe("account", () => {
     expect(body).toEqual({
       error:
         "Error: Login must be 3+ characters, excluding space character, but was: CONTAIN SPACE",
-      errorCodes: [createAccountErrorCode.INVALID_LOGIN_FORMAT],
+      errorCodes: [createAccountErrorCodes.INVALID_LOGIN_FORMAT],
     });
   });
   test("creating an account that already exists should return error", async () => {
@@ -74,7 +92,7 @@ describe("account", () => {
     expect(status, "status should be 409").toBe(409);
     expect(body).toEqual({
       error: "user login1 already exists",
-      errorCodes: [createAccountErrorCode.LOGIN_ALREADY_EXISTS],
+      errorCodes: [createAccountErrorCodes.LOGIN_ALREADY_EXISTS],
     });
   });
 
@@ -88,7 +106,7 @@ describe("account", () => {
     expect(status, "status should be 401").toBe(401);
     expect(body).toEqual({
       error: "user login1 not found",
-      errorCodes: [loginErrorCode.LOGIN_NOT_FOUND],
+      errorCodes: [loginErrorCodes.LOGIN_NOT_FOUND],
     });
   });
 });

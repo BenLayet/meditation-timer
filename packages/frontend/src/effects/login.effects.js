@@ -1,5 +1,5 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { loginErrorCode } from "domain/src/models/account.model.js";
+import { loginErrorCodes } from "domain/src/models/account.model.js";
 import { loginFormEvents } from "domain/src/components/login-form/login-form.events.js";
 
 export const loginEffects = ({ accountApi }, rootVM) => {
@@ -13,7 +13,7 @@ export const loginEffects = ({ accountApi }, rootVM) => {
       console.error(error);
       dispatchers.loginFailed({
         error,
-        errorCodes: [loginErrorCode.SERVER_UNREACHABLE],
+        errorCodes: [loginErrorCodes.SERVER_UNREACHABLE],
       });
       return;
     }

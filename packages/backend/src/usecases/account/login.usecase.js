@@ -3,14 +3,21 @@ import {
   validateNotNullObject,
 } from "domain/src/lib/assert/not-null.validator.js";
 import {
-  loginErrorCode,
+  loginErrorCodes,
   validateLoginFormat,
+  validatePasswordFormat,
 } from "domain/src/models/account.model.js";
 import { FunctionalError } from "../../errors/functional-error.js";
 
-export const loginUsecase = ({ userRepository, tokenService, logger }) => {
+export const loginUsecase = ({
+  userRepository,
+  tokenService,
+  passwordHasher,
+  logger,
+}) => {
   validateNotNullObject({ userRepository });
   validateNotNullObject({ tokenService });
+  validateNotNullObject({ passwordHasher });
   validateNotNullObject({ logger });
 
   return async ({ login, password }) => {
@@ -20,13 +27,22 @@ export const loginUsecase = ({ userRepository, tokenService, logger }) => {
     try {
       validateNotEmptyString({ login });
     } catch (error) {
-      throw new FunctionalError(error, loginErrorCode.LOGIN_MISSING);
+      throw new FunctionalError(error, loginErrorCodes.LOGIN_MISSING);
     }
-    // Validate input
+    try {
+      validateNotEmptyString({ password });
+    } catch (error) {
+      throw new FunctionalError(error, loginErrorCodes.PASSWORD_MISSING);
+    }
     try {
       validateLoginFormat(login);
     } catch (error) {
-      throw new FunctionalError(error, loginErrorCode.INVALID_LOGIN_FORMAT);
+      throw new FunctionalError(error, loginErrorCodes.INVALID_LOGIN_FORMAT);
+    }
+    try {
+      validatePasswordFormat(password);
+    } catch (error) {
+      throw new FunctionalError(error, loginErrorCodes.INVALID_PASSWORD_FORMAT);
     }
 
     // get the user
@@ -34,10 +50,17 @@ export const loginUsecase = ({ userRepository, tokenService, logger }) => {
     if (!user) {
       throw new FunctionalError(
         `user ${login} not found`,
-        loginErrorCode.LOGIN_NOT_FOUND,
+        loginErrorCodes.LOGIN_NOT_FOUND,
       );
     }
-    logger.info(`User retrieved: ${user.uuid}`);
+
+    //verify password
+    if (!(await passwordHasher.verify(user.passwordHash, password))) {
+      throw new FunctionalError(
+        "Incorrect password",
+        loginErrorCodes.INCORRECT_PASSWORD,
+      );
+    }
 
     // create a permanent token for the user
     const userToken = tokenService.createPermanentToken({

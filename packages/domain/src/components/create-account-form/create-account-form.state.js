@@ -1,16 +1,16 @@
-import { createAccountErrorCode } from "../../models/account.model.js";
+import { createAccountErrorCodes } from "../../models/account.model.js";
 
 export const createAccountFormInitialState = {
   controls: {
     login: {
       value: "",
       areErrorsMarked: false,
-      errorCodes: [createAccountErrorCode.LOGIN_MISSING],
+      errorCodes: [createAccountErrorCodes.LOGIN_MISSING],
     },
     password: {
       value: "",
       areErrorsMarked: false,
-      errorCodes: [createAccountErrorCode.PASSWORD_MISSING],
+      errorCodes: [createAccountErrorCodes.PASSWORD_MISSING],
     },
   },
   postProcessingErrorCodes: [],

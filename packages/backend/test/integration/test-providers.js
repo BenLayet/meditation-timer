@@ -7,6 +7,7 @@ import { apiPropertiesProviders } from "../../src/config/api-properties.provider
 import { cleanUpTaskProviders } from "../../src/config/clean-up-task.providers.js";
 import { routeProviders } from "../../src/config/route.providers.js";
 import { errorHandlerProviders } from "../../src/config/error-handler.providers.js";
+import { passwordHasherProviders } from "../../src/config/password-hasher.providers.js";
 
 export const fakeUuidGenerator = {
   nextUuid: "10000000-0000-1000-8000-000000000001",
@@ -40,6 +41,7 @@ export const testProviders = {
   ...routeProviders,
   uuidGenerator: () => fakeUuidGenerator,
   tokenService: () => fakeTokenService,
+  ...passwordHasherProviders,
   ...repositoryProviders,
   ...usecaseProviders,
   ...endpointHandlerProviders,
