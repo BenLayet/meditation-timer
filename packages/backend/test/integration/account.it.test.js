@@ -12,12 +12,13 @@ const userToken = fakeTokenService.createPermanentToken({
 
 describe("account", () => {
   const login = "login1";
+  const password = "password1";
   afterEach(clearUserData(login));
 
   test("creating an account should return a userToken", async () => {
     //WHEN
     const { body, status } = await apiClient.createAccount({
-      body: { login },
+      body: { login, password },
     });
 
     //THEN
@@ -30,11 +31,11 @@ describe("account", () => {
   test("login should return userToken", async () => {
     //GIVEN
     await apiClient.createAccount({
-      body: { login },
+      body: { login, password },
     });
     //WHEN
     const { body, status } = await apiClient.login({
-      query: { login },
+      body: { login, password },
     });
 
     //THEN
@@ -61,12 +62,12 @@ describe("account", () => {
   test("creating an account that already exists should return error", async () => {
     //GIVEN
     await apiClient.createAccount({
-      body: { login },
+      body: { login, password },
     });
     fakeUuidGenerator.nextUuid = "10000000-0000-1000-8000-000000000002";
     //WHEN
     const { body, status } = await apiClient.createAccount({
-      body: { login },
+      body: { login, password },
     });
 
     //THEN
@@ -80,7 +81,7 @@ describe("account", () => {
   test("login when not registered should return error", async () => {
     //WHEN
     const { body, status } = await apiClient.login({
-      query: { login },
+      body: { login, password },
     });
 
     //THEN

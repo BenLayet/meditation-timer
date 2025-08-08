@@ -6,9 +6,8 @@ import {
 export const createAccountHandler =
   ({ createAccountUsecase }) =>
   async (request, response, next) => {
-    const { login } = request.body;
     try {
-      const account = await createAccountUsecase(login);
+      const account = await createAccountUsecase(request.body);
       response.status(201).json(account);
     } catch (error) {
       if (error?.name === "FunctionalError") {
@@ -27,9 +26,8 @@ export const createAccountHandler =
 export const loginHandler =
   ({ loginUsecase }) =>
   async (request, response, next) => {
-    const { login } = request.query;
     try {
-      const account = await loginUsecase(login);
+      const account = await loginUsecase(request.body);
       response.status(200).json(account);
     } catch (error) {
       if (error?.name === "FunctionalError") {

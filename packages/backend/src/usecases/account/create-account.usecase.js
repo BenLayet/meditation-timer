@@ -14,7 +14,7 @@ export const createAccountUsecase = ({
   validateNotNullObject({ tokenService });
   validateNotNullObject({ logger });
 
-  return async (login) => {
+  return async ({ login, password }) => {
     logger.info(login, `Create account requested`);
 
     // Validate input
