@@ -76,7 +76,7 @@ export const LoginForm = ({ vm }) => {
       >
         {hasLoginFormatError && <li>{t("loginFormatError")}</li>}
         {hasPasswordFormatError && <li>{t("passwordFormatError")}</li>}
-        {hasLoginNotFoundError && <li>{t("hasLoginNotFoundError")}</li>}
+        {hasLoginNotFoundError && <li>{t("loginNotFoundError")}</li>}
         {hasServerUnreachableError && <li>{t("serverUnreachableError")}</li>}
       </ul>
       {isProcessing && <FontAwesomeIcon icon={faSpinner} spin />}

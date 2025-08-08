@@ -13,7 +13,7 @@ export const loginUsecase = ({ userRepository, tokenService, logger }) => {
   validateNotNullObject({ tokenService });
   validateNotNullObject({ logger });
 
-  return async (login) => {
+  return async ({ login, password }) => {
     logger.info(login, `Login requested`);
 
     // Validate input

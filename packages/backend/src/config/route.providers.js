@@ -7,14 +7,30 @@ const routeConstants = {
     },
     accounts: {
       base: "/accounts",
+      endpoints: {
+        createAccount: {
+          path: "/",
+        },
+        login: {
+          path: "/login",
+        },
+      },
     },
   },
 };
 
 export const routeProviders = {
   routeProperties: () => ({
-    healthPath: `${routeConstants.api}${routeConstants.resources.health.base}`,
-    eventsPath: `${routeConstants.api}${routeConstants.resources.events.base}`,
-    accountsPath: `${routeConstants.api}${routeConstants.resources.accounts.base}`,
+    health: {
+      base: `${routeConstants.api}${routeConstants.resources.health.base}`,
+    },
+    events: {
+      base: `${routeConstants.api}${routeConstants.resources.events.base}`,
+    },
+    accounts: {
+      base: `${routeConstants.api}${routeConstants.resources.accounts.base}`,
+      createAccount: `${routeConstants.resources.accounts.endpoints.createAccount.path}`,
+      login: `${routeConstants.resources.accounts.endpoints.login.path}`,
+    },
   }),
 };

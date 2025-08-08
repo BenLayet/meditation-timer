@@ -34,15 +34,17 @@ export const startHttpServer = async ({
 
   // Routes
   const { port } = apiProperties;
-  app.get(routeProperties.healthPath, healthCheckHandler);
+  app.get(routeProperties.health.base, healthCheckHandler);
 
   const accountsRouter = express.Router();
-  accountsRouter.post("/", createAccountHandler).get("/", loginHandler);
-  app.use(routeProperties.accountsPath, accountsRouter);
+  accountsRouter
+    .post(routeProperties.accounts.createAccount, createAccountHandler)
+    .post(routeProperties.accounts.login, loginHandler);
+  app.use(routeProperties.accounts.base, accountsRouter);
 
   const eventsRouter = express.Router();
   eventsRouter.post("/", postEventHandler).get("/", getEventPageHandler);
-  app.use(routeProperties.eventsPath, eventsRouter);
+  app.use(routeProperties.events.base, eventsRouter);
 
   // Error-handling middleware
   app.use(errorHandler);
