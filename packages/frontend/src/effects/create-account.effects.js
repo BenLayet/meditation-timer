@@ -14,7 +14,7 @@ export const createAccountEffects = ({ accountApi }, rootVM) => {
       console.error(error);
       dispatchers.createAccountFailed({
         error,
-        errorCodes: [createAccountErrorCode.UNKNOWN_ERROR],
+        errorCodes: [createAccountErrorCode.SERVER_UNREACHABLE],
       });
       return;
     }

@@ -1,8 +1,10 @@
+import { fetchWithTimeout } from "./fetch-with-timeout.function.js";
+
 const API_URL = "/api/v1/events";
 
 export class EventApi {
   getEventPage = (userToken) => async (afterId, size) => {
-    return fetch(`${API_URL}?afterId=${afterId}&size=${size}`, {
+    return fetchWithTimeout(`${API_URL}?afterId=${afterId}&size=${size}`, {
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
@@ -15,7 +17,7 @@ export class EventApi {
   };
 
   postEvent = (userToken) => async (event) => {
-    return fetch(API_URL, {
+    return fetchWithTimeout(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

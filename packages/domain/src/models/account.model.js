@@ -2,17 +2,21 @@ export const accountStatus = {
   AUTHENTICATED: "AUTHENTICATED",
   ANONYMOUS: "ANONYMOUS",
 };
-export const createAccountErrorCode = {
+const staticErrorCode = {
   LOGIN_MISSING: "LOGIN_MISSING",
-  LOGIN_ALREADY_EXISTS: "LOGIN_ALREADY_EXISTS",
   INVALID_LOGIN_FORMAT: "INVALID_LOGIN_FORMAT",
-  UNKNOWN_ERROR: "UNKNOWN_ERROR",
+  PASSWORD_MISSING: "PASSWORD_MISSING",
+  INVALID_PASSWORD_FORMAT: "INVALID_PASSWORD_FORMAT",
+  SERVER_UNREACHABLE: "SERVER_UNREACHABLE",
+};
+export const createAccountErrorCode = {
+  ...staticErrorCode,
+  LOGIN_ALREADY_EXISTS: "LOGIN_ALREADY_EXISTS",
 };
 export const loginErrorCode = {
-  LOGIN_MISSING: "LOGIN_MISSING",
-  INVALID_LOGIN_FORMAT: "INVALID_LOGIN_FORMAT",
+  ...staticErrorCode,
   LOGIN_NOT_FOUND: "LOGIN_NOT_FOUND",
-  UNKNOWN_ERROR: "UNKNOWN_ERROR",
+  INCORRECT_PASSWORD: "INCORRECT_PASSWORD",
 };
 export function validateLoginFormat(login) {
   if (typeof login !== "string") {
@@ -27,13 +31,32 @@ export function validateLoginFormat(login) {
     );
   }
 }
-export const loginRegex = /^\S{3,}$/;
+export const loginRegex = /^\S{2,}$/;
+export const passwordRegex = /^\S{5,}$/;
 export const isValidLoginFormat = (login) => loginRegex.test(login);
+export const isValidPasswordFormat = (password) => passwordRegex.test(password);
 
-export const getErrorCodes = (login) =>
+export const getLoginInputStaticErrorCodes = (loginInputValue) =>
+  !loginInputValue
+    ? [staticErrorCode.LOGIN_MISSING]
+    : !isValidLoginFormat(loginInputValue)
+      ? [staticErrorCode.INVALID_LOGIN_FORMAT]
+      : [];
+export const isLoginInputInvalid = (loginInputValue) =>
+  getLoginInputStaticErrorCodes(loginInputValue).length > 0;
+
+export const getPasswordInputStaticErrorCodes = (passwordInputValue) =>
+  !passwordInputValue
+    ? [staticErrorCode.PASSWORD_MISSING]
+    : !isValidPasswordFormat(passwordInputValue)
+      ? [staticErrorCode.INVALID_PASSWORD_FORMAT]
+      : [];
+export const isPasswordInputInvalid = (passwordInputValue) =>
+  getPasswordInputStaticErrorCodes(passwordInputValue).length > 0;
+
+export const getFormErrorCodes = (login) =>
   !login
     ? [loginErrorCode.LOGIN_MISSING]
     : !isValidLoginFormat(login)
       ? [loginErrorCode.INVALID_LOGIN_FORMAT]
       : [];
-export const hasError = (login) => getErrorCodes(login).length > 0;

@@ -1,8 +1,10 @@
+import { fetchWithTimeout } from "./fetch-with-timeout.function.js";
+
 const API_URL = "/api/v1/accounts";
 
 export class AccountApi {
   createAccount = async (account) => {
-    return fetch(API_URL, {
+    return fetchWithTimeout(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -11,7 +13,7 @@ export class AccountApi {
     }).then((response) => response.json());
   };
   login = async (credentials) => {
-    return fetch(`${API_URL}/?login=${credentials.login}`, {
+    return fetchWithTimeout(`${API_URL}/?login=${credentials.login}`, {
       method: "GET",
     }).then((response) => response.json());
   };

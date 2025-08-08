@@ -2,14 +2,10 @@ import {
   validateNotEmptyString,
   validateNotNullObject,
 } from "domain/src/lib/assert/not-null.validator.js";
-import { errorCodes } from "domain/src/errors/error-codes.js";
-import { validateNewEvent } from "domain/src/models/event.model.js";
 import {
-  createAccountErrorCode as createAccountErrorCodes,
   loginErrorCode,
   validateLoginFormat,
 } from "domain/src/models/account.model.js";
-import { datasourceErrorCodes } from "../../adapters/postgres.datasource.js";
 import { FunctionalError } from "../../errors/functional-error.js";
 
 export const loginUsecase = ({ userRepository, tokenService, logger }) => {

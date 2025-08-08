@@ -25,20 +25,16 @@ export const Account = ({ vm }) => {
         <div className="flex-column align-items-stretch gap-1">
           {isCreateAccountFormVisible && (
             <>
-              <div className="row justify-content-center mb-3">
-                <div className="col-10 col-sm-6">
-                  <CreateAccountForm vm={vm.children.createAccountForm} />
-                </div>
-                <p className="text-info-subtle fs-6 m-0">
-                  {t("alreadyHaveAccount")}{" "}
-                  <a
-                    onClick={vm.dispatchers.loginFormRequested}
-                    className="clickable"
-                  >
-                    {t("thenLogin")}
-                  </a>
-                </p>
-              </div>
+              <p className="text-info-subtle fs-6">
+                {t("alreadyHaveAccount")}{" "}
+                <a
+                  onClick={vm.dispatchers.loginFormRequested}
+                  className="clickable"
+                >
+                  {t("thenLogin")}
+                </a>
+              </p>
+              <CreateAccountForm vm={vm.children.createAccountForm} />
               <div className="fs-5 d-flex flex-column">
                 <p>{t("createAccountFor")}</p>
                 <ul className="align-items-start d-flex flex-column text-start">

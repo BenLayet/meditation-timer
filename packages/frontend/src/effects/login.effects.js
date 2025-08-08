@@ -13,7 +13,7 @@ export const loginEffects = ({ accountApi }, rootVM) => {
       console.error(error);
       dispatchers.loginFailed({
         error,
-        errorCodes: [loginErrorCode.UNKNOWN_ERROR],
+        errorCodes: [loginErrorCode.SERVER_UNREACHABLE],
       });
       return;
     }
