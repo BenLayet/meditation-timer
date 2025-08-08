@@ -3,7 +3,6 @@ import {
   createAccountErrorCode as createAccountErrorCodes,
   validateLoginFormat,
 } from "domain/src/models/account.model.js";
-import { datasourceErrorCodes } from "../../adapters/postgres.datasource.js";
 import { FunctionalError } from "../../errors/functional-error.js";
 
 export const createAccountUsecase = ({
@@ -29,19 +28,7 @@ export const createAccountUsecase = ({
     }
 
     // save the user
-    let newUser;
-    try {
-      newUser = await userRepository.createUser(login);
-    } catch (error) {
-      if (error.code === datasourceErrorCodes.FOREIGN_KEY_VIOLATION) {
-        throw new FunctionalError(
-          `user ${login} already exists`,
-          createAccountErrorCodes.LOGIN_ALREADY_EXISTS,
-        );
-      } else {
-        throw error;
-      }
-    }
+    const newUser = await userRepository.createUser(login);
     logger.info(`User created: ${newUser.uuid}`);
 
     // create a permanent token for the user

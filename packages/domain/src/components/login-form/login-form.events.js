@@ -1,7 +1,7 @@
 import ow from "ow";
 import {
-  getErrorCodes,
-  hasError,
+  getFormErrorCodes,
+  isLoginInputInvalid,
   loginRegex,
 } from "../../models/account.model.js";
 import { loginFormInitialState } from "./login-form.state.js";
@@ -53,9 +53,9 @@ export const loginFormEvents = {
       ...state,
       loginInputValue,
       isValidationRequested:
-        state.isValidationRequested && hasError(loginInputValue),
+        state.isValidationRequested && isLoginInputInvalid(loginInputValue),
       hasLoginInputChanged: true,
-      errorCodes: getErrorCodes(loginInputValue),
+      errorCodes: getFormErrorCodes(loginInputValue),
     }),
     isNewCycle: true,
   },
