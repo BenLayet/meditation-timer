@@ -16,10 +16,10 @@ export default defineConfig(({ mode }) => {
       react(),
       VitePWA({
         registerType: "autoUpdate",
-        workbox: {
+        injectManifest: {
           globPatterns: [
             "**/*.{js,css,html,png,jpg,jpeg,svg,ogg,json,ico,woff2}",
-          ], // Cache assets with these extensions
+          ],
         },
         devOptions: {
           enabled: true,
