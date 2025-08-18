@@ -9,6 +9,7 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 // Event listener for sync event
 self.addEventListener("message", (event) => {
+  console.debug("Message received from main thread");
   if (event.data.type === "synchronizationRequested") {
     event.waitUntil(synchronizeEvents());
   }

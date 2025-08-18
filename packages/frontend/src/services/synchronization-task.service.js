@@ -1,5 +1,6 @@
 export class SynchronizationTaskService {
   async queueSynchronizationTask() {
+    console.debug("queueSynchronizationTask called");
     // Register the sync task if the service worker is ready
     if ("serviceWorker" in navigator) {
       await navigator.serviceWorker.ready.then((registration) =>
