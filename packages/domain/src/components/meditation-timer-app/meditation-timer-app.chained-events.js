@@ -161,4 +161,11 @@ export const meditationTimerAppChainedEvents = [
     },
     thenDispatch: meditationTimerAppEvents.synchronizationRequested,
   },
+  {
+    onEvent: {
+      ...accountEvents.accountNewlyAuthenticated,
+      childComponentPath: ["account"],
+    },
+    thenDispatch: meditationTimerAppEvents.synchronizationRequested,
+  },
 ];
