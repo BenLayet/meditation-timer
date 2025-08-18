@@ -150,4 +150,15 @@ export const meditationTimerAppChainedEvents = [
       childComponentPath: ["statistics"],
     },
   },
+  {
+    onEvent: meditationTimerAppEvents.onlineDetected,
+    thenDispatch: meditationTimerAppEvents.synchronizationRequested,
+  },
+  {
+    onEvent: {
+      ...actualMeditationEvents.saveSucceeded,
+      childComponentPath: ["meditationSession", "actualMeditation"],
+    },
+    thenDispatch: meditationTimerAppEvents.synchronizationRequested,
+  },
 ];

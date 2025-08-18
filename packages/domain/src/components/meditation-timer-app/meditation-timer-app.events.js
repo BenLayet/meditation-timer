@@ -28,4 +28,7 @@ export const meditationTimerAppEvents = {
   onlineDetected: {
     eventType: "onlineDetected",
   },
+  synchronizationRequested: {
+    eventType: "synchronizationRequested",
+  },
 };

@@ -5,11 +5,7 @@ import { actualMeditationEvents } from "domain/src/components/actual-meditation/
 export const synchronizationEffects = ({ synchronizationTaskService }) => {
   return [
     createEffect({
-      afterEvent: meditationTimerAppEvents.onlineDetected,
-      then: synchronizationTaskService.queueSynchronizationTask,
-    }),
-    createEffect({
-      afterEvent: actualMeditationEvents.saveSucceeded,
+      afterEvent: meditationTimerAppEvents.synchronizationRequested,
       then: synchronizationTaskService.queueSynchronizationTask,
     }),
   ];
