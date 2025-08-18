@@ -1,7 +1,5 @@
 import React from "react";
-import "./Settings.css";
 import { useTranslation } from "react-i18next";
-import { LanguageSelection } from "../language-selection/LanguageSelection.jsx";
 import MeditationSettings from "../meditation-settings/MeditationSettings.jsx";
 import build from "../../../../../build.json";
 
@@ -9,13 +7,13 @@ function Settings({ vm }) {
   const { t } = useTranslation();
 
   return (
-    <div className="flex-column flex-fill">
-      <div className="settings-menu flex-fill">
-        <div className="settings-menu-item">
-          <label className="settings-menu-item-label">
+    <div className="d-flex flex-column flex-fill">
+      <div className="flex-fill">
+        <div className="d-flex flex-column justify-content-between align-items-stretch p-2 border-bottom border-secondary-subtle">
+          <label className="mb-2 fs-1 text-start">
             {t("meditationSettings")}
           </label>
-          <div className="settings-menu-item-content">
+          <div className="d-flex flex-column align-items-center mb-1 gap-1">
             <MeditationSettings vm={vm.children.meditationSettings} />
           </div>
         </div>
