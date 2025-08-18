@@ -38,7 +38,7 @@ export const LoginForm = ({ vm }) => {
   return (
     <form onSubmit={formSubmitted}>
       <div className="row justify-content-center mb-3">
-        <div className="col-10 col-sm-6 d-flex flex-column align-items-stretch gap-2">
+        <div className="col-10 col-sm-6 col-lg-12 d-flex flex-column align-items-stretch gap-2">
           <input
             type="text"
             id="login"
