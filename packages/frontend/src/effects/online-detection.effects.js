@@ -9,7 +9,7 @@ export const onlineDetectionEffects = ({}, rootVM) => {
     window.removeEventListener("online", dispatchers.onlineStatusChanged);
     window.addEventListener("online", dispatchers.onlineStatusChanged);
     //  dispatch the event immediately
-    dispatchers.onlineStatusChanged({ isOnline: navigator.onLine });
+    dispatchers.onlineStatusChanged({ isOnline: !!navigator.onLine });
   };
 
   return [
