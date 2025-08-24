@@ -1,4 +1,3 @@
-import "./InspiringImage.css";
 import { useEffect, useState } from "react";
 
 export const InspiringImage = ({ children }) => {
@@ -7,15 +6,24 @@ export const InspiringImage = ({ children }) => {
     setTimeout(() => setIsVisible(true));
   }, []);
   return (
-    <div
+    <figure
       className={
-        "flex-fill w-100 dignified-fade-in d-flex flex-column" +
+        "flex-fill w-100 fade d-flex flex-column" +
         " " +
-        (isVisible ? "visible" : "hidden")
+        (isVisible ? "show" : "pe-none")
       }
+      style={{ transitionDuration: "6s" }}
     >
-      <div className="inspiring-image w-100 flex-fill "> </div>
+      <div
+        className="mt-full-width-image-container border-1 border-primary border rounded-3"
+        style={{ minHeight: "150px" }}
+      >
+        <div
+          className="mt-full-width-image rounded-3"
+          style={{ backgroundImage: "url('/suzuki-roshi.jpg')" }}
+        ></div>
+      </div>
       {children}
-    </div>
+    </figure>
   );
 };

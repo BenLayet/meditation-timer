@@ -1,0 +1,20 @@
+:root {
+  --bs-primary: #b88600;
+  --bs-primary-rgb: 184, 134, 0;
+  --bs-link-color-rgb: 184, 134, 0;
+  --bs-link-hover-color-rgb: 255, 255, 255;
+  --bs-link-hover-color: #ffffff;
+  --bs-link-color: var(--bs-primary);
+}
+
+[data-bs-theme="dark"] {
+  --bs-body-bg: #000000;
+  --bs-body-color: #ffffff;
+}
+[data-bs-theme="dark"] .link-primary:hover {
+  color: var(--bs-link-hover-color) !important;
+  text-decoration-color: RGBA(
+    var(--bs-link-hover-color),
+    var(--bs-link-underline-opacity, 1)
+  ) !important;
+}

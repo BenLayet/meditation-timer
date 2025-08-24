@@ -31,9 +31,15 @@ function NewMeditationPage({ vm }) {
           </figcaption>
         </InspiringImage>
       </div>
-      <div>
+      <div className="d-flex flex-column align-items-center mx-3">
         <NewMeditation vm={vm} />
-        <button className="mt-btn main-action mb-3 px-5" onClick={playClicked}>
+        <button
+          aria-label="start"
+          className="btn btn-secondary
+         btn-lg border-1 border-primary fs-1 mb-3 px-5"
+          onClick={playClicked}
+          style={{ minWidth: "13rem" }}
+        >
           <FontAwesomeIcon icon={faPlay} />
         </button>
       </div>

@@ -7,7 +7,7 @@ export function LanguageSelection() {
   };
 
   return (
-    <div className="d-flex flex-column fs-5 gap-3">
+    <div className="vstack gap-3">
       <input
         type="radio"
         id="language-en"
@@ -16,7 +16,12 @@ export function LanguageSelection() {
         checked={i18n.language === "en"}
         onChange={changeLanguage}
       />
-      <label htmlFor="language-en">{t("english")}</label>
+      <label
+        htmlFor="language-en"
+        className="border border-primary p-2 rounded"
+      >
+        {t("english")}
+      </label>
       <input
         type="radio"
         id="language-fr"
@@ -25,7 +30,12 @@ export function LanguageSelection() {
         checked={i18n.language === "fr"}
         onChange={changeLanguage}
       />
-      <label htmlFor="language-fr">{t("french")}</label>
+      <label
+        htmlFor="language-fr"
+        className="border border-primary p-2 rounded"
+      >
+        {t("french")}
+      </label>
     </div>
   );
 }

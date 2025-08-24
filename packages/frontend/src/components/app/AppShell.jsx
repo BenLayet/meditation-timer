@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import "./App.css";
 import "../../config/i18n";
 import AppPage from "./AppPage.jsx";
 import { useEffect, useState } from "react";

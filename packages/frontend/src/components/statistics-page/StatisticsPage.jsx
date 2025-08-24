@@ -19,7 +19,7 @@ function StatisticsPage({ vm }) {
         <Statistics vm={vm.children.statistics} animated={true} />
       </div>
       {isAnonymous && (
-        <p className="opacity-75 fs-5 mt-6">
+        <p className="opacity-75 fs-5">
           {t("createAccountToSecureStats_1")}{" "}
           <a href="#" onClick={navigateToAccountClicked}>
             {t("createAccountToSecureStats_2")}

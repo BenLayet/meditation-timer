@@ -18,23 +18,23 @@ export default ({ vm }) => {
       <div className="container-sm">
         <ul className="navbar-nav flex-fill">
           <li className="nav-item ">
-            <a
+            <button
               className={`nav-link ` + (page === "HOME" && "active")}
               aria-current="page"
               onClick={navItemClicked("HOME")}
             >
               <FontAwesomeIcon icon={faHome} />
-            </a>
+            </button>
           </li>
 
           <li className="nav-item ms-auto dropdown">
-            <a
+            <button
               className={`nav-link dropdown-toggle `}
               role="button"
               data-bs-toggle="dropdown"
             >
               <FontAwesomeIcon icon={faGlobe} className="me-1" />
-            </a>
+            </button>
             <div className={`dropdown-menu dropdown-menu-end `}>
               <div className="px-3 py-2">
                 <LanguageSelection />
@@ -42,22 +42,26 @@ export default ({ vm }) => {
             </div>
           </li>
           <li className="nav-item">
-            <a
-              className={`nav-link ` + (page === "ACCOUNT" && "active")}
+            <button
+              className={
+                `nav-link ` + (page === "ACCOUNT" && "active")
+              }
               aria-current="page"
               onClick={navItemClicked("ACCOUNT")}
             >
               <FontAwesomeIcon icon={faUser} />
-            </a>
+            </button>
           </li>
           <li className="nav-item">
-            <a
-              className={`nav-link ` + (page === "SETTINGS" && "active")}
+            <button
+              className={
+                `nav-link ` + (page === "SETTINGS" && "active")
+              }
               aria-current="page"
               onClick={navItemClicked("SETTINGS")}
             >
               <FontAwesomeIcon icon={faGear} />
-            </a>
+            </button>
           </li>
         </ul>
       </div>

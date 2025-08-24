@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import "./Statistics.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
@@ -27,21 +26,21 @@ export function Statistics({ vm, animated = false }) {
           {isStatisticsPresentationVisible && (
             <p className="fs-5 text-muted">{t("statisticsPresentation")}</p>
           )}
-          <ul className={"statistics " + (animated && "animated")}>
-            <li className="statistics-item">
-              {t("meditationCount", { count: meditationCount })}
-            </li>
+          <ul
+            className={
+              "mt-achievements " + (animated ? " mt-achievements-animated" : "")
+            }
+          >
+            <li>{t("meditationCount", { count: meditationCount })}</li>
             {shouldTotalMinutesThisWeekBeDisplayed && (
-              <li className={"statistics-item"}>
+              <li>
                 {t("hourCount", hourCount)}
                 {t("minuteCount", minuteCount)}
                 {t("thisWeek")}
               </li>
             )}
             {shouldDailyStreakBeDisplayed && (
-              <li className="statistics-item">
-                {t("dailyStreak", { dailyStreak })}
-              </li>
+              <li>{t("dailyStreak", { dailyStreak })}</li>
             )}
           </ul>
         </>

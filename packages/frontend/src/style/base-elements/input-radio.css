@@ -1,0 +1,22 @@
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + label {
+  cursor: pointer;
+}
+
+input[type="radio"] + label::before {
+  content: "✓ "; /* A checkmark icon */
+  margin-right: 0.5em;
+  font-weight: bold;
+  opacity: 0;
+}
+
+input[type="radio"]:checked + label::before {
+  opacity: 1;
+}
+
+input[type="radio"]:checked + label {
+  opacity: 1;
+}

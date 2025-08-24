@@ -1,0 +1,57 @@
+ul.mt-achievements {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+ul.mt-achievements > li {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+ul.mt-achievements > li::before,
+ul.mt-achievements > li::after {
+  content: "★";
+  margin-right: 1em;
+  margin-left: 1em;
+}
+
+/* Animation */
+ul.mt-achievements.mt-achievements-animated > li {
+  opacity: 0;
+  animation: mt-slide-up 1s ease forwards;
+}
+
+/* Stagger the animation with delay */
+ul.mt-achievements.mt-achievements-animated > li:nth-child(1) {
+  animation-delay: 0s;
+}
+
+ul.mt-achievements.mt-achievements-animated > li:nth-child(2) {
+  animation-delay: 1s;
+}
+
+ul.mt-achievements.mt-achievements-animated > li:nth-child(3) {
+  animation-delay: 2s;
+}
+
+ul.mt-achievements.mt-achievements-animated > li:nth-child(4) {
+  animation-delay: 3s;
+}
+
+ul.mt-achievements.mt-achievements-animated > li:nth-child(5) {
+  animation-delay: 4s;
+}
+
+@keyframes mt-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
