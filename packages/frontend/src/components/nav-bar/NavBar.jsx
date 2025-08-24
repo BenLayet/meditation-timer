@@ -43,9 +43,7 @@ export default ({ vm }) => {
           </li>
           <li className="nav-item">
             <button
-              className={
-                `nav-link ` + (page === "ACCOUNT" && "active")
-              }
+              className={`nav-link ` + (page === "ACCOUNT" && "active")}
               aria-current="page"
               onClick={navItemClicked("ACCOUNT")}
             >
@@ -54,9 +52,7 @@ export default ({ vm }) => {
           </li>
           <li className="nav-item">
             <button
-              className={
-                `nav-link ` + (page === "SETTINGS" && "active")
-              }
+              className={`nav-link ` + (page === "SETTINGS" && "active")}
               aria-current="page"
               onClick={navItemClicked("SETTINGS")}
             >
