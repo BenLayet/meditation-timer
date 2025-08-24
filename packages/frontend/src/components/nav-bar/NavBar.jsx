@@ -29,7 +29,7 @@ export default ({ vm }) => {
 
           <li className="nav-item ms-auto dropdown">
             <button
-              className={`nav-link cursor-pointer dropdown-toggle `}
+              className={`nav-link dropdown-toggle `}
               role="button"
               data-bs-toggle="dropdown"
             >
