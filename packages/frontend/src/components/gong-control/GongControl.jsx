@@ -9,13 +9,13 @@ function GongControl({ vm }) {
   //selectors
   const isGongOff = vm.selectors.isGongOff();
   return (
-    <div className="clickable d-flex" onClick={gongToggleClicked}>
+    <button className="btn btn-secondary " onClick={gongToggleClicked}>
       {isGongOff ? t("off") : t("on")}&nbsp;
       <FontAwesomeIcon
         icon={isGongOff ? faVolumeXmark : faVolumeHigh}
         className="round-button"
       />
-    </div>
+    </button>
   );
 }
 

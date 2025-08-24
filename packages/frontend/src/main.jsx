@@ -1,4 +1,4 @@
-import "./style/style.js";
+import "./style/style.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import AppShell from "./components/app/AppShell.jsx";

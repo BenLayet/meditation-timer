@@ -1,6 +1,4 @@
 import { useTranslation } from "react-i18next";
-import Timer from "../timer/Timer.jsx";
-import "./Preparation.css";
 
 function Preparation({ vm }) {
   const { t } = useTranslation();
@@ -13,12 +11,12 @@ function Preparation({ vm }) {
   return (
     <>
       <label>{t("preparation")}</label>
-      <Timer displayedTime={preparationRemainingTime} />
+      <div className="mt-time-display">{preparationRemainingTime}</div>
       <div className="d-flex flex-column fs-4">
-        <button className="round-rectangle-button" onClick={addTimeClicked}>
+        <button className="btn btn-secondary rounded" onClick={addTimeClicked}>
           +{timeIncrementInSeconds}s
         </button>
-        <a onClick={skipClicked} className="clickable">
+        <a onClick={skipClicked} className="link-primary" role="button">
           {t("skip")}
         </a>
       </div>

@@ -1,4 +1,3 @@
-import "./MeditationSettings.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
@@ -25,54 +24,55 @@ function MeditationSettings({ vm }) {
   const isGongOff = vm.selectors.isGongOff();
 
   return (
-    <div className="settings-table gap-3 gap-sm-0">
-      <div className="row setting">
+    <div className="d-flex flex-column gap-3 gap-sm-0 text-start">
+      <div className="row align-items-center">
         <label className="col-sm-5">{t("duration")}</label>
-        <div className="col-sm-7 row">
-          <div className="col-4 ">
+        <div className="col-sm-7 row align-items-center">
+          <div className="col-4 col-sm-6  fs-3">
             <PlusMinusControl
               minusClicked={meditationRemoveTimeClicked}
               plusClicked={meditationAddTimeClicked}
             />
           </div>
-          <span className="col-6 time-display">{meditationDuration}</span>
+          <div className="col-4 col-sm-6 mt-time-display">
+            {meditationDuration}
+          </div>
         </div>
       </div>
-      <div className="row setting">
+      <div className="row align-items-center">
         <label className="col-sm-5">{t("preparation")}</label>
-        <div className="col-sm-7 row">
-          <div className="col-4">
+        <div className="col-sm-7 row align-items-center">
+          <div className="col-4 col-sm-6 fs-3">
             <PlusMinusControl
               minusClicked={preparationRemoveTimeClicked}
               plusClicked={preparationAddTimeClicked}
             />
           </div>
-          <span className="col-6 time-display">{preparationDuration}</span>
+          <div className="col-4 col-sm-6 mt-time-display">
+            {preparationDuration}
+          </div>
         </div>
       </div>
-      <div className="row setting">
+      <div className="row align-items-center">
         <label className="col-sm-5">{t("gong")}</label>
-        <div className="col-sm-7 row">
-          <div className="col-4 d-flex">
+        <div className="col-sm-7 row align-items-center">
+          <div className="col-4 col-sm-6">
             <GongControl vm={vm} />
           </div>
           <div
             className={
-              "col-8 opacity-75 fs-4 d-flex " + (isGongOff && "disabled")
+              "col-4 col-sm-6 opacity-75 fs-4 align-items-center d-flex flex-nowrap" +
+              (isGongOff ? "disabled" : "")
             }
           >
             {t("test")}&nbsp;
-            <FontAwesomeIcon
-              icon={faPlay}
-              className="round-button"
-              onClick={gongPlayClicked}
-            />
+            <button className="btn round-button" onClick={gongPlayClicked}>
+              <FontAwesomeIcon icon={faPlay} />
+            </button>
             &nbsp;
-            <FontAwesomeIcon
-              icon={faStop}
-              className="round-button"
-              onClick={gongStopClicked}
-            />
+            <button className="btn round-button" onClick={gongStopClicked}>
+              <FontAwesomeIcon icon={faStop} />
+            </button>
           </div>
         </div>
       </div>

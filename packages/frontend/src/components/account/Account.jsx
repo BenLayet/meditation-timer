@@ -29,7 +29,8 @@ export const Account = ({ vm }) => {
                 {t("alreadyHaveAccount")}{" "}
                 <a
                   onClick={vm.dispatchers.loginFormRequested}
-                  className="clickable"
+                  role="button"
+                  className="link-primary"
                 >
                   {t("thenLogin")}
                 </a>
@@ -40,7 +41,6 @@ export const Account = ({ vm }) => {
                 <ul className="align-items-start d-flex flex-column text-start">
                   <li>{t("secureStats")}</li>
                   <li>{t("useMultipleDevices")}</li>
-                  <li>{t("noEmailOrPasswordRequired")}</li>
                 </ul>
               </div>
               <p className="fs-5 m-0">
@@ -60,7 +60,8 @@ export const Account = ({ vm }) => {
                 {t("noAccountYet")}{" "}
                 <a
                   onClick={vm.dispatchers.createAccountFormRequested}
-                  className="clickable"
+                  role="button"
+                  className="link-primary"
                 >
                   {t("thenCreateOne")}
                 </a>
@@ -88,7 +89,11 @@ export const Account = ({ vm }) => {
             )}
           </div>
           <p className="text-muted fs-5 opacity-50 mb-0">
-            <a target="_blank" href={`privacy-policy.${i18n.language}.html`}>
+            <a
+              target="_blank"
+              className="text-primary"
+              href={`privacy-policy.${i18n.language}.html`}
+            >
               {t("privacyPolicy")}
             </a>
           </p>

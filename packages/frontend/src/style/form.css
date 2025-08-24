@@ -1,9 +1,0 @@
-button[disabled] {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.form-explanation {
-  text-align: left;
-  margin-bottom: 0.5em;
-}

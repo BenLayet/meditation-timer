@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./InstallButton.css";
 import { useTranslation } from "react-i18next";
 
 const InstallButton = () => {
@@ -65,32 +64,25 @@ const InstallButton = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="install-banner">
+    <div
+      data-bs-theme="light"
+      className="
+    position-fixed top-0 start-0 w-100 z-1
+    d-flex justify-content-center
+    bg-light border border-secondary shadow p-2 "
+    >
       {isIos ? (
-        <>
-          <p className="install-banner-text">{t("installAppIos")}</p>
-          <button
-            className="close-button"
-            onClick={handleCloseBanner}
-            aria-label={t("closeBanner")}
-          >
-            ✕
-          </button>
-        </>
+        <p className="m-1 text-dark">{t("installAppIos")}</p>
       ) : (
-        <>
-          <button className="install-button" onClick={handleInstall}>
-            {t("installApp")}
-          </button>
-          <button
-            className="close-button"
-            onClick={handleCloseBanner}
-            aria-label={t("closeBanner")}
-          >
-            ✕
-          </button>
-        </>
+        <button className="btn btn-secondary" onClick={handleInstall}>
+          {t("installApp")}
+        </button>
       )}
+      <button
+        className="btn btn-close m-2 position-absolute top-0 end-0"
+        onClick={handleCloseBanner}
+        aria-label={t("closeBanner")}
+      />
     </div>
   );
 };
