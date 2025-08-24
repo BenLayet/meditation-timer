@@ -91,7 +91,7 @@ export const Account = ({ vm }) => {
           <p className="text-muted fs-5 opacity-50 mb-0">
             <a
               target="_blank"
-              className="text-primary"
+              className="link-primary"
               href={`privacy-policy.${i18n.language}.html`}
             >
               {t("privacyPolicy")}
