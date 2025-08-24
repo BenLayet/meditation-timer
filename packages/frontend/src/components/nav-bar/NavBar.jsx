@@ -55,7 +55,7 @@ export default ({ vm }) => {
           <li className="nav-item">
             <button
               className={
-                `nav-link cursor-pointer ` + (page === "SETTINGS" && "active")
+                `nav-link ` + (page === "SETTINGS" && "active")
               }
               aria-current="page"
               onClick={navItemClicked("SETTINGS")}
