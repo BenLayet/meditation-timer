@@ -16,8 +16,8 @@ function NewMeditation({ vm }) {
       <label>{t("duration")}</label>
       <span className="mt-time-display">{meditationDuration}</span>
       <PlusMinusControl
-        onPlusClick={meditationAddTimeClicked}
-        onMinusClick={meditationRemoveTimeClicked}
+        plusClicked={meditationAddTimeClicked}
+        minusClicked={meditationRemoveTimeClicked}
       />
     </div>
   );
