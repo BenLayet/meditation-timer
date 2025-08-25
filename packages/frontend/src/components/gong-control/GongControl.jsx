@@ -9,7 +9,7 @@ function GongControl({ vm }) {
   //selectors
   const isGongOff = vm.selectors.isGongOff();
   return (
-    <button className="btn btn-secondary " onClick={gongToggleClicked}>
+    <button className="btn btn-outline-primary " onClick={gongToggleClicked}>
       {isGongOff ? t("off") : t("on")}&nbsp;
       <FontAwesomeIcon
         icon={isGongOff ? faVolumeXmark : faVolumeHigh}

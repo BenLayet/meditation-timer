@@ -6,12 +6,12 @@ export const PlusMinusControl = ({ minusClicked, plusClicked }) => (
     <FontAwesomeIcon
       icon={faMinus}
       onClick={minusClicked}
-      className="btn btn-secondary border rounded-circle p-2 fs-4"
+      className="btn btn-outline-primary rounded-circle p-2 fs-4"
     />
     <FontAwesomeIcon
       icon={faPlus}
       onClick={plusClicked}
-      className="btn btn-secondary border rounded-circle p-2 fs-4"
+      className="btn btn-outline-primary rounded-circle p-2 fs-4"
     />
   </div>
 );
