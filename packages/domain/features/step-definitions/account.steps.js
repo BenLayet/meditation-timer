@@ -3,21 +3,23 @@ import { expect } from "chai";
 import { accountStatus } from "../../src/models/account.model.js";
 
 Given(/^I have not created an account yet$/, function () {
-  this.account = null;
+  delete this.localStorage.account;
 });
 Given("I have just created an account", function () {
-  this.account = {
+  this.localStorage.account = {
     login: "login1",
     status: accountStatus.AUTHENTICATED,
   };
 });
 
-When(/^I create an account with my login$/, function () {
-  this.vm().children.account.children.createAccountForm.dispatchers.createAccountRequested(
-    {
-      login: "login1",
-    },
+When(/^I create an account$/, function () {
+  this.vm().children.account.children.createAccountForm.dispatchers.loginInputChanged(
+    { loginInputValue: "login1" },
   );
+  this.vm().children.account.children.createAccountForm.dispatchers.passwordInputChanged(
+    { passwordInputValue: "password1" },
+  );
+  this.vm().children.account.children.createAccountForm.dispatchers.formSubmitted();
 });
 
 Then("my login should not be visible anymore", function () {
@@ -59,7 +61,7 @@ Then(/^the new meditation should appear on all devices$/, function () {
 });
 
 Given("I am authenticated", function () {
-  this.account = {
+  this.localStorage.account = {
     login: "login1",
     status: accountStatus.AUTHENTICATED,
   };

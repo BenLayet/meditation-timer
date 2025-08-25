@@ -45,7 +45,7 @@ const addMockedEffects = (
         stateManager
           .getRootVM()
           .children.statistics.dispatchers.meditationHistoryRetrieved({
-            ...mockLocalDatabase.meditationStorage,
+            meditationHistory: mockLocalDatabase.meditationHistory,
             currentEpochDay: CURRENT_EPOCH_DAY,
           }),
     }),
@@ -134,7 +134,7 @@ const addMockedEffects = (
 const initializeScenario = () => {
   stateManager = new StateManager(meditationTimerAppComponent);
   mockLocalDatabase = {
-    meditationStorage: { meditationHistory: [] },
+    meditationHistory: [],
   };
   mockRemoteDatabase = {};
   events = [];
@@ -150,15 +150,8 @@ class CustomWorld {
     return stateManager.state;
   }
 
-  get account() {
-    return mockLocalDatabase.account;
-  }
-  set account(account) {
-    mockLocalDatabase.account = account;
-  }
-
-  get meditationStorage() {
-    return mockLocalDatabase.meditationStorage;
+  get localStorage() {
+    return mockLocalDatabase;
   }
 
   vm() {

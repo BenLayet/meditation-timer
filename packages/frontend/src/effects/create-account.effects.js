@@ -4,7 +4,7 @@ import { createAccountFormEvents } from "domain/src/components/create-account-fo
 
 export const createAccountEffects = ({ accountApi }, rootVM) => {
   const dispatchers =
-    rootVM.children.account.children.createAccountForm.dispatchers;
+    rootVM.children.localStorageAccount.children.createAccountForm.dispatchers;
 
   const createAccountRequested = async ({ login, password }) => {
     let account;
