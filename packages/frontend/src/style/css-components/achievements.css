@@ -1,21 +1,30 @@
 ul.mt-achievements {
   list-style: none;
+  max-width: 100%;
   padding: 0;
   text-align: center;
+  display: grid;
+  justify-content: center;
+  gap: 1em;
 }
 
 ul.mt-achievements > li {
   display: flex;
   width: 100%;
-  justify-content: center;
+  max-width: 100%;
+  justify-content: space-between;
   align-items: center;
 }
 
 ul.mt-achievements > li::before,
 ul.mt-achievements > li::after {
   content: "★";
-  margin-right: 1em;
-  margin-left: 1em;
+}
+ul.mt-achievements > li::before {
+  margin-right: 0.5em;
+}
+ul.mt-achievements > li::after {
+  margin-left: 0.5em;
 }
 
 /* Animation */
