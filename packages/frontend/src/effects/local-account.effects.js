@@ -3,7 +3,7 @@ import { accountEvents } from "domain/src/components/account/account.events.js";
 import { accountStatus } from "domain/src/models/account.model.js";
 
 export const localAccountEffects = ({ keyValueStorageService }, rootVM) => {
-  const dispatchers = rootVM.children.account.dispatchers;
+  const dispatchers = rootVM.children.localStorageAccount.dispatchers;
   //loadAccountRequested
   const loadAccountRequested = async () => {
     const account = await keyValueStorageService.get("account");

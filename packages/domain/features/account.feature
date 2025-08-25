@@ -5,7 +5,7 @@ Feature: Account Management
 
   Scenario: Create an account
     Given I have not created an account yet
-    When I create an account with my login
+    When I create an account
     Then I should be authenticated
     And I should be able to disconnect
 

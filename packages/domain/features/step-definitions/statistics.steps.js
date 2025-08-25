@@ -7,7 +7,7 @@ import { CURRENT_EPOCH_DAY } from "../support/test-constants.js";
 Given(
   /^I had a daily streak of (\d+) days and meditated (\d+) minutes every day$/,
   function (days, minutes) {
-    this.meditationStorage.meditationHistory = Array.from(
+    this.localStorage.meditationHistory = Array.from(
       { length: days },
       (_, i) => ({
         startedTimeInSeconds: (CURRENT_EPOCH_DAY - i) * 24 * 3600,
