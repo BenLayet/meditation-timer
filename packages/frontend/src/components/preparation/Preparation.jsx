@@ -13,7 +13,10 @@ function Preparation({ vm }) {
       <label>{t("preparation")}</label>
       <div className="mt-time-display">{preparationRemainingTime}</div>
       <div className="d-flex flex-column fs-4">
-        <button className="btn btn-secondary rounded" onClick={addTimeClicked}>
+        <button
+          className="btn btn-outline-primary rounded"
+          onClick={addTimeClicked}
+        >
           +{timeIncrementInSeconds}s
         </button>
         <a onClick={skipClicked} className="link-primary" role="button">
