@@ -37,7 +37,7 @@ Then(/^my new daily streak should be displayed$/, function () {
 
   expect(
     this.eventWasSent({
-      ...statisticsEvents.meditationHistoryRequested,
+      ...statisticsEvents.retrievePersistedMeditationHistoryRequested,
       componentPath: ["statistics"],
     }),
     "meditationHistoryRequested should have been called",

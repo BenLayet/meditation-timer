@@ -12,7 +12,7 @@ export const AccountPage = ({ vm }) => {
       </div>
       <div className="col-12 col-lg-5">
         <h1 className="mb-3">{t("account")}</h1>
-        <Account vm={vm.children.localStorageAccount} />
+        <Account vm={vm.children.account} />
       </div>
     </div>
   );

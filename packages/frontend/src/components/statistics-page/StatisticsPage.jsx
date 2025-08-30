@@ -11,7 +11,7 @@ function StatisticsPage({ vm }) {
   const navigateToAccountClicked = () =>
     vm.dispatchers.navigationRequested({ page: "ACCOUNT" });
 
-  const isAnonymous = vm.children.localStorageAccount.selectors.isAnonymous();
+  const isAnonymous = vm.children.account.selectors.isAnonymous();
   return (
     <>
       <h1>{t("sessionCompleted")}</h1>

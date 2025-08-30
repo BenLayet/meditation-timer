@@ -9,6 +9,10 @@ import {
 } from "../../models/account.model.js";
 import { createAccountFormInitialState } from "./create-account-form.state.js";
 
+const accountShape = {
+  login: ow.string.matches(loginRegex),
+  userToken: ow.optional.string,
+};
 export const createAccountFormEvents = {
   formSubmitted: {
     eventType: "formSubmitted",
@@ -27,10 +31,7 @@ export const createAccountFormEvents = {
   },
   createAccountSucceeded: {
     eventType: "createAccountSucceeded",
-    payloadShape: {
-      userToken: ow.string.not.empty,
-      login: ow.string.matches(loginRegex),
-    },
+    payloadShape: { account: ow.object.exactShape(accountShape) },
   },
   createAccountFailed: {
     eventType: "createAccountFailed",

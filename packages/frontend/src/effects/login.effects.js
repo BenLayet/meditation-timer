@@ -3,8 +3,7 @@ import { loginErrorCodes } from "domain/src/models/account.model.js";
 import { loginFormEvents } from "domain/src/components/login-form/login-form.events.js";
 
 export const loginEffects = ({ accountApi }, rootVM) => {
-  const dispatchers =
-    rootVM.children.localStorageAccount.children.loginForm.dispatchers;
+  const dispatchers = rootVM.children.account.children.loginForm.dispatchers;
 
   const loginRequested = async ({ login, password }) => {
     let account;
@@ -22,7 +21,9 @@ export const loginEffects = ({ accountApi }, rootVM) => {
       typeof account.errorCodes === "undefined" ||
       account.errorCodes.length === 0
     ) {
-      dispatchers.loginSucceeded({ userToken: account.userToken, login });
+      dispatchers.loginSucceeded({
+        account: { userToken: account.userToken, login },
+      });
     } else {
       dispatchers.loginFailed({ errorCodes: account.errorCodes });
     }

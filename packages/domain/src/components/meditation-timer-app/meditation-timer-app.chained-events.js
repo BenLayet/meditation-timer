@@ -10,6 +10,10 @@ import { meditationSettingsEvents } from "../meditation-settings/meditation-sett
 
 export const meditationTimerAppChainedEvents = [
   {
+    onEvent: meditationTimerAppEvents.appOpened,
+    thenDispatch: meditationTimerAppEvents.onlineStatusWatchRequested,
+  },
+  {
     onEvent: {
       ...newMeditationEvents.startSessionRequested,
       childComponentPath: ["newMeditation"],

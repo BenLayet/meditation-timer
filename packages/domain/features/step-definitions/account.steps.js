@@ -11,6 +11,14 @@ Given("I have just created an account", function () {
     status: accountStatus.AUTHENTICATED,
   };
 });
+Given(
+  "I have created an account on another device and already have a meditation history",
+  function () {
+    this.remoteStorage.meditationHistory = [
+      { startedTimeInSeconds: 1, durationInMinutes: 10 },
+    ];
+  },
+);
 
 When(/^I create an account$/, function () {
   this.vm().children.account.children.createAccountForm.dispatchers.loginInputChanged(
@@ -20,6 +28,24 @@ When(/^I create an account$/, function () {
     { passwordInputValue: "password1" },
   );
   this.vm().children.account.children.createAccountForm.dispatchers.formSubmitted();
+});
+
+When("I log in", function () {
+  this.vm().children.account.children.loginForm.dispatchers.loginInputChanged({
+    loginInputValue: "login1",
+  });
+  this.vm().children.account.children.loginForm.dispatchers.passwordInputChanged(
+    { passwordInputValue: "password1" },
+  );
+  this.vm().children.account.children.loginForm.dispatchers.formSubmitted();
+});
+
+Then("my account should be deleted", function () {
+  expect(this.localStorage.account).to.be.undefined;
+});
+
+Then("my account should be persisted", function () {
+  expect(this.localStorage.account).to.be.not.undefined;
 });
 
 Then("my login should not be visible anymore", function () {
@@ -78,3 +104,12 @@ Then(/^my meditation history on the device should be cleared$/, function () {
 Then(/^my meditation history on the server should remain intact$/, function () {
   //TODO
 });
+
+Then(
+  "I should retrieve my meditation history from my other device",
+  function () {
+    expect(this.localStorage.meditationHistory).to.deep.equal(
+      this.remoteStorage.meditationHistory,
+    );
+  },
+);

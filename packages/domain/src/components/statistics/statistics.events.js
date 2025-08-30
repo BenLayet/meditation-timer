@@ -5,8 +5,9 @@ export const statisticsEvents = {
     eventType: "statisticsRequested",
     handler: (state) => ({
       ...state,
-      loading: true,
       error: false,
+      currentEpochDay: null,
+      isMeditationHistoryLoading: true,
     }),
   },
   statisticsRetrieved: {
@@ -19,7 +20,6 @@ export const statisticsEvents = {
     },
     handler: (state, { statistics }) => ({
       ...state,
-      loading: false,
       error: false,
       ...statistics,
     }),
@@ -37,13 +37,12 @@ export const statisticsEvents = {
       currentEpochDay,
     }),
   },
-  meditationHistoryRequested: {
-    eventType: "meditationHistoryRequested",
+  retrievePersistedMeditationHistoryRequested: {
+    eventType: "retrievePersistedMeditationHistoryRequested",
   },
-  meditationHistoryRetrieved: {
-    eventType: "meditationHistoryRetrieved",
+  retrievePersistedMeditationHistorySucceeded: {
+    eventType: "retrievePersistedMeditationHistorySucceeded",
     payloadShape: {
-      currentEpochDay: ow.number.positive,
       meditationHistory: ow.array.ofType(
         ow.object.partialShape({
           startedTimeInSeconds: ow.number.positive,
@@ -53,18 +52,8 @@ export const statisticsEvents = {
     },
     handler: (state, { meditationHistory }) => ({
       ...state,
+      isMeditationHistoryLoading: false,
       meditationHistory,
-    }),
-  },
-  meditationHistoryFailed: {
-    eventType: "meditationHistoryFailed",
-    payloadShape: {
-      error: ow.any,
-    },
-    handler: (state) => ({
-      ...state,
-      loading: false,
-      error: true,
     }),
   },
 };

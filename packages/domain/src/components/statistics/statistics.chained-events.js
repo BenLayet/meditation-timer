@@ -1,19 +1,12 @@
 import { statisticsEvents } from "./statistics.events.js";
-import { calculateStatistics } from "./statistics.functions.js";
 
 export const statisticsChainedEvents = [
   {
     onEvent: statisticsEvents.statisticsRequested,
-    thenDispatch: statisticsEvents.meditationHistoryRequested,
+    thenDispatch: statisticsEvents.retrievePersistedMeditationHistoryRequested,
   },
   {
-    onEvent: statisticsEvents.meditationHistoryRetrieved,
-    thenDispatch: statisticsEvents.statisticsRetrieved,
-    withPayload: ({ previousPayload }) => ({
-      statistics: calculateStatistics(
-        previousPayload.meditationHistory,
-        previousPayload.currentEpochDay,
-      ),
-    }),
+    onEvent: statisticsEvents.statisticsRequested,
+    thenDispatch: statisticsEvents.currentDayRequested,
   },
 ];

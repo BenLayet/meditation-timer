@@ -9,6 +9,10 @@ import {
 } from "../../models/account.model.js";
 import { loginFormInitialState } from "./login-form.state.js";
 
+const accountShape = {
+  login: ow.string.matches(loginRegex),
+  userToken: ow.optional.string,
+};
 export const loginFormEvents = {
   formSubmitted: {
     eventType: "formSubmitted",
@@ -27,10 +31,7 @@ export const loginFormEvents = {
   },
   loginSucceeded: {
     eventType: "loginSucceeded",
-    payloadShape: {
-      userToken: ow.string.not.empty,
-      login: ow.string.matches(loginRegex),
-    },
+    payloadShape: { account: ow.object.exactShape(accountShape) },
   },
   loginFailed: {
     eventType: "loginFailed",

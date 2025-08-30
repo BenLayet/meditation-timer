@@ -1,6 +1,7 @@
 import { accountEvents } from "./account.events.js";
 import { loginFormEvents } from "../login-form/login-form.events.js";
 import { createAccountFormEvents } from "../create-account-form/create-account-form.events.js";
+import { accountStatus } from "../../models/account.model.js";
 
 export const accountChainedEvents = [
   {
@@ -17,6 +18,7 @@ export const accountChainedEvents = [
     },
     thenDispatch: accountEvents.accountNewlyAuthenticated,
   },
+
   {
     onEvent: accountEvents.createAccountFormRequested,
     thenDispatch: {
@@ -30,6 +32,32 @@ export const accountChainedEvents = [
       ...loginFormEvents.resetRequested,
       childComponentPath: ["loginForm"],
     },
+  },
+  {
+    onEvent: accountEvents.loadAccountRequested,
+    thenDispatch: accountEvents.retrievePersistedAccountRequested,
+  },
+  {
+    onEvent: accountEvents.retrievePersistedAccountCompleted,
+    thenDispatch: accountEvents.accountLoaded,
+    withPayload: ({ previousPayload }) => ({
+      account: previousPayload.account,
+      status: previousPayload.account
+        ? accountStatus.AUTHENTICATED
+        : accountStatus.ANONYMOUS,
+    }),
+  },
+  {
+    onEvent: accountEvents.accountNewlyAuthenticated,
+    thenDispatch: accountEvents.persistAccountRequested,
+  },
+  {
+    onEvent: accountEvents.disconnectRequested,
+    thenDispatch: accountEvents.deletePersistedAccountRequested,
+  },
+  {
+    onEvent: accountEvents.deletePersistedAccountCompleted,
+    thenDispatch: accountEvents.disconnectSucceeded,
   },
   {
     onEvent: accountEvents.disconnectSucceeded,

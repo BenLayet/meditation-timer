@@ -16,7 +16,7 @@ export const onlineDetectionEffects = ({}, rootVM) => {
 
   return [
     createEffect({
-      afterEvent: meditationTimerAppEvents.appOpened,
+      afterEvent: meditationTimerAppEvents.onlineStatusWatchRequested,
       then: dispatchEventWhenOnline,
     }),
   ];

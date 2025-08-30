@@ -2,29 +2,34 @@ import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
 import { statisticsEvents } from "domain/src/components/statistics/statistics.events.js";
 
 export const loadMeditationsEffects = ({ meditationService }, rootVM) => {
-  const loadMeditations = async () => {
-    // Statistics dispatchers
-    const dispatchers = rootVM.children.statistics.dispatchers;
+  // Statistics dispatchers
+  const dispatchers = rootVM.children.statistics.dispatchers;
+  const retrievePersistedMeditationHistoryRequested = async () => {
     try {
       const meditationHistory = await meditationService.getAllMeditations();
-      const currentEpochDay = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
-      dispatchers.meditationHistoryRetrieved(
+      dispatchers.retrievePersistedMeditationHistorySucceeded(
         {
           meditationHistory,
-          currentEpochDay,
         },
         false,
       );
     } catch (error) {
       console.error(error);
-      dispatchers.meditationHistoryFailed({ error });
     }
+  };
+  const currentDayRequested = async () => {
+    const currentEpochDay = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
+    dispatchers.currentDayObtained({ currentEpochDay });
   };
 
   return [
     createEffect({
-      afterEvent: statisticsEvents.meditationHistoryRequested,
-      then: loadMeditations,
+      afterEvent: statisticsEvents.retrievePersistedMeditationHistoryRequested,
+      then: retrievePersistedMeditationHistoryRequested,
+    }),
+    createEffect({
+      afterEvent: statisticsEvents.currentDayRequested,
+      then: currentDayRequested,
     }),
   ];
 };

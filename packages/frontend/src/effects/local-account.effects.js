@@ -4,36 +4,30 @@ import { accountStatus } from "domain/src/models/account.model.js";
 
 export const localAccountEffects = ({ keyValueStorageService }, rootVM) => {
   const dispatchers = rootVM.children.account.dispatchers;
-  //loadAccountRequested
-  const loadAccountRequested = async () => {
+  const retrievePersistedAccountRequested = async () => {
     const account = await keyValueStorageService.get("account");
-    dispatchers.accountLoaded({ account });
+    dispatchers.retrievePersistedAccountCompleted({ account });
   };
-
-  //accountNewlyAuthenticated
-  const accountNewlyAuthenticated = async ({ userToken, login }) => {
-    const account = { status: accountStatus.AUTHENTICATED, userToken, login };
+  const persistAccountRequested = async ({ account }) => {
     await keyValueStorageService.set("account", account);
   };
-
-  //disconnectRequested
-  const disconnectRequested = async () => {
+  const deletePersistedAccountRequested = async () => {
     await keyValueStorageService.delete("account");
-    dispatchers.disconnectSucceeded();
+    dispatchers.deletePersistedAccountCompleted();
   };
 
   return [
     createEffect({
-      afterEvent: accountEvents.loadAccountRequested,
-      then: loadAccountRequested,
+      afterEvent: accountEvents.retrievePersistedAccountRequested,
+      then: retrievePersistedAccountRequested,
     }),
     createEffect({
-      afterEvent: accountEvents.accountNewlyAuthenticated,
-      then: accountNewlyAuthenticated,
+      afterEvent: accountEvents.persistAccountRequested,
+      then: persistAccountRequested,
     }),
     createEffect({
-      afterEvent: accountEvents.disconnectRequested,
-      then: disconnectRequested,
+      afterEvent: accountEvents.deletePersistedAccountRequested,
+      then: deletePersistedAccountRequested,
     }),
   ];
 };

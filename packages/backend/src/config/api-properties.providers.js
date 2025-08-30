@@ -5,5 +5,4 @@ export const apiPropertiesProviders = {
     port: process.env["API_PORT"],
     protocol: process.env["API_PROTOCOL"],
   }),
-  publicUrl: () => process.env["PUBLIC_URL"],
 };

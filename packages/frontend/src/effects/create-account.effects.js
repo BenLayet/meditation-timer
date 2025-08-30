@@ -4,7 +4,7 @@ import { createAccountFormEvents } from "domain/src/components/create-account-fo
 
 export const createAccountEffects = ({ accountApi }, rootVM) => {
   const dispatchers =
-    rootVM.children.localStorageAccount.children.createAccountForm.dispatchers;
+    rootVM.children.account.children.createAccountForm.dispatchers;
 
   const createAccountRequested = async ({ login, password }) => {
     let account;
@@ -23,8 +23,10 @@ export const createAccountEffects = ({ accountApi }, rootVM) => {
       account.errorCodes.length === 0
     ) {
       dispatchers.createAccountSucceeded({
-        userToken: account.userToken,
-        login,
+        account: {
+          userToken: account.userToken,
+          login,
+        },
       });
     } else {
       dispatchers.createAccountFailed({ errorCodes: account.errorCodes });
