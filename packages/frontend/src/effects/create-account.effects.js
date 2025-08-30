@@ -1,6 +1,6 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
 import { createAccountErrorCodes } from "domain/src/models/account.model.js";
-import { createAccountFormEvents } from "domain/src/components/create-account-form/create-account-form.events.js";
+import { createAccountFormEvents } from "domain/src/features/create-account-form/create-account-form.events.js";
 
 export const createAccountEffects = ({ accountApi }, rootVM) => {
   const dispatchers =

@@ -1,7 +1,7 @@
 import { Given, Then, When } from "@cucumber/cucumber";
 
 import { expect } from "chai";
-import { meditationSettingsEvents } from "../../src/components/meditation-settings/meditation-settings.events.js";
+import { meditationSettingsEvents } from "../../src/features/meditation-settings/meditation-settings.events.js";
 
 Given(/^the next meditation duration is (\d{2}):00$/, function (minutes) {
   this.patchState(

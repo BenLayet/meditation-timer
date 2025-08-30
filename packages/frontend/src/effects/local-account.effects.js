@@ -1,5 +1,5 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { accountEvents } from "domain/src/components/account/account.events.js";
+import { accountEvents } from "domain/src/features/account/account.events.js";
 import { accountStatus } from "domain/src/models/account.model.js";
 
 export const localAccountEffects = ({ keyValueStorageService }, rootVM) => {

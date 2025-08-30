@@ -1,5 +1,5 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { statisticsEvents } from "domain/src/components/statistics/statistics.events.js";
+import { statisticsEvents } from "domain/src/features/statistics/statistics.events.js";
 
 export const loadMeditationsEffects = ({ meditationService }, rootVM) => {
   // Statistics dispatchers

@@ -1,5 +1,5 @@
 import { StateManager } from "../../src/lib/state-manager/state-manager.js";
-import { meditationTimerAppComponent } from "../../src/components/meditation-timer-app/meditation-timer-app.component.js";
+import { meditationTimerAppComponent } from "../../src/features/meditation-timer-app/meditation-timer-app.component.js";
 import { statePatcher } from "../../src/lib/state-manager/debugger.js";
 import { isEqual } from "lodash-es";
 import { AfterStep, Before, setWorldConstructor } from "@cucumber/cucumber";
