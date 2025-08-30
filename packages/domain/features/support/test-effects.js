@@ -1,11 +1,11 @@
-import { statisticsEvents } from "../../src/components/statistics/statistics.events.js";
-import { actualMeditationEvents } from "../../src/components/actual-meditation/actual-meditation.events.js";
+import { statisticsEvents } from "../../src/features/statistics/statistics.events.js";
+import { actualMeditationEvents } from "../../src/features/actual-meditation/actual-meditation.events.js";
 import { createEffect } from "../../src/lib/state-manager/create-effect.js";
 import { CURRENT_EPOCH_DAY } from "./test-constants.js";
-import { accountEvents } from "../../src/components/account/account.events.js";
-import { createAccountFormEvents } from "../../src/components/create-account-form/create-account-form.events.js";
-import { loginFormEvents } from "../../src/components/login-form/login-form.events.js";
-import { meditationTimerAppEvents } from "../../src/components/meditation-timer-app/meditation-timer-app.events.js";
+import { accountEvents } from "../../src/features/account/account.events.js";
+import { createAccountFormEvents } from "../../src/features/create-account-form/create-account-form.events.js";
+import { loginFormEvents } from "../../src/features/login-form/login-form.events.js";
+import { meditationTimerAppEvents } from "../../src/features/meditation-timer-app/meditation-timer-app.events.js";
 
 export const createTestEffects = (
   stateManager,

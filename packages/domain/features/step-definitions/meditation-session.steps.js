@@ -1,7 +1,7 @@
 import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "chai";
 import { CURRENT_TIME_IN_SECONDS } from "../support/test-constants.js";
-import { meditationSessionEvents } from "../../src/components/meditation-session/meditation-session.events.js";
+import { meditationSessionEvents } from "../../src/features/meditation-session/meditation-session.events.js";
 
 Given(/^I have started a meditation session$/, function () {
   this.vm().children.meditationSession.dispatchers.startRequested({

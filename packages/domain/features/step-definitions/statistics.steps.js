@@ -1,7 +1,7 @@
 import { Given, Then } from "@cucumber/cucumber";
 import { expect } from "chai";
-import { actualMeditationEvents } from "../../src/components/actual-meditation/actual-meditation.events.js";
-import { statisticsEvents } from "../../src/components/statistics/statistics.events.js";
+import { actualMeditationEvents } from "../../src/features/actual-meditation/actual-meditation.events.js";
+import { statisticsEvents } from "../../src/features/statistics/statistics.events.js";
 import { CURRENT_EPOCH_DAY } from "../support/test-constants.js";
 
 Given(
