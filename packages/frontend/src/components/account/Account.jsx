@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import { CreateAccountForm } from "../create-account-form/CreateAccountForm.jsx";
 import { LoginForm } from "../login-form/LoginForm.jsx";
+import { Synchronization } from "../synchronization/Synchronization.jsx";
 
 export const Account = ({ vm }) => {
   const { t, i18n } = useTranslation();
@@ -73,19 +74,21 @@ export const Account = ({ vm }) => {
       )}
       {isLoginVisible && (
         <>
-          <div className="flex-column breathing-space">
-            <p className="fs-2">
-              {t("connectedAs")} '{login}'
+          <div className="vstack align-items-center">
+            <p>
+              {t("connectedAs")} {login}
             </p>
+            <Synchronization vm={vm.children.synchronization} />
             {canDisconnect && (
-              <button
+              <a
+                className="fs-5"
                 onClick={vm.dispatchers.disconnectRequested}
-                className="btn btn-secondary"
+                href="#"
               >
                 <FontAwesomeIcon icon={faUnlock} />
                 &nbsp;
                 {t("disconnect")}
-              </button>
+              </a>
             )}
           </div>
           <p className="text-muted fs-5 opacity-50 mb-0">

@@ -25,7 +25,11 @@ export class EventSynchronizationService {
     this.accountService = accountService;
   }
   async synchronizeEvents() {
+    // process remote events before posting all pending events, in case the last post partially failed
+    await this.processRemoteEvents();
+    // post all pending events
     await this.postAllPendingEvents();
+    //process remote events again to ensure that all events are marked as processed
     await this.processRemoteEvents();
   }
 

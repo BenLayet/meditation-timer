@@ -4,10 +4,8 @@ import { accountStatus } from "../../models/account.model.js";
 import { and, not } from "../../lib/functions/predicate.functions.js";
 
 const login = (accountState) => accountState.login;
-const isAnonymous = (accountState) =>
-  accountState.status === accountStatus.ANONYMOUS;
-const isAuthenticated = (accountState) =>
-  accountState.status === accountStatus.AUTHENTICATED;
+const isAnonymous = flow(login, (login) => !login);
+const isAuthenticated = not(isAnonymous);
 const isLoading = (accountState) => accountState.loading;
 const isOnline = (accountState) => accountState.isOnline;
 const isAuthenticationPossible = and(not(isLoading), isAnonymous, isOnline);
@@ -20,6 +18,7 @@ const isLoginFormVisible = and(isAuthenticationPossible, isLoginFormRequested);
 const canDisconnect = isAuthenticated;
 const isLoginVisible = and(not(isAnonymous), not(isLoading));
 const isConnectionRequired = and(not(isLoading), isAnonymous, not(isOnline));
+const isInitialized = (accountState) => accountState.initialized;
 export const ownStateSelectors = {
   isLoading,
   isAnonymous,
@@ -31,6 +30,7 @@ export const ownStateSelectors = {
   isLoginVisible,
   login,
   canDisconnect,
+  isInitialized,
 };
 
 const ownState = (compositeState) => compositeState.ownState;

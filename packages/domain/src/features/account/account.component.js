@@ -4,6 +4,7 @@ import { accountEvents } from "./account.events.js";
 import { accountChainedEvents } from "./account.chained-events.js";
 import { loginFormComponent } from "../login-form/login-form.component.js";
 import { createAccountFormComponent } from "../create-account-form/create-account-form.component.js";
+import { synchronizationComponent } from "../synchronization/synchronization.component.js";
 
 export const accountComponent = {
   initialState: ACCOUNT_INITIAL_STATE,
@@ -13,5 +14,6 @@ export const accountComponent = {
   children: {
     createAccountForm: createAccountFormComponent,
     loginForm: loginFormComponent,
+    synchronization: synchronizationComponent,
   },
 };

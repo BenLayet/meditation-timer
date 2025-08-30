@@ -32,14 +32,24 @@ export const accountEvents = {
   accountLoaded: {
     eventType: "accountLoaded",
     payloadShape: {
-      status: ow.string.oneOf(Object.values(accountStatus)),
       account: ow.optional.object.exactShape(accountShape),
     },
     handler: (state, { account }) => ({
       ...state,
       loading: false,
       login: account?.login,
-      status: account?.status ?? accountStatus.ANONYMOUS,
+      initialized: true,
+    }),
+  },
+  accountAuthenticated: {
+    eventType: "accountAuthenticated",
+    payloadShape: {
+      account: ow.object.exactShape(accountShape),
+    },
+    handler: (state, { account }) => ({
+      ...state,
+      loading: false,
+      login: account?.login,
     }),
   },
   disconnectRequested: {

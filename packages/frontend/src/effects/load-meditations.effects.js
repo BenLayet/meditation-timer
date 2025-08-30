@@ -1,5 +1,6 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
 import { statisticsEvents } from "domain/src/features/statistics/statistics.events.js";
+import { currentEpochDay } from "../lib/time.functions.js";
 
 export const loadMeditationsEffects = ({ meditationService }, rootVM) => {
   // Statistics dispatchers
@@ -17,10 +18,8 @@ export const loadMeditationsEffects = ({ meditationService }, rootVM) => {
       console.error(error);
     }
   };
-  const currentDayRequested = async () => {
-    const currentEpochDay = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
-    dispatchers.currentDayObtained({ currentEpochDay });
-  };
+  const currentDayRequested = async () =>
+    dispatchers.currentDayObtained({ currentEpochDay: currentEpochDay() });
 
   return [
     createEffect({

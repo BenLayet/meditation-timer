@@ -9,7 +9,6 @@
   "createAccountToSecureStats_1": "Vous pouvez",
   "createAccountToSecureStats_2": "créer un compte",
   "createAccountToSecureStats_3": "si vous souhaitez sécuriser vos statistiques",
-  "connectedAs": "Connecté avec le login",
   "statisticsPresentation": "Vos statistiques seront affichées ici, pour vous encourager à pratiquer un peu tous les jours.",
   "meditationCount_zero": "Aucune pratique effectuée pour l'instant",
   "meditationCount_one": "Une pratique déjà effectuée",
@@ -59,5 +58,7 @@
   "off": "Off",
   "test": "Tester :",
   "suzuki_roshi_meditating": "Suzuki Roshi, en position de méditation",
-  "source": "source"
+  "source": "source",
+  "connectedAs": "Utilisateur :",
+  "lastSynchronized": "Dernière synchronisation :"
 }

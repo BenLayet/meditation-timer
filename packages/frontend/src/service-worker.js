@@ -3,6 +3,9 @@ import build from "../../../build.json";
 import { resolveDependencies } from "domain/src/lib/config/resolveDependencies.js";
 import { serviceWorkerProviders } from "./service-worker.providers.js";
 
+//disables log output from workbox
+self.__WB_DISABLE_DEV_LOGS = true;
+
 console.debug(`Service Worker Loaded. Build : ${JSON.stringify(build)}`);
 // Automatically precache all files referenced in __WB_MANIFEST
 precacheAndRoute(self.__WB_MANIFEST);
@@ -11,24 +14,37 @@ precacheAndRoute(self.__WB_MANIFEST);
 self.addEventListener("message", (event) => {
   console.debug("Message received from main thread");
   if (event.data.type === "synchronizationRequested") {
-    event.waitUntil(synchronizeEvents());
+    event.waitUntil(synchronizeEvents(createCallback(event.source.id)));
   }
 });
+function createCallback(clientId) {
+  return async (message, payload = {}) =>
+    await self.clients.get(clientId).then((client) => {
+      if (client) client.postMessage({ type: message, payload });
+    });
+}
 
-async function synchronizeEvents() {
+async function synchronizeEvents(callback) {
   console.debug("synchronizeEvents called");
 
   const { accountService, eventSynchronizationService, indexedDb } =
     await resolveDependencies(serviceWorkerProviders);
+
   try {
     if (await accountService.isAuthenticated()) {
+      console.debug("synchronizationStarted");
+      await callback("synchronizationStarted");
       await eventSynchronizationService.synchronizeEvents();
-      console.debug("Events synchronized");
+      console.debug("synchronizationSucceeded");
+      await callback("synchronizationSucceeded");
     } else {
       console.debug("User not authenticated, no synchronization attempted");
+      await callback("synchronizationNotAttempted");
     }
   } catch (e) {
     console.error(e);
+    console.debug("synchronizationFailed");
+    await callback("synchronizationFailed", { errorCodes: e.errorCodes });
   } finally {
     indexedDb.close();
   }

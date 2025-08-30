@@ -23,7 +23,7 @@ export const createEffects = (
   },
 ) => [
   ...onlineDetectionEffects({}, rootVM),
-  ...synchronizationEffects({ synchronizationTaskService }),
+  ...synchronizationEffects({ synchronizationTaskService }, rootVM),
   ...meditationSettingsEffects({ keyValueStorageService }, rootVM),
   ...gongEffects({ gongService }),
   ...wakeLockEffects({ wakeLockService }),

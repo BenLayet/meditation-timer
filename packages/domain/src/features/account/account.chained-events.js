@@ -2,6 +2,8 @@ import { accountEvents } from "./account.events.js";
 import { loginFormEvents } from "../login-form/login-form.events.js";
 import { createAccountFormEvents } from "../create-account-form/create-account-form.events.js";
 import { accountStatus } from "../../models/account.model.js";
+import { synchronizationEvents } from "../synchronization/synchronization.events.js";
+import { accountSelectors } from "./account.selectors.js";
 
 export const accountChainedEvents = [
   {
@@ -18,7 +20,6 @@ export const accountChainedEvents = [
     },
     thenDispatch: accountEvents.accountNewlyAuthenticated,
   },
-
   {
     onEvent: accountEvents.createAccountFormRequested,
     thenDispatch: {
@@ -40,12 +41,6 @@ export const accountChainedEvents = [
   {
     onEvent: accountEvents.retrievePersistedAccountCompleted,
     thenDispatch: accountEvents.accountLoaded,
-    withPayload: ({ previousPayload }) => ({
-      account: previousPayload.account,
-      status: previousPayload.account
-        ? accountStatus.AUTHENTICATED
-        : accountStatus.ANONYMOUS,
-    }),
   },
   {
     onEvent: accountEvents.accountNewlyAuthenticated,
@@ -62,5 +57,21 @@ export const accountChainedEvents = [
   {
     onEvent: accountEvents.disconnectSucceeded,
     thenDispatch: accountEvents.createAccountFormRequested,
+  },
+  {
+    onEvent: accountEvents.accountNewlyAuthenticated,
+    thenDispatch: accountEvents.accountAuthenticated,
+  },
+  {
+    onEvent: accountEvents.accountLoaded,
+    onCondition: ({ state }) => accountSelectors.isAuthenticated(state),
+    thenDispatch: accountEvents.accountAuthenticated,
+  },
+  {
+    onEvent: accountEvents.accountAuthenticated,
+    thenDispatch: {
+      ...synchronizationEvents.synchronizationRequested,
+      childComponentPath: ["synchronization"],
+    },
   },
 ];

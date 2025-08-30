@@ -7,6 +7,8 @@ import { meditationTimerAppSelectors } from "./meditation-timer-app.selectors.js
 import { accountEvents } from "../account/account.events.js";
 import { newMeditationEvents } from "../new-meditation/new-meditation.events.js";
 import { meditationSettingsEvents } from "../meditation-settings/meditation-settings.events.js";
+import { synchronizationEvents } from "../synchronization/synchronization.events.js";
+import { accountSelectors } from "../account/account.selectors.js";
 
 export const meditationTimerAppChainedEvents = [
   {
@@ -156,20 +158,20 @@ export const meditationTimerAppChainedEvents = [
   },
   {
     onEvent: meditationTimerAppEvents.onlineDetected,
-    thenDispatch: meditationTimerAppEvents.synchronizationRequested,
+    onCondition: ({ state }) => accountSelectors.isInitialized(state),
+    thenDispatch: {
+      ...synchronizationEvents.synchronizationRequested,
+      childComponentPath: ["account", "synchronization"],
+    },
   },
   {
     onEvent: {
       ...actualMeditationEvents.saveSucceeded,
       childComponentPath: ["meditationSession", "actualMeditation"],
     },
-    thenDispatch: meditationTimerAppEvents.synchronizationRequested,
-  },
-  {
-    onEvent: {
-      ...accountEvents.accountNewlyAuthenticated,
-      childComponentPath: ["account"],
+    thenDispatch: {
+      ...synchronizationEvents.synchronizationRequested,
+      childComponentPath: ["account", "synchronization"],
     },
-    thenDispatch: meditationTimerAppEvents.synchronizationRequested,
   },
 ];
