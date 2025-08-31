@@ -91,11 +91,6 @@ export const meditationTimerAppChainedEvents = [
       ...synchronizationEvents.synchronizationRequested,
       childComponentPath: ["account", "synchronization"],
     },
-    withPayload: ({ previousPayload, state }) => ({
-      ...previousPayload,
-      durationInMinutes:
-        meditationTimerAppSelectors.meditationDurationInMinutes(state),
-    }),
   },
   {
     onEvent: {
@@ -152,16 +147,6 @@ export const meditationTimerAppChainedEvents = [
   {
     onEvent: meditationTimerAppEvents.onlineDetected,
     onCondition: ({ state }) => accountSelectors.isInitialized(state),
-    thenDispatch: {
-      ...synchronizationEvents.synchronizationRequested,
-      childComponentPath: ["account", "synchronization"],
-    },
-  },
-  {
-    onEvent: {
-      ...actualMeditationEvents.saveSucceeded,
-      childComponentPath: ["meditationSession", "actualMeditation"],
-    },
     thenDispatch: {
       ...synchronizationEvents.synchronizationRequested,
       childComponentPath: ["account", "synchronization"],

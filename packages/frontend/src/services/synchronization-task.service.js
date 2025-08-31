@@ -26,22 +26,12 @@ export class SynchronizationTaskService {
   }
 }
 
-async function ensureSWControl() {
-  if (navigator.serviceWorker.controller) return Promise.resolve();
-  return new Promise((resolve) => {
-    navigator.serviceWorker.addEventListener("controllerchange", () =>
-      resolve(),
-    );
-  });
-}
-
 async function addEventListener({
   onNotAttempted,
   onStarted,
   onSucceeded,
   onFailed,
 }) {
-  await ensureSWControl();
   navigator.serviceWorker.addEventListener("message", (event) => {
     const { type } = event.data || {};
     switch (type) {

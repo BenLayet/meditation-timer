@@ -1,5 +1,6 @@
 import {
   keyValueStoreName,
+  meditationStoreName,
   pendingEventStoreName,
 } from "../storage/store-names.constants";
 import { lastProcessedIdKey } from "./synchronization.constants.js";
@@ -76,7 +77,7 @@ export class EventSynchronizationService {
 
   processRemoteEvent = async (event) => {
     await this.transactionService.runWriteTransaction(
-      [pendingEventStoreName, keyValueStoreName],
+      [pendingEventStoreName, keyValueStoreName, meditationStoreName],
       async (transaction) => {
         if (await this.pendingEventStore.existsById(event.uuid)(transaction)) {
           await this.pendingEventStore.deleteById(event.uuid)(transaction);
