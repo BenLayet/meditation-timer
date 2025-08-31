@@ -12,7 +12,6 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 // Event listener for sync event
 self.addEventListener("message", (event) => {
-  console.debug("Message received from main thread");
   if (event.data.type === "synchronizationRequested") {
     event.waitUntil(synchronizeEvents(createCallback(event.source.id)));
   }
@@ -25,7 +24,7 @@ function createCallback(clientId) {
 }
 
 async function synchronizeEvents(callback) {
-  console.debug("synchronizeEvents called");
+  console.debug("synchronizationRequested");
 
   const { accountService, eventSynchronizationService, indexedDb } =
     await resolveDependencies(serviceWorkerProviders);

@@ -60,5 +60,6 @@
   "test": "Test:",
   "suzuki_roshi_meditating": "Suzuki Roshi meditating",
   "source": "source",
-  "lastSynchronized": "Synchronized:"
+  "lastSynchronized": "Synchronized:",
+  "errorInLastSynchronization": "Error in last synchronization. Contact contact@softersoftware.org if the problem persists."
 }

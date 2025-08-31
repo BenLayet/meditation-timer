@@ -4,10 +4,11 @@ import { flow } from "lodash-es";
 const isSynchronizing = (state) => state.isSynchronizing;
 const lastSynchronizedEpochSeconds = (state) =>
   state.lastSynchronizedEpochSeconds;
-
+const wasLastSynchronizationInError = (state) => state.errorCodes?.length > 0;
 export const ownStateSelectors = {
   isSynchronizing,
   lastSynchronizedEpochSeconds,
+  wasLastSynchronizationInError,
 };
 
 const ownState = (compositeState) => compositeState.ownState;

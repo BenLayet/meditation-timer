@@ -60,5 +60,6 @@
   "suzuki_roshi_meditating": "Suzuki Roshi, en position de méditation",
   "source": "source",
   "connectedAs": "Utilisateur :",
-  "lastSynchronized": "Dernière synchronisation :"
+  "lastSynchronized": "Dernière synchronisation :",
+  "errorInLastSynchronization": "Une erreur s'est produite pendant la synchronisation. Contactez contact@softersoftware.org si le problème persiste."
 }
