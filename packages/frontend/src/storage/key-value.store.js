@@ -1,7 +1,4 @@
-import {
-  validateNotEmptyString,
-  validateNotNullObject,
-} from "domain/src/lib/assert/not-null.validator.js";
+import { validateNotEmptyString } from "domain/src/lib/assert/not-null.validator.js";
 
 export class KeyValueStore {
   constructor(storeName) {
