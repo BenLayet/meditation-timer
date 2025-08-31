@@ -48,6 +48,7 @@ export const CreateAccountForm = ({ vm }) => {
             className={`form-control ${isLoginInputMarkedAsError ? "is-invalid" : ""}`}
             onBlur={vm.dispatchers.loginInputCompleted}
             disabled={isLoginInputDisabled}
+            autoComplete="username"
           />
           <input
             type="password"
@@ -59,6 +60,7 @@ export const CreateAccountForm = ({ vm }) => {
             className={`form-control ${isPasswordInputMarkedAsError ? "is-invalid" : ""}`}
             onBlur={vm.dispatchers.passwordInputCompleted}
             disabled={isPasswordInputDisabled}
+            autoComplete="new-password"
           />
           <button
             type="submit"

@@ -5,7 +5,7 @@ import { Account } from "../account/Account.jsx";
 export const AccountPage = ({ vm }) => {
   const { t } = useTranslation();
   return (
-    <div className="text-center row justify-content-around">
+    <div className="text-center row justify-content-around flex-fill">
       <div className="col-12 col-lg-7">
         <h1 className="mb-3">{t("statistics")}</h1>
         <Statistics vm={vm.children.statistics} />

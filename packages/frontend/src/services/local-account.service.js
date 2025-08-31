@@ -14,11 +14,13 @@ export class LocalAccountService {
   getAccount = async () => this.keyValueStorageService.get("account");
   getAccountStatus = async () => {
     const account = await this.getAccount();
-    return account ? account.status : statusCodes.ANONYMOUS;
+    return account ? statusCodes.AUTHENTICATED : statusCodes.ANONYMOUS;
   };
 
-  isAuthenticated = async () =>
-    (await this.getAccountStatus()) === statusCodes.AUTHENTICATED;
+  isAuthenticated = async () => {
+    const status = await this.getAccountStatus();
+    return status === statusCodes.AUTHENTICATED;
+  };
 
   getUserToken = async () => {
     if (!(await this.isAuthenticated())) {

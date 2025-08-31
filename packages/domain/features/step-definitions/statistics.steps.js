@@ -1,13 +1,13 @@
 import { Given, Then } from "@cucumber/cucumber";
 import { expect } from "chai";
-import { actualMeditationEvents } from "../../src/components/actual-meditation/actual-meditation.events.js";
-import { statisticsEvents } from "../../src/components/statistics/statistics.events.js";
+import { actualMeditationEvents } from "../../src/features/actual-meditation/actual-meditation.events.js";
+import { statisticsEvents } from "../../src/features/statistics/statistics.events.js";
 import { CURRENT_EPOCH_DAY } from "../support/test-constants.js";
 
 Given(
   /^I had a daily streak of (\d+) days and meditated (\d+) minutes every day$/,
   function (days, minutes) {
-    this.meditationStorage.meditationHistory = Array.from(
+    this.localStorage.meditationHistory = Array.from(
       { length: days },
       (_, i) => ({
         startedTimeInSeconds: (CURRENT_EPOCH_DAY - i) * 24 * 3600,
@@ -37,7 +37,7 @@ Then(/^my new daily streak should be displayed$/, function () {
 
   expect(
     this.eventWasSent({
-      ...statisticsEvents.meditationHistoryRequested,
+      ...statisticsEvents.retrievePersistedMeditationHistoryRequested,
       componentPath: ["statistics"],
     }),
     "meditationHistoryRequested should have been called",

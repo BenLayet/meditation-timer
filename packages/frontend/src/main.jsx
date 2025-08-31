@@ -3,7 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import AppShell from "./components/app/AppShell.jsx";
 import { StateManager } from "domain/src/lib/state-manager/state-manager.js";
-import { meditationTimerAppComponent } from "domain/src/components/meditation-timer-app/meditation-timer-app.component.js";
+import { meditationTimerAppComponent } from "domain/src/features/meditation-timer-app/meditation-timer-app.component.js";
 import { addDebugger } from "./lib/debug.functions.js";
 import { createEffects } from "./effects/effects.js";
 import "./config/i18n.js";

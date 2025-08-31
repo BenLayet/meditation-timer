@@ -17,6 +17,8 @@ import { KeyValueStore } from "./storage/key-value.store.js";
 import { KeyValueStorageService } from "./services/key-value-storage.service.js";
 import { TickingService } from "./services/ticking.service.js";
 import { AccountApi } from "./http-clients/account.api.js";
+import { EventSynchronizationService } from "./services/event-synchronization.service.js";
+import { ResetSynchronizationService } from "./services/reset-synchronization.service.js";
 
 export const mainProviders = {
   indexedDb: async ({ schema = meditationsIndexedDbSchema }) =>
@@ -56,4 +58,14 @@ export const mainProviders = {
   gongService: () => new GongService("/bowl.ogg"),
   tickingService: () => new TickingService(),
   accountApi: () => new AccountApi(),
+  resetSynchronizationService: ({
+    transactionService,
+    keyValueStore,
+    meditationStore,
+  }) =>
+    new ResetSynchronizationService(
+      transactionService,
+      keyValueStore,
+      meditationStore,
+    ),
 };

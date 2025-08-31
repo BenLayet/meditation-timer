@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import { currentTimeInSeconds } from "../../lib/time.functions.js";
+import { currentEpochSeconds } from "../../lib/time.functions.js";
 import NewMeditation from "./NewMeditation.jsx";
 import { InspiringImage } from "../inspiring-image/InspiringImage.jsx";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,7 @@ function NewMeditationPage({ vm }) {
   const { t } = useTranslation();
   const playClicked = () =>
     vm.dispatchers.startSessionRequested({
-      currentTimeInSeconds: currentTimeInSeconds(),
+      currentTimeInSeconds: currentEpochSeconds(),
     });
   return (
     <div className="d-flex flex-column flex-sm-row flex-fill align-items-center">

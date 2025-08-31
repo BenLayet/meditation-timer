@@ -7,8 +7,14 @@ import { meditationTimerAppSelectors } from "./meditation-timer-app.selectors.js
 import { accountEvents } from "../account/account.events.js";
 import { newMeditationEvents } from "../new-meditation/new-meditation.events.js";
 import { meditationSettingsEvents } from "../meditation-settings/meditation-settings.events.js";
+import { synchronizationEvents } from "../synchronization/synchronization.events.js";
+import { accountSelectors } from "../account/account.selectors.js";
 
 export const meditationTimerAppChainedEvents = [
+  {
+    onEvent: meditationTimerAppEvents.appOpened,
+    thenDispatch: meditationTimerAppEvents.onlineStatusWatchRequested,
+  },
   {
     onEvent: {
       ...newMeditationEvents.startSessionRequested,
@@ -82,14 +88,9 @@ export const meditationTimerAppChainedEvents = [
       childComponentPath: ["meditationSession", "actualMeditation"],
     },
     thenDispatch: {
-      ...statisticsEvents.statisticsRequested,
-      childComponentPath: ["statistics"],
+      ...synchronizationEvents.synchronizationRequested,
+      childComponentPath: ["account", "synchronization"],
     },
-    withPayload: ({ previousPayload, state }) => ({
-      ...previousPayload,
-      durationInMinutes:
-        meditationTimerAppSelectors.meditationDurationInMinutes(state),
-    }),
   },
   {
     onEvent: {
@@ -144,28 +145,31 @@ export const meditationTimerAppChainedEvents = [
     },
   },
   {
-    onEvent: meditationTimerAppEvents.appOpened,
+    onEvent: meditationTimerAppEvents.onlineDetected,
+    onCondition: ({ state }) => accountSelectors.isInitialized(state),
     thenDispatch: {
-      ...statisticsEvents.statisticsRequested,
+      ...synchronizationEvents.synchronizationRequested,
+      childComponentPath: ["account", "synchronization"],
+    },
+  },
+  {
+    onEvent: {
+      ...accountEvents.disconnectRequested,
+      childComponentPath: ["account"],
+    },
+    thenDispatch: {
+      ...statisticsEvents.clearMeditationHistoryRequested,
       childComponentPath: ["statistics"],
     },
   },
   {
-    onEvent: meditationTimerAppEvents.onlineDetected,
-    thenDispatch: meditationTimerAppEvents.synchronizationRequested,
-  },
-  {
     onEvent: {
-      ...actualMeditationEvents.saveSucceeded,
-      childComponentPath: ["meditationSession", "actualMeditation"],
+      ...synchronizationEvents.synchronizationCompleted,
+      childComponentPath: ["account", "synchronization"],
     },
-    thenDispatch: meditationTimerAppEvents.synchronizationRequested,
-  },
-  {
-    onEvent: {
-      ...accountEvents.accountNewlyAuthenticated,
-      childComponentPath: ["account"],
+    thenDispatch: {
+      ...statisticsEvents.statisticsRequested,
+      childComponentPath: ["statistics"],
     },
-    thenDispatch: meditationTimerAppEvents.synchronizationRequested,
   },
 ];

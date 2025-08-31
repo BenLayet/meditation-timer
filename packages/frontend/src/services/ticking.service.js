@@ -1,4 +1,4 @@
-import { currentTimeInSeconds } from "../lib/time.functions.js";
+import { currentEpochSeconds } from "../lib/time.functions.js";
 
 export class TickingService {
   intervalIds = {};
@@ -7,7 +7,7 @@ export class TickingService {
       throw new Error(`timer ${timerName} already running`);
     }
     this.intervalIds[timerName] = setInterval(
-      () => callback(currentTimeInSeconds()),
+      () => callback(currentEpochSeconds()),
       1000,
     );
   };

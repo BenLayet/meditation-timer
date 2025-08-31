@@ -59,5 +59,7 @@
   "off": "Off",
   "test": "Test:",
   "suzuki_roshi_meditating": "Suzuki Roshi meditating",
-  "source": "source"
+  "source": "source",
+  "lastSynchronized": "Synchronized:",
+  "errorInLastSynchronization": "Error in last synchronization. Contact contact@softersoftware.org if the problem persists."
 }

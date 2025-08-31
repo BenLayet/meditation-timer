@@ -5,9 +5,17 @@ Feature: Account Management
 
   Scenario: Create an account
     Given I have not created an account yet
-    When I create an account with my login
+    When I create an account
     Then I should be authenticated
+    And my account should be persisted
     And I should be able to disconnect
+
+  Scenario: Logging in
+    Given I have created an account on another device and already have a meditation history
+    When I log in
+    Then I should be authenticated
+    And my account should be persisted
+    And I should retrieve my meditation history from my other device
 
   Scenario: Share meditations across devices
     Given I have connected on multiple devices using the same login
@@ -20,4 +28,5 @@ Feature: Account Management
     Then my login should not be visible anymore
     And my meditation history on the device should be cleared
     And my meditation history on the server should remain intact
+    And my account should be deleted
     And I should be able to create an account again

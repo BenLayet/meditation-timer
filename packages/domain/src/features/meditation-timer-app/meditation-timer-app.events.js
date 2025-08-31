@@ -20,6 +20,9 @@ export const meditationTimerAppEvents = {
     eventType: "gongStopRequested",
     isNewCycle: true,
   },
+  onlineStatusWatchRequested: {
+    eventType: "onlineStatusWatchRequested",
+  },
   onlineStatusChanged: {
     eventType: "onlineStatusChanged",
     payloadShape: { isOnline: ow.boolean },
@@ -27,8 +30,5 @@ export const meditationTimerAppEvents = {
   },
   onlineDetected: {
     eventType: "onlineDetected",
-  },
-  synchronizationRequested: {
-    eventType: "synchronizationRequested",
   },
 };

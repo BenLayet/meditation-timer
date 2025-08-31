@@ -1,6 +1,11 @@
 import ow from "ow";
 import { accountStatus, loginRegex } from "../../models/account.model.js";
 
+const accountShape = {
+  login: ow.string.matches(loginRegex),
+  userToken: ow.optional.string,
+};
+
 export const accountEvents = {
   onlineStatusChanged: {
     eventType: "onlineStatusChanged",
@@ -9,15 +14,12 @@ export const accountEvents = {
   },
   accountNewlyAuthenticated: {
     eventType: "accountNewlyAuthenticated",
-    payloadShape: {
-      userToken: ow.string,
-      login: ow.string.matches(loginRegex),
-    },
-    handler: (state, { login }) => ({
+    payloadShape: { account: ow.object.exactShape(accountShape) },
+    handler: (state, { account }) => ({
       ...state,
       loading: false,
       status: accountStatus.AUTHENTICATED,
-      login,
+      login: account.login,
     }),
   },
   loadAccountRequested: {
@@ -30,17 +32,27 @@ export const accountEvents = {
   accountLoaded: {
     eventType: "accountLoaded",
     payloadShape: {
-      account: ow.optional.object.exactShape({
-        login: ow.string.matches(loginRegex),
-        status: ow.string.oneOf(Object.values(accountStatus)),
-        userToken: ow.optional.string,
-      }),
+      account: ow.optional.object.exactShape(accountShape),
     },
     handler: (state, { account }) => ({
       ...state,
       loading: false,
       login: account?.login,
-      status: account?.status ?? accountStatus.ANONYMOUS,
+      initialized: true,
+    }),
+  },
+  loadAccountCompleted: {
+    eventType: "loadAccountCompleted",
+  },
+  accountAuthenticated: {
+    eventType: "accountAuthenticated",
+    payloadShape: {
+      account: ow.object.exactShape(accountShape),
+    },
+    handler: (state, { account }) => ({
+      ...state,
+      loading: false,
+      login: account?.login,
     }),
   },
   disconnectRequested: {
@@ -74,5 +86,22 @@ export const accountEvents = {
       loginFormRequested: false,
     }),
     isNewCycle: true,
+  },
+  persistAccountRequested: {
+    eventType: "persistAccountRequested",
+    payloadShape: { account: ow.object.exactShape(accountShape) },
+  },
+  retrievePersistedAccountRequested: {
+    eventType: "retrievePersistedAccountRequested",
+  },
+  retrievePersistedAccountCompleted: {
+    eventType: "retrievePersistedAccountCompleted",
+    payloadShape: { account: ow.optional.object.exactShape(accountShape) },
+  },
+  deletePersistedAccountRequested: {
+    eventType: "deletePersistedAccountRequested",
+  },
+  deletePersistedAccountCompleted: {
+    eventType: "deletePersistedAccountCompleted",
   },
 };

@@ -1,6 +1,6 @@
 import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { meditationTimerAppEvents } from "domain/src/components/meditation-timer-app/meditation-timer-app.events.js";
-import { meditationSettingsEvents } from "domain/src/components/meditation-settings/meditation-settings.events.js";
+import { meditationTimerAppEvents } from "domain/src/features/meditation-timer-app/meditation-timer-app.events.js";
+import { meditationSettingsEvents } from "domain/src/features/meditation-settings/meditation-settings.events.js";
 
 export const gongEffects = ({ gongService }) => {
   return [
