@@ -75,7 +75,7 @@ export const Account = ({ vm }) => {
       {isLoginVisible && (
         <>
           <div className="vstack align-items-center">
-            <p>
+            <p className="fs-5 ">
               {t("connectedAs")} {login}
             </p>
             <Synchronization vm={vm.children.synchronization} />
