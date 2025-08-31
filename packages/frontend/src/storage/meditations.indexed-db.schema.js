@@ -18,20 +18,15 @@ export const meditationsIndexedDbSchema = {
         keyPath: "uuid",
       }),
     (db) => db.createObjectStore(keyValueStoreName),
-    async (db) => {
-      await new TransactionService(db).runWriteTransaction(
-        [keyValueStoreName],
-        async (transaction) => {
-          const keyValueStore = new KeyValueStore(keyValueStoreName);
-          const account = await keyValueStore.get("account")(transaction);
-          if (account) {
-            await keyValueStore.set("account", {
-              login: account.login || account.email,
-              token: account.token,
-            })(transaction);
-          }
-        },
-      );
+    async (db, upgradeTransaction) => {
+      const keyValueStore = new KeyValueStore(keyValueStoreName);
+      const account = await keyValueStore.get("account")(upgradeTransaction);
+      if (account) {
+        await keyValueStore.set("account", {
+          login: account.login || account.email,
+          userToken: account.userToken,
+        })(upgradeTransaction);
+      }
     },
   ],
 };

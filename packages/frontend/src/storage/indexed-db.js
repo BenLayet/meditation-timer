@@ -1,13 +1,16 @@
 export function createIndexedDb(schema) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(schema.name, schema.changelog.length);
-    request.onupgradeneeded = (event) => {
+    request.onupgradeneeded = async (event) => {
       const db = event.target.result;
+      const upgradeTransaction = event.target.transaction;
       console.debug(
         `Upgrading IndexedDB from version ${event.oldVersion} to version ${event.newVersion}`,
       );
-
-      schema.changelog.slice(event.oldVersion).forEach((change) => change(db));
+      const changes = schema.changelog.slice(event.oldVersion);
+      for (const change of changes) {
+        await change(db, upgradeTransaction);
+      }
     };
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
