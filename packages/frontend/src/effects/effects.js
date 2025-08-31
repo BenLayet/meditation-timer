@@ -20,6 +20,7 @@ export const createEffects = (
     keyValueStorageService,
     synchronizationTaskService,
     accountApi,
+    resetSynchronizationService,
   },
 ) => [
   ...onlineDetectionEffects({}, rootVM),
@@ -29,7 +30,10 @@ export const createEffects = (
   ...wakeLockEffects({ wakeLockService }),
   ...timerEffects({ tickingService }, rootVM),
   ...saveMeditationEffects({ meditationService }, rootVM),
-  ...loadMeditationsEffects({ meditationService }, rootVM),
+  ...loadMeditationsEffects(
+    { meditationService, resetSynchronizationService },
+    rootVM,
+  ),
   ...localAccountEffects({ keyValueStorageService }, rootVM),
   ...createAccountEffects({ accountApi }, rootVM),
   ...loginEffects({ accountApi }, rootVM),

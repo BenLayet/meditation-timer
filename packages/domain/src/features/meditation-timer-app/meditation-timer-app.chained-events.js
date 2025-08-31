@@ -88,8 +88,8 @@ export const meditationTimerAppChainedEvents = [
       childComponentPath: ["meditationSession", "actualMeditation"],
     },
     thenDispatch: {
-      ...statisticsEvents.statisticsRequested,
-      childComponentPath: ["statistics"],
+      ...synchronizationEvents.synchronizationRequested,
+      childComponentPath: ["account", "synchronization"],
     },
     withPayload: ({ previousPayload, state }) => ({
       ...previousPayload,
@@ -150,13 +150,6 @@ export const meditationTimerAppChainedEvents = [
     },
   },
   {
-    onEvent: meditationTimerAppEvents.appOpened,
-    thenDispatch: {
-      ...statisticsEvents.statisticsRequested,
-      childComponentPath: ["statistics"],
-    },
-  },
-  {
     onEvent: meditationTimerAppEvents.onlineDetected,
     onCondition: ({ state }) => accountSelectors.isInitialized(state),
     thenDispatch: {
@@ -172,6 +165,26 @@ export const meditationTimerAppChainedEvents = [
     thenDispatch: {
       ...synchronizationEvents.synchronizationRequested,
       childComponentPath: ["account", "synchronization"],
+    },
+  },
+  {
+    onEvent: {
+      ...accountEvents.disconnectRequested,
+      childComponentPath: ["account"],
+    },
+    thenDispatch: {
+      ...statisticsEvents.clearMeditationHistoryRequested,
+      childComponentPath: ["statistics"],
+    },
+  },
+  {
+    onEvent: {
+      ...synchronizationEvents.synchronizationCompleted,
+      childComponentPath: ["account", "synchronization"],
+    },
+    thenDispatch: {
+      ...statisticsEvents.statisticsRequested,
+      childComponentPath: ["statistics"],
     },
   },
 ];

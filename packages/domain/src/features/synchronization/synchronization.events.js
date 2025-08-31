@@ -46,4 +46,7 @@ export const synchronizationEvents = {
     eventType: "retrieveLastSynchronizedEpochCompleted",
     payloadShape: { lastSynchronizedEpochSeconds: ow.number.integer.positive },
   },
+  synchronizationCompleted: {
+    eventType: "synchronizationCompleted",
+  },
 };

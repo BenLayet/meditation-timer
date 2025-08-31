@@ -20,7 +20,7 @@ const hourCountThisWeek = flow(totalMinutesThisWeek, hourCount);
 const minuteCountThisWeek = flow(totalMinutesThisWeek, minuteCount);
 const shouldDailyStreakBeDisplayed = flow(
   dailyStreak,
-  (dailyStreak) => dailyStreak > 0,
+  (dailyStreak) => dailyStreak > 1,
 );
 const shouldTotalMinutesThisWeekBeDisplayed = flow(
   totalMinutesThisWeek,

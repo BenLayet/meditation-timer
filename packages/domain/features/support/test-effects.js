@@ -6,6 +6,7 @@ import { accountEvents } from "../../src/features/account/account.events.js";
 import { createAccountFormEvents } from "../../src/features/create-account-form/create-account-form.events.js";
 import { loginFormEvents } from "../../src/features/login-form/login-form.events.js";
 import { meditationTimerAppEvents } from "../../src/features/meditation-timer-app/meditation-timer-app.events.js";
+import { synchronizationEvents } from "../../src/features/synchronization/synchronization.events.js";
 
 export const createTestEffects = (
   stateManager,
@@ -102,13 +103,16 @@ export const createTestEffects = (
     },
   }),
   createEffect({
-    afterEvent: meditationTimerAppEvents.synchronizationRequested,
+    afterEvent: synchronizationEvents.synchronizationRequested,
     then: () => {
       const localMeditationHistory = [...mockLocalDatabase.meditationHistory];
       mockLocalDatabase.meditationHistory.push(
         ...mockRemoteDatabase.meditationHistory,
       );
       mockRemoteDatabase.meditationHistory.push(...localMeditationHistory);
+      stateManager
+        .getRootVM()
+        .children.account.children.synchronization.dispatchers.synchronizationSucceeded();
     },
   }),
 

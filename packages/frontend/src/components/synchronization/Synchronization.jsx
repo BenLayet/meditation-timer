@@ -13,7 +13,7 @@ export const Synchronization = ({ vm }) => {
   )();
 
   return (
-    <div className="hstack gap-1 text-muted fs-6 align-self-center">
+    <div className="hstack gap-1 text-muted fs-6 align-self-center opacity-50">
       {t("lastSynchronized")}{" "}
       {isSynchronizing ? (
         <FontAwesomeIcon icon={faSpinner} spin />

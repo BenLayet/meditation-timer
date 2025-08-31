@@ -48,7 +48,14 @@ export class CollectionStore {
     return new Promise((resolve, reject) => {
       const store = transaction.objectStore(this.storeName);
       const request = store.delete(id);
-
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  };
+  deleteAll = () => async (transaction) => {
+    return new Promise((resolve, reject) => {
+      const store = transaction.objectStore(this.storeName);
+      const request = store.clear();
       request.onsuccess = () => resolve();
       request.onerror = () => reject(request.error);
     });

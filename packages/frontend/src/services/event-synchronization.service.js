@@ -3,10 +3,9 @@ import {
   meditationStoreName,
   pendingEventStoreName,
 } from "../storage/store-names.constants";
-import { validateNotEmptyString } from "domain/src/lib/assert/not-null.validator.js";
+import { lastProcessedIdKey } from "./synchronization.constants.js";
 
 const PAGE_SIZE = 100;
-export const lastProcessedIdKey = "lastProcessedId";
 
 export class EventSynchronizationService {
   constructor(
@@ -16,6 +15,7 @@ export class EventSynchronizationService {
     eventProcessor,
     eventApi,
     accountService,
+    meditationStore,
   ) {
     this.transactionService = transactionService;
     this.pendingEventStore = pendingEventStore;
@@ -23,6 +23,7 @@ export class EventSynchronizationService {
     this.eventApi = eventApi;
     this.eventProcessor = eventProcessor;
     this.accountService = accountService;
+    this.meditationStore = meditationStore;
   }
   async synchronizeEvents() {
     // process remote events before posting all pending events, in case the last post partially failed
@@ -78,7 +79,7 @@ export class EventSynchronizationService {
 
   processRemoteEvent = async (event) => {
     await this.transactionService.runWriteTransaction(
-      [pendingEventStoreName, meditationStoreName, keyValueStoreName],
+      [pendingEventStoreName, keyValueStoreName],
       async (transaction) => {
         if (await this.pendingEventStore.existsById(event.uuid)(transaction)) {
           await this.pendingEventStore.deleteById(event.uuid)(transaction);
@@ -89,4 +90,14 @@ export class EventSynchronizationService {
       },
     );
   };
+
+  async reset() {
+    await this.transactionService.runWriteTransaction(
+      [meditationStoreName, keyValueStoreName],
+      async (transaction) => {
+        await this.meditationStore.deleteAll()(transaction);
+        await this.keyValueStore.delete(lastProcessedIdKey)(transaction);
+      },
+    );
+  }
 }

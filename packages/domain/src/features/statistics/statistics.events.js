@@ -56,4 +56,19 @@ export const statisticsEvents = {
       meditationHistory,
     }),
   },
+  clearMeditationHistoryRequested: {
+    eventType: "clearMeditationHistoryRequested",
+    handler: (state) => ({
+      ...state,
+      isMeditationHistoryLoading: true,
+    }),
+  },
+  clearMeditationHistorySucceeded: {
+    eventType: "clearMeditationHistorySucceeded",
+    handler: (state) => ({
+      ...state,
+      meditationHistory: [],
+      isMeditationHistoryLoading: false,
+    }),
+  },
 };

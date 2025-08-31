@@ -80,18 +80,17 @@ export const Account = ({ vm }) => {
             </p>
             <Synchronization vm={vm.children.synchronization} />
             {canDisconnect && (
-              <a
-                className="fs-5"
+              <button
+                className="fs-5 mt-3 btn btn-sm btn-outline-secondary opacity-75"
                 onClick={vm.dispatchers.disconnectRequested}
-                href="#"
               >
                 <FontAwesomeIcon icon={faUnlock} />
                 &nbsp;
                 {t("disconnect")}
-              </a>
+              </button>
             )}
           </div>
-          <p className="text-muted fs-5 opacity-50 mb-0">
+          <p className="text-muted fs-5 opacity-50 mb-0 mt-5">
             <a
               target="_blank"
               className="link-primary"
