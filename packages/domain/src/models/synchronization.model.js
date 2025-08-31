@@ -1,3 +1,4 @@
 export const synchronizationErrorCodes = {
   SERVICE_WORKER_NOT_REGISTERED: "SERVICE_WORKER_NOT_REGISTERED",
+  SERVER_ERROR: "SERVER_ERROR",
 };

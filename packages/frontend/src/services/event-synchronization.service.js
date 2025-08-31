@@ -1,6 +1,5 @@
 import {
   keyValueStoreName,
-  meditationStoreName,
   pendingEventStoreName,
 } from "../storage/store-names.constants";
 import { lastProcessedIdKey } from "./synchronization.constants.js";
@@ -15,7 +14,6 @@ export class EventSynchronizationService {
     eventProcessor,
     eventApi,
     accountService,
-    meditationStore,
   ) {
     this.transactionService = transactionService;
     this.pendingEventStore = pendingEventStore;
@@ -23,7 +21,6 @@ export class EventSynchronizationService {
     this.eventApi = eventApi;
     this.eventProcessor = eventProcessor;
     this.accountService = accountService;
-    this.meditationStore = meditationStore;
   }
   async synchronizeEvents() {
     // process remote events before posting all pending events, in case the last post partially failed
@@ -90,14 +87,4 @@ export class EventSynchronizationService {
       },
     );
   };
-
-  async reset() {
-    await this.transactionService.runWriteTransaction(
-      [meditationStoreName, keyValueStoreName],
-      async (transaction) => {
-        await this.meditationStore.deleteAll()(transaction);
-        await this.keyValueStore.delete(lastProcessedIdKey)(transaction);
-      },
-    );
-  }
 }

@@ -41,6 +41,9 @@ export const accountEvents = {
       initialized: true,
     }),
   },
+  loadAccountCompleted: {
+    eventType: "loadAccountCompleted",
+  },
   accountAuthenticated: {
     eventType: "accountAuthenticated",
     payloadShape: {

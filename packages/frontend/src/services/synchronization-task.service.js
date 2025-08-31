@@ -55,7 +55,7 @@ async function addEventListener({
         onSucceeded();
         break;
       case "synchronizationFailed":
-        onFailed();
+        onFailed({ errorCodes: [synchronizationErrorCodes.SERVER_ERROR] });
         break;
       default:
         console.debug("unknown message type");

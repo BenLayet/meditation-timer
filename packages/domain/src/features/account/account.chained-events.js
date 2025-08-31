@@ -68,7 +68,15 @@ export const accountChainedEvents = [
     thenDispatch: accountEvents.accountAuthenticated,
   },
   {
-    onEvent: accountEvents.accountAuthenticated,
+    onEvent: accountEvents.accountLoaded,
+    thenDispatch: accountEvents.loadAccountCompleted,
+  },
+  {
+    onEvent: accountEvents.accountNewlyAuthenticated,
+    thenDispatch: accountEvents.loadAccountCompleted,
+  },
+  {
+    onEvent: accountEvents.loadAccountCompleted,
     thenDispatch: {
       ...synchronizationEvents.synchronizationRequested,
       childComponentPath: ["synchronization"],
