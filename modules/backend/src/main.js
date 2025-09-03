@@ -1,4 +1,4 @@
-import { resolve } from "@softer-software/functions/resolve.functions.js";
+import { resolve } from "@softersoftware/functions/resolve.functions.js";
 import { providers } from "./config/providers.js";
 import { startHttpServer } from "./adapters/http-server.js";
 // resolveFunctions dependencies

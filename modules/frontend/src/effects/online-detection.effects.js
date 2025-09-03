@@ -1,4 +1,4 @@
-import { createEffect } from "@softer-software/state-manager/create-effect.js";
+import { createEffect } from "@softersoftware/state-manager/create-effect.js";
 import { meditationTimerAppEvents } from "@meditation-timer/domain/src/features/meditation-timer-app/meditation-timer-app.events.js";
 
 export const onlineDetectionEffects = ({}, rootVM) => {

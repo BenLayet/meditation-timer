@@ -26,7 +26,7 @@ importers:
       '@meditation-timer/frontend':
         specifier: workspace:^
         version: link:../frontend
-      '@softer-software/functions':
+      '@softersoftware/functions':
         specifier: workspace:^
         version: link:../libraries/functions
       argon2:
@@ -90,10 +90,10 @@ importers:
 
   modules/domain:
     dependencies:
-      '@softer-software/functions':
+      '@softersoftware/functions':
         specifier: workspace:^
         version: link:../libraries/functions
-      '@softer-software/state-manager':
+      '@softersoftware/state-manager':
         specifier: workspace:^
         version: link:../libraries/state-manager
       lodash-es:
@@ -133,10 +133,10 @@ importers:
       '@meditation-timer/domain':
         specifier: workspace:*
         version: link:../domain
-      '@softer-software/functions':
+      '@softersoftware/functions':
         specifier: workspace:^
         version: link:../libraries/functions
-      '@softer-software/state-manager':
+      '@softersoftware/state-manager':
         specifier: workspace:^
         version: link:../libraries/state-manager
       bootstrap:
@@ -228,7 +228,7 @@ importers:
 
   modules/libraries/state-manager:
     dependencies:
-      '@softer-software/functions':
+      '@softersoftware/functions':
         specifier: workspace:^
         version: link:../functions
       lodash-es:

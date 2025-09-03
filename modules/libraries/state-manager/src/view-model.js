@@ -1,4 +1,4 @@
-import { map } from "@softer-software/functions/object.functions.js";
+import { map } from "@softersoftware/functions/object.functions.js";
 import { createEvent } from "./create-event.js";
 
 const selectors = (component, state) =>

@@ -1,6 +1,6 @@
-import { StateManager } from "@softer-software/state-manager/state-manager.js";
+import { StateManager } from "@softersoftware/state-manager/state-manager.js";
 import { meditationTimerAppComponent } from "../../src/features/meditation-timer-app/meditation-timer-app.component.js";
-import { statePatcher } from "@softer-software/state-manager/debugger.js";
+import { statePatcher } from "@softersoftware/state-manager/debugger.js";
 import { isEqual } from "lodash-es";
 import {
   AfterStep,

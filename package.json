@@ -16,8 +16,8 @@
     "test:frontend": "pnpm --filter @meditation-timer/frontend test",
     "test:backend": "pnpm --filter @meditation-timer/backend test",
     "test:libraries": "pnpm test:libraries:functions && pnpm test:libraries:state-manager",
-    "test:libraries:functions": "pnpm --filter @softer-software/functions test",
-    "test:libraries:state-manager": "pnpm --filter @softer-software/state-manager test",
+    "test:libraries:functions": "pnpm --filter @softersoftware/functions test",
+    "test:libraries:state-manager": "pnpm --filter @softersoftware/state-manager test",
     "test": "pnpm test:libraries && pnpm test:domain && pnpm test:backend && pnpm test:frontend",
     "format": "prettier -w .",
     "format-check": "prettier --check ."

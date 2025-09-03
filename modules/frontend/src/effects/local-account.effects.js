@@ -1,4 +1,4 @@
-import { createEffect } from "@softer-software/state-manager/create-effect.js";
+import { createEffect } from "@softersoftware/state-manager/create-effect.js";
 import { accountEvents } from "@meditation-timer/domain/src/features/account/account.events.js";
 import { accountStatus } from "@meditation-timer/domain/src/models/account.model.js";
 

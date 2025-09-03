@@ -1,7 +1,7 @@
 import {
   validateNotEmptyString,
   validateNotNullObject,
-} from "@softer-software/functions/assert.functions.js";
+} from "@softersoftware/functions/assert.functions.js";
 import { validateNewMeditation } from "./meditation.model.js";
 
 export const eventTypes = {

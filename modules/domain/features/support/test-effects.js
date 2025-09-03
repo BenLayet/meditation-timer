@@ -1,6 +1,6 @@
 import { statisticsEvents } from "../../src/features/statistics/statistics.events.js";
 import { actualMeditationEvents } from "../../src/features/actual-meditation/actual-meditation.events.js";
-import { createEffect } from "@softer-software/state-manager/create-effect.js";
+import { createEffect } from "@softersoftware/state-manager/create-effect.js";
 import { CURRENT_EPOCH_DAY } from "./test-constants.js";
 import { accountEvents } from "../../src/features/account/account.events.js";
 import { createAccountFormEvents } from "../../src/features/create-account-form/create-account-form.events.js";

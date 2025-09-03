@@ -2,7 +2,7 @@ import {
   validateInteger,
   validateNotNullObject,
   validateStrictlyPositiveInteger,
-} from "@softer-software/functions/assert.functions.js";
+} from "@softersoftware/functions/assert.functions.js";
 
 export const validateNewMeditation = (meditation) => {
   validateNotNullObject({ meditation });

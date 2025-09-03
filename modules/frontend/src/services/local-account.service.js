@@ -3,7 +3,7 @@ import { errorCodes } from "@meditation-timer/domain/src/errors/error-codes.js";
 import {
   validateNotNullObject,
   validateNotEmptyString,
-} from "@softer-software/functions/assert.functions.js";
+} from "@softersoftware/functions/assert.functions.js";
 import { accountStatus as statusCodes } from "@meditation-timer/domain/src/models/account.model.js";
 
 export class LocalAccountService {

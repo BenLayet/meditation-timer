@@ -1,4 +1,4 @@
-import { map } from "@softer-software/functions/object.functions.js";
+import { map } from "@softersoftware/functions/object.functions.js";
 
 export const getInitialState = (component) => ({
   ownState: component.initialState ?? {},

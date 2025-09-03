@@ -1,4 +1,4 @@
-import { validateNotEmptyString } from "@softer-software/functions/assert.functions.js";
+import { validateNotEmptyString } from "@softersoftware/functions/assert.functions.js";
 
 export class KeyValueStore {
   constructor(storeName) {

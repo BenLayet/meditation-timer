@@ -1,4 +1,4 @@
-import { validateNotNullObject } from "@softer-software/functions/assert.functions.js";
+import { validateNotNullObject } from "@softersoftware/functions/assert.functions.js";
 import {
   createAccountErrorCodes,
   validateLoginFormat,

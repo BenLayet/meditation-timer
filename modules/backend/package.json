@@ -38,6 +38,6 @@
     "uuid": "^11.1.0",
     "@meditation-timer/domain": "workspace:^",
     "@meditation-timer/frontend": "workspace:^",
-    "@softer-software/functions": "workspace:^"
+    "@softersoftware/functions": "workspace:^"
   }
 }

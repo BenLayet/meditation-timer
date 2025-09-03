@@ -18,8 +18,8 @@
     "vitest": "^3.1.1"
   },
   "dependencies": {
-    "@softer-software/functions": "workspace:^",
-    "@softer-software/state-manager": "workspace:^",
+    "@softersoftware/functions": "workspace:^",
+    "@softersoftware/state-manager": "workspace:^",
     "lodash-es": "^4.17.21",
     "ow": "^2.0.0"
   }
