@@ -8,7 +8,7 @@
     "build:root": "pnpm install",
     "build:frontend": "pnpm --filter @meditation-timer/frontend build",
     "start": "pnpm start:backend",
-    "start:backend": "pnpm --filter @softer-software/backend start",
+    "start:backend": "pnpm --filter @meditation-timer/backend start",
     "dev": "pnpm run dev:backend & pnpm run dev:frontend",
     "dev:backend": "pnpm --filter @meditation-timer/backend dev",
     "dev:frontend": "pnpm --filter @meditation-timer/frontend dev",
