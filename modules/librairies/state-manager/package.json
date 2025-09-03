@@ -1,0 +1,6 @@
+{
+  "name": "@meditation-timer/state-manager",
+  "version": "1.0.0",
+  "main": "src/state-manager.js",
+  "license": "MIT"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "@meditation-timer/config",
+  "version": "1.0.0",
+  "main": "src/resolveDependencies.js",
+  "license": "MIT"
+}

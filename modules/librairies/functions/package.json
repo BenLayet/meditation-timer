@@ -1,0 +1,6 @@
+{
+  "name": "@meditation-timer/functions",
+  "version": "1.0.0",
+  "main": "src/duration.function.js",
+  "license": "MIT"
+}

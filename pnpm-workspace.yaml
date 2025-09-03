@@ -1,4 +1,9 @@
 packages:
-  - "packages/backend"
-  - "packages/frontend"
-  - "packages/domain"
+  - "modules/backend"
+  - "modules/frontend"
+  - "modules/domain"
+  - "modules/libraries/assert"
+  - "modules/libraries/config"
+  - "modules/libraries/functions"
+  - "modules/libraries/logger"
+  - "modules/libraries/state-manager"
