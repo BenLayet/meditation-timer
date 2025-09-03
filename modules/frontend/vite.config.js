@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
           name: "Meditation Timer",
           short_name: "Meditation Timer",
           start_url: "/",
-          display: "standalone",
+          display: "fullscreen",
           background_color: "#000000",
           theme_color: "#000000",
           screenshots: [
