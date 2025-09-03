@@ -37,6 +37,7 @@
     "postgres": "^3.4.7",
     "uuid": "^11.1.0",
     "@meditation-timer/domain": "workspace:^",
+    "@meditation-timer/frontend": "workspace:^",
     "@softer-software/functions": "workspace:^"
   }
 }

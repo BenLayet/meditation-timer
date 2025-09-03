@@ -21,7 +21,7 @@ export const startHttpServer = async ({
   const __dirname = path.dirname(__filename);
   const staticFilesPath = path.join(
     __dirname,
-    "../../node_modules/frontend/dist",
+    "../../node_modules/@meditation-timer/frontend/dist",
   );
   const app = express();
 

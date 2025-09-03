@@ -1,7 +1,9 @@
 export const errorHandler =
   ({ logger }) =>
-  (error, request, response) => {
+  (request, response, error) => {
     // Default error
+    logger.error(request);
+    logger.error(response);
     logger.error(error);
     response.status(500).json({
       error: `Internal Server Error : ${error.message} `,

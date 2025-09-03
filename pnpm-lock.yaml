@@ -23,6 +23,9 @@ importers:
       '@meditation-timer/domain':
         specifier: workspace:^
         version: link:../domain
+      '@meditation-timer/frontend':
+        specifier: workspace:^
+        version: link:../frontend
       '@softer-software/functions':
         specifier: workspace:^
         version: link:../libraries/functions
