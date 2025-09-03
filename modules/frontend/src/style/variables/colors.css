@@ -8,11 +8,20 @@
   --bs-link-hover-color-rgb: 255, 255, 255;
   --bs-link-hover-color: #ffffff;
   --bs-link-color: var(--bs-primary);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; /* Global radius scale (smaller than Bootstrap defaults) */
+  --bs-border-radius: 4px;
+  --bs-border-radius-sm: var(--bs-border-radius);
+  --bs-border-radius-lg: var(--bs-border-radius);
+  --bs-border-radius-xl: var(--bs-border-radius);
+  --bs-border-radius-xxl: var(--bs-border-radius);
+  --bs-border-radius-pill: var(--bs-border-radius);
 }
 
 [data-bs-theme="dark"] {
-  --bs-body-bg: #000000;
-  --bs-body-color: #ffffff;
+  --bs-body-bg: #111111;
+  --bs-body-color: #eeeeee;
 }
 [data-bs-theme="dark"] .link-primary:hover {
   color: var(--bs-link-hover-color) !important;
