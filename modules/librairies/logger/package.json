@@ -1,6 +1,0 @@
-{
-  "name": "@meditation-timer/logger",
-  "version": "1.0.0",
-  "main": "src/logger.js",
-  "license": "MIT"
-}

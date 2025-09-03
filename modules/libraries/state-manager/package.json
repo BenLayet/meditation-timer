@@ -1,0 +1,22 @@
+{
+  "name": "@softer-software/state-manager",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./*": "./src/*"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@softer-software/functions": "workspace:^",
+    "lodash-es": "^4.17.21",
+    "ow": "^2.0.0"
+  }
+}

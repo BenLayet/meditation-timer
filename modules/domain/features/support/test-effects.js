@@ -1,6 +1,6 @@
 import { statisticsEvents } from "../../src/features/statistics/statistics.events.js";
 import { actualMeditationEvents } from "../../src/features/actual-meditation/actual-meditation.events.js";
-import { createEffect } from "../../src/lib/state-manager/create-effect.js";
+import { createEffect } from "@softer-software/state-manager/create-effect.js";
 import { CURRENT_EPOCH_DAY } from "./test-constants.js";
 import { accountEvents } from "../../src/features/account/account.events.js";
 import { createAccountFormEvents } from "../../src/features/create-account-form/create-account-form.events.js";
@@ -12,6 +12,7 @@ export const createTestEffects = (
   stateManager,
   mockLocalDatabase,
   mockRemoteDatabase,
+  clock,
 ) => [
   //EFFECTS
   //isOnline
@@ -112,7 +113,9 @@ export const createTestEffects = (
       mockRemoteDatabase.meditationHistory.push(...localMeditationHistory);
       stateManager
         .getRootVM()
-        .children.account.children.synchronization.dispatchers.synchronizationSucceeded();
+        .children.account.children.synchronization.dispatchers.synchronizationSucceeded(
+          { lastSynchronizedEpochSeconds: clock.currentEpochSeconds },
+        );
     },
   }),
 

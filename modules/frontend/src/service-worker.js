@@ -1,6 +1,6 @@
 import { precacheAndRoute } from "workbox-precaching";
 import build from "../../../build.json";
-import { resolveDependencies } from "domain/src/lib/config/resolveDependencies.js";
+import { resolve } from "@softer-software/functions/resolve.functions.js";
 import { serviceWorkerProviders } from "./service-worker.providers.js";
 
 //disables log output from workbox
@@ -27,7 +27,7 @@ async function synchronizeEvents(callback) {
   console.debug("synchronizationRequested");
 
   const { accountService, eventSynchronizationService, indexedDb } =
-    await resolveDependencies(serviceWorkerProviders);
+    await resolve(serviceWorkerProviders);
 
   try {
     if (await accountService.isAuthenticated()) {

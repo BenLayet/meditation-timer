@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "@meditation-timer/frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,14 +8,17 @@
     "build": "vite build",
     "lint": "eslint .",
     "prettier": "prettier -w .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "echo \"no frontend test yet\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@meditation-timer/domain": "workspace:*",
+    "@softer-software/functions": "workspace:^",
+    "@softer-software/state-manager": "workspace:^",
     "bootstrap": "^5.3.7",
-    "domain": "workspace:*",
     "i18next": "^24.2.3",
     "i18next-browser-languagedetector": "^8.0.5",
     "i18next-http-backend": "^3.0.2",
@@ -40,6 +43,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
     "vite": "^6.3.3",
-    "vite-plugin-pwa": "^1.0.0"
+    "vite-plugin-pwa": "^1.0.0",
+    "vitest": "^3.2.4"
   }
 }

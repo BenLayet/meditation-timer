@@ -1,4 +1,4 @@
-import { currentEpochSeconds } from "../lib/time.functions.js";
+import { currentEpochSeconds } from "@softer-software/functions/time.functions.js";
 
 export class TickingService {
   intervalIds = {};

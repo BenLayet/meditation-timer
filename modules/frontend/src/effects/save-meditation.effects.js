@@ -1,5 +1,5 @@
-import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { actualMeditationEvents } from "domain/src/features/actual-meditation/actual-meditation.events.js";
+import { createEffect } from "@softer-software/state-manager/create-effect.js";
+import { actualMeditationEvents } from "@meditation-timer/domain/src/features/actual-meditation/actual-meditation.events.js";
 
 export const saveMeditationEffects = ({ meditationService }, rootVM) => {
   const saveMeditation = async (payload) => {

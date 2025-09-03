@@ -1,4 +1,4 @@
-import { synchronizationErrorCodes } from "domain/src/models/synchronization.model.js";
+import { synchronizationErrorCodes } from "@meditation-timer/domain/src/models/synchronization.model.js";
 
 export class SynchronizationTaskService {
   eventListenerAdded = false;

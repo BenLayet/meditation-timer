@@ -1,7 +1,7 @@
 import { parsePageRequest } from "./page-request.parser.js";
 import { extractBearerToken } from "./bearer-token.js";
 import { FunctionalError } from "../errors/functional-error.js";
-import { errorCodes } from "domain/src/errors/error-codes.js";
+import { errorCodes } from "@meditation-timer/domain/src/errors/error-codes.js";
 
 export const postEventHandler =
   ({ logger, postEvent }) =>

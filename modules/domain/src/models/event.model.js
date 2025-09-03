@@ -1,8 +1,7 @@
-import { validate } from "uuid";
 import {
   validateNotEmptyString,
   validateNotNullObject,
-} from "../lib/assert/not-null.validator.js";
+} from "@softer-software/functions/assert.functions.js";
 import { validateNewMeditation } from "./meditation.model.js";
 
 export const eventTypes = {
@@ -23,13 +22,15 @@ const validateEventPayload = (eventType, payload) => {
   payloadValidators[eventType](payload);
 };
 
+const uuidRegex =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 export const validateNewEvent = (event) => {
   validateNotNullObject({ event });
   if (typeof event.id !== "undefined")
     throw new Error("Event ID must not be set");
-  if (!validate(event.uuid))
+  if (!uuidRegex.test(event.uuid))
     throw new Error("event UUID must be a valid UUID but was: " + event.uuid);
-  if (!validate(event.userUuid))
+  if (!uuidRegex.test(event.userUuid))
     throw new Error("userUuid must be a valid UUID but was: " + event.userUuid);
   validateEventType(event.type);
   validateEventPayload(event.type, event.payload);

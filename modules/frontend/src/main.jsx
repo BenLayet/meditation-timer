@@ -2,13 +2,13 @@ import "./style/style.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import AppShell from "./components/app/AppShell.jsx";
-import { StateManager } from "domain/src/lib/state-manager/state-manager.js";
-import { meditationTimerAppComponent } from "domain/src/features/meditation-timer-app/meditation-timer-app.component.js";
+import { StateManager } from "@softer-software/state-manager/state-manager.js";
+import { meditationTimerAppComponent } from "@meditation-timer/domain/src/features/meditation-timer-app/meditation-timer-app.component.js";
 import { addDebugger } from "./lib/debug.functions.js";
 import { createEffects } from "./effects/effects.js";
 import "./config/i18n.js";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { resolveDependencies } from "domain/src/lib/config/resolveDependencies.js";
+import { resolve } from "@softer-software/functions/resolve.functions.js";
 import { mainProviders } from "./main.providers.js";
 
 //STATE MANAGER
@@ -16,7 +16,7 @@ const stateManager = new StateManager(meditationTimerAppComponent);
 const rootVM = stateManager.getRootVM();
 
 //DEPENDENCIES
-const dependencies = await resolveDependencies(mainProviders);
+const dependencies = await resolve(mainProviders);
 
 //EFFECTS
 createEffects(rootVM, dependencies).forEach(stateManager.addEffect);

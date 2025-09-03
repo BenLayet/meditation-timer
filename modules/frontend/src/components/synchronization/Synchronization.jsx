@@ -1,5 +1,5 @@
 import { flow } from "lodash-es";
-import { formatLocalizedDateTime } from "../../lib/time.functions.js";
+import { formatLocalizedDateTime } from "@softer-software/functions/time.functions.js";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRefresh, faSpinner } from "@fortawesome/free-solid-svg-icons";

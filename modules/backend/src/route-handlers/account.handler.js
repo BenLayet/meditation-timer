@@ -1,7 +1,7 @@
 import {
   createAccountErrorCodes,
   loginErrorCodes,
-} from "domain/src/models/account.model.js";
+} from "@meditation-timer/domain/src/models/account.model.js";
 
 export const createAccountHandler =
   ({ createAccountUsecase }) =>

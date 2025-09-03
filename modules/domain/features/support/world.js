@@ -1,15 +1,23 @@
-import { StateManager } from "../../src/lib/state-manager/state-manager.js";
+import { StateManager } from "@softer-software/state-manager/state-manager.js";
 import { meditationTimerAppComponent } from "../../src/features/meditation-timer-app/meditation-timer-app.component.js";
-import { statePatcher } from "../../src/lib/state-manager/debugger.js";
+import { statePatcher } from "@softer-software/state-manager/debugger.js";
 import { isEqual } from "lodash-es";
-import { AfterStep, Before, setWorldConstructor } from "@cucumber/cucumber";
-import { compareObjects } from "../../src/lib/logger/compare-objects.js";
+import {
+  AfterStep,
+  Before,
+  After,
+  setWorldConstructor,
+} from "@cucumber/cucumber";
+import { compareObjects } from "./compare-objects.js";
 import { createTestEffects } from "./test-effects.js";
 
 let stateManager;
 let mockLocalDatabase = {};
 let mockRemoteDatabase = {};
 let events = [];
+let clock = {
+  currentEpochSeconds: 1,
+};
 
 class CustomWorld {
   constructor() {}
@@ -58,6 +66,7 @@ const initializeScenario = () => {
     stateManager,
     mockLocalDatabase,
     mockRemoteDatabase,
+    clock,
   ).forEach(stateManager.addEffect);
   events = [];
   stateManager.addEventListener((e) => events.push(e));
@@ -65,7 +74,7 @@ const initializeScenario = () => {
 };
 
 Before(initializeScenario);
-AfterStep(function ({ result }) {
+After(function ({ result }) {
   if (result.status === "FAILED") {
     console.log();
     console.log("------LAST STATE COMPARED WITH INITIAL STATE------");

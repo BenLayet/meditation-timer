@@ -4,7 +4,7 @@ import { getStateAtPath } from "./state.js";
 import {
   validateNotEmptyString,
   validateNotNullObject,
-} from "../assert/not-null.validator.js";
+} from "@softer-software/functions/assert.functions.js";
 
 const createChainedEventFactory =
   (currentComponentPath) =>

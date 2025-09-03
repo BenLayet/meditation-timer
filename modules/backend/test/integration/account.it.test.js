@@ -4,7 +4,7 @@ import { fakeTokenService, fakeUuidGenerator } from "./test-providers.js";
 import {
   createAccountErrorCodes,
   loginErrorCodes,
-} from "domain/src/models/account.model.js";
+} from "@meditation-timer/domain/src/models/account.model.js";
 
 const userToken = fakeTokenService.createPermanentToken({
   userUuid: "10000000-0000-1000-8000-000000000001",

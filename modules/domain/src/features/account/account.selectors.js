@@ -1,7 +1,7 @@
 import { flow } from "lodash-es";
-import { map } from "../../lib/functions/object.functions.js";
+import { map } from "@softer-software/functions/object.functions.js";
 import { accountStatus } from "../../models/account.model.js";
-import { and, not } from "../../lib/functions/predicate.functions.js";
+import { and, not } from "@softer-software/functions/predicate.functions.js";
 
 const login = (accountState) => accountState.login;
 const isAnonymous = flow(login, (login) => !login);

@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import { currentEpochSeconds } from "../../lib/time.functions.js";
+import { currentEpochSeconds } from "@softer-software/functions/time.functions.js";
 import NewMeditation from "./NewMeditation.jsx";
 import { InspiringImage } from "../inspiring-image/InspiringImage.jsx";
 import { useTranslation } from "react-i18next";

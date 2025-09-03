@@ -3,7 +3,7 @@ import {
   validateFunction,
   validateNotEmptyString,
   validateNotNullObject,
-} from "../assert/not-null.validator.js";
+} from "@softer-software/functions/assert.functions.js";
 
 export const createEffect = ({ afterEvent, onComponent, then }) => {
   validateNotNullObject({ afterEvent }, { afterEvent, onComponent, then });

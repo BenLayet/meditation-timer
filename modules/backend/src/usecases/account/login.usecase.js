@@ -1,12 +1,12 @@
 import {
   validateNotEmptyString,
   validateNotNullObject,
-} from "domain/src/lib/assert/not-null.validator.js";
+} from "@softer-software/functions/assert.functions.js";
 import {
   loginErrorCodes,
   validateLoginFormat,
   validatePasswordFormat,
-} from "domain/src/models/account.model.js";
+} from "@meditation-timer/domain/src/models/account.model.js";
 import { FunctionalError } from "../../errors/functional-error.js";
 
 export const loginUsecase = ({

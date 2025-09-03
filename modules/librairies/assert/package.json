@@ -1,6 +1,0 @@
-{
-  "name": "@meditation-timer/assert",
-  "version": "1.0.0",
-  "main": "src/not-null.validator.js",
-  "license": "MIT"
-}

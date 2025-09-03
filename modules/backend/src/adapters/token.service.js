@@ -3,7 +3,7 @@ import {
   validateNotEmptyString,
   validateNotNull,
   validateNotNullObject,
-} from "domain/src/lib/assert/not-null.validator.js";
+} from "@softer-software/functions/assert.functions.js";
 
 export class JwtTokenService {
   constructor(jwtSecret, logger) {

@@ -1,5 +1,5 @@
-import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { meditationSessionEvents } from "domain/src/features/meditation-session/meditation-session.events.js";
+import { createEffect } from "@softer-software/state-manager/create-effect.js";
+import { meditationSessionEvents } from "@meditation-timer/domain/src/features/meditation-session/meditation-session.events.js";
 
 export const wakeLockEffects = ({ wakeLockService }) => {
   return [

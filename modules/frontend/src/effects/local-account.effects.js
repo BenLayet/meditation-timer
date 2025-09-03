@@ -1,6 +1,6 @@
-import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { accountEvents } from "domain/src/features/account/account.events.js";
-import { accountStatus } from "domain/src/models/account.model.js";
+import { createEffect } from "@softer-software/state-manager/create-effect.js";
+import { accountEvents } from "@meditation-timer/domain/src/features/account/account.events.js";
+import { accountStatus } from "@meditation-timer/domain/src/models/account.model.js";
 
 export const localAccountEffects = ({ keyValueStorageService }, rootVM) => {
   const dispatchers = rootVM.children.account.dispatchers;
