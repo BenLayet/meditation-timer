@@ -1,6 +1,6 @@
-import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { meditationSettingsEvents } from "domain/src/features/meditation-settings/meditation-settings.events.js";
-import { meditationTimerAppEvents } from "domain/src/features/meditation-timer-app/meditation-timer-app.events.js";
+import { createEffect } from "@softer-software/state-manager/create-effect.js";
+import { meditationSettingsEvents } from "@meditation-timer/domain/src/features/meditation-settings/meditation-settings.events.js";
+import { meditationTimerAppEvents } from "@meditation-timer/domain/src/features/meditation-timer-app/meditation-timer-app.events.js";
 
 export const meditationSettingsEffects = (
   { keyValueStorageService },

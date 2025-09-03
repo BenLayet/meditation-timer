@@ -1,5 +1,5 @@
 {
-  "name": "domain",
+  "name": "@meditation-timer/domain",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -18,8 +18,9 @@
     "vitest": "^3.1.1"
   },
   "dependencies": {
+    "@softer-software/functions": "workspace:^",
+    "@softer-software/state-manager": "workspace:^",
     "lodash-es": "^4.17.21",
-    "ow": "^2.0.0",
-    "uuid": "^11.1.0"
+    "ow": "^2.0.0"
   }
 }

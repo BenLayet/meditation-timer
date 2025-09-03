@@ -1,7 +1,7 @@
 import {
   validateNotEmptyString,
   validateNotNullObject,
-} from "domain/src/lib/assert/not-null.validator.js";
+} from "@softer-software/functions/assert.functions.js";
 
 export const healthCheckUsecase = ({ build, environment, logger }) => {
   validateNotNullObject({ build });

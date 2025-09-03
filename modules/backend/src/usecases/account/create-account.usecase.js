@@ -1,9 +1,9 @@
-import { validateNotNullObject } from "domain/src/lib/assert/not-null.validator.js";
+import { validateNotNullObject } from "@softer-software/functions/assert.functions.js";
 import {
   createAccountErrorCodes,
   validateLoginFormat,
   validatePasswordFormat,
-} from "domain/src/models/account.model.js";
+} from "@meditation-timer/domain/src/models/account.model.js";
 import { FunctionalError } from "../../errors/functional-error.js";
 
 export const createAccountUsecase = ({

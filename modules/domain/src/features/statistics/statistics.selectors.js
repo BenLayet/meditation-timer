@@ -1,6 +1,6 @@
 import { floor, flow } from "lodash-es";
-import { map } from "../../lib/functions/object.functions.js";
-import { not } from "../../lib/functions/predicate.functions.js";
+import { map } from "@softer-software/functions/object.functions.js";
+import { not } from "@softer-software/functions/predicate.functions.js";
 import { calculateStatistics } from "./statistics.functions.js";
 
 const hourCount = (minutes) => ({ count: floor(minutes / 60) });

@@ -1,7 +1,7 @@
 import { apiClient } from "./api.client.js";
 import { clearUserData, createUser } from "./database.admin.js";
 import { fakeTokenService } from "./test-providers.js";
-import { eventTypes } from "domain/src/models/event.model.js";
+import { eventTypes } from "@meditation-timer/domain/src/models/event.model.js";
 
 const userLogin = "login2";
 

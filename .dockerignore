@@ -1,21 +1,29 @@
 *
 
-!packages/domain/src
-!packages/domain/features
-!packages/domain/package.json
-!packages/domain/pnpm-lock.yaml
+!modules/libraries/functions/src
+!modules/libraries/functions/package.json
 
-!packages/frontend/src
-!packages/frontend/public
-!packages/frontend/index.html
-!packages/frontend/package.json
-!packages/frontend/pnpm-lock.yaml
-!packages/frontend/vite.config.js
-!packages/frontend/eslint.config.js
+!modules/libraries/state-manager/src
+!modules/libraries/state-manager/package.json
 
-!packages/backend/src
-!packages/backend/package.json
-!packages/backend/pnpm-lock.yaml
+!modules/domain/src
+!modules/domain/features
+!modules/domain/package.json
+
+!modules/frontend/src
+!modules/frontend/public
+!modules/frontend/index.html
+!modules/frontend/package.json
+!modules/frontend/vite.config.js
+!modules/frontend/eslint.config.js
+
+!modules/backend/src
+!modules/backend/package.json
+
+!modules/backend/test
+!modules/backend/vitest.config.js
+!modules/backend/.env.test
+!modules/backend/database/initdb/create-schema.sql
 
 !package.json
 !.prettierignore

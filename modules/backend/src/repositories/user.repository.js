@@ -1,7 +1,7 @@
 import {
   createAccountErrorCodes,
   validateLoginFormat,
-} from "domain/src/models/account.model.js";
+} from "@meditation-timer/domain/src/models/account.model.js";
 import { FunctionalError } from "../errors/functional-error.js";
 
 export class UserRepository {

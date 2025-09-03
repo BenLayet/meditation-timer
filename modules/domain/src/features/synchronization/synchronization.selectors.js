@@ -1,4 +1,4 @@
-import { map } from "../../lib/functions/object.functions.js";
+import { map } from "@softer-software/functions/object.functions.js";
 import { flow } from "lodash-es";
 
 const isSynchronizing = (state) => state.isSynchronizing;

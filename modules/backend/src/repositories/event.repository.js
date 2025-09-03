@@ -1,7 +1,7 @@
-import { validateNewEvent } from "domain/src/models/event.model.js";
-import { validateUserUuid } from "domain/src/models/user.model.js";
+import { validateNewEvent } from "@meditation-timer/domain/src/models/event.model.js";
+import { validateUserUuid } from "@meditation-timer/domain/src/models/user.model.js";
 import { toPage } from "./pagination.js";
-import { errorCodes } from "domain/src/errors/error-codes.js";
+import { errorCodes } from "@meditation-timer/domain/src/errors/error-codes.js";
 import { FunctionalError } from "../errors/functional-error.js";
 
 export class EventRepository {

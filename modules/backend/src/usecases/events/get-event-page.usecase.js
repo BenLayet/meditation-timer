@@ -1,8 +1,8 @@
 import {
   validateNotNull,
   validateNotNullObject,
-} from "domain/src/lib/assert/not-null.validator.js";
-import { errorCodes } from "domain/src/errors/error-codes.js";
+} from "@softer-software/functions/assert.functions.js";
+import { errorCodes } from "@meditation-timer/domain/src/errors/error-codes.js";
 
 export const getEventPage = ({ eventRepository, tokenService, logger }) => {
   validateNotNullObject({ eventRepository });

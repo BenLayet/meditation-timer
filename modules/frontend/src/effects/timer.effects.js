@@ -1,6 +1,6 @@
-import { createEffect } from "domain/src/lib/state-manager/create-effect.js";
-import { actualMeditationEvents } from "domain/src/features/actual-meditation/actual-meditation.events.js";
-import { preparationEvents } from "domain/src/features/preparation/preparation.events.js";
+import { createEffect } from "@softer-software/state-manager/create-effect.js";
+import { actualMeditationEvents } from "@meditation-timer/domain/src/features/actual-meditation/actual-meditation.events.js";
+import { preparationEvents } from "@meditation-timer/domain/src/features/preparation/preparation.events.js";
 
 export const timerEffects = ({ tickingService }, rootVM) => {
   const startTimer = (events, componentName) => () =>

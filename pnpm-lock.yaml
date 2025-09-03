@@ -20,6 +20,12 @@ importers:
 
   modules/backend:
     dependencies:
+      '@meditation-timer/domain':
+        specifier: workspace:^
+        version: link:../domain
+      '@softer-software/functions':
+        specifier: workspace:^
+        version: link:../libraries/functions
       argon2:
         specifier: ^0.43.1
         version: 0.43.1
@@ -29,18 +35,12 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
-      domain:
-        specifier: workspace:*
-        version: link:../domain
       express:
         specifier: ^5.1.0
         version: 5.1.0
       form-data:
         specifier: ^4.0.4
         version: 4.0.4
-      frontend:
-        specifier: workspace:*
-        version: link:../frontend
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
@@ -87,15 +87,18 @@ importers:
 
   modules/domain:
     dependencies:
+      '@softer-software/functions':
+        specifier: workspace:^
+        version: link:../libraries/functions
+      '@softer-software/state-manager':
+        specifier: workspace:^
+        version: link:../libraries/state-manager
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
       ow:
         specifier: ^2.0.0
         version: 2.0.0
-      uuid:
-        specifier: ^11.1.0
-        version: 11.1.0
     devDependencies:
       '@cucumber/cucumber':
         specifier: ^11.2.0
@@ -124,12 +127,18 @@ importers:
       '@fortawesome/react-fontawesome':
         specifier: ^0.2.2
         version: 0.2.2(@fortawesome/fontawesome-svg-core@6.7.2)(react@18.3.1)
+      '@meditation-timer/domain':
+        specifier: workspace:*
+        version: link:../domain
+      '@softer-software/functions':
+        specifier: workspace:^
+        version: link:../libraries/functions
+      '@softer-software/state-manager':
+        specifier: workspace:^
+        version: link:../libraries/state-manager
       bootstrap:
         specifier: ^5.3.7
         version: 5.3.7(@popperjs/core@2.11.8)
-      domain:
-        specifier: workspace:*
-        version: link:../domain
       i18next:
         specifier: ^24.2.3
         version: 24.2.3
@@ -200,6 +209,38 @@ importers:
       vite-plugin-pwa:
         specifier: ^1.0.0
         version: 1.0.0(vite@6.3.3(@types/node@22.13.0)(terser@5.43.1)(yaml@2.8.0))(workbox-build@7.3.0(@types/babel__core@7.20.5))(workbox-window@7.3.0)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.13.0)(terser@5.43.1)(yaml@2.8.0)
+
+  modules/libraries/functions:
+    dependencies:
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+    devDependencies:
+      vitest:
+        specifier: ^3.1.1
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.13.0)(terser@5.43.1)(yaml@2.8.0)
+
+  modules/libraries/state-manager:
+    dependencies:
+      '@softer-software/functions':
+        specifier: workspace:^
+        version: link:../functions
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      ow:
+        specifier: ^2.0.0
+        version: 2.0.0
+    devDependencies:
+      prettier:
+        specifier: ^3.4.2
+        version: 3.6.2
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.13.0)(terser@5.43.1)(yaml@2.8.0)
 
 packages:
 

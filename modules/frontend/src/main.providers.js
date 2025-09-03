@@ -17,7 +17,6 @@ import { KeyValueStore } from "./storage/key-value.store.js";
 import { KeyValueStorageService } from "./services/key-value-storage.service.js";
 import { TickingService } from "./services/ticking.service.js";
 import { AccountApi } from "./http-clients/account.api.js";
-import { EventSynchronizationService } from "./services/event-synchronization.service.js";
 import { ResetSynchronizationService } from "./services/reset-synchronization.service.js";
 
 export const mainProviders = {

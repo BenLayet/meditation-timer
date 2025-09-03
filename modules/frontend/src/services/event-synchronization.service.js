@@ -43,7 +43,7 @@ export class EventSynchronizationService {
     );
     // Map each event to a promise
     const promises = pendingEvents.map(this.eventApi.postEvent(userToken));
-    // Wait for all promises to resolve
+    // Wait for all promises to resolveFunctions
     await Promise.all(promises);
   };
 

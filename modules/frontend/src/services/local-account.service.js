@@ -1,10 +1,10 @@
 import { FunctionalError } from "../errors/functional-error.js";
-import { errorCodes } from "domain/src/errors/error-codes.js";
+import { errorCodes } from "@meditation-timer/domain/src/errors/error-codes.js";
 import {
-  validateNotEmptyString,
   validateNotNullObject,
-} from "domain/src/lib/assert/not-null.validator.js";
-import { accountStatus as statusCodes } from "domain/src/models/account.model.js";
+  validateNotEmptyString,
+} from "@softer-software/functions/assert.functions.js";
+import { accountStatus as statusCodes } from "@meditation-timer/domain/src/models/account.model.js";
 
 export class LocalAccountService {
   constructor(keyValueStorageService) {

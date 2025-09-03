@@ -1,9 +1,9 @@
 import {
   validateNotNull,
   validateObjectWithNoNullValue,
-} from "../assert/not-null.validator.js";
+} from "./assert.functions.js";
 
-export async function resolveDependencies(providers) {
+export async function resolve(providers) {
   const resolved = {};
   for (const key of Object.keys(providers)) {
     const value = await providers[key](resolved); // Resolve the current provider with the accumulated dependencies
