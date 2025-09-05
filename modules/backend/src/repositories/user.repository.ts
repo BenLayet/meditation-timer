@@ -5,7 +5,11 @@ import {
 import { FunctionalError } from "../errors/functional-error.js";
 
 export class UserRepository {
-  constructor(datasource, datasourceErrorCodes, uuidGenerator) {
+  private datasource: any;
+  private datasourceErrorCodes: any;
+  private uuidGenerator: any;
+
+  constructor(datasource: any, datasourceErrorCodes: any, uuidGenerator: any) {
     this.datasource = datasource;
     this.datasourceErrorCodes = datasourceErrorCodes;
     this.uuidGenerator = uuidGenerator;
