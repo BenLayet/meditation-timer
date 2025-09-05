@@ -1,4 +1,4 @@
-export const validateNotNull = (holder, context = null) => {
+export const validateNotNull = (holder: Record<string, any>, context: any = null): void => {
   const [key] = Object.keys(holder);
   const value = holder[key];
   if (value === null || value === undefined) {
@@ -8,7 +8,8 @@ export const validateNotNull = (holder, context = null) => {
     );
   }
 };
-export const validateNotNullObject = (holder, context = null) => {
+
+export const validateNotNullObject = (holder: Record<string, any>, context: any = null): void => {
   const [key] = Object.keys(holder);
   const value = holder[key];
   if (typeof value !== "object" || value === null) {
@@ -18,7 +19,8 @@ export const validateNotNullObject = (holder, context = null) => {
     );
   }
 };
-export const validateObjectWithNoNullValue = (holder, context = null) => {
+
+export const validateObjectWithNoNullValue = (holder: Record<string, any>, context: any = null): void => {
   const [key] = Object.keys(holder);
   const value = holder[key];
   validateNotNullObject({ value }, context);
@@ -26,7 +28,8 @@ export const validateObjectWithNoNullValue = (holder, context = null) => {
     validateNotNull({ [subKey]: subValue }, { parentContext: context, value });
   });
 };
-export const validateNotEmptyString = (holder, context = null) => {
+
+export const validateNotEmptyString = (holder: Record<string, any>, context: any = null): void => {
   const [key] = Object.keys(holder);
   const value = holder[key];
   if (typeof value !== "string") {
@@ -43,7 +46,7 @@ export const validateNotEmptyString = (holder, context = null) => {
   }
 };
 
-export const validateFunction = (holder, context = null) => {
+export const validateFunction = (holder: Record<string, any>, context: any = null): void => {
   const [key] = Object.keys(holder);
   const value = holder[key];
   if (typeof value !== "function") {
@@ -54,7 +57,7 @@ export const validateFunction = (holder, context = null) => {
   }
 };
 
-export const validateInteger = (holder, context = null) => {
+export const validateInteger = (holder: Record<string, any>, context: any = null): void => {
   const [key] = Object.keys(holder);
   const value = holder[key];
   if (!Number.isInteger(value)) {
@@ -63,7 +66,7 @@ export const validateInteger = (holder, context = null) => {
   }
 };
 
-export const validatePositiveInteger = (holder, context = null) => {
+export const validatePositiveInteger = (holder: Record<string, any>, context: any = null): void => {
   validateInteger(holder, context);
   const [key] = Object.keys(holder);
   const value = holder[key];
@@ -72,7 +75,8 @@ export const validatePositiveInteger = (holder, context = null) => {
     throw new Error(`Value of ${key} should be positive, but was: ${value}`);
   }
 };
-export const validateStrictlyPositiveInteger = (holder, context = null) => {
+
+export const validateStrictlyPositiveInteger = (holder: Record<string, any>, context: any = null): void => {
   validateInteger(holder, context);
   const [key] = Object.keys(holder);
   const value = holder[key];

@@ -1,6 +1,6 @@
 import { floor, padStart } from "lodash-es";
 
-export const formatSeconds = (seconds) => {
+export const formatSeconds = (seconds: number): string => {
   const hours = floor(seconds / 3600);
   const hoursStr = padStart(String(hours), 2, "0");
   const minutesStr = padStart(String(floor((seconds % 3600) / 60)), 2, "0");

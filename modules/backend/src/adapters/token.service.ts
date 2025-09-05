@@ -6,19 +6,23 @@ import {
 } from "@softersoftware/functions/assert.functions.js";
 
 export class JwtTokenService {
-  constructor(jwtSecret, logger) {
+  private jwtSecret: string;
+  private logger: any;
+
+  constructor(jwtSecret: string, logger: any) {
     validateNotNull({ jwtSecret });
     validateNotNull({ logger });
     this.jwtSecret = jwtSecret;
     this.logger = logger;
   }
-  createPermanentToken(payload) {
+
+  createPermanentToken(payload: any): string {
     validateNotNullObject({ payload });
     this.logger.debug(`createPermanentToken ${JSON.stringify(payload)}`);
     return jwt.sign(payload, this.jwtSecret);
   }
 
-  verify(token) {
+  verify(token: string): any {
     validateNotEmptyString({ token });
     return jwt.verify(token, this.jwtSecret);
   }

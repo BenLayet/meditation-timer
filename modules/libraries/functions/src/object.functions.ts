@@ -1,4 +1,7 @@
-export const map = (object, valueMapper) =>
+export const map = <T, R>(
+  object: Record<string, T>,
+  valueMapper: (value: T, key: string) => R
+): Record<string, R> =>
   Object.fromEntries(
     Object.entries(object).map(([key, value]) => [
       key,

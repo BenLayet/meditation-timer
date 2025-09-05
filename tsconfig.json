@@ -1,0 +1,55 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": false,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": false,
+    "noUncheckedIndexedAccess": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": false,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@meditation-timer/domain": ["./modules/domain/src"],
+      "@meditation-timer/domain/*": ["./modules/domain/src/*"],
+      "@softersoftware/functions": ["./modules/libraries/functions/src"],
+      "@softersoftware/functions/*": ["./modules/libraries/functions/src/*"],
+      "@softersoftware/state-manager": ["./modules/libraries/state-manager/src"],
+      "@softersoftware/state-manager/*": ["./modules/libraries/state-manager/src/*"]
+    }
+  },
+  "include": [
+    "modules/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ],
+  "references": [
+    { "path": "./modules/libraries/functions" },
+    { "path": "./modules/libraries/state-manager" },
+    { "path": "./modules/domain" },
+    { "path": "./modules/backend" },
+    { "path": "./modules/frontend" }
+  ]
+}

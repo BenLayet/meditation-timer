@@ -1,4 +1,6 @@
-const writeStateAtPath = (globalState, componentPath, localState) =>
+import type { StateManager } from "./state-manager.js";
+
+const writeStateAtPath = (globalState: any, componentPath: string[], localState: any): any =>
   componentPath
     .slice()
     .reverse()
@@ -21,14 +23,17 @@ const writeStateAtPath = (globalState, componentPath, localState) =>
       },
       { ownState: localState },
     );
-const getStateAtPath = (globalState, componentPath = []) =>
+
+const getStateAtPath = (globalState: any, componentPath: string[] = []): any =>
   componentPath.reduce(
     (result, childName) => result.children[childName],
     globalState,
   );
-const getValueAtPath = (globalObject, path) =>
+
+const getValueAtPath = (globalObject: any, path: string[]): any =>
   path.reduce((res, property) => res[property], globalObject);
-const writeValueAtPath = (globalObject, path, patch) =>
+
+const writeValueAtPath = (globalObject: any, path: string[], patch: any): any =>
   path
     .slice()
     .reverse()
@@ -39,7 +44,8 @@ const writeValueAtPath = (globalObject, path, patch) =>
       }),
       patch,
     );
-const parseKey = (key, state) =>
+
+const parseKey = (key: string, state: any) =>
   key.split(".").reduce(
     (res, property) => {
       const newState = res.newState.children[property];
@@ -61,16 +67,17 @@ const parseKey = (key, state) =>
     },
     {
       newState: state,
-      componentPath: [],
-      remainderPath: [],
+      componentPath: [] as string[],
+      remainderPath: [] as string[],
       pathCompleted: false,
     },
   );
-export const statePatcher = (stateManager) => (key, value) => {
+
+export const statePatcher = (stateManager: StateManager) => (key?: string, value?: any): any => {
   const { componentPath, remainderPath } = key
-    ? parseKey(key, stateManager.state)
-    : { componentPath: [], remainderPath: [] };
-  const localState = getStateAtPath(stateManager.state, componentPath);
+    ? parseKey(key, (stateManager as any).state)
+    : { componentPath: [] as string[], remainderPath: [] as string[] };
+  const localState = getStateAtPath((stateManager as any).state, componentPath);
   if (typeof localState !== "object") {
     throw new Error(
       `componentPath ${componentPath} does not point to an object but to ${localState}`,
@@ -85,7 +92,7 @@ export const statePatcher = (stateManager) => (key, value) => {
     value,
   );
   const newState = writeStateAtPath(
-    stateManager.state,
+    (stateManager as any).state,
     componentPath,
     newLocalState,
   );
@@ -93,7 +100,7 @@ export const statePatcher = (stateManager) => (key, value) => {
   return newLocalState;
 };
 
-export const forceState = (stateManager, newState) => {
+export const forceState = (stateManager: StateManager, newState: any): void => {
   stateManager.dispatch({
     eventType: "FORCE_STATE",
     payload: { newState },

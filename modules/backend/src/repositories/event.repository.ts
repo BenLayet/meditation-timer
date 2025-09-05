@@ -5,7 +5,11 @@ import { errorCodes } from "@meditation-timer/domain/src/errors/error-codes.js";
 import { FunctionalError } from "../errors/functional-error.js";
 
 export class EventRepository {
-  constructor(datasource, datasourceErrorCodes, logger) {
+  private datasource: any;
+  private datasourceErrorCodes: any;
+  private logger: any;
+
+  constructor(datasource: any, datasourceErrorCodes: any, logger: any) {
     this.datasource = datasource;
     this.datasourceErrorCodes = datasourceErrorCodes;
     this.logger = logger;
