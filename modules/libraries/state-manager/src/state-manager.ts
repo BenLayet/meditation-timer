@@ -31,7 +31,7 @@ export class StateManager {
 
   removeRootVMChangedListener(onRootVMChanged: (vm: ViewModel) => void): void {
     this.rootComponentListeners = [
-      ...this.rootComponentListeners.filter((l) => !l === onRootVMChanged),
+      ...this.rootComponentListeners.filter((l) => l !== onRootVMChanged),
     ];
   }
 
@@ -42,7 +42,7 @@ export class StateManager {
   };
 
   removeEffect = (effect: Effect): void => {
-    this.effects = [...this.effects.filter((l) => !l === effect)];
+    this.effects = [...this.effects.filter((l) => l !== effect)];
   };
 
   processEffects(event: StateEvent, previousState: any): void {
