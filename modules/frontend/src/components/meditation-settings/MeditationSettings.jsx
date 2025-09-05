@@ -24,44 +24,34 @@ function MeditationSettings({ vm }) {
   const isGongOff = vm.selectors.isGongOff();
 
   return (
-    <div className="d-flex flex-column gap-3 gap-sm-0 text-start">
+    <div className="vstack ms-5 text-start">
       <div className="row align-items-center">
         <label className="col-sm-5">{t("duration")}</label>
-        <div className="col-sm-7 row align-items-center">
-          <div className="col-4 col-sm-6  fs-3">
-            <PlusMinusControl
-              minusClicked={meditationRemoveTimeClicked}
-              plusClicked={meditationAddTimeClicked}
-            />
-          </div>
-          <div className="col-4 col-sm-6 mt-time-display">
-            {meditationDuration}
-          </div>
+        <div className="col-sm-7 hstack gap-3 align-items-center">
+          <PlusMinusControl
+            minusClicked={meditationRemoveTimeClicked}
+            plusClicked={meditationAddTimeClicked}
+          />
+          <span className="mt-time-display">{meditationDuration}</span>
         </div>
       </div>
       <div className="row align-items-center">
         <label className="col-sm-5">{t("preparation")}</label>
-        <div className="col-sm-7 row align-items-center">
-          <div className="col-4 col-sm-6 fs-3">
-            <PlusMinusControl
-              minusClicked={preparationRemoveTimeClicked}
-              plusClicked={preparationAddTimeClicked}
-            />
-          </div>
-          <div className="col-4 col-sm-6 mt-time-display">
-            {preparationDuration}
-          </div>
+        <div className="col-sm-7 hstack gap-3 align-items-center">
+          <PlusMinusControl
+            minusClicked={preparationRemoveTimeClicked}
+            plusClicked={preparationAddTimeClicked}
+          />
+          <span className="mt-time-display">{preparationDuration}</span>
         </div>
       </div>
       <div className="row align-items-center">
         <label className="col-sm-5">{t("gong")}</label>
-        <div className="col-sm-7 row align-items-center">
-          <div className="col-4 col-sm-6">
-            <GongControl vm={vm} />
-          </div>
+        <div className="col-sm-7 hstack gap-3 align-items-center">
+          <GongControl vm={vm} />
           <div
             className={
-              "col-4 col-sm-6 opacity-75 fs-4 align-items-center d-flex flex-nowrap" +
+              "opacity-75 fs-4 align-items-center d-inline-flex flex-nowrap" +
               (isGongOff ? "disabled" : "")
             }
           >
