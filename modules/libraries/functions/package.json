@@ -4,7 +4,12 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./*": "./src/*"
+    "./object.functions": "./src/object.functions.ts",
+    "./assert.functions": "./src/assert.functions.ts",
+    "./duration.functions": "./src/duration.functions.ts",
+    "./predicate.functions": "./src/predicate.functions.ts",
+    "./resolve.functions": "./src/resolve.functions.ts",
+    "./time.functions": "./src/time.functions.ts"
   },
   "scripts": {
     "test": "vitest run",

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { eventChainFactory } from "./chained-events.js";
+import { eventChainFactory } from "./chained-events";
 import ow from "ow";
 
 const events = {

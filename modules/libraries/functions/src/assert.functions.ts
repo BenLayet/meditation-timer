@@ -2,9 +2,8 @@ export const validateNotNull = (holder: Record<string, any>, context: any = null
   const [key] = Object.keys(holder);
   const value = holder[key];
   if (value === null || value === undefined) {
-    if (context) console.error(context);
     throw new Error(
-      `Value of '${key}' should not be null or undefined but was: ${value}`,
+      `Value of '${key}' should not be null or undefined but was: ${value}`, context
     );
   }
 };

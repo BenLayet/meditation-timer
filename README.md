@@ -4,7 +4,7 @@ Web / PWA meditation timer application that provides statitics of meditation ses
 
 ## List of features
 
-See [features](packages/domain/features).
+See [features](modules/domain/features).
 
 ## Project Structure
 
