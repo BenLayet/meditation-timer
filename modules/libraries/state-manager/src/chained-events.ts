@@ -5,11 +5,18 @@ import {
   validateNotEmptyString,
   validateNotNullObject,
 } from "@softersoftware/functions/assert.functions.js";
+import type { Component, StateEvent } from "./types.js";
+
+interface ChainedEventConfig {
+  thenDispatch: any;
+  withPayload?: (arg: { previousPayload: any; state: any }) => any;
+  onCondition?: (arg: { previousPayload: any; state: any }) => boolean;
+}
 
 const createChainedEventFactory =
-  (currentComponentPath) =>
-  ({ thenDispatch, withPayload, onCondition }) =>
-  (previousEvent, globalState) => {
+  (currentComponentPath: string[]) =>
+  ({ thenDispatch, withPayload, onCondition }: ChainedEventConfig) =>
+  (previousEvent: StateEvent, globalState: any): StateEvent[] => {
     const previousPayload = previousEvent.payload;
     const state = getStateAtPath(globalState, currentComponentPath);
     const argument = { previousPayload, state };
@@ -26,14 +33,15 @@ const createChainedEventFactory =
       return [createEvent(thenDispatch, componentPath, payload)];
     }
   };
-const resolveComponentPath = (componentPath, childComponentPath) => [
+
+const resolveComponentPath = (componentPath: string[], childComponentPath?: string[]): string[] => [
   ...componentPath,
   ...(childComponentPath ?? []),
 ];
 
-const createOwnChainedEvents = (component, componentPath) => {
-  const chainedEvents = component.chainedEvents ?? [];
-  chainedEvents.forEach(({ onEvent, thenDispatch }) => {
+const createOwnChainedEvents = (component: Component, componentPath: string[]) => {
+  const chainedEvents = (component as any).chainedEvents ?? [];
+  chainedEvents.forEach(({ onEvent, thenDispatch }: any) => {
     validateNotNullObject({ onEvent }, { componentPath });
     validateNotEmptyString(
       { "onEvent.eventType": onEvent.eventType },
@@ -47,23 +55,23 @@ const createOwnChainedEvents = (component, componentPath) => {
       { componentPath },
     );
   });
-  return (previousEvent, globalState) =>
-    (component.chainedEvents ?? [])
-      .filter(({ onEvent }) =>
+  return (previousEvent: StateEvent, globalState: any): StateEvent[] =>
+    ((component as any).chainedEvents ?? [])
+      .filter(({ onEvent }: any) =>
         isEqual(
           resolveComponentPath(componentPath, onEvent.childComponentPath),
           previousEvent.componentPath,
         ),
       )
-      .filter(({ onEvent }) => onEvent.eventType === previousEvent.eventType)
+      .filter(({ onEvent }: any) => onEvent.eventType === previousEvent.eventType)
       .flatMap(createChainedEventFactory(componentPath))
-      .flatMap((newEventFactory) =>
+      .flatMap((newEventFactory: any) =>
         newEventFactory(previousEvent, globalState),
       );
 };
 
 const createChildrenChainedEvents =
-  (component, componentPath) => (previousEvent, globalState) => {
+  (component: Component, componentPath: string[]) => (previousEvent: StateEvent, globalState: any): StateEvent[] => {
     return Object.entries(component.children ?? {}).flatMap(
       ([childName, childComponent]) =>
         eventChainFactory(childComponent, [...componentPath, childName])(
@@ -72,9 +80,10 @@ const createChildrenChainedEvents =
         ),
     );
   };
+
 export const eventChainFactory =
-  (component, componentPath = []) =>
-  (previousEvent, globalState) => {
+  (component: Component, componentPath: string[] = []) =>
+  (previousEvent: StateEvent, globalState: any): StateEvent[] => {
     const childrenEvents = createChildrenChainedEvents(
       component,
       componentPath,

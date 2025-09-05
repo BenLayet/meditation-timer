@@ -1,6 +1,7 @@
 import ow from "ow";
+import type { EventDefinition, StateEvent } from "./types.js";
 
-function sanitizePayload(payload, payloadShape) {
+function sanitizePayload(payload: any, payloadShape: any): any {
   // Remove keys in payload that do not exist in payloadShape
   return Object.fromEntries(
     Object.entries(payloadShape).map(([key]) => [key, payload[key]]),
@@ -8,10 +9,10 @@ function sanitizePayload(payload, payloadShape) {
 }
 
 export const createEvent = (
-  { payloadShape, eventType, isNewCycle },
-  componentPath,
-  payload,
-) => {
+  { payloadShape, eventType, isNewCycle }: EventDefinition,
+  componentPath: string[],
+  payload?: any,
+): StateEvent => {
   payload = sanitizePayload(payload ?? {}, payloadShape ?? {});
   isNewCycle = !!isNewCycle;
   ow(

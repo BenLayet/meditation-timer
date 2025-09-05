@@ -3,66 +3,69 @@ import { componentReducer } from "./create-reducers.js";
 import { eventChainFactory } from "./chained-events.js";
 import { getInitialState } from "./initial-state.js";
 import { getVM } from "./view-model.js";
+import type { Component, StateEvent, Effect, EventListener, ViewModel } from "./types.js";
 
 export class StateManager {
   notifying = false;
-  cycleEvents = [];
+  cycleEvents: string[] = [];
+  private rootComponent: Component;
+  private state: any;
+  private eventListeners: EventListener[] = [];
+  private effects: Effect[] = [];
+  private rootComponentListeners: ((vm: ViewModel) => void)[] = [];
 
-  constructor(rootComponent) {
+  constructor(rootComponent: Component) {
     this.rootComponent = rootComponent;
     this.state = getInitialState(rootComponent);
-    this.eventListeners = [];
-    this.effects = [];
-    this.rootComponentListeners = [];
   }
 
-  getRootVM() {
+  getRootVM(): ViewModel {
     return getVM(this.rootComponent, this.state, this.dispatch);
   }
 
-  addRootVMChangedListener(onRootVMChanged) {
+  addRootVMChangedListener(onRootVMChanged: (vm: ViewModel) => void): void {
     ow(onRootVMChanged, ow.function);
     onRootVMChanged(this.getRootVM());
     this.rootComponentListeners.push(onRootVMChanged);
   }
 
-  removeRootVMChangedListener(onRootVMChanged) {
+  removeRootVMChangedListener(onRootVMChanged: (vm: ViewModel) => void): void {
     this.rootComponentListeners = [
       ...this.rootComponentListeners.filter((l) => !l === onRootVMChanged),
     ];
   }
 
   //effects
-  addEffect = (effect) => {
+  addEffect = (effect: Effect): void => {
     ow(effect, ow.function);
     this.effects.push(effect);
   };
 
-  removeEffect = (effect) => {
+  removeEffect = (effect: Effect): void => {
     this.effects = [...this.effects.filter((l) => !l === effect)];
   };
 
-  processEffects(event, previousState) {
+  processEffects(event: StateEvent, previousState: any): void {
     this.effects.forEach((effect) => effect(event, this.state, previousState));
   }
 
   //event listeners
-  addEventListener = (onEventOccurred) => {
+  addEventListener = (onEventOccurred: EventListener): void => {
     ow(onEventOccurred, ow.function);
     this.eventListeners.push(onEventOccurred);
   };
 
-  removeEventListener = (onEventOccurred) => {
+  removeEventListener = (onEventOccurred: EventListener): void => {
     this.eventListeners = [
       ...this.eventListeners.filter((listener) => listener !== onEventOccurred),
     ];
   };
 
-  notifyEventOccurred(event, previousState) {
+  notifyEventOccurred(event: StateEvent, previousState: any): void {
     this.eventListeners.forEach((onEventOccurred) => {
       try {
         onEventOccurred(event, this.state, previousState);
-      } catch (e) {
+      } catch (e: any) {
         console.error(`Error in event listener: ${e.message}`);
         console.error(e);
       }
@@ -72,7 +75,7 @@ export class StateManager {
     );
   }
 
-  detectCycle(event) {
+  detectCycle(event: StateEvent): void {
     if (event.isNewCycle) {
       this.cycleEvents = [];
     }
@@ -88,7 +91,7 @@ export class StateManager {
     this.cycleEvents = [...this.cycleEvents, eventIdentifier];
   }
 
-  dispatch = (event) => {
+  dispatch = (event: StateEvent): void => {
     //assert not notifying
     if (this.notifying)
       throw Error(
@@ -114,7 +117,7 @@ export class StateManager {
     this.processEffects(event, previousState);
   };
 
-  forwardEvent(event) {
+  forwardEvent(event: StateEvent): void {
     const eventChain = eventChainFactory(this.rootComponent);
     eventChain(event, this.state).forEach(this.dispatch);
   }
