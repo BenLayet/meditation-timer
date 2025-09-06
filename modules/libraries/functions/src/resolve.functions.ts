@@ -1,7 +1,7 @@
 import {
   validateNotNull,
   validateObjectWithNoNullValue,
-} from "./assert.functions.js";
+} from "./assert.functions";
 
 export type Provider<T = any> = (resolved: Record<string, any>) => T | Promise<T>;
 export type Providers = Record<string, Provider>;

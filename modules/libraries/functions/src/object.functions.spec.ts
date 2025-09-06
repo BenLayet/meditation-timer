@@ -5,7 +5,7 @@ describe("object functions", () => {
   test("object mapper", () => {
     //given
     const object1 = { key1: "value1" };
-    const mapper = (value) => value + "-mapped";
+    const mapper = (value:string) => value + "-mapped";
 
     //when
     const actual = map(object1, mapper);
