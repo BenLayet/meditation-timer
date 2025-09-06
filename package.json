@@ -20,7 +20,8 @@
     "test:libraries:state-manager": "pnpm --filter @softersoftware/state-manager test",
     "test": "pnpm test:libraries && pnpm test:domain && pnpm test:backend && pnpm test:frontend",
     "format": "prettier -w .",
-    "format-check": "prettier --check ."
+    "format-check": "prettier --check .",
+    "clean": "rm -rf modules/{libraries,.}/*/{dist,tsconfig.tsbuildinfo}"
   },
   "packageManager": "pnpm@10.15.1",
   "devDependencies": {
