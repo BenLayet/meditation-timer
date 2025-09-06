@@ -1,4 +1,4 @@
-import ow from "ow";
+import { z } from "zod";
 import {
   getLoginInputStaticErrorCodes,
   getPasswordInputStaticErrorCodes,
@@ -9,10 +9,11 @@ import {
 } from "../../models/account.model.js";
 import { loginFormInitialState } from "./login-form.state.js";
 
-const accountShape = {
-  login: ow.string.matches(loginRegex),
-  userToken: ow.optional.string,
-};
+const accountShape = z.object({
+  login: z.string().regex(loginRegex),
+  userToken: z.string().optional(),
+});
+
 export const loginFormEvents = {
   formSubmitted: {
     eventType: "formSubmitted",
@@ -24,21 +25,21 @@ export const loginFormEvents = {
   },
   loginRequested: {
     eventType: "loginRequested",
-    payloadShape: {
-      login: ow.string.matches(loginRegex),
-      password: ow.string.matches(passwordRegex),
-    },
+    payloadShape: z.object({
+      login: z.string().regex(loginRegex),
+      password: z.string().regex(passwordRegex),
+    }),
   },
   loginSucceeded: {
     eventType: "loginSucceeded",
-    payloadShape: { account: ow.object.exactShape(accountShape) },
+    payloadShape: z.object({ account: accountShape }),
   },
   loginFailed: {
     eventType: "loginFailed",
-    payloadShape: {
-      error: ow.any,
-      errorCodes: ow.array,
-    },
+    payloadShape: z.object({
+      error: z.unknown(),
+      errorCodes: z.array(z.unknown()),
+    }),
     handler: (state, { errorCodes }) => ({
       ...state,
       isSubmitted: false,
@@ -47,9 +48,7 @@ export const loginFormEvents = {
   },
   loginInputChanged: {
     eventType: "loginInputChanged",
-    payloadShape: {
-      loginInputValue: ow.string,
-    },
+    payloadShape: z.object({ loginInputValue: z.string() }),
     handler: (state, { loginInputValue }) => ({
       ...state,
       controls: {
@@ -68,9 +67,7 @@ export const loginFormEvents = {
   },
   passwordInputChanged: {
     eventType: "passwordInputChanged",
-    payloadShape: {
-      passwordInputValue: ow.string,
-    },
+    payloadShape: z.object({ passwordInputValue: z.string() }),
     handler: (state, { passwordInputValue }) => ({
       ...state,
       controls: {

@@ -1,8 +1,8 @@
-import ow from "ow";
+import { z } from "zod";
 import { floor, max } from "lodash-es";
 import { ACTUAL_MEDITATION_INITIAL_STATE } from "./actual-meditation.state.js";
 
-//utility
+// utility
 const durationInSeconds = (state) => {
   return state.durationInMinutes * 60;
 };
@@ -18,14 +18,26 @@ const remainingSeconds = (currentTimeInSeconds) => (state) => {
   ]);
 };
 
-//event handlers
+// zod schemas for payloads
+const startRequestedPayload = z.object({
+  currentTimeInSeconds: z.number().int().positive(),
+  durationInMinutes: z.number().int().positive(),
+});
+const timerTickedPayload = z.object({
+  currentTimeInSeconds: z.number().int().positive(),
+});
+const saveRequestedPayload = z.object({
+  startedTimeInSeconds: z.number().positive(),
+  durationInMinutes: z.number().min(0),
+});
+const saveFailedPayload = z.object({
+  error: z.unknown(),
+});
+
 export const actualMeditationEvents = {
   startRequested: {
     eventType: "startRequested",
-    payloadShape: {
-      currentTimeInSeconds: ow.number.integer.positive,
-      durationInMinutes: ow.number.integer.positive,
-    },
+    payloadShape: startRequestedPayload,
     handler: (state, { currentTimeInSeconds, durationInMinutes }) => ({
       ...state,
       durationInMinutes,
@@ -41,9 +53,7 @@ export const actualMeditationEvents = {
   completed: { eventType: "completed" },
   timerTicked: {
     eventType: "timerTicked",
-    payloadShape: {
-      currentTimeInSeconds: ow.number.integer.positive,
-    },
+    payloadShape: timerTickedPayload,
     handler: (state, { currentTimeInSeconds }) => ({
       ...state,
       remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
@@ -54,16 +64,11 @@ export const actualMeditationEvents = {
   timerStopRequested: { eventType: "timerStopRequested" },
   saveRequested: {
     eventType: "saveRequested",
-    payloadShape: {
-      startedTimeInSeconds: ow.number.positive,
-      durationInMinutes: ow.number.greaterThanOrEqual(0),
-    },
+    payloadShape: saveRequestedPayload,
   },
   saveFailed: {
     eventType: "saveFailed",
-    payloadShape: {
-      error: ow.any,
-    },
+    payloadShape: saveFailedPayload,
   },
   saveSucceeded: { eventType: "saveSucceeded" },
 };

@@ -1,5 +1,16 @@
-import ow from "ow";
 import { max } from "lodash-es";
+import { z } from "zod";
+
+const startRequestedPayload = z.object({
+  requestedDurationInSeconds: z.number().int().positive(),
+  currentTimeInSeconds: z.number().int().positive(),
+});
+const timerTickedPayload = z.object({
+  currentTimeInSeconds: z.number().int().positive(),
+});
+const completedPayload = z.object({
+  currentTimeInSeconds: z.number().int().positive(),
+});
 
 const elapsedSeconds = (currentTimeInSeconds) => (state) => {
   return state.startedTimeInSeconds
@@ -16,10 +27,7 @@ const remainingSeconds = (currentTimeInSeconds) => (state) => {
 export const preparationEvents = {
   startRequested: {
     eventType: "startRequested",
-    payloadShape: {
-      requestedDurationInSeconds: ow.number.integer.positive,
-      currentTimeInSeconds: ow.number.integer.positive,
-    },
+    payloadShape: startRequestedPayload,
     handler: (state, { currentTimeInSeconds, requestedDurationInSeconds }) => ({
       ...state,
       durationInSeconds: requestedDurationInSeconds,
@@ -44,9 +52,7 @@ export const preparationEvents = {
   },
   timerTicked: {
     eventType: "timerTicked",
-    payloadShape: {
-      currentTimeInSeconds: ow.number.integer.positive,
-    },
+    payloadShape: timerTickedPayload,
     handler: (state, { currentTimeInSeconds }) => ({
       ...state,
       remainingSeconds: remainingSeconds(currentTimeInSeconds)(state),
@@ -64,9 +70,7 @@ export const preparationEvents = {
   },
   completed: {
     eventType: "completed",
-    payloadShape: {
-      currentTimeInSeconds: ow.number.integer.positive,
-    },
+    payloadShape: completedPayload,
     handler: (state) => ({
       ...state,
       remainingSeconds: 0,

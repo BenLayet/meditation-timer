@@ -1,4 +1,4 @@
-import ow from "ow";
+import { z } from "zod";
 import {
   getLoginInputStaticErrorCodes,
   getPasswordInputStaticErrorCodes,
@@ -9,10 +9,11 @@ import {
 } from "../../models/account.model.js";
 import { createAccountFormInitialState } from "./create-account-form.state.js";
 
-const accountShape = {
-  login: ow.string.matches(loginRegex),
-  userToken: ow.optional.string,
-};
+const accountShape = z.object({
+  login: z.string().regex(loginRegex),
+  userToken: z.string().optional(),
+});
+
 export const createAccountFormEvents = {
   formSubmitted: {
     eventType: "formSubmitted",
@@ -24,21 +25,21 @@ export const createAccountFormEvents = {
   },
   createAccountRequested: {
     eventType: "createAccountRequested",
-    payloadShape: {
-      login: ow.string.matches(loginRegex),
-      password: ow.string.matches(passwordRegex),
-    },
+    payloadShape: z.object({
+      login: z.string().regex(loginRegex),
+      password: z.string().regex(passwordRegex),
+    }),
   },
   createAccountSucceeded: {
     eventType: "createAccountSucceeded",
-    payloadShape: { account: ow.object.exactShape(accountShape) },
+    payloadShape: z.object({ account: accountShape }),
   },
   createAccountFailed: {
     eventType: "createAccountFailed",
-    payloadShape: {
-      error: ow.any,
-      errorCodes: ow.array,
-    },
+    payloadShape: z.object({
+      error: z.unknown(),
+      errorCodes: z.array(z.unknown()),
+    }),
     handler: (state, { errorCodes }) => ({
       ...state,
       isSubmitted: false,
@@ -47,9 +48,7 @@ export const createAccountFormEvents = {
   },
   loginInputChanged: {
     eventType: "loginInputChanged",
-    payloadShape: {
-      loginInputValue: ow.string,
-    },
+    payloadShape: z.object({ loginInputValue: z.string() }),
     handler: (state, { loginInputValue }) => ({
       ...state,
       controls: {
@@ -68,9 +67,7 @@ export const createAccountFormEvents = {
   },
   passwordInputChanged: {
     eventType: "passwordInputChanged",
-    payloadShape: {
-      passwordInputValue: ow.string,
-    },
+    payloadShape: z.object({ passwordInputValue: z.string() }),
     handler: (state, { passwordInputValue }) => ({
       ...state,
       controls: {

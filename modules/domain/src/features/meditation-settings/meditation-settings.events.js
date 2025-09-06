@@ -1,5 +1,5 @@
 import { floor, max } from "lodash-es";
-import ow from "ow";
+import { z } from "zod";
 
 //UTILITY
 function calculateIncrementedDuration(duration, increment) {
@@ -13,6 +13,12 @@ function calculateDecrementedDuration(duration, increment) {
   }
   return diff;
 }
+
+const settingsPayload = z.object({
+  meditationDurationInMinutes: z.number().int().positive(),
+  preparationDurationInSeconds: z.number().int().positive(),
+  gongOff: z.boolean(),
+});
 
 //events
 export const meditationSettingsEvents = {
@@ -84,19 +90,11 @@ export const meditationSettingsEvents = {
   },
   settingsChanged: {
     eventType: "settingsChanged",
-    payloadShape: {
-      meditationDurationInMinutes: ow.number.integer.positive,
-      preparationDurationInSeconds: ow.number.integer.positive,
-      gongOff: ow.boolean,
-    },
+    payloadShape: settingsPayload,
   },
   settingsLoaded: {
     eventType: "settingsLoaded",
-    payloadShape: {
-      meditationDurationInMinutes: ow.number.integer.positive,
-      preparationDurationInSeconds: ow.number.integer.positive,
-      gongOff: ow.boolean,
-    },
+    payloadShape: settingsPayload,
     handler: (state, payload) => ({
       ...state,
       ...payload,

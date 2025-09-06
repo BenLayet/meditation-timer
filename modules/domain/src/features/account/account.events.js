@@ -1,20 +1,20 @@
-import ow from "ow";
+import { z } from "zod";
 import { accountStatus, loginRegex } from "../../models/account.model.js";
 
-const accountShape = {
-  login: ow.string.matches(loginRegex),
-  userToken: ow.optional.string,
-};
+const accountShape = z.object({
+  login: z.string().regex(loginRegex),
+  userToken: z.string().optional(),
+});
 
 export const accountEvents = {
   onlineStatusChanged: {
     eventType: "onlineStatusChanged",
-    payloadShape: { isOnline: ow.boolean },
+    payloadShape: z.object({ isOnline: z.boolean() }),
     handler: (state, { isOnline }) => ({ ...state, isOnline }),
   },
   accountNewlyAuthenticated: {
     eventType: "accountNewlyAuthenticated",
-    payloadShape: { account: ow.object.exactShape(accountShape) },
+    payloadShape: z.object({ account: accountShape }),
     handler: (state, { account }) => ({
       ...state,
       loading: false,
@@ -31,9 +31,7 @@ export const accountEvents = {
   },
   accountLoaded: {
     eventType: "accountLoaded",
-    payloadShape: {
-      account: ow.optional.object.exactShape(accountShape),
-    },
+    payloadShape: z.object({ account: accountShape.optional() }),
     handler: (state, { account }) => ({
       ...state,
       loading: false,
@@ -46,9 +44,7 @@ export const accountEvents = {
   },
   accountAuthenticated: {
     eventType: "accountAuthenticated",
-    payloadShape: {
-      account: ow.object.exactShape(accountShape),
-    },
+    payloadShape: z.object({ account: accountShape }),
     handler: (state, { account }) => ({
       ...state,
       loading: false,
@@ -89,14 +85,14 @@ export const accountEvents = {
   },
   persistAccountRequested: {
     eventType: "persistAccountRequested",
-    payloadShape: { account: ow.object.exactShape(accountShape) },
+    payloadShape: z.object({ account: accountShape }),
   },
   retrievePersistedAccountRequested: {
     eventType: "retrievePersistedAccountRequested",
   },
   retrievePersistedAccountCompleted: {
     eventType: "retrievePersistedAccountCompleted",
-    payloadShape: { account: ow.optional.object.exactShape(accountShape) },
+    payloadShape: z.object({ account: accountShape.optional() }),
   },
   deletePersistedAccountRequested: {
     eventType: "deletePersistedAccountRequested",

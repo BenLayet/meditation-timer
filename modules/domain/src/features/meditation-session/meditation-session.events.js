@@ -1,11 +1,13 @@
-import ow from "ow";
+import { z } from "zod";
+
+const startRequestedPayload = z.object({
+  currentTimeInSeconds: z.number().int().positive(),
+});
 
 export const meditationSessionEvents = {
   startRequested: {
     eventType: "startRequested",
-    payloadShape: {
-      currentTimeInSeconds: ow.number.integer.positive,
-    },
+    payloadShape: startRequestedPayload,
     isNewCycle: true,
   },
   stopRequested: {

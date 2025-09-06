@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export const accountStatus = {
   AUTHENTICATED: "AUTHENTICATED",
   ANONYMOUS: "ANONYMOUS",
@@ -18,38 +20,22 @@ export const loginErrorCodes = {
   LOGIN_NOT_FOUND: "LOGIN_NOT_FOUND",
   INCORRECT_PASSWORD: "INCORRECT_PASSWORD",
 };
-export function validateLoginFormat(login) {
-  if (typeof login !== "string") {
-    throw new Error(`Login must be a string but was of type ${typeof login}`);
-  }
-  if (login.length === 0) {
-    throw new Error(`Login cannot be empty`);
-  }
-  if (!isValidLoginFormat(login)) {
-    throw new Error(
-      `Login must be 3+ characters, excluding space character, but was: ${login}`,
-    );
-  }
-}
-export function validatePasswordFormat(password) {
-  if (typeof password !== "string") {
-    throw new Error(
-      `Password must be a string but was of type ${typeof password}`,
-    );
-  }
-  if (password.length === 0) {
-    throw new Error(`Password cannot be empty`);
-  }
-  if (!isValidPasswordFormat(password)) {
-    throw new Error(
-      `Password must be 5+ characters, excluding space character, but was: ${password}`,
-    );
-  }
-}
+
 export const loginRegex = /^\S{2,}$/;
 export const passwordRegex = /^\S{5,}$/;
-export const isValidLoginFormat = (login) => loginRegex.test(login);
-export const isValidPasswordFormat = (password) => passwordRegex.test(password);
+
+export const loginSchema = z.string().min(1).regex(loginRegex);
+export const passwordSchema = z.string().min(1).regex(passwordRegex);
+
+export function validateLoginFormat(login) {
+  loginSchema.parse(login);
+}
+export function validatePasswordFormat(password) {
+  passwordSchema.parse(password);
+}
+
+export const isValidLoginFormat = (login) => loginSchema.safeParse(login).success;
+export const isValidPasswordFormat = (password) => passwordSchema.safeParse(password).success;
 
 export const getLoginInputStaticErrorCodes = (loginInputValue) =>
   !loginInputValue

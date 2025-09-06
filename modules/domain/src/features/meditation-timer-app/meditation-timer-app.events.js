@@ -1,5 +1,9 @@
-import ow from "ow";
+import { z } from "zod";
 import { VALID_PAGES } from "./meditation-timer-app.state.js";
+
+const navigationRequestedPayload = z.object({
+  page: z.enum(VALID_PAGES),
+});
 
 export const meditationTimerAppEvents = {
   appOpened: {
@@ -8,7 +12,7 @@ export const meditationTimerAppEvents = {
   },
   navigationRequested: {
     eventType: "navigationRequested",
-    payloadShape: { page: ow.string.oneOf(VALID_PAGES) },
+    payloadShape: navigationRequestedPayload,
     handler: (state, { page }) => ({ ...state, currentPage: page }),
     isNewCycle: true,
   },
@@ -25,7 +29,7 @@ export const meditationTimerAppEvents = {
   },
   onlineStatusChanged: {
     eventType: "onlineStatusChanged",
-    payloadShape: { isOnline: ow.boolean },
+    payloadShape: z.object({ isOnline: z.boolean() }),
     isNewCycle: true,
   },
   onlineDetected: {

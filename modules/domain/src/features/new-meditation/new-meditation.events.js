@@ -1,5 +1,13 @@
 import { floor, max } from "lodash-es";
-import ow from "ow";
+import { z } from "zod";
+
+// zod schemas for payloads
+const setMeditationDurationPayload = z.object({
+  meditationDurationInMinutes: z.number().int().positive(),
+});
+const startSessionRequestedPayload = z.object({
+  currentTimeInSeconds: z.number().int().positive(),
+});
 
 //events
 export const newMeditationEvents = {
@@ -13,9 +21,7 @@ export const newMeditationEvents = {
   },
   setMeditationDurationRequested: {
     eventType: "setMeditationDurationRequested",
-    payloadShape: {
-      meditationDurationInMinutes: ow.number.integer.positive,
-    },
+    payloadShape: setMeditationDurationPayload,
     handler: (state, payload) => ({
       ...state,
       meditationDurationInMinutes: payload.meditationDurationInMinutes,
@@ -23,9 +29,7 @@ export const newMeditationEvents = {
   },
   startSessionRequested: {
     eventType: "startSessionRequested",
-    payloadShape: {
-      currentTimeInSeconds: ow.number.integer.positive,
-    },
+    payloadShape: startSessionRequestedPayload,
     isNewCycle: true,
   },
 };

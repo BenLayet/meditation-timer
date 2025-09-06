@@ -1,4 +1,22 @@
-import ow from "ow";
+import { z } from "zod";
+
+const statisticsPayload = z.object({
+  statistics: z.object({
+    dailyStreak: z.number().int().min(0),
+    totalMinutesThisWeek: z.number().int().min(0),
+  }),
+});
+const currentDayPayload = z.object({
+  currentEpochDay: z.number().int().min(0),
+});
+const meditationHistoryPayload = z.object({
+  meditationHistory: z.array(
+    z.object({
+      startedTimeInSeconds: z.number().positive().optional(),
+      durationInMinutes: z.number().min(0).optional(),
+    })
+  ),
+});
 
 export const statisticsEvents = {
   statisticsRequested: {
@@ -12,12 +30,7 @@ export const statisticsEvents = {
   },
   statisticsRetrieved: {
     eventType: "statisticsRetrieved",
-    payloadShape: {
-      statistics: ow.object.exactShape({
-        dailyStreak: ow.number.integer.greaterThanOrEqual(0),
-        totalMinutesThisWeek: ow.number.integer.greaterThanOrEqual(0),
-      }),
-    },
+    payloadShape: statisticsPayload,
     handler: (state, { statistics }) => ({
       ...state,
       error: false,
@@ -29,9 +42,7 @@ export const statisticsEvents = {
   },
   currentDayObtained: {
     eventType: "currentDayObtained",
-    payloadShape: {
-      currentEpochDay: ow.number.integer.greaterThanOrEqual(0),
-    },
+    payloadShape: currentDayPayload,
     handler: (state, { currentEpochDay }) => ({
       ...state,
       currentEpochDay,
@@ -42,14 +53,7 @@ export const statisticsEvents = {
   },
   retrievePersistedMeditationHistorySucceeded: {
     eventType: "retrievePersistedMeditationHistorySucceeded",
-    payloadShape: {
-      meditationHistory: ow.array.ofType(
-        ow.object.partialShape({
-          startedTimeInSeconds: ow.number.positive,
-          durationInMinutes: ow.number.greaterThanOrEqual(0),
-        }),
-      ),
-    },
+    payloadShape: meditationHistoryPayload,
     handler: (state, { meditationHistory }) => ({
       ...state,
       isMeditationHistoryLoading: false,

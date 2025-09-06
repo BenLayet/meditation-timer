@@ -1,4 +1,11 @@
-import ow from "ow";
+import { z } from "zod";
+
+const lastSynchronizedEpochPayload = z.object({
+  lastSynchronizedEpochSeconds: z.number().int().positive(),
+});
+const errorCodesPayload = z.object({
+  errorCodes: z.array(z.string()),
+});
 
 export const synchronizationEvents = {
   refreshRequested: {
@@ -18,7 +25,7 @@ export const synchronizationEvents = {
   },
   synchronizationSucceeded: {
     eventType: "synchronizationSucceeded",
-    payloadShape: { lastSynchronizedEpochSeconds: ow.number.integer.positive },
+    payloadShape: lastSynchronizedEpochPayload,
     handler: (state, payload) => ({
       ...state,
       lastSynchronizedEpochSeconds: payload.lastSynchronizedEpochSeconds,
@@ -28,7 +35,7 @@ export const synchronizationEvents = {
   },
   synchronizationFailed: {
     eventType: "synchronizationFailed",
-    payloadShape: { errorCodes: ow.array.ofType(ow.string) },
+    payloadShape: errorCodesPayload,
     handler: (state, payload) => ({
       ...state,
       isSynchronizing: false,
@@ -37,14 +44,14 @@ export const synchronizationEvents = {
   },
   persistLastSynchronizedEpochRequested: {
     eventType: "persistLastSynchronizedEpochRequested",
-    payloadShape: { lastSynchronizedEpochSeconds: ow.number.integer.positive },
+    payloadShape: lastSynchronizedEpochPayload,
   },
   retrieveLastSynchronizedEpochRequested: {
     eventType: "retrieveLastSynchronizedEpochRequested",
   },
   retrieveLastSynchronizedEpochCompleted: {
     eventType: "retrieveLastSynchronizedEpochCompleted",
-    payloadShape: { lastSynchronizedEpochSeconds: ow.number.integer.positive },
+    payloadShape: lastSynchronizedEpochPayload,
   },
   synchronizationCompleted: {
     eventType: "synchronizationCompleted",
