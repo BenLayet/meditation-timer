@@ -1,7 +1,7 @@
 import { flow } from "lodash-es";
-import { formatSeconds } from "@softersoftware/functions/duration.functions.js";
-import { map } from "@softersoftware/functions/object.functions.js";
-import { and, not } from "@softersoftware/functions/predicate.functions.js";
+import { formatSeconds } from "@softersoftware/functions/duration.functions";
+import { map } from "@softersoftware/functions/object.functions";
+import { and, not } from "@softersoftware/functions/predicate.functions";
 
 const hasStarted = (preparationState) =>
   !!preparationState.startedTimeInSeconds;

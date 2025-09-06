@@ -1,6 +1,1 @@
-{
-  "references": [
-    { "path": "./modules/libraries/functions" },
-    { "path": "./modules/libraries/state-manager" }
-  ]
-}
+{}

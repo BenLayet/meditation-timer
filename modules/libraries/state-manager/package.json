@@ -4,7 +4,8 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./*": "./dist/*"
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js"
   },
   "scripts": {
     "build": "tsc",

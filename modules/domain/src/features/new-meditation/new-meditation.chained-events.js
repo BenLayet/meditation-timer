@@ -1,6 +1,6 @@
 import { newMeditationEvents } from "./new-meditation.events.js";
 import { floor, max } from "lodash-es";
-import { validatePositiveInteger } from "@softersoftware/functions/assert.functions.js";
+import { validatePositiveInteger } from "@softersoftware/functions/assert.functions";
 //UTILITY
 function calculateIncrementedDuration(duration, increment) {
   validatePositiveInteger({ duration });

@@ -1,7 +1,7 @@
-import { map } from "@softersoftware/functions/object.functions.js";
+import { map } from "@softersoftware/functions/object.functions";
 import { flow } from "lodash-es";
 import { meditationSettingsSelectors } from "../meditation-settings/meditation-settings.selectors.js";
-import { not } from "@softersoftware/functions/predicate.functions.js";
+import { not } from "@softersoftware/functions/predicate.functions";
 import { newMeditationSelectors } from "../new-meditation/new-meditation.selectors.js";
 
 const currentPage = (state) => state.currentPage;

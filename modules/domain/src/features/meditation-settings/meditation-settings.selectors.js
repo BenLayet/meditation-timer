@@ -1,7 +1,7 @@
 import { flow } from "lodash-es";
-import { formatSeconds } from "@softersoftware/functions/duration.functions.js";
-import { map } from "@softersoftware/functions/object.functions.js";
-import { not } from "@softersoftware/functions/predicate.functions.js";
+import { formatSeconds } from "@softersoftware/functions/duration.functions";
+import { map } from "@softersoftware/functions/object.functions";
+import { not } from "@softersoftware/functions/predicate.functions";
 
 //SELECTORS
 const meditationDurationInMinutes = (state) =>

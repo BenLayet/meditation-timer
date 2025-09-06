@@ -1,6 +1,6 @@
 import { precacheAndRoute } from "workbox-precaching";
 import build from "../../../build.json";
-import { resolve } from "@softersoftware/functions/resolve.functions.js";
+import { resolve } from "@softersoftware/functions/resolve.functions";
 import { serviceWorkerProviders } from "./service-worker.providers.js";
 
 //disables log output from workbox

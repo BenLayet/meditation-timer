@@ -1,4 +1,4 @@
-import { createEffect } from "@softersoftware/state-manager/create-effect.js";
+import { createEffect } from "@softersoftware/state-manager/create-effect";
 import { loginErrorCodes } from "@meditation-timer/domain/src/models/account.model.js";
 import { loginFormEvents } from "@meditation-timer/domain/src/features/login-form/login-form.events.js";
 

@@ -5,20 +5,11 @@ import {
   validateNotNullObject,
 } from "@softersoftware/functions/assert.functions";
 
-
-interface EffectParams {
-  afterEvent: { eventType: string };
-  onComponent?: string[];
-  then: (payload: any) => void;
-}
-
-interface Event {
-  eventType: string;
-  componentPath?: string[];
-  payload?: any;
-}
-
-export const createEffect = ({ afterEvent, onComponent, then }: EffectParams): (event: Event) => boolean | void => {
+export const createEffect = ({
+  afterEvent,
+  onComponent,
+  then,
+}: any): ((event: Event) => boolean | void) => {
   validateNotNullObject({ afterEvent }, { afterEvent, onComponent, then });
   validateNotEmptyString(
     { triggeringEventType: afterEvent.eventType },
@@ -28,14 +19,17 @@ export const createEffect = ({ afterEvent, onComponent, then }: EffectParams): (
   const triggeringEventType = afterEvent.eventType;
   const effectFunction = then;
   const componentPath = onComponent;
-  return (event: Event) =>
+  return (event: any) =>
     isMatch(event, { triggeringEventType, componentPath }) &&
     effectFunction(event.payload);
 };
 
 const isMatch = (
-  event: Event,
-  { triggeringEventType, componentPath }: { triggeringEventType: string; componentPath?: string[] },
+  event: any,
+  {
+    triggeringEventType,
+    componentPath,
+  }: { triggeringEventType: string; componentPath?: string[] },
 ): boolean => {
   return (
     event.eventType === triggeringEventType &&

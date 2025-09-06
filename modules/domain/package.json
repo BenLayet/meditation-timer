@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "moduleResolution": "bundler",
   "scripts": {
     "test": "pnpm test:unit && pnpm test:behavior",
     "test:unit": "vitest run",

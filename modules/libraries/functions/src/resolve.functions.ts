@@ -1,12 +1,16 @@
 import {
   validateNotNull,
   validateObjectWithNoNullValue,
-} from "./assert.functions";
+} from "@softersoftware/functions/assert.functions";
 
-export type Provider<T = any> = (resolved: Record<string, any>) => T | Promise<T>;
+export type Provider<T = any> = (
+  resolved: Record<string, any>,
+) => T | Promise<T>;
 export type Providers = Record<string, Provider>;
 
-export async function resolve<T extends Providers>(providers: T): Promise<{
+export async function resolve<T extends Providers>(
+  providers: T,
+): Promise<{
   [K in keyof T]: T[K] extends Provider<infer R> ? R : any;
 }> {
   const resolved: Record<string, any> = {};

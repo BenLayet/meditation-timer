@@ -1,8 +1,8 @@
 import {
   forceState,
   statePatcher,
-} from "@softersoftware/state-manager/debugger.js";
-import { createEffect } from "@softersoftware/state-manager/create-effect.js";
+} from "@softersoftware/state-manager/debugger";
+import { createEffect } from "@softersoftware/state-manager/create-effect";
 
 const trackSize = 1000;
 const states = [];
