@@ -1,6 +1,6 @@
-import { createEffect } from "@softersoftware/state-manager/create-effect.js";
+import { createEffect } from "@softersoftware/state-manager/create-effect";
 import { synchronizationEvents } from "@meditation-timer/domain/src/features/synchronization/synchronization.events.js";
-import { currentEpochSeconds } from "@softersoftware/functions/time.functions.js";
+import { currentEpochSeconds } from "@softersoftware/functions/time.functions";
 
 export const synchronizationEffects = (
   { synchronizationTaskService },

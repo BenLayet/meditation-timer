@@ -1,7 +1,4 @@
-import { MeditationService } from "./services/meditation.service.js";
 import { CollectionStore } from "./storage/collection.store.js";
-import { WakeLockService } from "./services/wake-lock.service.js";
-import { GongService } from "./services/gong.service.js";
 import { createIndexedDb } from "./storage/indexed-db.js";
 import { meditationsIndexedDbSchema } from "./storage/meditations.indexed-db.schema.js";
 import {

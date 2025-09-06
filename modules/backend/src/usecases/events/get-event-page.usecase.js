@@ -1,7 +1,7 @@
 import {
   validateNotNull,
   validateNotNullObject,
-} from "@softersoftware/functions/assert.functions.js";
+} from "@softersoftware/functions/assert.functions";
 import { errorCodes } from "@meditation-timer/domain/src/errors/error-codes.js";
 
 export const getEventPage = ({ eventRepository, tokenService, logger }) => {

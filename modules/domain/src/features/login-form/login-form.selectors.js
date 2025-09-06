@@ -1,6 +1,6 @@
 import { flow } from "lodash-es";
-import { map } from "@softersoftware/functions/object.functions.js";
-import { and, or } from "@softersoftware/functions/predicate.functions.js";
+import { map } from "@softersoftware/functions/object.functions";
+import { and, or } from "@softersoftware/functions/predicate.functions";
 import { loginErrorCodes } from "../../models/account.model.js";
 
 //utility

@@ -1,6 +1,6 @@
 import { floor, flow } from "lodash-es";
-import { formatSeconds } from "@softersoftware/functions/duration.functions.js";
-import { map } from "@softersoftware/functions/object.functions.js";
+import { formatSeconds } from "@softersoftware/functions/duration.functions";
+import { map } from "@softersoftware/functions/object.functions";
 
 const durationInSeconds = (state) => state.durationInMinutes * 60;
 const getRemainingSeconds = (state) => state.remainingSeconds;
