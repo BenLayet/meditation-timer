@@ -1,0 +1,10 @@
+{
+    "name": "@types/softersoftware-feature",
+    "version": "1.0.0",
+    "description": "Feature ",
+    "types": "src/index.d.ts",
+    "files": [
+        "src/"
+    ],
+    "license": "MIT"
+}
