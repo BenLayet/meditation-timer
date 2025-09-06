@@ -1,25 +1,32 @@
 import ow from "ow";
 
-
-function sanitizePayload(payload: Record<string, any>, payloadShape: Record<string, any>): Record<string, any> {
+function sanitizePayload(
+  payload: Record<string, any>,
+  payloadShape: Record<string, any>,
+): Record<string, any> {
   // Remove keys in payload that do not exist in payloadShape
   return Object.fromEntries(
     Object.entries(payloadShape).map(([key]) => [key, payload[key]]),
   );
 }
-
-
-interface CreateEventParams {
-  payloadShape: Record<string, any>;
-  eventType: string;
-  isNewCycle?: boolean;
-}
-
 export const createEvent = (
-  { payloadShape, eventType, isNewCycle }: CreateEventParams,
+  {
+    payloadShape,
+    eventType,
+    isNewCycle,
+  }: {
+    payloadShape?: Record<string, any>;
+    eventType: string;
+    isNewCycle?: boolean;
+  },
   componentPath: string[],
   payload: Record<string, any>,
-): { componentPath: string[]; eventType: string; payload: Record<string, any>; isNewCycle: boolean } => {
+): {
+  componentPath: string[];
+  eventType: string;
+  payload: Record<string, any>;
+  isNewCycle: boolean;
+} => {
   payload = sanitizePayload(payload ?? {}, payloadShape ?? {});
   isNewCycle = !!isNewCycle;
   ow(

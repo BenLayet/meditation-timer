@@ -1,31 +1,25 @@
 import { getOwnStateAtPath, writeStateAtPath } from "./state";
 
-
-import type { Component, State } from "./view-model";
-
-interface Event {
-  eventType: string;
-  componentPath: string[];
-  payload: any;
-}
-
-const noChange = (state: State) => state;
+const noChange = (state: any) => state;
 const reducerFromEventHandlers =
-  (events: Record<string, { handler: (state: State, payload: any) => State }> = {}) =>
-  (state: State, event: Event) =>
+  (
+    events: Record<string, { handler: (state: any, payload: any) => any }> = {},
+  ) =>
+  (state: any, event: any) =>
     (events[event.eventType]?.handler ?? noChange)(state, event.payload);
-const getComponentAtPath = (component: Component, componentPath: string[]): Component =>
+const getComponentAtPath = (component: any, componentPath: string[]): any =>
   componentPath.reduce(
-    (result: Component, childName: string) => result.children![childName],
+    (result: any, childName: string) => result.children![childName],
     component,
   );
-const getReducer = (component: Component, componentPath: string[]) => (state: State, event: Event) => {
-  const localComponent = getComponentAtPath(component, componentPath);
-  const localReducer = reducerFromEventHandlers(localComponent.events as any);
-  const localState = getOwnStateAtPath(state, componentPath);
-  const newLocalState = localReducer(localState, event);
-  return writeStateAtPath(state, componentPath, newLocalState);
-};
+const getReducer =
+  (component: any, componentPath: string[]) => (state: any, event: Event) => {
+    const localComponent = getComponentAtPath(component, componentPath);
+    const localReducer = reducerFromEventHandlers(localComponent.events as any);
+    const localState = getOwnStateAtPath(state, componentPath);
+    const newLocalState = localReducer(localState, event);
+    return writeStateAtPath(state, componentPath, newLocalState);
+  };
 
-export const componentReducer = (component: Component) => (state: State, event: Event) =>
+export const componentReducer = (component: any) => (state: any, event: any) =>
   getReducer(component, event.componentPath)(state, event);

@@ -1,19 +1,30 @@
-
-import type { State } from "./view-model";
-
-export const getStateAtPath = (globalState: State, componentPath: string[]): State =>
+export const getStateAtPath = (
+  globalState: any,
+  componentPath: string[],
+): any =>
   componentPath.reduce(
-    (result: State, childName: string) =>
-      result.children ? (result.children[childName] ?? { ownState: {}, children: {} }) : { ownState: {}, children: {} },
+    (result: any, childName: string) =>
+      result.children
+        ? (result.children[childName] ?? { ownState: {}, children: {} })
+        : { ownState: {}, children: {} },
     globalState,
   );
-export const getOwnStateAtPath = (globalState: State, componentPath: string[]): Record<string, unknown> =>
+export const getOwnStateAtPath = (
+  globalState: any,
+  componentPath: string[],
+): Record<string, unknown> =>
   getStateAtPath(globalState, componentPath).ownState;
-export const getChildrenAtPath = (globalState: State, componentPath: string[]): Record<string, State> =>
-  getStateAtPath(globalState, componentPath).children;
-export const writeStateAtPath = (globalState: State, componentPath: string[], localState: Record<string, unknown>): State => {
+export const getChildrenAtPath = (
+  globalState: any,
+  componentPath: string[],
+): Record<string, any> => getStateAtPath(globalState, componentPath).children;
+export const writeStateAtPath = (
+  globalState: any,
+  componentPath: string[],
+  localState: Record<string, unknown>,
+): any => {
   let currentPath = [...componentPath];
-  let currentComponentState: State = {
+  let currentComponentState: any = {
     children: getChildrenAtPath(globalState, currentPath),
     ownState: localState,
   };

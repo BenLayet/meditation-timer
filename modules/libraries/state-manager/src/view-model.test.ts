@@ -49,14 +49,14 @@ describe("view model functions", () => {
 
   test("get view model: child selector", () => {
     //given
-    const selector1 = (compositeState) => compositeState.ownState.key1;
+    const selector1 = (compositeState: any) => compositeState.ownState.key1;
     const ownState = { key1: "value1" };
     const child1 = { selectors: { selector1 } };
     const component = { children: { child1 } };
     const state = { children: { child1: { ownState } } };
 
     //when
-    const actual = getVM(component, state);
+    const actual = getVM(component, state, console.log);
     const childVM = actual.children.child1;
     const value1 = childVM.selectors.selector1();
 

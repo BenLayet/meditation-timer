@@ -31,6 +31,7 @@ const preparationDurationInSeconds = flow(
 
 const ownState = (compositeState) => compositeState.ownState;
 
+//TODO stop exporting child selectors
 export const meditationTimerAppSelectors = {
   ...map(ownStateSelectors, (selector) => flow(ownState, selector)),
   isGongOn,

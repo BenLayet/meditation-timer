@@ -7,9 +7,12 @@ import { getVM } from "./view-model.js";
 export class StateManager {
   notifying = false;
   cycleEvents = [];
+  state: any = {};
+  eventListeners: any[] = [];
+  effects: any[] = [];
+  rootComponentListeners: any[] = [];
 
-  constructor(rootComponent) {
-    this.rootComponent = rootComponent;
+  constructor(private readonly rootComponent: any) {
     this.state = getInitialState(rootComponent);
     this.eventListeners = [];
     this.effects = [];

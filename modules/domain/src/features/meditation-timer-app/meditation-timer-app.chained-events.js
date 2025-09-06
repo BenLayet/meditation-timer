@@ -67,6 +67,7 @@ export const meditationTimerAppChainedEvents = [
         meditationTimerAppSelectors.preparationDurationInSeconds(state),
     }),
   },
+  //TODO move to meditationSession
   {
     onEvent: {
       ...preparationEvents.completed,

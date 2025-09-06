@@ -225,6 +225,8 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.1)(terser@5.43.1)(yaml@2.8.0)
 
+  modules/libraries/feature: {}
+
   modules/libraries/functions:
     dependencies:
       lodash-es:
@@ -240,8 +242,6 @@ importers:
       vitest:
         specifier: ^3.1.1
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.1)(terser@5.43.1)(yaml@2.8.0)
-
-  modules/libraries/softersoftware-feature: {}
 
   modules/libraries/state-manager:
     dependencies:
