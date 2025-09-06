@@ -8,4 +8,3 @@ interface State {
 }
 export declare const getInitialState: (component: Component) => State;
 export {};
-//# sourceMappingURL=initial-state.d.ts.map

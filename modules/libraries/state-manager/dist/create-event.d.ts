@@ -10,4 +10,3 @@ export declare const createEvent: ({ payloadShape, eventType, isNewCycle }: Crea
     isNewCycle: boolean;
 };
 export {};
-//# sourceMappingURL=create-event.d.ts.map

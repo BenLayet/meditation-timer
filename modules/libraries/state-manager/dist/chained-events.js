@@ -1,7 +1,7 @@
 import { isEqual } from "lodash-es";
-import { createEvent } from "./create-event.js";
-import { getStateAtPath } from "./state.js";
-import { validateNotEmptyString, validateNotNullObject, } from "@softersoftware/functions/assert.functions";
+import { createEvent } from "./create-event";
+import { getStateAtPath } from "./state";
+import { validateNotEmptyString, validateNotNullObject, } from "@softersoftware/functions/dist/assert.functions";
 const createChainedEventFactory = (currentComponentPath) => ({ thenDispatch, withPayload, onCondition }) => (previousEvent, globalState) => {
     const previousPayload = previousEvent.payload;
     const state = getStateAtPath(globalState, currentComponentPath);

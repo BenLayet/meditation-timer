@@ -1,4 +1,4 @@
-import type { Component, State } from "./view-model.js";
+import type { Component, State } from "./view-model";
 interface Event {
     eventType: string;
     componentPath: string[];
@@ -6,4 +6,3 @@ interface Event {
 }
 export declare const componentReducer: (component: Component) => (state: State, event: Event) => State;
 export {};
-//# sourceMappingURL=create-reducers.d.ts.map

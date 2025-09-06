@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { componentReducer } from "./create-reducers.js";
+import { componentReducer } from "./create-reducers";
 describe("create reducers", () => {
     test("create own reducer", () => {
         //given

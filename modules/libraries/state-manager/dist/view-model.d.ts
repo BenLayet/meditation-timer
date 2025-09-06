@@ -18,4 +18,3 @@ export interface VM {
     children: Record<string, VM>;
 }
 export declare const getVM: (component: Component, state: State, dispatch: (event: any) => void, componentPath?: string[]) => VM;
-//# sourceMappingURL=view-model.d.ts.map

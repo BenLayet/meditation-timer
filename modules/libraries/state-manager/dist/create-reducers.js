@@ -1,4 +1,4 @@
-import { getOwnStateAtPath, writeStateAtPath } from "./state.js";
+import { getOwnStateAtPath, writeStateAtPath } from "./state";
 const noChange = (state) => state;
 const reducerFromEventHandlers = (events = {}) => (state, event) => (events[event.eventType]?.handler ?? noChange)(state, event.payload);
 const getComponentAtPath = (component, componentPath) => componentPath.reduce((result, childName) => result.children[childName], component);

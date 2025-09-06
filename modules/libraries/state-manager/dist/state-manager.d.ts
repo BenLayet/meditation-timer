@@ -1,6 +1,6 @@
 export declare class StateManager {
     notifying: boolean;
-    cycleEvents: never[];
+    cycleEvents: any[];
     constructor(rootComponent: any);
     getRootVM(): import("./view-model.js").VM;
     addRootVMChangedListener(onRootVMChanged: any): void;
@@ -15,4 +15,3 @@ export declare class StateManager {
     dispatch: (event: any) => void;
     forwardEvent(event: any): void;
 }
-//# sourceMappingURL=state-manager.d.ts.map

@@ -1,1 +1,0 @@
-{"version":3,"file":"create-reducers.d.ts","sourceRoot":"","sources":["../src/create-reducers.ts"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,SAAS,EAAE,KAAK,EAAE,MAAM,iBAAiB,CAAC;AAExD,UAAU,KAAK;IACb,SAAS,EAAE,MAAM,CAAC;IAClB,aAAa,EAAE,MAAM,EAAE,CAAC;IACxB,OAAO,EAAE,GAAG,CAAC;CACd;AAoBD,eAAO,MAAM,gBAAgB,GAAI,WAAW,SAAS,MAAM,OAAO,KAAK,EAAE,OAAO,KAAK,UAC3B,CAAC"}

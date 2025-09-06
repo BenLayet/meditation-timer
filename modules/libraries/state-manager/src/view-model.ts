@@ -1,5 +1,5 @@
 
-import { map } from "@softersoftware/functions/object.functions";
+import { map } from "@softersoftware/functions/dist/object.functions";
 import { createEvent } from "./create-event.js";
 
 

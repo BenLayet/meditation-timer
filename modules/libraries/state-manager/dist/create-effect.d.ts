@@ -12,4 +12,3 @@ interface Event {
 }
 export declare const createEffect: ({ afterEvent, onComponent, then }: EffectParams) => (event: Event) => boolean | void;
 export {};
-//# sourceMappingURL=create-effect.d.ts.map
