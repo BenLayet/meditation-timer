@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      zod:
-        specifier: ^4.1.5
-        version: 4.1.5
     devDependencies:
       '@types/lodash-es':
         specifier: ^4.17.12
