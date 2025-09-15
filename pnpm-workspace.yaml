@@ -3,3 +3,4 @@ packages:
   - modules/domain
   - modules/backend
   - modules/frontend
+  - modules/frontend-domain

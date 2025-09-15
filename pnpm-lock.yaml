@@ -228,6 +228,28 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.1)(terser@5.43.1)(yaml@2.8.0)
 
+  modules/frontend-domain:
+    dependencies:
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      zod:
+        specifier: ^4.1.5
+        version: 4.1.5
+    devDependencies:
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
+      '@types/softersoftware-feature':
+        specifier: workspace:^
+        version: link:../libraries/feature
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
+      vitest:
+        specifier: ^3.1.1
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.1)(terser@5.43.1)(yaml@2.8.0)
+
   modules/libraries/feature: {}
 
   modules/libraries/functions:

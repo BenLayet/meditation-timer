@@ -1,0 +1,25 @@
+{
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true,
+    "declaration": true,
+
+    "paths": {
+      "@softersoftware/functions/*": ["../libraries/functions/src/*"],
+      "@softersoftware/feature/*": ["../libraries/feature/src/*"],
+      "@softersoftware/feature": ["../libraries/feature/src/index.d.ts"]
+    }
+  }
+}
