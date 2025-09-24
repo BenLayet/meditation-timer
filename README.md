@@ -69,7 +69,8 @@ Requires NodeJs, pnpm, and Git.
    ```sh
    cd packages/backend
    ```
-2. Start the server:
+2. Create a .env.dev file based on .env.dev.sample
+3. Start the server:
    ```sh
    pnpm dev
    ```
